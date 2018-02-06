@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.PresupuestoPorAnio>
+
+<div class="table-responsive" style="overflow-x:scroll">
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                @Html.DisplayNameFor(model => model.Sede.Nombre_Sede)
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                @*@Html.DisplayNameFor(model => model.Periodo)*@
+                Período
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                Rubro Total
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase"></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Sede.Nombre_Sede)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @Html.DisplayFor(modelItem => item.Periodo)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @Html.DisplayFor(modelItem => item.Presupuesto.RubroTotal)
+                    <input type="hidden" id="rtotal" name="rtotal" value="@item.Presupuesto.RubroTotal" />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @Html.ActionLink("Generar Informe", "CrearInformePresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

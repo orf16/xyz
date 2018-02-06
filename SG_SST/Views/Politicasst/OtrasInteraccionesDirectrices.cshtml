@@ -1,0 +1,162 @@
+﻿@model IEnumerable<SG_SST.Models.Politica.Mod_OtrasInteracciones>
+
+
+@{
+    ViewBag.Title = "OtrasInteraccionesDirectrices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>¡Atento!</strong> @ViewBag.Messages
+    </div>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Messages2
+    </div>
+}
+
+
+
+
+ @using (Html.BeginForm("CargarArchivoOtrasInt", "Politicasst", FormMethod.Post, new { enctype = "multipart/form-data" })) {   <input type="hidden" value="101776567" name="nit_Empresa" />
+
+    <div class="row">
+    <div class="col-md-9 col-md-offset-0">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><p class="text-center"><h3>Otras Intenciones y Directrices</h3></p></div>
+            <div class="panel-body">
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="file" value="Cargar Documento" name="ArchivoOtrasInteracciones" class="form-control" />
+                    </div>
+                    <hr />
+                    <div class="col-md-6">
+                        <input type="submit" value="Cargar Documento" class="btn btn-success" />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" value="Buscar" class="btn btn-success" />
+                    </div>
+                </div>
+                <hr />
+                <div class="panel panel-yellow">               
+
+                        <div style="overflow:scroll;height:300px;width:800px;">
+                            <table class="table">
+                                <tr>
+                                    <th>                                        
+                                    </th>
+                                    <th>                                        
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            <div id="search-block">
+                                                <input type="checkbox" name="showAll" id="showAll">                                             
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Archivo_OtrasInteracciones)
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("Adjunto", "Edit", new { id = item.ID_OtrasInteraciones })
+                                        </td>
+                                    </tr>
+                            }
+                            </table>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><input type="checkbox">Editar Nombre</p>
+
+                        </div>
+                        <div class="col-md-6">
+                            <p><input type="checkbox">Documento PRIVADO</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><input type="checkbox">Eliminardddddddddd</p>
+                        </div>
+                    </div>
+
+                <hr/>
+
+                    <div class="row">
+
+                        <div class="col-md-9">
+                         
+
+
+
+
+
+
+                            <button class="boton botoninfo" data-toggle="modal" data-target="#@string.Format("myModal3","")" style="margin-right:35px">
+                                @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                            </button>
+                            <div id="@string.Format("myModal3","")" class=" modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">                          
+                                            </button>
+
+                                            <h4 class="modal-title title">Eliminar archivo</h4>
+                                        </div>
+                                        <div class="modal-body " style="color:black">
+                                            <center><p>¿Está Seguro de eliminar el archivo seleccionado?</p></center>
+                                            @*<center><p>¿Esta seguro que desea eliminar la Política de Seguridad y Salud en el Trabajo?</p></center>*@
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Aceptar" class="btn btn-success" />
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <a href="@Url.Action("ValorCheckBox", "OtrasInteraccionesDirectrices")" class="btn btn-primary" target="_blank">Aceptar</a>
+                        </div>
+                    </div>
+              <h1>dsgfdgfdgfdgfd</h1>
+                <label id="lblMensaje" color="blue"></label>
+                </div>
+        </div>
+    </div>
+</div>
+
+}

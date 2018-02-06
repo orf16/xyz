@@ -1,0 +1,219 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaGestion
+
+@{
+    ViewBag.Title = "Nuevo Cuestionario";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li><a href="@Url.Action("Index", "BateriaGestion")">Gestionar Bateria Psicosocial</a></li>
+    <li class="active">Nueva Aplicación de Cuestionario</li>
+</ol>
+
+<script>
+    //Guardar Plan
+    $(function () {
+
+        $("#CrearCuestionario").bind("click", function () {
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea crear la aplicación de un nuevo cuestionario?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type:"warning",
+                closeOnConfirm: false
+            },
+            function () {
+                var onEventLaunchGuardar = new postGuardar();
+                onEventLaunchGuardar.launchGuardar();
+            });
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+
+            var stringArray = new Array();
+            stringArray[0] = $("#Tipo").val();
+            var EDBateriaGestion = {
+                Fk_Id_Bateria: stringArray[0]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/BateriaGestion/CrearCuestionario',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDBateriaGestion),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    if (data.Probar == false) {
+                        swal("Advertencia", data.Estado);
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "La Aplicación del cuestionario ha sido creada",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                          function () {
+                              window.location.href = '/BateriaGestion/AplicacionCuestionario?IdGestion=' + data.EDBateriaGestion1.Pk_Id_BateriaGestion + '';
+                          });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                    console.log(data.Estado)
+                }
+            });
+
+        }
+    }
+
+
+
+
+
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">NUEVA APLICACIÓN DE CUESTIONARIO</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / NUEVA APLICACIÓN DE CUESTIONARIO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>EN ESTA SECCIÓN DE MÓDULO DE BATERIAS PSICOSOCIALES EL USUARIO PUEDE CREAR UNA NUEVA APLICACIÓN DE CUESTIONARIOS</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>UNA APLICACIÓN DE CUESTIONARIO ES UNA CONVOCATORIA PARA DILIGENCIAR UN CUESTIONARIO DETERMINADO POR EL USUARIO, LA CUAL SE COMPONE DE CONVOCADOS O PERSONAS QUE SON INVITADAS A REALIZAR DICHO CUESTIONARIO</strong></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Crear una aplicación de batería</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:left;"> Para crear una aplicación de cuestionarios seleccione un tipo de cuestionario y luego haga click en  <button type="button" class="boton botonactive" style="cursor:default;">CREAR APLICACIÓN</button> el sistema lo redirigirá a la página de convocatorias de usuario para empezar a invitar convocados que diligenciarán el cuestionario seleccionado </p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:left;"> <strong>Nota: La selección de los cuestionarios es uno a uno, es decir solo se permite crear un cuestionario por cada aplicación</strong> </p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg4.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg5.png" /></p>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Contenido del Panel*@
+        <div class="form-group row internal-panel-body">
+
+            <div class="col-sm-12 col-md-12 esconder">
+                <label>Elija el tipo de Cuestionario que desee incluir en la nueva aplicación de cuestionario de la batería psicosocial</label>
+                @Html.DropDownList("Tipo", null, "-- Seleccione un Tipo de cuestionario--", htmlAttributes: new { @class = "form-control" })
+                <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-sm-12 col-md-6 add-top-margin-10em esconder" style="display:block">
+                <label> </label>
+                <button id="CrearCuestionario" class="boton botonactive col-margin">CREAR APLICACIÓN</button>
+            </div>
+        </div>
+        @*informacion guardada*@
+        <div class="internal-panel add-bottom-margin-05em mostrar" style="display:none;">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información de la Aplicación</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Registro:</label>
+                        <span id="FechaRegistro"></span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Descripción de la Encuesta:</label>
+                        <span id="DesEncuesta"></span>
+                    </div>
+                </div>
+
+
+            </div>
+            <br />
+
+        </div>
+        @*link*@
+        <div class="internal-panel add-bottom-margin-05em mostrar" style="display:none;">
+            <div class="internal-panel-header panel-heading">
+                <h4>Link Público (Utilice este link para personas con problemas de acceso)</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-6 mostrar">
+                        <label></label>
+                        @Html.TextBox("LinkPublico", (string)ViewBag.Nit, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                    </div>
+                    <div class="col-sm-12 col-md-6 add-top-margin-10em mostrar" style="display:block">
+                        <label> </label>
+                        <button id="CopiarLink" class="boton botonactive col-margin" onclick="copyToClipboard('#p1')" title="Copiar Link">COPIAR LINK</button>
+                    </div>
+                </div>
+                <p id="p1" style="display:none"></p>
+            </div>
+            <br />
+
+        </div>
+        @*convocatoria*@
+        @Html.Hidden("IdGestion", null);
+
+
+      
+
+
+
+
+
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("index", "BateriaGestion")';return false;" class="boton botonactive col-margin">REGRESAR</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+

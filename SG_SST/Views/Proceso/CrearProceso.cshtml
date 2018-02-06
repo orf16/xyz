@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Mapa Procesos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script src="~/Scripts/Empresas/Proceso.js"></script>
+    <script src="~/Scripts/go.js"></script> 
+}
+
+@if (ViewBag.Message1a != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message1a',
+
+            showConfirmButton: true,
+            confirmButtonText: 'Registrar',
+            confirmButtonColor: '#7E8A97'
+
+
+        });
+
+        $('.confirm').on('click', function () {
+            window.location.href = "../Proceso/Create";
+        });
+
+
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />  
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li><a href="@Url.Action("MenuProcesos","Proceso")">Gestión Procesos Empresa</a></li>
+    <li class="active">Mapa Procesos Empresa</li>
+</ol>
+
+<div id="ProcesosPositiva" style="border:solid 1px lightslategray; height:75%"></div>
+
+<br />
+
+<div class="row" align="center">
+    @*<div class="col-md-4">*@
+        <a href="@Url.Action("MenuProcesos","Proceso") " class="boton botoninfo">
+            Regresar
+        </a>
+    @*</div>*@
+    @*<div class="col-md-4">*@
+        <a href="@Url.Action("Create","Proceso") " class="boton botonactive" style="margin-left:6.5%">
+            Agregar Proceso
+        </a>
+    @*</div>*@
+    @*<div class="col-md-4">*@
+        <a href="@Url.Action("Index","Proceso") " class="boton botoninfo" style="margin-left:6.5%">
+            Listado Procesos
+        </a>
+    @*</div>*@
+</div>

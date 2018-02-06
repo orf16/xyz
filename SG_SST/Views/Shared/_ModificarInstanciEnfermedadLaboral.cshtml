@@ -1,0 +1,40 @@
+﻿@model SG_SST.Models.EnfermedadLaboral.InstanciaRegistrada
+<div class="row form-group">
+    <div class="col-xs-3">
+        @Html.Label("Nombre de instancia", new { @class = "control-label" })
+    </div>
+    <div class="col-xs-5">
+        @Html.TextBox("InstanciaModal", null, new { Value = string.Format("{0}", Model.Nombre), @class = "form-control" })
+        @*<input type="text" id="InstanciaModal" class="form-control" value="@Model.NombreEstadoInstancia" />*@
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-xs-3">
+        @Html.Label("Quien califica", new { @class = "control-label" })
+    </div>
+    <div class="col-xs-5">
+        <input type="text" id="QuienCalificaModal" class="form-control" value="@Model.QuienCalifica" />
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-xs-3">
+        @Html.Label("Fecha calificación:", new { @class = "control-label" })
+    </div>
+    <div class="col-xs-3">
+        <input type="text" id="FechaCalificacionModal" class="form-control" value='@Model.FechaCalificacion.ToString("dd/MM/yyyy")' />
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-xs-3">
+        @Html.Label("Estado calificación:", new { @class = "control-label" })
+    </div>
+    <div class="col-xs-3">
+        @Html.DropDownList("EstadoModal", Model.EstadosInstancia, new { Value = Model.NombreEstadoInstancia, @class = "form-control" })
+    </div>
+</div>
+@Html.Hidden("IdInstanciaModal", null, new { Value = @Model.IdInstancia })
+<script>
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaCalificacionModal');
+    });
+</script>

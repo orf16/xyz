@@ -1,0 +1,344 @@
+﻿@model List<SG_SST.Models.Ausentismo.AusenciaModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row form-group listado-ausencias">
+        <h2>Ausentismos</h2>
+        <table class="table table-bordered" id="tblausentismos" style="font-size:x-small; border: 2px solid lightslategray">
+            <thead>
+                <tr class="titulos_tabla">
+                    <th>Tipo</th>
+                    <th>Fecha Registro</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    <th>Sede</th>
+                    <th>Contingencia</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Finalización</th>
+                    <th>Dias Ausencia</th>
+                    <th>Diagnóstico</th>
+                    <th>Valor Ausentismo</th>
+                    <th></th>
+                    <th style="display:none" id="accion">Acción</th>
+                </tr>
+            </thead>
+            @foreach (var a in Model)
+            {
+                <tbody>
+                    <tr id="@Html.DisplayName(a.IdAusencia.ToString())" fechaFin ="@a.FechaFin" cont="@Html.DisplayName(a.Contingencia.TipoContingencia)" diag="@Html.DisplayName(a.Diagnostico.TipoDiagnostico)" idtipcontg="@a.Contingencia.IdContingenciaSeleccionada" factprest="@a.FactorPrestacional">
+                        <td hidden>@Html.DisplayName(a.IdAusencia.ToString())</td>
+                        <td id="fregistro_@a.IdAusencia">@string.Format("{0}", a.Tipo)</td>
+                        <td>@string.Format("{0}", a.FechaRegistro)</td>
+                        <td>@string.Format("{0}", a.Departamento)</td>
+                        <td>@string.Format("{0}", a.Municipio)</td>
+                        <td>@string.Format("{0}", a.Sede)</td>
+                        <td>@string.Format("{0}", a.Contingencia.TipoContingencia)</td>
+                        <td>@string.Format("{0}", a.FechaInicio)</td>
+                        <td>@string.Format("{0}", a.FechaFin)</td>
+                        <td>@string.Format("{0}", a.DiasAusencia)</td>
+                        <td>@string.Format("{0}", a.Diagnostico.TipoDiagnostico)</td>
+                        <td id="costo_@a.IdAusencia" class="costo-aus">@string.Format("{0}", a.Costo)</td>
+                        <td id="btn_@a.IdAusencia"><input type="button" style="font-size: inherit" class="btn btn-info ProrrogarBtn" data-toggle="modal" data-target="#ProrrogaModal" value="Prorrogar" /></td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+
+    <div class="modal fade" id="ProrrogaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header cabecera">
+                    <h3 class="modal-title cabeceratitle" id="exampleModalLabel"><strong>Prorrogar Ausencia</strong></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form id="prorrogarAusenciaModal">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <input type="hidden" name="IdAusenciaModal" id="IdAusenciaModal" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.Label("Contingencia", new { @class = "control-label col-xs-3" })
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" id="ContingenciaModal" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.Label("Diagnostico", new { @class = "control-label col-xs-3" })
+                                </div>
+                                <div class="col-md-6">
+                                    <textarea id="DiagnosticoModal" class="form-control" disabled />
+                                    @*<input type="text" id="DiagnosticoModal" class="form-control" disabled />*@
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.Label("Fecha Inicio:", new { @class = "control-label col-xs-3" })
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="FechaInicialModal" class="form-control" />
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.Label("Fecha Finalizacion:", new { @class = "control-label col-xs-3" })
+                                    @Html.Hidden("fechafinusen");
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="FechaFinalModal" class="form-control" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.Label("Dias Ausencia:", new { @class = "control-label col-xs-3" })
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="DiasAusenciaModal" class="form-control" disabled />
+                                </div>
+                                <div class="col-md-2">
+                                    @Html.Label("Factor Prestacional:", new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" id="FactorModal" class="form-control" placeholder="1.00" disabled />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @Html.Label("Valor Ausentismo:", new { @class = "control-label" })
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" id="CostoModal" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_cerrarProrroga" type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="boton botonactive" id="guardarProrroga">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@{
+    <script>
+        var idTipoConting = 0;
+        $(document).ready(function () {
+            $('#accion').hide();
+            $('#btn').hide();
+            $('.costo-aus').each(function () {
+                var idElemento = $(this).attr('id');
+                EtiquetarValoresAPrecio(idElemento);
+            });
+            ConstruirDatePickerPorElemento('FechaInicialModal');
+            ConstruirDatePickerPorElemento('FechaFinalModal');
+            $(".ProrrogarBtn").click(function () {
+                var id = $(this).parent().parent().attr('id');
+                var cont = $(this).parent().parent().attr('cont');
+                var diag = $(this).parent().parent().attr('diag');
+                idTipoConting = $(this).parent().parent().attr('idTipContg');
+                var factPrestnal = $(this).parent().parent().attr('factPrest');
+                var fechaFin = $(this).parent().parent().attr('fechaFin');
+                $("#IdAusenciaModal").val(id);
+                $("#ContingenciaModal").val(cont);
+                $("#DiagnosticoModal").val(diag);
+                $("#FactorModal").val(factPrestnal);
+                $("#fechafinusen").val(fechaFin);
+                $('#FechaInicialModal').val('');
+                $('#FechaFinalModal').val('');
+                $('#DiasAusenciaModal').val('');
+            });
+            $('#FechaInicialModal').on('focus', function () {
+                $(this).siblings('label').hide();
+            });
+            $('#FechaFinalModal').on('focus', function () {
+                $(this).siblings('label').hide();
+            });
+            $("#guardarProrroga").click(function () {
+                var validacion = true;
+                if ($("#FechaInicialModal").val() == "") {
+                    var elmError = $("#FechaInicialModal").siblings('label[class="error"]');
+                    if (elmError.length == 0) {
+                        var msgError = '<label for="FechaInicialModal" class="error">Debe ingresar una fecha</label>';
+                        $('#FechaInicialModal').after(msgError);
+                    }
+                    $('label[for="FechaInicialModal"]').show();
+                    validacion = false;
+                }
+                if ($("#FechaFinalModal").val() == "") {
+                    var elmError = $("#FechaFinalModal").siblings('label[class="error"]');
+                    if (elmError.length == 0) {
+                        var msgError = '<label for="FechaFinalModal" class="error">Debe ingresar una fecha</label>';
+                        $('#FechaFinalModal').after(msgError);
+                    }
+                    $('label[for="FechaFinalModal"]').show();
+                    validacion = false;
+                }
+                if (validacion)
+                    guardaProrroga();
+                else
+                    return false;
+            });
+           
+
+            $('#FechaInicialModal').on("change", function (event) {
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
+                var f1 = $('#FechaInicialModal').val();
+                var f2 = $('#FechaFinalModal').val();
+                var f3 = $('#fechafinusen').val();
+
+                var fecha1 = new Date(f1.split('/')[2], f1.split('/')[1] - 1, f1.split('/')[0]);
+                var fecha2 = new Date(f2.split('/')[2], f2.split('/')[1] - 1, f2.split('/')[0]);
+                var fecha3 = new Date(f3.split('/')[2], f3.split('/')[1] - 1, f3.split('/')[0]);
+
+                if (fecha1.getTime() <= fecha3.getTime()) {
+                    swal('Atención', 'La fecha de inicio no puede ser menor o igual a la fecha fin del evento que está  prorrogando');
+                    var f2 = $('#FechaInicialModal').val('');
+                    return false;
+                }
+
+                if (f2 == '')
+                    return false;
+                
+                
+
+                var horaIn = '';
+                var horaFn = '';
+                if (f1 == '' || f2 == '') {
+                    swal('Atención', 'Se deben seleccionar las Fechas de la prórroga.');
+                    return false;
+                } else if (fecha1.getTime() >= fecha2.getTime()) {
+                    $('#FechaFinalModal').val('');
+                    swal('Atención', 'La Fecha de finalización no puede ser menor a la Fecha de Inicio');
+                    return false;
+                }
+                else {
+                    CalcularDias(f1, f2, idTipoConting, horaIn, horaFn, 'DiasAusenciaModal', 'FechaInicialModal', 'FechaFinalModal');
+                    var salario = $("#DatosTrabajor_Salario").val();
+                    var salarioNumerico = salario.replace("$", "").replace(".", "");
+                    salarioNumerico = salarioNumerico.replace(".", "");
+                    var facPres = $("#FactorModal").val();
+                    var diasa = $('#DiasAusenciaModal').val();
+                    costo(salarioNumerico, facPres, diasa);
+                }
+            });
+
+
+            $('#FechaFinalModal').on("change", function (event) {
+                event.preventDefault ? event.preventDefault() : event.returnValue = false;
+                var f1 = $('#FechaInicialModal').val();
+                var f2 = $('#FechaFinalModal').val();
+
+                var fecha1 = new Date(f1.split('/')[2], f1.split('/')[1] - 1, f1.split('/')[0]);
+                var fecha2 = new Date(f2.split('/')[2], f2.split('/')[1] - 1, f2.split('/')[0]);
+
+                if (f2 == '')
+                    return false;
+
+                var horaIn = '';
+                var horaFn = '';
+                if (f1 == '' || f2 == '') {
+                    swal('Atención', 'Se deben seleccionar las Fechas de la prórroga.');
+                    return false;
+                } else if (fecha1.getTime() >= fecha2.getTime()) {                    
+                    $('#FechaFinalModal').val('');
+                    swal('Atención', 'La Fecha de finalización no puede ser menor a la Fecha de Inicio');
+                    return false;
+                }
+                else {
+                    CalcularDias(f1, f2, idTipoConting, horaIn, horaFn, 'DiasAusenciaModal', 'FechaInicialModal', 'FechaFinalModal');
+                    var salario = $("#DatosTrabajor_Salario").val();
+                    var salarioNumerico = salario.replace("$", "").replace(".", "");
+                    salarioNumerico = salarioNumerico.replace(".", "");
+                    var facPres = $("#FactorModal").val();
+                    var diasa = $('#DiasAusenciaModal').val();
+                    costo(salarioNumerico, facPres, diasa);
+                }
+            });
+            function costo(salario, facPres, diasa) {
+                if (facPres == '' || facPres == undefined) {
+                    facPres = parseFloat(1.00);
+                    var fin = Math.floor(((salario / 30) * diasa) * facPres)
+                    var total = parseFloat(fin)
+                    $('#CostoModal').val(total);
+                } else {
+                    var facPres = parseFloat($("#FactorModal").val());
+                    var fin = Math.floor(((salario / 30) * diasa) * facPres)
+                    var total = parseFloat(fin)
+                    $('#CostoModal').val(total);
+                }
+                EtiquetarValoresAPrecio('CostoModal');
+            }
+
+            function guardaProrroga() {
+                $('#CostoModal').val($('#CostoModal').val().replace("$", ""));
+                $('#CostoModal').val($('#CostoModal').val().replace(".", ""));
+                var objprorroga = {
+                    "IdAusencia": $("#IdAusenciaModal").val(),
+                    "FechaInicio": $('#FechaInicialModal').val(),
+                    "FechaFin": $('#FechaFinalModal').val(),
+                    "DiasAusencia": $('#DiasAusenciaModal').val(),
+                    "Costo": $('#CostoModal').val(),
+                    "FactorPrestacional": $('#FactorModal').val(),
+                }
+                $.ajax({
+                    type: "post",
+                    url: '/Ausencias/Prorrogar',
+                    data: objprorroga
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.status == 'Success') {
+                        $('#popupMsg').find('h4').text(response.Message);
+                        $('#btn_aceptMsg').data('href', '../Afiliado/Afiliado');
+                        OcultarPopupposition();
+                        swal({
+                            title: 'Atención',
+                            text: response.Message,
+                            type: 'success',
+                            showCancelButton: false
+                        }, function () {
+                            window.location.href = urlBase + urlAusencias + "/RegistrarAusencia";
+                        });
+                    }
+                    else if (response != undefined && response != '' && response.status == 'CRUCE') {
+                        OcultarPopupposition();
+                        swal({
+                            title: 'Atención',
+                            text: response.Message,
+                            type: 'warning',
+                            showCancelButton: false
+                        });
+                    }
+                    else if (response != undefined && response != '' && response.status == 'Error') {
+                        OcultarPopupposition();
+                        swal({
+                            title: 'Atención',
+                            text: response.Message,
+                            type: 'warning',
+                            showCancelButton: false
+                        });
+                    }
+                }).fail(function (response) {
+                    console.log("Error en la peticion: " + response.Data);
+                    OcultarPopupposition();
+                    swal({
+                        title: 'Atención',
+                        text: 'No se logró prorrogar la ausencia. Intente nuevamente',
+                        type: 'warning',
+                        showCancelButton: false
+                    }, function () {
+                        window.location.href = urlBase + urlAusencias + "/RegistrarAusencia";
+                    });
+                });
+            }
+        });
+    </script>
+}

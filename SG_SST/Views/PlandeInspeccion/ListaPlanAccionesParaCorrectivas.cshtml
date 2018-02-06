@@ -1,0 +1,270 @@
+﻿@{@model SG_SST.Models.Aplicacion.AccionCorrectivaVM
+
+    ViewBag.Title = "Listado Para Correctivas";
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Mensaje del Sistema:',
+                text: '@ViewBag.mensaje',
+                timer: 4000,
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+
+
+}
+<!DOCTYPE html>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<style>
+    .container-main {
+        margin: 60px auto;
+        margin-bottom: 10%;
+        padding-bottom: 3em;
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        background-color: white;
+    }
+
+        .container-main h4 {
+            font-size: 23px;
+            text-shadow: 4px 4px 5px #DDD;
+            padding-top: 1%;
+            padding-bottom: 2%;
+        }
+
+
+    .box h4 {
+        text-align: center;
+        position: relative;
+        font-family: Arial;
+        color: black;
+        padding-bottom: 20px;
+        top: 50px;
+    }
+
+        .box h4 b {
+            color: #ff6a00;
+        }
+
+    .box {
+        width: 65%;
+        height: 150px;
+        background: #DDD;
+        margin: 40px auto;
+    }
+
+    /*==================================================
+    * Efecto 2
+    * ===============================================*/
+    .effect2 {
+        position: relative;
+    }
+
+        .effect2:before, .effect2:after {
+            z-index: -1;
+            position: absolute;
+            content: "";
+            bottom: 15px;
+            left: 10px;
+            width: 50%;
+            top: 80%;
+            max-width: 300px;
+            background: #DDD;
+            -webkit-box-shadow: 0 15px 10px #777;
+            -moz-box-shadow: 0 15px 10px #777;
+            box-shadow: 0 15px 10px #777;
+            -webkit-transform: rotate(-3deg);
+            -moz-transform: rotate(-3deg);
+            -o-transform: rotate(-3deg);
+            -ms-transform: rotate(-3deg);
+            transform: rotate(-3deg);
+        }
+
+        .effect2:after {
+            -webkit-transform: rotate(3deg);
+            -moz-transform: rotate(3deg);
+            -o-transform: rotate(3deg);
+            -ms-transform: rotate(3deg);
+            transform: rotate(3deg);
+            right: 10px;
+            left: auto;
+        }
+
+    .table {
+        width: 100%;
+        margin: 0px auto;
+    }
+</style>
+
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Inspecciones de Seguridad</a></li>
+    <li class="active">Listado Actividades Para Acciones Correctivas</li>
+</ol>
+<hr />
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Actividades Para Acción Correctiva</div>
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                @*<a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-search btn-md"
+                   @*class="btn btn-link-1-google-plus btn-circle btn-md"
+                   style="border: 1px solid lightslategray; border-radius:0px">
+                    <i class="glyphicon glyphicon-question-sign"style="color:black"></i>
+                </a>*@
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Información de Ayuda/Enviar a Acciones Correctivas</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="text-align:justify">En esta opcion puedes enviar al módulo acciones correctivas, los planes de acción que requieran acción correctiva</p></li>
+                                    <li><p style="text-align:justify"><b style="color:#FF7500">Generar Acción Correctiva</b> realiza el envio para el módulo acciones correctivas las actividades seleccionadas.</p></li>                  
+                                    <li><p style="text-align:justify"><b style="color:#FF7500">Lista Actividades</b> Permite visualizar la lista de planes de acción que fueron enviados al Modulo Acciones Correctivas.</p></li>
+                                    <li><p style="text-align:justify"><b style="color:#FF7500">Regresar</b> Retorna a la vista anterior para buscar una inspeccion y sus planes de accion con su respectivo estado.</p></li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box effect2"> <h4 style="text-align:center"><b>NOTA:</b> Por favor seleccione de la lista, las Actividades que requieren acción correctiva. </h4> </div>
+
+        <form id="listadoparacciones">
+
+            <table class="table table-bordered table-hover" style="border-color: lightslategray;border-bottom: 1px solid lightslategray" id="condicion">
+                <thead>
+                    <tr class="titulos_tabla" style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Seleccionar</b>
+                        </td>
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Resumen Actividad</b>
+                        </td>
+                      
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Requiere Acción Correctiva?</b>
+                        </td>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var contador = 0; }
+                    @foreach (var item in Model.acciones)
+                    {
+                        @Html.HiddenFor(modelItem => item.pkplanaccionvm, new { id = "pkplanaccionvm_" + @contador, @class = "form-control", @style = "background-color:  white;color:black", @readonly = "readonly", @value = "@item.pkplanaccionvm" })
+                        <tr id="@contador" name="pacc">
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input type="checkbox" class="checkBox" id="checkcorrectiva" value="" idsede="@item.sedeVM" idproceso="@item.procesoVM" resumen="@item.resumenvm" desc="@item.DescribeProcesoVM" />
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.resumenvm, new { id = "resumenvm_" + @contador, @class = "form-control", @style = "background-color: white;color:black" })
+                                <label for="diasdesde" class="error" style="display:none;"></label>
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.respuestavm, new { id = "respuestavm_" + @contador, @class = "form-control", @style = "background-color:  white;color:black" })
+                                <label for="diashasta" class="error" style="display:none;"></label>
+                            </td>
+                        </tr>
+
+                        contador++;
+                    }
+                </tbody>
+            </table>
+           
+            <br /> 
+            @* Cambio pendiente de revisión - hasta 223 *@
+            <div class="row">
+                <div class="col-lg-10" @*col-lg-offset-6"*@ style="background-color:transparent">
+                    <button type="button" class="boton botonactive" id="GuardarAccion">Generar Acción Correctiva</button>
+                    <button type="button" class="boton botoninfo" id="listaactividades" data-toggle="modal" data-target="#modalTodasCorrectivas">listar Actividades</button>
+                </div>
+            </div>
+        </form>
+        <div id="@string.Format("modalTodasCorrectivas")" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title title">Lista Total Actividades de Acciones Correctivas</h4>
+                    </div>
+                    <div class="modal-body " style="color:black">
+                        <table class="table table-bordered  table-hover" style="border-bottom:transparent">
+
+                            <thead>
+                                <tr class="titulos_tabla" style="text-align:center">
+                                    <th style="border:solid 1px #808080">
+                                        <p>Condicion Insegura Hallada</p>
+                                    </th>
+                                    <th style="border:solid 1px #808080">
+                                        <p>Nombre del Verificador</p>
+                                    </th>
+                                    <th style="border:solid 1px #808080">
+                                        <p>Actividad Plan de Acción</p>
+                                    </th>
+                                    <th style="border:solid 1px #808080">
+                                        <p>Requiere Acción Correctiva?</p>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="todasCorrectivas"></tbody>
+                        </table>
+                       
+                    </div>
+                   <div class="pagination" id="paginador1"></div>
+                    <div class="modal-footer">
+                       
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <hr />
+    </div>
+    <button type="button" class="boton botoninfo" onclick="location.href='@Url.Action("VerificarInspeccion", "PlandeInspeccion")'">Regresar</button>
+</body>
+</html>
+

@@ -1,0 +1,68 @@
+﻿@model SG_SST.Models.Aplicacion.MaestroConfiguracionPrioridades
+
+@{
+    ViewBag.Title = "Editar Configuración Prioridad";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Configuración Maestros</a></li>
+    <li><a href="javascript:void(0)">Configuración Prioridades</a></li>
+    <li class="active">Editar Configuración Prioridad</li>
+</ol>
+
+<form id="grabarmaestro" method="post">
+    
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <h4>Configuración Prioridades</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Pk_Id_MaestroConfiguracion)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DescripcionPrioridad, "Descripción Prioridad:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.DescripcionPrioridad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DescripcionPrioridad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiasDesde, "Días Desde:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2">
+                @Html.EditorFor(model => model.DiasDesde, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiasDesde, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiasHasta, "Días Hasta:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2">
+                @Html.EditorFor(model => model.DiasHasta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiasHasta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-12">
+                <button type="submit" class="boton botonactive" id="btnEnviar" onclick="ValidarCrearMaestroConfiguracion()">Guardar</button>
+                |
+                <a href="@Url.Action("Index")" class="boton botoninfo">
+                    Volver a la Lista
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

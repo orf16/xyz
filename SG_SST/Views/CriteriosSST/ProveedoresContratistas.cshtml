@@ -1,0 +1,188 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDProveedorContratista>
+@{
+    ViewBag.Title = "Listado de Proveedores y Contratistas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: blue;
+        }
+    </style>
+
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/ChartEstadisticos")  
+}
+@if (ViewBag.editadoConExito == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Proveedor Contratista editado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+@section OpcionesEmpresa
+{
+    <ul class="nav nav-tabs">
+        <li><a href="@Url.Action("Create", "CriteriosSST")" style="color:gray">Criterios</a></li>
+        <li><a href="@Url.Action("Calificar", "CriteriosSST")" style="color:gray">Selección y Evaluación</a></li>
+        <li><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")" style="color:gray">Visualizar Calificaciones de Proveedores y Contratistas</a></li>
+        <li class="active"><a href="@Url.Action("MostrarProveedores", "CriteriosSST")" style="color:#ff7500">Listado de Proveedores y Contratistas</a></li>
+    </ul>
+}
+
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Create", "CriteriosSST")">Criterios</a></li>
+    <li><a href="@Url.Action("Calificar", "CriteriosSST")">Selección y Evaluación</a></li>
+    <li ><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")">Visualizar Calificaciones de Proveedores</a></li>
+    <li class="active"><a href="@Url.Action("MostrarProveedores", "CriteriosSST")">Listado de Proveedores y Contratistas</a></li>
+</ol>
+<hr />
+
+<form method="post" id="MostrarProveedores" enctype="multipart/form-data">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Listado de Proveedores y Contratistas
+        </div>
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Listado de Proveedores y contratistas</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:2%;line-height:200%;">Presione el nombre del Proveedor Contratista para visualizar las Graficas de las calificaciones del Proveedor Contratista.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <span class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></span> para editar un Proveedor Contratista.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="TablaProveedores">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Proveedor Contratista")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Nit")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Vigencia de Contrato u orden de servicio")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Frecuencia Evaluación")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Calificación")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Editar")
+                        </th>
+                    </tr>
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr name="tblProv">
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @*<a href="javascript:void(0);" onclick="MostrarGraficoProveedor(item.pk_proveedorcontratista)">@Html.DisplayFor(modelItem => item.Nombre_ProveedorContratista)</a>*@
+                                <a href="javascript:void(0);" onclick="MostrarGraficoProveedor(this,@item.PK_ProveedorContratista)" data-toggle="modal" data-target="#@string.Format("modalGraficar{0}", item.PK_ProveedorContratista)">
+                                    @item.Nombre_ProveedorContratista
+                                </a>
+                                <div id="@string.Format("modalGraficar{0}", item.PK_ProveedorContratista)" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        @*Modal content*@
+                                        <div class="modal-content">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                                <h4 class="modal-title title">@item.Nombre_ProveedorContratista</h4>
+                                            </div>
+                                            <div id="TablaContratistas" name="TablaContratistas" class="col-md-6">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" style="border: 2px solid lightslategray">
+                                                        <thead>
+                                                            <tr class="titulos_tabla">
+                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                    @Html.Label("Número")
+                                                                </th>
+                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                    @Html.Label("Fecha")
+                                                                </th>
+                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                    @Html.Label("Calificación")
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody name="TblProveedor"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div name="modalgraficadetalle" class="col-md-6" style="text-align:center; color:black">
+                                                <canvas id="graficadetalle" name="graficadetalle" height="30" width="30"></canvas>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="boton botonactive" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.Nit_ProveedorContratista)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @if (item.fechapi.ToString("dd/MM/yyyy") != "01/01/1900")
+                                {
+                                    @item.fechapi.ToString("dd/MM/yyyy")
+                                }
+                                @*@Html.DisplayFor(modelItem => item.fechapi)*@
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.frecuenciaEvaluacion)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.CalificacionHistorico)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a href="@Url.Action("EditProveedorContratista", new { idProveedor = item.PK_ProveedorContratista })"
+                                   title="Editar Calificación del Proveedor" class="btn btn-md btn-search">
+                                    <span class="glyphicon glyphicon-pencil" name="iconoEditCalif"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

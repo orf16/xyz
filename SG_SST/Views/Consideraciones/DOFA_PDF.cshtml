@@ -1,0 +1,120 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.ElementoMatriz>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" type="image/x-icon">
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div align="center"><h3></h3></div>
+
+    <table class="table" align="center" cellspacing="10" cellpadding="7" border="1" style="table-layout:fixed" width="860" height="40">
+        <tr>
+            <th style="border-radius:0px; background-color: #a9a9a9; border: 1px solid black">
+                <h2>Análisis DOFA</h2>
+            </th>
+        </tr>
+    </table>
+
+
+
+    <table class="table" align="center" cellspacing="10" cellpadding="7" border="1" style="table-layout:fixed">
+
+
+
+
+
+
+        <tr>
+
+            <th width="400" height="50" style="border-radius:0px; background-color: #b3e2dd; border: 1px solid black">
+                @Html.Label("Oportunidades")
+            </th>
+            <th width="400" height="50" style="border-radius:0px; background-color: #cfeccf; border: 1px solid black">
+                @Html.Label("Amenazas")
+            </th>
+
+        </tr>
+
+        <tr>
+
+            <td width="400" height="300" style="border-radius:0px; background-color: #f5f5f5; border: 1px solid black">
+                @foreach (var item in Model)
+                {
+                    if (item.FK_TipoElementoAnalisis == 4)// el 4 es el id o pk del tipo de elemento en la base de datos
+                    {
+
+                        <p> • @item.Descripcion_Elemento</p>
+                        <br>
+                    }
+                }
+            </td>
+
+            <td width="400" height="300" style="border-radius:0px; background-color: #f5f5f5; border: 1px solid black">
+                @foreach (var item in Model)
+                {
+                    if (item.FK_TipoElementoAnalisis == 1)// el 1 es el id o pk del tipo de elemento en la base de datos
+                    {
+
+                        <p> • @item.Descripcion_Elemento</p>
+                        <br>
+                    }
+                }
+            </td>
+        </tr>
+
+    </table>
+
+    <table class="table" align="center" cellspacing="10" cellpadding="7" border="1" style="table-layout:fixed">
+
+        <tr>
+            <th width="400" height="50" style="border-radius:0px; background-color: #fdcaa2; border: 1px solid black">
+                @Html.Label("Fortalezas")
+            </th>
+            <th width="400" height="50" style="border-radius:0px; background-color: #c1b3d7; border: 1px solid black">
+                @Html.Label("Debilidades")
+            </th>
+
+        </tr>
+
+        <tr>
+            <td width="400" height="300" style="border-radius:0px; background-color: #f5f5f5; border: 1px solid black">
+                @foreach (var item in Model)
+                {
+                    if (item.FK_TipoElementoAnalisis == 3)// el 2 es el id o pk del tipo de elemento en la base de datos
+                    {
+
+                        <p>• @item.Descripcion_Elemento</p>
+                        <br>
+                    }
+                }
+            </td>
+
+            <td width="400" height="300" style="border-radius:0px; background-color: #f5f5f5; border: 1px solid black">
+                @foreach (var item in Model)
+                {
+                    if (item.FK_TipoElementoAnalisis == 2)// el 1 es el id o pk del tipo de elemento en la base de datos
+                    {
+
+                        <p>• @item.Descripcion_Elemento</p>
+
+                    }
+                }
+            </td>
+
+
+
+        </tr>
+
+
+    </table>
+</body>
+</html>

@@ -1,0 +1,229 @@
+﻿@model IEnumerable<SG_SST.Models.Planificacion.RequisitosLegalesOtros>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li class="active">Requisitos Legales y Otros</li>
+</ol>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Estimado Usuario</strong> @ViewBag.Messages
+    </div>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Messages2
+    </div>
+}
+
+<div class="col-md-2" style="line-height:2.5">
+    Actividad Económica
+</div>
+<div class="col-md-4">
+    <div class="input-group">
+        <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+
+        <input type="text" class="form-control" placeholder="Código CIIU" onkeyup="">
+    </div>
+</div>
+
+<div class="col-md-1" style="line-height:2.5">
+    Riesgo
+</div>
+<div class="col-md-4">
+    <div class="input-group">
+        <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+   
+        <input type="text" class="form-control" placeholder="Buscar" onkeyup="BuscarPeligroRequisitosLegales(this)">
+    </div>
+</div>
+
+<script type="text/javascript">
+    function MensajeGuardarRegistros() {
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: 'Su registro fue guardado satisfactoriamente',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        })
+        //utils.showMessage("Estimado Usuario","Su registro fue guardado satisfactoriamente", "success", $('#divMensaje'));
+    }
+</script>
+
+@*
+<div class="col-md-1">
+<a href="@Url.Action("ExportarExcel", null, new { Pk_RequisitosLegales= Model.FirstOrDefault().PK_RequisitosLegalesOtros })">
+    <img src="~/Content/Images/iconExcelp.png" title="Exportar a Excel" class="img img-responsive" />
+</a>
+</div>
+
+*@
+    <hr />
+    <br />
+    <div style="overflow-x:scroll; margin-top:15px" id="IDscBusqueda">
+        <div id="divMensaje1">   </div>
+        <table class="table table-condensed table-responsive table-bordered" style="border:solid lightslategray" id="idTblReqLegales">
+
+            <tr class="titulos_tabla">
+                <th rowspan="2" style="text-align:center; vertical-align:middle; border: 2px solid lightslategray; text-transform:uppercase"><b>N° Norma</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Sistema</b></th>
+
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Fecha de Publicación</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b></b>Ente</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b></b>Artículo</th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b></b>Descripción</th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b></b>Modificado por</th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Sugerencias</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Partes Interesadas</b></th>
+                <th colspan="4" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase" align="center"><b>Peligros Aspectos e Impactos</b></th>
+
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Evidencia de Cumplimiento</b></th>
+                <th colspan="2" style="text-align:center; border: 2px solid lightslategray; text-transform:uppercase"><b>Evaluación</b></th>
+
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Estado</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Responsable</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Fecha de Seguimiento del control</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Fecha de Actualización</</b></th>
+                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><strong>Acciones</strong></th>
+            </tr>
+            <tr class="titulos_tabla">
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Clase de Peligro</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Peligro</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Aspectos</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Impactos</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Cumplimiento</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Hallazgo</b></th>
+
+                @foreach (var item in Model)
+                {
+                <tr>
+                 
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.FechaPublicacion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Ente)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Articulo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Sugerencias)
+                    </td>
+                 
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Clase_De_Peligro)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Peligro)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Aspectos)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Impactos)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Evidencia_Cumplimiento)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Tbl_Cumplimiento_Evaluacion.Descripcion_Cumplimiento_Evaluacion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Hallazgo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Tbl_Estado_RequisitoslegalesOtros.Descripcion_Estado_RequisitoslegalesOtros)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Responsable)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Fecha_Seguimiento_Control)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Fecha_Actualizacion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.ActionLink("Modificar", "EditarRequisitosLegalesOtros", new { id = item.PK_RequisitosLegalesOtros },
+                        htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })
+                    </td>
+                </tr>
+            }
+            </table>
+        </div>
+        <br />
+            <div class="row" align="center">
+                <div>
+                    <div class="col-sm-12">
+                            @* <button type="submit" class="btn btn-warning">Agregar Registro</button>*@
+
+                            @*
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#@string.Format("myModal1","")">
+                            Guardar
+                            </button>
+                        *@
+                            @*
+                            <a>
+                            @Html.ActionLink("Modificar", "AgregarRequisitosLegalesOtros", null,
+                            htmlAttributes: new { @type = "button", @class = "btn btn-warning" })
+                            </a>
+                        *@
+
+                            @if (ViewBag.Excel == true)
+                        {
+@*
+           <a>
+               @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "AgregarRequisitosLegalesOtros", null,
+    htmlAttributes: new { @type = "button", @class = "btn btn-warning" })
+           </a>
+*@
+                            <a>
+                                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "AgregarRequisitosLegalesOtros", null,
+                                         htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                            </a>
+
+
+                            @Html.ActionLink("Exportar a Excel", "ExportarExcel", new { },
+                            htmlAttributes: new { @type = "button", @class = "boton botoninfo" })
+                        }
+                        else
+                        {
+                            <a>
+                                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "AgregarRequisitosLegalesOtros", null,
+                                htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                            </a>
+                        }
+                            @Html.ActionLink("Exportar a Excel", "ExportarExcel", new { },
+                            htmlAttributes: new { @type = "button", @class = "boton botoninfo" })
+                    </div>
+                </div>
+            </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/planificacion")
+    }

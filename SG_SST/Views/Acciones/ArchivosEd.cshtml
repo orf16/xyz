@@ -1,0 +1,183 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.MedicionEvaluacion.EDArchivosAcciones>
+@{
+    ViewBag.Title = "Archivos Adjuntos Acciones";
+    string TempDataId = ViewBag.EdicionKey;
+    TempData.Keep(TempDataId);
+
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var userInfoJson = jss.Serialize(TempDataId);
+}
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/ArchivosEd.js"></script>
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+    @{
+        string Ruta = ViewBag.EdicionKey;
+        if (Ruta == null)
+        {
+            <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+        }
+        else
+        {
+            if (Ruta != "NuevaAccion")
+            {
+                string numeroRuta = Ruta.Replace("EditarAccion", "");
+                string valorRuta = Ruta.Replace(numeroRuta, "");
+                <li><a href="@Url.Action(valorRuta, "Acciones",new { id = numeroRuta })">Editar Acción</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+            }
+
+        }
+    }
+    <li class="active">Adjuntar Archivos</li>
+</ol>
+
+
+@Html.Hidden("EdicionKey", (object)ViewBag.EdicionKey)
+@Html.Hidden("userInfoJson", (object)userInfoJson.ToString().Replace("\"", ""))
+
+<div class="panel panel-default std-panel-body max-width-700-responsive">
+    <div class="panel-heading panel-heading-custom">ADJUNTAR EVIDENCIAS</div>
+    <div class="panel-body">
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Adjuntar evidencias</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">ADJUNTAR</button> Para adjuntar el archivo, recuerde que el archivo no debe superar los 4MB</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar archivo adjunto</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar archivo adjunto</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Este indicador <i class="glyphicon glyphicon-ok" padding 8px 8px; width auto"></i> muestra que este es un archivo adjunto nuevo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">REGRESAR</button> Para regresar al registro de la acción</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ 
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        <div class="form-group add-side-padding">
+            <div class="input-group col-sm-8 col-sm-offset-2">
+                <input type="file" id="txtUploadFile" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                <span class="input-group-btn">
+                    <button id="CargarArchivo" type="submit" class="btn btn-positiva-invert" title="Adjuntar Archivo">Adjuntar</button>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group add-side-padding" style="overflow:auto">
+
+            <div class="col-sm-10 col-sm-offset-1 table-responsive">
+                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Nuevo</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Nombre del Archivo</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Eliminar/Descargar</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            foreach (var item in Model)
+                            {
+                                int NumeroFila = item.IdFile;
+                                string Id1 = ViewBag.EdicionKey;
+                                Id1 = Id1.Replace("EditarAccion", "");
+
+
+                                <tr>
+                                    @if (item.Estado != 1)
+                                    {
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span class="glyphicon glyphicon-ok"></span>
+
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span class=""></span>
+                                        </td>
+                                    }
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.NombreArchivo)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <a id="@NumeroFila.ToString()" href="#" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Eliminar Archivo">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </a>
+                                        <a id="@NumeroFila.ToString()" href="#" class="btn btn-sm btn-positiva btnDescargarArchivo" title="Descargar Archivo" onclick="location.href='@Url.Action("Download", "Acciones", new {IdFile=@NumeroFila.ToString(),IdAccion=Id1 })';return false;">
+                                            <span class="glyphicon glyphicon-download-alt"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-12 form-group">
+                <hr />
+                <div id="div_novedad">
+                    <span id="msj_novedad"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="panel-footer add-top-margin-100px">
+            @{
+                string Id = ViewBag.EdicionKey;
+                Id = Id.Replace("EditarAccion", "");
+                <button id="Regresar" onclick="location.href='@Url.Action("EditarAccion", "Acciones", new {id=Id })';return false;" class="boton botoninfo">Regresar</button>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

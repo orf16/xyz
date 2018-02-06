@@ -1,0 +1,56 @@
+﻿@model SG_SST.Models.Planificacion.Grupo
+
+@{
+    ViewBag.Title = "Editar Grupo de Consecuencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Configuración Maestros</a></li>
+    <li><a href="javascript:void(0)">Grupo de consecuencia</a></li>
+    <li class="active">Editar Grupo de Consecuencia</li>
+</ol>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Grupo de Consecuencia</h4>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PK_Grupo)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion_Grupo, "Descripción Grupo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Descripcion_Grupo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion_Grupo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FK_Metodologia, "Metodología", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownList("FK_Metodologia", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.FK_Metodologia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-12">
+                <button type="submit" class="boton botonactive">Guardar Registro</button>
+                |
+                <a href="@Url.Action("Index")" class="boton botoninfo">
+                    Volver a la Lista
+                </a>
+            </div>
+        </div>
+    </div>
+}

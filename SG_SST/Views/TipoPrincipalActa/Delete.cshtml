@@ -1,0 +1,47 @@
+﻿@model SG_SST.Models.Participacion.TipoPrincipalActa
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Maestros</a></li>
+    <li><a href="javascript:void(0)">Tipos de Principales Miembros Comites</a></li>
+    <li class="active">Delete</li>
+</ol>
+
+<h3>¿Esta seguro que desea eliminar esto?</h3>
+<br />
+
+<div>
+    <h4>Tipos de Principales Miembros Comites</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt style="width:200px; margin-right:20px">
+            @Html.DisplayNameFor(model => model.DescripcionTipoPrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionTipoPrincipal)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <button type="submit" class="boton botonactive">Delete</button> |
+            <a href="@Url.Action("Index")" class="boton botoninfo">
+                Volver a la Lista
+            </a>
+        </div>
+    }
+</div>

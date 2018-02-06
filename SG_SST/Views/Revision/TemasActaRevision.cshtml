@@ -1,0 +1,236 @@
+﻿@model SG_SST.Models.Revision.RevisionVM
+@{
+    ViewBag.Title = "TemasActaRevision";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="~/Scripts/Revision/Revision.js"></script>
+    @*@Scripts.Render("~/bundles/Revision")*@
+}
+
+
+@Scripts.Render("~/bundles/simplePagination")
+
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        })
+    </script>
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Revisión por la Dirección</a></li>
+    <li><a href="javascript:void(0)">Nueva Revisión</a></li>
+    <li class="active">Temas Agenda</li>
+</ol>
+<hr />
+
+<style>
+    body {
+        background: transparent;
+    }
+
+    #container-main {
+        margin: 40px auto;
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    }
+
+        #container-main h1 {
+            font-size: 40px;
+            text-shadow: 4px 4px 5px #16a085;
+        }
+
+    .accordion-container {
+        width: 100%;
+        margin: 0 0 10px;
+        clear: both;
+        background-color: white;
+    }
+
+    .accordion-titulo {
+        position: relative;
+        display: block;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        background: #7E8A97;
+        color: orange;
+        text-decoration: none;
+    }
+
+        .accordion-titulo.open {
+            background: #7E8A97;
+            color: orange;
+        }
+
+        .accordion-titulo:hover {
+            background: #7E8A97;
+            color: orange;
+        }
+
+        .accordion-titulo span.toggle-icon:before {
+            content: "+";
+        }
+
+        .accordion-titulo.open span.toggle-icon:before {
+            content: "-";
+        }
+
+        .accordion-titulo span.toggle-icon {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+    .accordion-content {
+        display: none;
+        padding: 20px;
+        overflow: auto;
+    }
+
+        .accordion-content p {
+            margin: 0;
+        }
+
+        .accordion-content img {
+            display: block;
+            float: left;
+            margin: 0 15px 10px 0;
+            width: 50%;
+            height: auto;
+        }
+</style>
+<body onload="ObtenerTemas()">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Temas Acta Revisión</div>
+        <!-- Botón Ayuda -->
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Información de Ayuda/Acta Revisión</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para agregar un tema al <strong>ACTA DE REVISIÓN</strong>, seleccione el tema y presione <button class="boton botoninfo">ADICIONAR TEMA A LA AGENDA</button> </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;"><a title="Editar" class="btn btn-search btn-md"><span class="glyphicon glyphicon-refresh"></span></a> Permite desarrollar un tema agregado previamente. </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;"><a title="Eliminar" class="btn btn-search btn-md"><span class="glyphicon glyphicon-erase"></span></a> Permite eliminar un tema agregado previamente. </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para volver a los participantes del <strong>ACTA DE REVISIÓN</strong>,  presione <button class="boton botonactive">ANTERIOR</button> </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para ir al plan de acción del <strong>ACTA DE REVISIÓN</strong>, agregue al menos un tema, desarrolle todos los temas agregados y presione <button class="boton botonactive">CONTINUAR</button> </p></li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">SALIR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="formTemas" action="@Url.Action("Index")">
+            <div class=" panel-body form-horizontal">
+                <div style="background-color:transparent">
+                    <div class="form-group row internal-panel-body">
+                        <input type="hidden" name="IdActa" id="IdActa" value="@Model.PKActaRevision" />
+                        <div class="row internal-panel-body">
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label class="col-md-7">Tema:</label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.FKItem, Model.Items, "---Seleccionar Tema---", new { @value = "", @id = "items", @name = "items", @class = "form-control", @onchange = "ConsultarTipoTema(this.value);" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" id="inputOtro" hidden="hidden">
+                            @*<div class="row">*@
+                            <div class="form-group">
+                                <label class="col-md-7">Cuál:</label>
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => Model.Item, new { @class = "form-control", @style = "color:black", @id = "ItemAdicional", @name = "ItemAdicional" })
+                                </div>
+                            </div>
+                            @*</div>*@
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 col-md-offset-8">
+                            <button type="button" id="AdicionarTemaAgenda" class="boton botoninfo" onclick="AdicionarTema(this)">ADICIONAR TEMA A LA AGENDA</button>
+                        </div>
+                    </div>
+                    <hr style="border-top-color:lightslategray" />
+                </div>
+                <div class="table-responsive" id="divTtema" style="margin:auto;">
+                    <table class="table table-responsive table-bordered" id="tTemas1" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla" id="trTemas">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                Tema
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                Desarrollado
+                            </th>
+                            <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                Acciones
+                            </th>
+                        </tr>
+                        <tbody id="tTemas"></tbody>
+                    </table>
+                    <center><div class="pagination" id="paginadorTemas"></div></center>
+                </div>
+            </div>
+        </form>
+        <div class="panel-footer">
+            @*<div class="col-sm-4">
+                <div class="form-group">
+                    <div class="col-lg-5 col-md-offset-5">*@
+                        <a id="AtrasActa" href="@Url.Action("Index", new { IdActa = Model.PKActaRevision })" class="boton botonactive">ATRAS</a>
+                    @*</div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <div class="col-lg-10 col-md-offset-12">*@
+                        <button type="button" id="ContinuarTema" class=" boton botonactive">CONTINUAR</button>
+                    @*</div>
+                </div>
+            </div>*@
+        </div>
+
+    </div>
+</body>
+

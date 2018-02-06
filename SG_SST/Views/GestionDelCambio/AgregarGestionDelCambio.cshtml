@@ -1,0 +1,237 @@
+﻿@model SG_SST.Models.Aplicacion.GestionDelCambio
+
+@{
+    ViewBag.Title = "Agregar Gestión del Cambio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Messages1 != null && ViewBag.Messages1 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages1',
+        'warning'
+        )
+    </script>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Gestión del Cambio</a></li>
+    <li class="active">Agregar Gestión del Cambio</li>
+</ol>
+
+@using (Html.BeginForm("GrabarGestionDelCambio", "GestionDelCambio", FormMethod.Post, new { id = "idAgregarGestionDelCambio" }))
+{
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Agregar gestión del cambio</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Agregar Gestión del cambio</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p align="justify"> 
+                                                Por favor diligencie los campos que aparecen en el formulario, una vez haya completado la información de clic en <button class="boton botonactive" disabled>Guardar Registro</button>, el cambio será añadido a su matriz de gestión del cambio.
+                                            </p>
+                                            <br />
+                                            <p align="justify">
+                                                Si no tiene la información completa o desea regresar a la matriz principal, de clic en <button class="boton botoninfo" disabled>Formulario Principal</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal">
+            <input type="hidden" id="nitempresa" value="@ViewBag.nitEmpresa" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Fecha de registro</label>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control", @id = "idFecha" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-md-2">Descripción del cambio</label>
+                        <div class="col-md-10">
+                            <input class="form-control" id="idDescripcionDeCambio" name="DescripcionDeCambio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Clasificación del peligro</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("FK_Tipo_De_Peligro", null, htmlAttributes: new { @class = "form-control", @onchange = "ConsultarClasesPeligros(this)" }, optionLabel: "-- Seleccionar --")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="inputOtro" hidden="hidden">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cual</b></h5>
+                        </div>
+                        <div class="col-md-7">
+                            <input name="Otro" type="text" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12" id="inputClasificacion">
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <h5><b>Tipo de peligro</b></h5>
+                        </div>
+                        <div class="col-md-10">
+                            <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Requisito Legal</label>
+                        <div class="col-md-8">
+                            <input class="form-control" id="idRequisitoLegal" name="RequisitoLegal">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-5">Recomendaciones / Acciones</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="idRecomendaciones" name="Recomendaciones">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Fecha de ejecución</label>
+                        <div class="col-md-4">                       
+                            @Html.EditorFor(model => model.FechaEjecucion, new { htmlAttributes = new { @class = "form-control", @id = "idFechaEjecucion" } })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-5">Fecha de seguimiento</label>
+                        <div class="col-md-4">                         
+                            @Html.EditorFor(model => model.FechaSeguimiento, new { htmlAttributes = new { @class = "form-control", @id = "idFechaSeguimiento" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Comunicar cambio a</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("FK_Id_Rol", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-md-offset-8">
+                <div class="row">
+                    <button type="submit" class="boton botonactive" onclick="validarGestionDelCambioAgregar()">Guardar Registro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <a>
+                @Html.ActionLink("Formulario Principal", "ListadoGestionDelCambio", new
+           {
+           },
+               htmlAttributes: new { @type = "button", @class = "boton botoninfo", style = "text-decoration:none" })
+            </a>
+        </div>
+        
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/Planificacion")
+}

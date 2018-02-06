@@ -1,0 +1,43 @@
+﻿@model SG_SST.Models.Planificacion.EstimacionDeRiesgo
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EstimacionDeRiesgo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Consecuencia.Descripcion_Consecuencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Consecuencia.Descripcion_Consecuencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Probabilidad.Descripcion_Probabilidad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Probabilidad.Descripcion_Probabilidad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Detalle_Estimacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Detalle_Estimacion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Estimacion_De_Riesgo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

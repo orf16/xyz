@@ -1,0 +1,168 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.ResponsabilidadesPorRol>
+@using System.Configuration;
+@{
+    ViewBag.Title = "Editar Roles y Responsabilidades";   
+    int responsabilidades = 1;
+    int rendiciones = 1;
+}
+
+@*<ul class="nav nav-pills" role="tablist">
+    <li class=""><a id="tab3" href="#step3" role="tab" data-toggle="tab" class="titulo-crear-recursos">Modificar Roles y Responsabilidades</a></li>
+</ul>
+<hr />*@
+
+@*<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Roles y responsabilidades SST</a></li>
+    <li class="active">Modificar Roles y Responsabilidades</li>
+</ol>*@
+
+<form method="post" id="rol">
+    <div class="panel panel-default" name="panel" id="panel" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    <h5><b>Nombre del Rol:</b></h5>
+                </div>
+                <div class="col-md-5">
+                    <div class="col-md-12">
+                        <div class="col-md-10">
+                            <h5><b>Responsabilidad:</b></h5>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        <div class="col-md-10">
+                            <h5><b>Rendición de Cuentas:</b></h5>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-3">
+                    @if (Model.FirstOrDefault().Rol.Descripcion == ConfigurationManager.AppSettings["rolResponsableSGSST"]
+                        || Model.FirstOrDefault().Rol.Descripcion == ConfigurationManager.AppSettings["rolRepresentanteLegal"]
+                        || Model.FirstOrDefault().Rol.Descripcion == ConfigurationManager.AppSettings["rolProfesionalSST"])
+                    {                        
+                        <input type="text" name="NameRol" id="NameRol" class="form-control" value="@Model.FirstOrDefault().Rol.Descripcion" readonly />
+                        <input name="Pk_Id_Rol" id="Pk_Id_Rol" class="form-control" value="@Model.FirstOrDefault().Rol.Pk_Id_Rol" type="hidden" />
+                    }
+                    else
+                    {
+                        <input type="text" name="NameRol" id="NameRol" class="form-control" value="@Model.FirstOrDefault().Rol.Descripcion"  />
+                        <input name="Pk_Id_Rol" id="Pk_Id_Rol" class="form-control" value="@Model.FirstOrDefault().Rol.Pk_Id_Rol" type="hidden" />
+                    }
+                </div>
+                <div class="col-md-5" id="divSupRes" name="divSupRes">
+                    @foreach (var respxRol in Model.FirstOrDefault().Rol.ResponsabilidadesPorRoles)
+                    {
+                        <div class="input-group" id="divv" name="divv">
+                            <div class="col-md-10" id="divSupRespo" name="divSupRespo">
+                                <div class="col-md-12" id="divresponsabilidad" name="divresponsabilidad">
+                                    <input type="text" name="Responsab" id="Responsab" class="form-control" value="@respxRol.Responsabilidades.Descripcion" />
+                                    <input name="Pk_Id_Responsabilidades" value="@respxRol.Responsabilidades.Pk_Id_Responsabilidades" type="hidden" />
+
+                                </div>
+                                <br />
+                                <br />
+                            </div>
+                            @if (responsabilidades == 1)
+                            {
+                                <div class="col-md-2" id="divIconRes">
+                                    <a href="javascript:void(0);" onclick="agregarResponsabilidadEdicion(this)"
+                                       title="Adicionar Responsabilidad" id="agregarResp" name="agregarResp"
+                                       class="btn btn-link-1-google-plus btn-circle btn-md">
+                                        <i class="glyphicon glyphicon-plus" name="icono" style="color: #FF7500"></i>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2" id="divIconResMinus">
+                                    <a href="javascript:void(0);" onclick="eliminarResponsabilidadEdicion(this)"
+                                       title="Eliminar Responsabilidad" name="divIconResMinusH" id="divIconResMinusH"
+                                       class="btn btn-link-1-google-plus btn-circle btn-md">
+                                        <i class="glyphicon glyphicon-minus" name="icono" style="color: #FF7500"></i>
+                                    </a>
+                                </div>
+                            }
+
+                        </div>
+                            responsabilidades = responsabilidades + 1;
+                    }
+                    <div class="row">
+                        <div class="col-md-12" id="divresponsabilidadClon">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" id="divSupRend" name="divSupRend">
+                    @foreach (var rendxRol in Model.FirstOrDefault().Rol.RendicionDeCuentasPorRoles)
+                    {
+                        <div class="input-group" id="divvRend" name="divvRend">
+                            <div class="col-md-10" id="divSupRend" name="divSupRend">
+                                <div class="col-md-12" id="divrendicion" name="divrendicion">
+                                    <input type="text" name="Rendicion" id="Rendicion" class="form-control" value="@rendxRol.RendicionDeCuentas.Descripcion" />
+                                    <input name="Pk_Id_RendicionDeCuentas" value="@rendxRol.RendicionDeCuentas.Pk_Id_RendicionDeCuentas" type="hidden" />
+                                    @*<input name="Pk_Id_Responsabilidades" value="@respxRol.Responsabilidades.Pk_Id_Responsabilidades" type="hidden" />*@
+
+                                </div>
+                                <br />
+                                <br />
+                            </div>
+                            @if (rendiciones == 1)
+                            {
+                                <div class="col-md-2" id="divIconRend">
+                                    <a href="javascript:void(0);" onclick="agregarRendicionEditar(this)"
+                                       title="Adicionar Rendición" id="agregarRend" name="agregarRend"
+                                       class="btn btn-link-1-google-plus btn-circle btn-md">
+                                        <i class="glyphicon glyphicon-plus" name="iconoRend" style="color: #FF7500"></i>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-2" id="divIconRend">
+                                    <a href="javascript:void(0);" onclick="eliminarRendicionEditar(this)"
+                                       title="Eliminar Rendición" id="eliminarRend" name="eliminarRend"
+                                       class="btn btn-link-1-google-plus btn-circle btn-md">
+                                        <i class="glyphicon glyphicon-minus" name="iconoRend" style="color: #FF7500"></i>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                            rendiciones = rendiciones + 1;
+                    }
+                    <div class="row">
+                        <div class="col-md-12" id="divrendicionClonEdit">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="panel-footer">
+            <div class="row" align="center">
+                @*<div class="col-md-2 col-md-offset-5">*@
+                    @*<input value="Grabar Actualización" type="button" class="form-control btn btn-warning btn-md tbr" onclick="EditarRolPorResp()" />*@
+                <button type="button" class="boton botonactive" onclick="EditarRolPorResp()" style="margin-right:50px">Grabar Actualización</button>
+                @*</div>*@
+                @*<div class="col-md-2">*@
+                    @Html.ActionLink("Cancelar", "CrearRol", new { }, htmlAttributes: new { @type = " button", @class = "boton botoncancel" })
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+}

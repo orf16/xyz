@@ -1,0 +1,80 @@
+﻿<div align="center">
+    <label>
+        Razón Social:
+        @Html.DropDownList("dd_razonsocial", (List<SelectListItem>)ViewBag.lstRazonesSociales, "Seleccione...", new { @class = "dropdown1 form-control" })
+    </label>
+    <label>
+        Tipo Tercero:
+        @Html.DropDownList("dd_tipoTercero", (List<SelectListItem>)ViewBag.lstTiposTerceros, "Seleccione...", new { @class = "dropdown1 form-control" })
+    </label>
+    <label>
+        <button type="button" class="boton botonactive" onclick="BuscarTerceroLaboral();" id="btnConsultar">Consultar</button>
+    </label>
+    <label>
+        <button type="button" onclick="ValidaDescargar();" class="boton botoninfo" id="btnDescargar">Descargar a excel</button>
+        <input type="hidden" name="dd_descargar" id="dd_descargar" value="0">
+        
+        @*<img src="~/Images/Excel-icon.png" height="40px" width="40px" />*@
+    </label>
+
+    <br />
+
+    <script type="text/javascript">
+            var urlBase = ""
+            try {
+                urlBase = utils.getBaseUrl();
+            } catch (e) {
+                console.error(e.message);
+                throw new Error("Revisa tienes errores");
+            };
+
+            $("#descargarFilelink").attr("href");
+            function Consultar() {
+            }
+            function descargarFile() {
+                $.ajax({
+                    url: urlBase + '/RelacionesLaborales/DescargarTerceroRelLab',//primero el modulo/controlador/metodo que esta en el controlador
+                    type: 'POST',
+                    success: function (result) {
+                    }
+                });
+            }
+
+            function BuscarTerceroLaboral() {
+                var $idrazonsocial = $("#dd_razonsocial");
+                var $idtipoTercero = $("#dd_tipoTercero");
+                var $dd_descargar = $("#dd_descargar");
+
+
+                if ($idrazonsocial.val().length == 0)
+                    swal("Estimado Usuario", 'El campo Razón Social es obligatorio');
+                else if ($idtipoTercero.val().length == 0)
+                    swal("Estimado Usuario", 'El campo Tipo de Tercero es obligatorio');
+                else {
+                    utils.showLoading();
+                    $dd_descargar.val("0");
+                    $("#idBuscarRelacionesLaborales").submit();
+                    utils.closeLoading();
+                }
+            }
+
+            function ValidaDescargar() {
+
+                var $idrazonsocial = $("#dd_razonsocial");
+                var $idtipoTercero = $("#dd_tipoTercero");
+                var $dd_descargar = $("#dd_descargar");
+
+                if ($idrazonsocial.val().length == 0)
+                    swal("Estimado Usuario", 'El campo Razón Social es obligatorio');
+                else if ($idtipoTercero.val().length == 0)
+                    swal("Estimado Usuario", 'El campo Tipo de Tercero es obligatorio');
+                else {
+                    utils.showLoading();
+                    $dd_descargar.val("1");
+                    $("#idBuscarRelacionesLaborales").submit();
+                    utils.closeLoading();
+                }
+            }
+
+    </script>
+</div>

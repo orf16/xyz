@@ -1,0 +1,192 @@
+﻿@model SG_SST.Models.Empresas.Sede
+
+@{
+    ViewBag.Title = "Crear Sede";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Datos generales de la empresa</a></li>
+    <li><a href="@Url.Action("SedesPorMunicipios", "Sede")">Sedes</a></li>
+    <li class="active">Crear Sede</li>
+</ol>
+
+<form method="post" action="@Url.Action("Create")" id="grabarsede">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">INFORMACIÓN SEDE</div>
+        
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Crear Sede</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div style="text-align:justify">
+                                    Recuerde seleccionar como minimo una actividad económica del listado actividades de la Empresa.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button type="button" class="boton botonactive" disabled>Guardar Registro</button> Almacena la informacion ingresada y las actividades economicas seleccionadas.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button type="button" class="boton botoninfo" disabled>Listado Sedes</button> Regresa al listado de todas las sedes registradas de la Empresa.
+                                </div>                          
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+            <div class="row ">
+                <div class="col-md-6">
+                    <label>Nombre Sede</label>
+                    <input type="text" class="form-control form-group-lg" name="Nombre_Sede" id="Nombre_Sede" placeholder="Ingresa Nombre" />
+
+                </div>
+                <div class="col-md-6">
+                    <label>Dirección</label>
+                    <input type="text" class="form-control form-group-lg" name="Direccion_Sede" id="Direccion_Sede" placeholder="Direccion" />
+
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Departamento</label>
+                    @Html.DropDownList("Fk_Id_Departamento", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarMunicipios()" }, optionLabel: "-- Seleccionar Departamento --")
+                </div>
+                <div class="col-md-4">
+                    <label>Municipio</label>
+                    <select class="form-control" id="Fk_Id_Municipio" name="Fk_Id_Municipio"></select>
+                </div>
+                <label class="control-label col-md-1">Sector</label>
+                <label for="Sector" class="error" style="display:none;"></label>
+                <div class="col-md-2">
+                    <div class="radio">
+                        <label><input type="radio" value="Urbano" name="Sector" id="Sector" /><b>Urbano</b></label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" value="Rural" name="Sector" id="Sector" /><b>Rural</b></label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:white">Lista Actividades Economicas Empresa</div>
+                <div class="panel-body form-horizontal">
+                     
+                    <div class="row center-block" align="center">
+                        <div class="col-sm-1">
+
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-1">
+
+                            @*<div class="input-group" id="siarp">
+                                <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-cloud-download"></span></span>
+                                <input type="text" class="form-control form-group-lg" name="nitempresa" id="nitempresa" placeholder="Ingresar NIT" style="border:hidden" />
+
+                            </div>*@
+                            <label for="nitempresa" class="error" style="display:none;"></label>
+                            <input type="hidden" id="nitCentro" value="@ViewBag.nitEmpresa" />
+                        </div>
+
+
+                        @*<div class="col-sm-3">
+                            <button type="button" class="boton botoninfo" id="btnsiarp" name="btnsiarp" onclick="ObtenerSiarpCentro()">Obtener Datos</button>
+
+                        </div>*@
+
+                    </div>
+                               
+                    @*<div class="table-responsive">
+                        <table class="table table-bordered" id="tablacentros" name="tablacentros" style="border-color: transparent"></table>
+                    </div>*@
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="border:2px solid lightslategray; background-color:white" id="" name="">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        Seleccionar
+                                    </th>         
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        Actividad Económica
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        Código Actividad
+                                    </th>
+                                               
+                                </tr>
+                            </thead>
+                            <tbody id="tablacentros"></tbody>
+                        </table>
+                    </div>
+
+                    <label for="centros" class="error" style="display:none;"></label>
+
+                    <div class="pagination-page" id="paginador1" style="margin-left:45%"></div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7"></div>
+            <div class="col-md-5">
+
+                <button type="submit" class="boton botonactive" id="btnEnviar" onclick="ValidacionCrearSede();ValidarCentrosCheck()">Guardar Registro</button>
+            </div>
+        </div>
+        <br />
+    </div>
+
+    <div>
+        <a href="@Url.Action("SedesPorMunicipios", "Sede") " class="boton botoninfo" style="text-decoration:none">
+            Listado Sedes
+        </a>
+    </div>
+
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+    @Scripts.Render("~/bundles/simplePagination")
+
+    <script>
+        $(document).ready(function () {
+            ObtenerSiarpCentro($("#nitCentro").val());
+        });
+
+    </script>
+}

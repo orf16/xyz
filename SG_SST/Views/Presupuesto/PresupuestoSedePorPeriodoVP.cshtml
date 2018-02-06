@@ -1,0 +1,93 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.PresupuestoPorAnio>
+
+@if (Model.Count() == 0)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'No hay presupuestos  grabados para este año',
+        'success'
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<div class="table-responsive">
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                @Html.DisplayNameFor(model => model.Sede.Nombre_Sede)
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                @*@Html.DisplayNameFor(model => model.Periodo)*@
+                Período
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                Rubro Total
+            </th>
+            <th width="100" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                Acciones
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Sede.Nombre_Sede)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @Html.DisplayFor(modelItem => item.Periodo)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @Html.DisplayFor(modelItem => item.Presupuesto.RubroTotal)
+                    <input type="hidden" id="rtotal" name="rtotal" value="@item.Presupuesto.RubroTotal" />                
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @*@Html.ActionLink("Modificar", "EditarPresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año },
+                    htmlAttributes: new { @type = "button", @class = "btn btn-search" })*@ 
+                    <a href="@Url.Action("EditarPresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año })" class="btn btn-search btn-md" title="Modificar">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    |
+                    <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.PK_Presupuesto_Por_Año)" class="btn btn-search btn-md" title="Eliminar">
+                        <span class="glyphicon glyphicon-erase"></span>
+                    </a>
+                    |
+                    @*@Html.ActionLink("Ejecución", "EjecutarPresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año },
+                    htmlAttributes: new { @type = "button", @class = "btn btn-search" })*@
+                    <a href="@Url.Action("EjecutarPresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año })" class="btn btn-search btn-md" title="Ejecutar">
+                        <span class="glyphicon glyphicon-play"></span>
+                    </a>
+
+                    <div id="@string.Format("modalEliminar{0}", item.PK_Presupuesto_Por_Año)" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Eliminar Presupuesto</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <center><p>¿Seguro desea eliminar el presupuesto seleccionado?</p></center>
+                                </div>
+                                <div class="modal-footer">
+                                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "EliminarPresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año, PK_Presupuesto = item.Presupuesto.PK_Prepuesto },
+                                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

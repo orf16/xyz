@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "Misión Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+}
+
+@if (ViewBag.Message != null) {
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+        function () { },
+        function (dismiss) {
+            if (dismiss === 'timer') {
+                console.log('Cerrado')
+            }
+        }
+        )
+    </script>
+}
+
+@if (ViewBag.mensaje != null) {
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+        function () { },
+        function (dismiss) {
+            if (dismiss === 'timer') {
+                console.log('Cerrado')
+            }
+        }
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="#">Gobierno Organizacional</a></li>
+    <li class="active">Misión</li>
+</ol>
+
+<body onload="BuscarMision()">
+
+    <form method="post" action="@Url.Action("Mision")" id="myModal12">
+        <div id="myModal1" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <h4 class="modal-title title">Registrar Misión</h4>
+                    </div>
+                    <div class="modal-body ">
+                        <div class="row">
+                            @*<div class="col-md-2">
+                                <label>Descripción:</label>
+                            </div>*@
+                            <div class="col-md-12">
+                                @*<input type="hidden" value="" name="nit" />*@
+                                <em><textarea class="form-control" rows="6" cols="10" placeholder="Ingresa Misión Empresa" name="mision" id="mision" style="resize:none;background-color:white;color:black"></textarea></em>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        @*<input type="submit" value="Grabar" class="boton botonactive" />*@
+                        <button type="submit" class="boton botonactive" onclick="ValidarCrearMision()">GRABAR</button>
+                        @*<input type="submit" value="Cancelar" class="btn btn-default btn-md" data-dismiss="modal" />*@
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">MISIÓN EMPRESA
+            
+           
+
+        </div>
+        
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                   class="btn btn-ayuda btn-md"
+                   @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                    <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-7">
+                                            <p>Click en el botón Misión para grabarla</p>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <button class="boton botonactive" disabled>Misión</button>
+                                        </div>
+                                    </div>
+                                    <br />
+
+                                    <div class="row">
+                                        <div class="col-xs-7">
+                                            <p>Click en el botón Eliminar para borrarla</p>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <button class="boton botoncancel" disabled>Eliminar</button>
+                                        </div>
+                                    </div>
+                                    <p><em class="error">* Debe ingresar una Misión y su contenido mínimo de 10 caracteres</em></p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="panel-body form-horizontal">
+            <div class="content">
+                <blockquote class="pull-left" style="text-align:justify; font-weight:600">
+                    <div class="col-md-22 col-md-offset-0" id="mision1" name="mision">
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" align="center">
+        @*<div class="col-xs-3">*@
+        <button type="button" class="boton botonactive" data-toggle="modal" data-target="#myModal1">Misión</button>
+        @*</div>*@
+        @*<div class="col-xs-2">*@
+        <button type="button" class="boton botoncancel" data-toggle="modal" data-target="#modalE" style="margin-left:80px">Eliminar</button>
+        @*</div>*@
+    </div>
+
+    <div id="modalE" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Eliminar Misión</h4>
+                </div>
+                <div class="modal-body" style="color:black">
+                    <center><p>¿Está seguro de eliminar la Misión?</p></center>
+                    @*<div class="col-md-22 col-md-offset-0" id="mision1" name="mision"></div>*@
+                </div>
+                <div class="modal-footer alert-dismissable">
+                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "EliminarMision", new { }, 
+                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

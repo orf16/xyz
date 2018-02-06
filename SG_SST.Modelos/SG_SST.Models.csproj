@@ -1,0 +1,1499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{11C5DA88-C228-4627-8108-3DDB07AA7898}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SG_SST.Models</RootNamespace>
+    <AssemblyName>SG_SST.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aplicacion\AdmoEMH.cs" />
+    <Compile Include="Aplicacion\AplicacionPlanTrabajo.cs" />
+    <Compile Include="Aplicacion\AplicacionPlanTrabajoActividad.cs" />
+    <Compile Include="Aplicacion\AplicacionPlanTrabajoDetalle.cs" />
+    <Compile Include="Aplicacion\AplicacionPlanTrabajoProgramacion.cs" />
+    <Compile Include="Aplicacion\ArchivosAnexos.cs" />
+    <Compile Include="Aplicacion\Asistentes.cs" />
+    <Compile Include="Aplicacion\AsistentesporInspeccion.cs" />
+    <Compile Include="Aplicacion\Bateria.cs" />
+    <Compile Include="Aplicacion\BateriaCuestionario.cs" />
+    <Compile Include="Aplicacion\BateriaDimension.cs" />
+    <Compile Include="Aplicacion\BateriaGestion.cs" />
+    <Compile Include="Aplicacion\BateriaInicial.cs" />
+    <Compile Include="Aplicacion\BateriaResultado.cs" />
+    <Compile Include="Aplicacion\BateriaUsuario.cs" />
+    <Compile Include="Aplicacion\CalificacionProveedor.cs" />
+    <Compile Include="Aplicacion\CondicionesInsegurasporInspeccion.cs" />
+    <Compile Include="Aplicacion\CondicionInsegura.cs" />
+    <Compile Include="Aplicacion\ConfiguracionInspeccion.cs" />
+    <Compile Include="Aplicacion\ConfiguracionporInspeccion.cs" />
+    <Compile Include="Aplicacion\CriterioSST.cs" />
+    <Compile Include="Aplicacion\EHMInspecciones.cs" />
+    <Compile Include="Aplicacion\EPP.cs" />
+    <Compile Include="Aplicacion\EPPCargo.cs" />
+    <Compile Include="Aplicacion\EPPSuministro.cs" />
+    <Compile Include="Aplicacion\EPPSuministroEPP.cs" />
+    <Compile Include="Aplicacion\GestionDelCambio.cs" />
+    <Compile Include="Aplicacion\Inspecciones.cs" />
+    <Compile Include="Aplicacion\MaestroConfiguracionPrioridades.cs" />
+    <Compile Include="Aplicacion\ManualGuiaAdBienes.cs" />
+    <Compile Include="Aplicacion\PeligroEMH.cs" />
+    <Compile Include="Aplicacion\PlanAccionCorrectiva.cs" />
+    <Compile Include="Aplicacion\PlanAccionInspeccion.cs" />
+    <Compile Include="Aplicacion\PlanaccionPorCondicion.cs" />
+    <Compile Include="Aplicacion\PlanAccionporInspeccion.cs" />
+    <Compile Include="Aplicacion\PlaneacionInspeccion.cs" />
+    <Compile Include="Aplicacion\MaestroTipoInspeccion.cs" />
+    <Compile Include="Aplicacion\PlanVial.cs" />
+    <Compile Include="Aplicacion\ProductoPorCriterio.cs" />
+    <Compile Include="Aplicacion\ProveedorContratista.cs" />
+    <Compile Include="Aplicacion\ProveedorPorAnexo.cs" />
+    <Compile Include="Aplicacion\ProveedorPorNumeroCalificacion.cs" />
+    <Compile Include="Aplicacion\ProveedorPorProducto.cs" />
+    <Compile Include="Aplicacion\ProveedorPorProductoPorCriterio.cs" />
+    <Compile Include="Aplicacion\SegVialDetalle.cs" />
+    <Compile Include="Aplicacion\SegVialParametro.cs" />
+    <Compile Include="Aplicacion\SegVialPilar.cs" />
+    <Compile Include="Aplicacion\SegVialResultado.cs" />
+    <Compile Include="Aplicacion\ServicioOProducto.cs" />
+    <Compile Include="Ausentismo\Ausencia.cs" />
+    <Compile Include="Ausentismo\ConfiguracionHHT.cs" />
+    <Compile Include="Ausentismo\Contingencia.cs" />
+    <Compile Include="Ausentismo\Diagnostico.cs" />
+    <Compile Include="Ausentismo\Dias_Laborables.cs" />
+    <Compile Include="Ausentismo\Dias_Laborables_Empresa.cs" />
+    <Compile Include="Ausentismo\TipoContigencia.cs" />
+    <Compile Include="Calendario\DiaFestivo.cs" />
+    <Compile Include="Comunicaciones\ComunicacionesCargos.cs" />
+    <Compile Include="Comunicaciones\ComunicacionesEncuestas.cs" />
+    <Compile Include="Comunicaciones\ComunicacionesExternas.cs" />
+    <Compile Include="Comunicaciones\ComunicacionesInternas.cs" />
+    <Compile Include="Comunicaciones\ComunicacionesLog.cs" />
+    <Compile Include="Comunicaciones\GruposComuniciones.cs" />
+    <Compile Include="Comunicaciones\GrupoUsuariosComunicaciones.cs" />
+    <Compile Include="ComunicadosAPP\ComunicacionesAPP.cs" />
+    <Compile Include="ComunicadosAPP\ComunicacionesUsuariosSuscritosAPP.cs" />
+    <Compile Include="ComunicadosAPP\ComunicadosAdjuntos.cs" />
+    <Compile Include="ComunicadosAPP\EstadosComunicadosAPP.cs" />
+    <Compile Include="ComunicadosAPP\UsuarioComunicadoAPP.cs" />
+    <Compile Include="Emergencias\Eme_AnalisisRiesgo.cs" />
+    <Compile Include="Emergencias\Eme_Bd_Externa.cs" />
+    <Compile Include="Emergencias\Eme_bd_Interna.cs" />
+    <Compile Include="Emergencias\Eme_CaracteristicasInstalacion.cs" />
+    <Compile Include="Emergencias\Eme_DescripcionOcupacion.cs" />
+    <Compile Include="Emergencias\Eme_Elementos.cs" />
+    <Compile Include="Emergencias\Eme_EsquemaOrganizacional.cs" />
+    <Compile Include="Emergencias\Eme_FrentesAccion.cs" />
+    <Compile Include="Emergencias\Eme_FrentesAccionAdjuntos.cs" />
+    <Compile Include="Emergencias\Eme_Generalidades.cs" />
+    <Compile Include="Emergencias\Eme_Georeferenciacion.cs" />
+    <Compile Include="Emergencias\Eme_InfoGeneral.cs" />
+    <Compile Include="Emergencias\Eme_NivelEmergencia.cs" />
+    <Compile Include="Emergencias\Eme_PlanAyuda.cs" />
+    <Compile Include="Emergencias\Eme_ProcOpera_Normalizados.cs" />
+    <Compile Include="Emergencias\Eme_RecursosHumanos.cs" />
+    <Compile Include="Emergencias\Eme_RecursosTecnicos.cs" />
+    <Compile Include="Emergencias\Eme_Roles.cs" />
+    <Compile Include="Empleado\EmpleadoOrg.cs" />
+    <Compile Include="Empleado\EstadoCivil.cs" />
+    <Compile Include="Empleado\Estado_Civil.cs" />
+    <Compile Include="Empleado\Estado_Empleado.cs" />
+    <Compile Include="Empleado\Estrato.cs" />
+    <Compile Include="Empleado\Etnia.cs" />
+    <Compile Include="Empleado\GradoEscolaridad.cs" />
+    <Compile Include="Empleado\Hijos.cs" />
+    <Compile Include="Empleado\Inconsistecialaboral.cs" />
+    <Compile Include="Empleado\Ingresos.cs" />
+    <Compile Include="Empleado\Ocupacion.cs" />
+    <Compile Include="Empleado\Raza.cs" />
+    <Compile Include="Empleado\Sexo.cs" />
+    <Compile Include="Empresas\ArchivosEstudioPuestoTrabajo.cs" />
+    <Compile Include="Empresas\EstudioPuestoTrabajo.cs" />
+    <Compile Include="Empresas\IncidenteConsecuencia.cs" />
+    <Compile Include="Empleado\tblEmpleado.cs" />
+    <Compile Include="Empleado\TipoCotizante.cs" />
+    <Compile Include="Empleado\TipoDocumento.cs" />
+    <Compile Include="Empleado\TipoInconsistencia.cs" />
+    <Compile Include="Empresas\MaestroRolesSGSST.cs" />
+    <Compile Include="Empresas\ObjetivoAnalisis.cs" />
+    <Compile Include="Empresas\RendicionDeCuentasBase.cs" />
+    <Compile Include="Empresas\ResponsabilidadesBase.cs" />
+    <Compile Include="Empresas\RolesBase.cs" />
+    <Compile Include="Empresas\RolesPorRendicionDeCuentasBase.cs" />
+    <Compile Include="Empresas\RolesPorResponsabilidadesBase.cs" />
+    <Compile Include="Empresas\SeguimientoEstudioPuestoTrabajo.cs" />
+    <Compile Include="Empresas\TipoAnalisisPuestoTrabajo.cs" />
+    <Compile Include="Empresas\TipoIncidente.cs" />
+    <Compile Include="Empresas\SitioIncidente.cs" />
+    <Compile Include="Empresas\TipoJornada.cs" />
+    <Compile Include="Empleado\VinculacionLaboral.cs" />
+    <Compile Include="Empresas\CentroTrabajo.cs" />
+    <Compile Include="Empresas\CIU.cs" />
+    <Compile Include="Empresas\Departamento.cs" />
+    <Compile Include="Empresas\ElementoMatriz.cs" />
+    <Compile Include="Empresas\EmpleadoTercero.cs" />
+    <Compile Include="Empresas\Empresa.cs" />
+    <Compile Include="Empresas\Empresa_Usuaria.cs" />
+    <Compile Include="Empresas\EmpresaTercero.cs" />
+    <Compile Include="Empresas\Gobierno.cs" />
+    <Compile Include="Empresas\Incidente.cs" />
+    <Compile Include="Empresas\Matriz.cs" />
+    <Compile Include="Empresas\Municipio.cs" />
+    <Compile Include="Empresas\Organigrama.cs" />
+    <Compile Include="Empresas\Privilegios.cs" />
+    <Compile Include="Empresas\PrivilegiosPorRol.cs" />
+    <Compile Include="Empresas\Proceso.cs" />
+    <Compile Include="Empresas\ProcesoEmpresa.cs" />
+    <Compile Include="Empresas\RelacionesLaboralesTercero.cs" />
+    <Compile Include="Empresas\Rol.cs" />
+    <Compile Include="Empresas\Sede.cs" />
+    <Compile Include="Empresas\SedeMunicipio.cs" />
+    <Compile Include="Empresas\TipoAnalisis.cs" />
+    <Compile Include="Empresas\TipoElementoAnalisis.cs" />
+    <Compile Include="Empresas\TipoTercero.cs" />
+    <Compile Include="Empresas\Usuario.cs" />
+    <Compile Include="Empresas\UsuarioRol.cs" />
+    <Compile Include="EnfermedadesLaborales\DocumentoEnviadoEPS.cs" />
+    <Compile Include="EnfermedadesLaborales\EnfermedadLaboral.cs" />
+    <Compile Include="EnfermedadesLaborales\EstadoInstanciaRegistrada.cs" />
+    <Compile Include="EnfermedadesLaborales\InstanciaEnfermedadLaboral.cs" />
+    <Compile Include="Incidentes\IncidentesAT.cs" />
+    <Compile Include="Incidentes\IncidentesEL.cs" />
+    <Compile Include="LiderazgoGerencial\ActividadPresupuesto.cs" />
+    <Compile Include="LiderazgoGerencial\ObligacionesArl.cs" />
+    <Compile Include="LiderazgoGerencial\ObligacionesEmpleadores.cs" />
+    <Compile Include="LiderazgoGerencial\PresupuestoPorMes.cs" />
+    <Compile Include="LiderazgoGerencial\PresupuestoPorAnio.cs" />
+    <Compile Include="LiderazgoGerencial\RendicionDeCuentas.cs" />
+    <Compile Include="LiderazgoGerencial\RendicionDeCuentasPorRol.cs" />
+    <Compile Include="LiderazgoGerencial\Responsabilidades.cs" />
+    <Compile Include="LiderazgoGerencial\ResponsabilidadesPorRol.cs" />
+    <Compile Include="MedicionEvaluacion\Accion.cs" />
+    <Compile Include="MedicionEvaluacion\ActividadAccion.cs" />
+    <Compile Include="MedicionEvaluacion\ActividadAuditoria.cs" />
+    <Compile Include="MedicionEvaluacion\ActividadPlanDeAccion.cs" />
+    <Compile Include="MedicionEvaluacion\Analisis.cs" />
+    <Compile Include="MedicionEvaluacion\ArchivosAccion.cs" />
+    <Compile Include="MedicionEvaluacion\AuditoriaCronograma.cs" />
+    <Compile Include="MedicionEvaluacion\AuditoriaInforme.cs" />
+    <Compile Include="MedicionEvaluacion\AuditoriaListaVer.cs" />
+    <Compile Include="MedicionEvaluacion\AuditoriaPrograma.cs" />
+    <Compile Include="MedicionEvaluacion\Auditorias.cs" />
+    <Compile Include="MedicionEvaluacion\Hallazgo.cs" />
+    <Compile Include="MedicionEvaluacion\ModulosPlanAccion.cs" />
+    <Compile Include="MedicionEvaluacion\Seguimiento.cs" />
+    <Compile Include="Migrations\201705251525574_Inicial.cs" />
+    <Compile Include="Migrations\201705251525574_Inicial.Designer.cs">
+      <DependentUpon>201705251525574_Inicial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705251630024_creaciontblplaneacioninspecccion.cs" />
+    <Compile Include="Migrations\201705251630024_creaciontblplaneacioninspecccion.Designer.cs">
+      <DependentUpon>201705251630024_creaciontblplaneacioninspecccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705261412160_cambiomigracionperfilsocmod.cs" />
+    <Compile Include="Migrations\201705261412160_cambiomigracionperfilsocmod.Designer.cs">
+      <DependentUpon>201705261412160_cambiomigracionperfilsocmod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705272126152_ModicaTbl_Ausencias.cs" />
+    <Compile Include="Migrations\201705272126152_ModicaTbl_Ausencias.Designer.cs">
+      <DependentUpon>201705272126152_ModicaTbl_Ausencias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705290326057_AddTipoContigencias.cs" />
+    <Compile Include="Migrations\201705290326057_AddTipoContigencias.Designer.cs">
+      <DependentUpon>201705290326057_AddTipoContigencias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705292145305_Tbls_Accion_Segundo.cs" />
+    <Compile Include="Migrations\201705292145305_Tbls_Accion_Segundo.Designer.cs">
+      <DependentUpon>201705292145305_Tbls_Accion_Segundo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705301640489_cambiomigmartesperfil.cs" />
+    <Compile Include="Migrations\201705301640489_cambiomigmartesperfil.Designer.cs">
+      <DependentUpon>201705301640489_cambiomigmartesperfil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706010143117_AddUsuariosSistema.cs" />
+    <Compile Include="Migrations\201706010143117_AddUsuariosSistema.Designer.cs">
+      <DependentUpon>201706010143117_AddUsuariosSistema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706021951473_adicionForaneaPlaneaccionInspeccion.cs" />
+    <Compile Include="Migrations\201706021951473_adicionForaneaPlaneaccionInspeccion.Designer.cs">
+      <DependentUpon>201706021951473_adicionForaneaPlaneaccionInspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706071408518_EvalEtandMini-and-EmpleTercero.cs" />
+    <Compile Include="Migrations\201706071408518_EvalEtandMini-and-EmpleTercero.Designer.cs">
+      <DependentUpon>201706071408518_EvalEtandMini-and-EmpleTercero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706111829110_Tablas_Reporte_Incidentes.cs" />
+    <Compile Include="Migrations\201706111829110_Tablas_Reporte_Incidentes.Designer.cs">
+      <DependentUpon>201706111829110_Tablas_Reporte_Incidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706112243262_Upd_tipoDocumentos.cs" />
+    <Compile Include="Migrations\201706112243262_Upd_tipoDocumentos.Designer.cs">
+      <DependentUpon>201706112243262_Upd_tipoDocumentos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706151348105_desbloqueo.cs" />
+    <Compile Include="Migrations\201706151348105_desbloqueo.Designer.cs">
+      <DependentUpon>201706151348105_desbloqueo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706171716138_Tablas_Reporte_Incidentes_02.cs" />
+    <Compile Include="Migrations\201706171716138_Tablas_Reporte_Incidentes_02.Designer.cs">
+      <DependentUpon>201706171716138_Tablas_Reporte_Incidentes_02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191517401_Ampliar_Tipo_Documento.cs" />
+    <Compile Include="Migrations\201706191517401_Ampliar_Tipo_Documento.Designer.cs">
+      <DependentUpon>201706191517401_Ampliar_Tipo_Documento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191640405_TituloScript.cs" />
+    <Compile Include="Migrations\201706191640405_TituloScript.Designer.cs">
+      <DependentUpon>201706191640405_TituloScript.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706191719269_Incidente_Actualizacion_General.cs" />
+    <Compile Include="Migrations\201706191719269_Incidente_Actualizacion_General.Designer.cs">
+      <DependentUpon>201706191719269_Incidente_Actualizacion_General.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706232005261_AdicionForaneaTablaMI.cs" />
+    <Compile Include="Migrations\201706232005261_AdicionForaneaTablaMI.Designer.cs">
+      <DependentUpon>201706232005261_AdicionForaneaTablaMI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706252105246_Ajuste_Empleado_Tercero.cs" />
+    <Compile Include="Migrations\201706252105246_Ajuste_Empleado_Tercero.Designer.cs">
+      <DependentUpon>201706252105246_Ajuste_Empleado_Tercero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706261958105_Añadir_tablas_auditorias.cs" />
+    <Compile Include="Migrations\201706261958105_Añadir_tablas_auditorias.Designer.cs">
+      <DependentUpon>201706261958105_Añadir_tablas_auditorias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706262044267_UpdateModuloAdministracionUsuariosSistema.cs" />
+    <Compile Include="Migrations\201706262044267_UpdateModuloAdministracionUsuariosSistema.Designer.cs">
+      <DependentUpon>201706262044267_UpdateModuloAdministracionUsuariosSistema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706270404466_AddtablasSistema.cs" />
+    <Compile Include="Migrations\201706270404466_AddtablasSistema.Designer.cs">
+      <DependentUpon>201706270404466_AddtablasSistema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706272103269_Cambio_Campo_ProgramaAuditoria.cs" />
+    <Compile Include="Migrations\201706272103269_Cambio_Campo_ProgramaAuditoria.Designer.cs">
+      <DependentUpon>201706272103269_Cambio_Campo_ProgramaAuditoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706281526593_Modificacion_tabla_auditoria.cs" />
+    <Compile Include="Migrations\201706281526593_Modificacion_tabla_auditoria.Designer.cs">
+      <DependentUpon>201706281526593_Modificacion_tabla_auditoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706281949461_Modificacion_Tabla_Perfil_Socio_Democratico.cs" />
+    <Compile Include="Migrations\201706281949461_Modificacion_Tabla_Perfil_Socio_Democratico.Designer.cs">
+      <DependentUpon>201706281949461_Modificacion_Tabla_Perfil_Socio_Democratico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706292143137_EliminarCampoPerfilSocioDemografico.cs" />
+    <Compile Include="Migrations\201706292143137_EliminarCampoPerfilSocioDemografico.Designer.cs">
+      <DependentUpon>201706292143137_EliminarCampoPerfilSocioDemografico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706302213023_AdicionGestionClavesTemporales.cs" />
+    <Compile Include="Migrations\201706302213023_AdicionGestionClavesTemporales.Designer.cs">
+      <DependentUpon>201706302213023_AdicionGestionClavesTemporales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707031756362_Tablas_Auditoria_Actividad.cs" />
+    <Compile Include="Migrations\201707031756362_Tablas_Auditoria_Actividad.Designer.cs">
+      <DependentUpon>201707031756362_Tablas_Auditoria_Actividad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707040240237_cambioformatofechainspeccion.cs" />
+    <Compile Include="Migrations\201707040240237_cambioformatofechainspeccion.Designer.cs">
+      <DependentUpon>201707040240237_cambioformatofechainspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707041715453_cambiofechacrearinspeccion.cs" />
+    <Compile Include="Migrations\201707041715453_cambiofechacrearinspeccion.Designer.cs">
+      <DependentUpon>201707041715453_cambiofechacrearinspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707052256508_creaciontblmaestroconfiguracionrelacioninspeccion.cs" />
+    <Compile Include="Migrations\201707052256508_creaciontblmaestroconfiguracionrelacioninspeccion.Designer.cs">
+      <DependentUpon>201707052256508_creaciontblmaestroconfiguracionrelacioninspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707060138368_cambionombretablas.cs" />
+    <Compile Include="Migrations\201707060138368_cambionombretablas.Designer.cs">
+      <DependentUpon>201707060138368_cambionombretablas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707060444085_ActualizacionEntidadUsuariosParaAprobar.cs" />
+    <Compile Include="Migrations\201707060444085_ActualizacionEntidadUsuariosParaAprobar.Designer.cs">
+      <DependentUpon>201707060444085_ActualizacionEntidadUsuariosParaAprobar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707061322153_cambionombreconfiguracion.cs" />
+    <Compile Include="Migrations\201707061322153_cambionombreconfiguracion.Designer.cs">
+      <DependentUpon>201707061322153_cambionombreconfiguracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707071242402_ModificarPerfilSocioDemograficoRelaciones.cs" />
+    <Compile Include="Migrations\201707071242402_ModificarPerfilSocioDemograficoRelaciones.Designer.cs">
+      <DependentUpon>201707071242402_ModificarPerfilSocioDemograficoRelaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707081707408_cambiomodelrequisitoslegalestablas.cs" />
+    <Compile Include="Migrations\201707081707408_cambiomodelrequisitoslegalestablas.Designer.cs">
+      <DependentUpon>201707081707408_cambiomodelrequisitoslegalestablas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707082150249_Cambio_Tabla_Acciones.cs" />
+    <Compile Include="Migrations\201707082150249_Cambio_Tabla_Acciones.Designer.cs">
+      <DependentUpon>201707082150249_Cambio_Tabla_Acciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707101426198_Tabla_Reportes.cs" />
+    <Compile Include="Migrations\201707101426198_Tabla_Reportes.Designer.cs">
+      <DependentUpon>201707101426198_Tabla_Reportes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707101903097_CreacionTablaAsistenteInspeccion.cs" />
+    <Compile Include="Migrations\201707101903097_CreacionTablaAsistenteInspeccion.Designer.cs">
+      <DependentUpon>201707101903097_CreacionTablaAsistenteInspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707102057336_creaciontblinspeccion.cs" />
+    <Compile Include="Migrations\201707102057336_creaciontblinspeccion.Designer.cs">
+      <DependentUpon>201707102057336_creaciontblinspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707102227408_condicioninsegura.cs" />
+    <Compile Include="Migrations\201707102227408_condicioninsegura.Designer.cs">
+      <DependentUpon>201707102227408_condicioninsegura.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707102238457_cambiodatoconfiguracion.cs" />
+    <Compile Include="Migrations\201707102238457_cambiodatoconfiguracion.Designer.cs">
+      <DependentUpon>201707102238457_cambiodatoconfiguracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707102337397_create_tbl_plan_empresa.cs" />
+    <Compile Include="Migrations\201707102337397_create_tbl_plan_empresa.Designer.cs">
+      <DependentUpon>201707102337397_create_tbl_plan_empresa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707120319530_CreateEmpleadosTematicas.cs" />
+    <Compile Include="Migrations\201707120319530_CreateEmpleadosTematicas.Designer.cs">
+      <DependentUpon>201707120319530_CreateEmpleadosTematicas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707121310159_Crtblplanaccionporinspeccion.cs" />
+    <Compile Include="Migrations\201707121310159_Crtblplanaccionporinspeccion.Designer.cs">
+      <DependentUpon>201707121310159_Crtblplanaccionporinspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707121356043_cambioforaneas.cs" />
+    <Compile Include="Migrations\201707121356043_cambioforaneas.Designer.cs">
+      <DependentUpon>201707121356043_cambioforaneas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707122211338_AlterTblEmpleadoPorTematica.cs" />
+    <Compile Include="Migrations\201707122211338_AlterTblEmpleadoPorTematica.Designer.cs">
+      <DependentUpon>201707122211338_AlterTblEmpleadoPorTematica.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707150403192_CambioTBL_Incidentes.cs" />
+    <Compile Include="Migrations\201707150403192_CambioTBL_Incidentes.Designer.cs">
+      <DependentUpon>201707150403192_CambioTBL_Incidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707150510469_Cambio_Add_Telefono_tbl_sede.cs" />
+    <Compile Include="Migrations\201707150510469_Cambio_Add_Telefono_tbl_sede.Designer.cs">
+      <DependentUpon>201707150510469_Cambio_Add_Telefono_tbl_sede.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707150805246_Cambio_adicional_tbl_incidentes.cs" />
+    <Compile Include="Migrations\201707150805246_Cambio_adicional_tbl_incidentes.Designer.cs">
+      <DependentUpon>201707150805246_Cambio_adicional_tbl_incidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707150815477_Cambio_tañano_campos_tbl_incidentes.cs" />
+    <Compile Include="Migrations\201707150815477_Cambio_tañano_campos_tbl_incidentes.Designer.cs">
+      <DependentUpon>201707150815477_Cambio_tañano_campos_tbl_incidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707180358076_ActualizaTablaUsuariosSistema.cs" />
+    <Compile Include="Migrations\201707180358076_ActualizaTablaUsuariosSistema.Designer.cs">
+      <DependentUpon>201707180358076_ActualizaTablaUsuariosSistema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707192308340_TablasAccionesAuditoria.cs" />
+    <Compile Include="Migrations\201707192308340_TablasAccionesAuditoria.Designer.cs">
+      <DependentUpon>201707192308340_TablasAccionesAuditoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707210245020_AddcampoTBL_Incidentes.cs" />
+    <Compile Include="Migrations\201707210245020_AddcampoTBL_Incidentes.Designer.cs">
+      <DependentUpon>201707210245020_AddcampoTBL_Incidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707270433028_AdicionCampoNombrePersonaAusencias.cs" />
+    <Compile Include="Migrations\201707270433028_AdicionCampoNombrePersonaAusencias.Designer.cs">
+      <DependentUpon>201707270433028_AdicionCampoNombrePersonaAusencias.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707271949044_AdicionarNuevoCampoTablaPerfilSocioDemografico.cs" />
+    <Compile Include="Migrations\201707271949044_AdicionarNuevoCampoTablaPerfilSocioDemografico.Designer.cs">
+      <DependentUpon>201707271949044_AdicionarNuevoCampoTablaPerfilSocioDemografico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707311522480_creaciontablaconfiguracioninspeccion.cs" />
+    <Compile Include="Migrations\201707311522480_creaciontablaconfiguracioninspeccion.Designer.cs">
+      <DependentUpon>201707311522480_creaciontablaconfiguracioninspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707311838252_AjusteTablaConfiguracion.cs" />
+    <Compile Include="Migrations\201707311838252_AjusteTablaConfiguracion.Designer.cs">
+      <DependentUpon>201707311838252_AjusteTablaConfiguracion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708022051144_agregarNuevoCampoDxOtro.cs" />
+    <Compile Include="Migrations\201708022051144_agregarNuevoCampoDxOtro.Designer.cs">
+      <DependentUpon>201708022051144_agregarNuevoCampoDxOtro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708041635522_MigAgregarFK_EmpresaTbl_MatrizRequisitosLegales.cs" />
+    <Compile Include="Migrations\201708041635522_MigAgregarFK_EmpresaTbl_MatrizRequisitosLegales.Designer.cs">
+      <DependentUpon>201708041635522_MigAgregarFK_EmpresaTbl_MatrizRequisitosLegales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708091640361_adicioncampotablainspeccion.cs" />
+    <Compile Include="Migrations\201708091640361_adicioncampotablainspeccion.Designer.cs">
+      <DependentUpon>201708091640361_adicioncampotablainspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708101358433_prueba.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Migrations\201708101358433_prueba.Designer.cs">
+      <DependentUpon>201708101358433_prueba.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709032259591_AddCampoCapituloDiagnosticos.cs" />
+    <Compile Include="Migrations\201709032259591_AddCampoCapituloDiagnosticos.Designer.cs">
+      <DependentUpon>201709032259591_AddCampoCapituloDiagnosticos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708101620100_moduloReporteCondicionesActosInseguros.cs" />
+    <Compile Include="Migrations\201708101620100_moduloReporteCondicionesActosInseguros.Designer.cs">
+      <DependentUpon>201708101620100_moduloReporteCondicionesActosInseguros.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708251550320_modificacionTablasModuloReporteCondicionesActosInseguros.cs" />
+    <Compile Include="Migrations\201708251550320_modificacionTablasModuloReporteCondicionesActosInseguros.Designer.cs">
+      <DependentUpon>201708251550320_modificacionTablasModuloReporteCondicionesActosInseguros.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708242104448_creatablasverificarinspeccion.cs" />
+    <Compile Include="Migrations\201708242104448_creatablasverificarinspeccion.Designer.cs">
+      <DependentUpon>201708242104448_creatablasverificarinspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708242152417_TablasPlanInspeccion.cs" />
+    <Compile Include="Migrations\201708242152417_TablasPlanInspeccion.Designer.cs">
+      <DependentUpon>201708242152417_TablasPlanInspeccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708251503331_cambioforaneadeinspeccionsedeproceso.cs" />
+    <Compile Include="Migrations\201708251503331_cambioforaneadeinspeccionsedeproceso.Designer.cs">
+      <DependentUpon>201708251503331_cambioforaneadeinspeccionsedeproceso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708291712206_modgestiondelcambio.cs" />
+    <Compile Include="Migrations\201708291712206_modgestiondelcambio.Designer.cs">
+      <DependentUpon>201708291712206_modgestiondelcambio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708291740401_gestioncambiomodificacionajuste.cs" />
+    <Compile Include="Migrations\201708291740401_gestioncambiomodificacionajuste.Designer.cs">
+      <DependentUpon>201708291740401_gestioncambiomodificacionajuste.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709042137465_InitialCreate.cs" />
+    <Compile Include="Migrations\201709042137465_InitialCreate.Designer.cs">
+      <DependentUpon>201709042137465_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709051653311_ModificacionOcupacionTablasPerfilSocioDemogrico.cs" />
+    <Compile Include="Migrations\201709051653311_ModificacionOcupacionTablasPerfilSocioDemogrico.Designer.cs">
+      <DependentUpon>201709051653311_ModificacionOcupacionTablasPerfilSocioDemogrico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709060342408_TablasUCProveedoresYContratistas.cs" />
+    <Compile Include="Migrations\201709060342408_TablasUCProveedoresYContratistas.Designer.cs">
+      <DependentUpon>201709060342408_TablasUCProveedoresYContratistas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709132113288_cambioForaneaProcesoReporteInseguros.cs" />
+    <Compile Include="Migrations\201709132113288_cambioForaneaProcesoReporteInseguros.Designer.cs">
+      <DependentUpon>201709132113288_cambioForaneaProcesoReporteInseguros.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709152053233_miggestcambiomodajustseptcrist.cs" />
+    <Compile Include="Migrations\201709152053233_miggestcambiomodajustseptcrist.Designer.cs">
+      <DependentUpon>201709152053233_miggestcambiomodajustseptcrist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709202152172_ajustetblrequisitoslgalesposipediaFKEmpresa.cs" />
+    <Compile Include="Migrations\201709202152172_ajustetblrequisitoslgalesposipediaFKEmpresa.Designer.cs">
+      <DependentUpon>201709202152172_ajustetblrequisitoslgalesposipediaFKEmpresa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709221644035_CambiosTablasInspecciones.cs" />
+    <Compile Include="Migrations\201709221644035_CambiosTablasInspecciones.Designer.cs">
+      <DependentUpon>201709221644035_CambiosTablasInspecciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709230244164_CreacionDeTablasMaestrosRolesResponsabilidadesYRendicionDeCuentasBase.cs" />
+    <Compile Include="Migrations\201709230244164_CreacionDeTablasMaestrosRolesResponsabilidadesYRendicionDeCuentasBase.Designer.cs">
+      <DependentUpon>201709230244164_CreacionDeTablasMaestrosRolesResponsabilidadesYRendicionDeCuentasBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709252335051_CreacionTablasEquiposyElementosProteccionPersonal.cs" />
+    <Compile Include="Migrations\201709252335051_CreacionTablasEquiposyElementosProteccionPersonal.Designer.cs">
+      <DependentUpon>201709252335051_CreacionTablasEquiposyElementosProteccionPersonal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709280336111_CambioAcciones_AgregarOrigenCampo.cs" />
+    <Compile Include="Migrations\201709280336111_CambioAcciones_AgregarOrigenCampo.Designer.cs">
+      <DependentUpon>201709280336111_CambioAcciones_AgregarOrigenCampo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710031347447_creatablasconsultasst.cs" />
+    <Compile Include="Migrations\201710031347447_creatablasconsultasst.Designer.cs">
+      <DependentUpon>201710031347447_creatablasconsultasst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710061457101_Crear_comunicados_app.cs" />
+    <Compile Include="Migrations\201710061457101_Crear_comunicados_app.designer.cs">
+      <DependentUpon>201710061457101_Crear_comunicados_app.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710122127071_AdicionCampoEmailPersonaParaCUComunicaciones.cs" />
+    <Compile Include="Migrations\201710122127071_AdicionCampoEmailPersonaParaCUComunicaciones.designer.cs">
+      <DependentUpon>201710122127071_AdicionCampoEmailPersonaParaCUComunicaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710132242209_ajustegestcambiofkclspelfkpelmodoct131017.cs" />
+    <Compile Include="Migrations\201710132242209_ajustegestcambiofkclspelfkpelmodoct131017.Designer.cs">
+      <DependentUpon>201710132242209_ajustegestcambiofkclspelfkpelmodoct131017.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710161753590_PesvCreacionTablas.cs" />
+    <Compile Include="Migrations\201710161753590_PesvCreacionTablas.Designer.cs">
+      <DependentUpon>201710161753590_PesvCreacionTablas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710170126518_TablaObjetivosst.cs" />
+    <Compile Include="Migrations\201710170126518_TablaObjetivosst.Designer.cs">
+      <DependentUpon>201710170126518_TablaObjetivosst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710170213397_EstudioPuestoTrabajo.cs" />
+    <Compile Include="Migrations\201710170213397_EstudioPuestoTrabajo.Designer.cs">
+      <DependentUpon>201710170213397_EstudioPuestoTrabajo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710170455439_NuevasTablasUC28ProveedoresYContratistas.cs" />
+    <Compile Include="Migrations\201710170455439_NuevasTablasUC28ProveedoresYContratistas.Designer.cs">
+      <DependentUpon>201710170455439_NuevasTablasUC28ProveedoresYContratistas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710172140339_plantrabajoapp.cs" />
+    <Compile Include="Migrations\201710172140339_plantrabajoapp.Designer.cs">
+      <DependentUpon>201710172140339_plantrabajoapp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710191443062_cambiosEnTablasDePerfilSocioDemografico.cs" />
+    <Compile Include="Migrations\201710191443062_cambiosEnTablasDePerfilSocioDemografico.Designer.cs">
+      <DependentUpon>201710191443062_cambiosEnTablasDePerfilSocioDemografico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710201512263_CreacionModeloActasCopasst.cs" />
+    <Compile Include="Migrations\201710201512263_CreacionModeloActasCopasst.designer.cs">
+      <DependentUpon>201710201512263_CreacionModeloActasCopasst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710262058054_CreacionModeloActaComiteConvivenciaLaboral.Designer.cs">
+      <DependentUpon>201710262058054_CreacionModeloActaComiteConvivenciaLaboral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710272154302_CampoSedeQuejasySeguimiento.cs" />
+    <Compile Include="Migrations\201710272154302_CampoSedeQuejasySeguimiento.Designer.cs">
+      <DependentUpon>201710272154302_CampoSedeQuejasySeguimiento.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710301440281_creacampootropeligrotipo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Migrations\201710301440281_creacampootropeligrotipo.Designer.cs">
+      <DependentUpon>201710301440281_creacampootropeligrotipo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710302042160_ModificacionTablasUC45ParticipacionConsultaSST.cs" />
+    <Compile Include="Migrations\201710302042160_ModificacionTablasUC45ParticipacionConsultaSST.Designer.cs">
+      <DependentUpon>201710302042160_ModificacionTablasUC45ParticipacionConsultaSST.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710311435240_pesvial_agregados.cs" />
+    <Compile Include="Migrations\201710311435240_pesvial_agregados.Designer.cs">
+      <DependentUpon>201710311435240_pesvial_agregados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711021533368_cu_algoritmo_software.cs" />
+    <Compile Include="Migrations\201711021533368_cu_algoritmo_software.Designer.cs">
+      <DependentUpon>201711021533368_cu_algoritmo_software.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711061858269_bateriasPsicosocial.cs" />
+    <Compile Include="Migrations\201711061858269_bateriasPsicosocial.Designer.cs">
+      <DependentUpon>201711061858269_bateriasPsicosocial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711071521434_CambioDateTimeNullCasoDeUso28.cs" />
+    <Compile Include="Migrations\201711071521434_CambioDateTimeNullCasoDeUso28.Designer.cs">
+      <DependentUpon>201711071521434_CambioDateTimeNullCasoDeUso28.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711071818404_modificacionDxSalud.cs" />
+    <Compile Include="Migrations\201711071818404_modificacionDxSalud.Designer.cs">
+      <DependentUpon>201711071818404_modificacionDxSalud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711081449030_ModeloRevisionDireccion.cs" />
+    <Compile Include="Migrations\201711081449030_ModeloRevisionDireccion.Designer.cs">
+      <DependentUpon>201711081449030_ModeloRevisionDireccion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711082227461_gestioncambiocampoOtroTblgestioncambiomig.cs" />
+    <Compile Include="Migrations\201711082227461_gestioncambiocampoOtroTblgestioncambiomig.Designer.cs">
+      <DependentUpon>201711082227461_gestioncambiocampoOtroTblgestioncambiomig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711141306400_cambiotipidatoplanaccionIns.cs" />
+    <Compile Include="Migrations\201711141306400_cambiotipidatoplanaccionIns.Designer.cs">
+      <DependentUpon>201711141306400_cambiotipidatoplanaccionIns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711150200156_RecomendacionesBateriaPsicosocial.cs" />
+    <Compile Include="Migrations\201711150200156_RecomendacionesBateriaPsicosocial.Designer.cs">
+      <DependentUpon>201711150200156_RecomendacionesBateriaPsicosocial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711160137576_EnfermedadesLaborales.cs" />
+    <Compile Include="Migrations\201711160137576_EnfermedadesLaborales.Designer.cs">
+      <DependentUpon>201711160137576_EnfermedadesLaborales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711161756596_planpesv.cs" />
+    <Compile Include="Migrations\201711161756596_planpesv.Designer.cs">
+      <DependentUpon>201711161756596_planpesv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711162110095_cu_algoritmo_15_16_17_26.cs" />
+    <Compile Include="Migrations\201711162110095_cu_algoritmo_15_16_17_26.Designer.cs">
+      <DependentUpon>201711162110095_cu_algoritmo_15_16_17_26.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711191710524_PlanTrabajoCronograma.cs" />
+    <Compile Include="Migrations\201711191710524_PlanTrabajoCronograma.Designer.cs">
+      <DependentUpon>201711191710524_PlanTrabajoCronograma.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711201642466_cu_algoritmo_11202017.cs" />
+    <Compile Include="Migrations\201711201642466_cu_algoritmo_11202017.Designer.cs">
+      <DependentUpon>201711201642466_cu_algoritmo_11202017.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711212058298_cu_usuarios_susritos_app.cs" />
+    <Compile Include="Migrations\201711212058298_cu_usuarios_susritos_app.Designer.cs">
+      <DependentUpon>201711212058298_cu_usuarios_susritos_app.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711212237270_CambioEnCamposCU46yCU47.cs" />
+    <Compile Include="Migrations\201711212237270_CambioEnCamposCU46yCU47.Designer.cs">
+      <DependentUpon>201711212237270_CambioEnCamposCU46yCU47.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711221216114_cambioProcesoDx.cs" />
+    <Compile Include="Migrations\201711221216114_cambioProcesoDx.Designer.cs">
+      <DependentUpon>201711221216114_cambioProcesoDx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711222154548_cu_algoritmo_comunicaciones_app.cs" />
+    <Compile Include="Migrations\201711222154548_cu_algoritmo_comunicaciones_app.Designer.cs">
+      <DependentUpon>201711222154548_cu_algoritmo_comunicaciones_app.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711270800088_algoritmo-incidentes.cs" />
+    <Compile Include="Migrations\201711270800088_algoritmo-incidentes.Designer.cs">
+      <DependentUpon>201711270800088_algoritmo-incidentes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711291806470_cu_20_algoritmo.cs" />
+    <Compile Include="Migrations\201711291806470_cu_20_algoritmo.Designer.cs">
+      <DependentUpon>201711291806470_cu_20_algoritmo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711291828208_change_cu_20_algoritmo.cs" />
+    <Compile Include="Migrations\201711291828208_change_cu_20_algoritmo.Designer.cs">
+      <DependentUpon>201711291828208_change_cu_20_algoritmo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711300611537_cu_20_add_columns_allgoritmo.cs" />
+    <Compile Include="Migrations\201711300611537_cu_20_add_columns_allgoritmo.Designer.cs">
+      <DependentUpon>201711300611537_cu_20_add_columns_allgoritmo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712011549150_cu_empresa_filtros_algoritmo.cs" />
+    <Compile Include="Migrations\201712011549150_cu_empresa_filtros_algoritmo.Designer.cs">
+      <DependentUpon>201712011549150_cu_empresa_filtros_algoritmo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712011909203_cu_algoritmo_pending.cs" />
+    <Compile Include="Migrations\201712011909203_cu_algoritmo_pending.Designer.cs">
+      <DependentUpon>201712011909203_cu_algoritmo_pending.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712060204012_cu_algoritmo_campoempresa_nit.cs" />
+    <Compile Include="Migrations\201712060204012_cu_algoritmo_campoempresa_nit.Designer.cs">
+      <DependentUpon>201712060204012_cu_algoritmo_campoempresa_nit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712061343041_cu_encuestas_algoritmo.cs" />
+    <Compile Include="Migrations\201712061343041_cu_encuestas_algoritmo.Designer.cs">
+      <DependentUpon>201712061343041_cu_encuestas_algoritmo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712061441288_cu_encuestas_2_algoritmo.cs" />
+    <Compile Include="Migrations\201712061441288_cu_encuestas_2_algoritmo.Designer.cs">
+      <DependentUpon>201712061441288_cu_encuestas_2_algoritmo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712071259562_addcampologoempresaTblemp.cs" />
+    <Compile Include="Migrations\201712071259562_addcampologoempresaTblemp.Designer.cs">
+      <DependentUpon>201712071259562_addcampologoempresaTblemp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712111141307_ModificacionCampoDiagnostico.cs" />
+    <Compile Include="Migrations\201712111141307_ModificacionCampoDiagnostico.Designer.cs">
+      <DependentUpon>201712111141307_ModificacionCampoDiagnostico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712121349216_SecondCreate.cs" />
+    <Compile Include="Migrations\201712121349216_SecondCreate.Designer.cs">
+      <DependentUpon>201712121349216_SecondCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712141623187_cu_20_algoritmo_subtotales.cs" />
+    <Compile Include="Migrations\201712141623187_cu_20_algoritmo_subtotales.Designer.cs">
+      <DependentUpon>201712141623187_cu_20_algoritmo_subtotales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712291632139_cu_algoritmo_comunicaciones_log.cs" />
+    <Compile Include="Migrations\201712291632139_cu_algoritmo_comunicaciones_log.Designer.cs">
+      <DependentUpon>201712291632139_cu_algoritmo_comunicaciones_log.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801161559239_DiaFestivo.cs" />
+    <Compile Include="Migrations\201801161559239_DiaFestivo.Designer.cs">
+      <DependentUpon>201801161559239_DiaFestivo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801182154580_AdicionFuncionalidadPreguntasSeguridad.cs" />
+    <Compile Include="Migrations\201801182154580_AdicionFuncionalidadPreguntasSeguridad.Designer.cs">
+      <DependentUpon>201801182154580_AdicionFuncionalidadPreguntasSeguridad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801290332095_ActualizacionModuloUsuarios.cs" />
+    <Compile Include="Migrations\201801290332095_ActualizacionModuloUsuarios.Designer.cs">
+      <DependentUpon>201801290332095_ActualizacionModuloUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801290606241_AgregarDatosAdicionales.cs" />
+    <Compile Include="Migrations\201801290606241_AgregarDatosAdicionales.Designer.cs">
+      <DependentUpon>201801290606241_AgregarDatosAdicionales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Organizacion\Actividad.cs" />
+    <Compile Include="Organizacion\Cargo.cs" />
+    <Compile Include="Organizacion\CargoPorRol.cs" />
+    <Compile Include="Organizacion\EmpleadoPorTematica.cs" />
+    <Compile Include="Organizacion\EmpleadoTematica.cs" />
+    <Compile Include="Participacion\AccionesActaConvivencia.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\AccionesActaCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\AccionesActaQuejas.cs" />
+    <Compile Include="Participacion\ActaConvivenciaQuejas.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\ActasConvivencia.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\ActasCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\ActividadesActosInseguro.cs" />
+    <Compile Include="Participacion\AuditoriaActaConvivencia.cs" />
+    <Compile Include="Participacion\AuditoriaActaCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\CompromisosPendientes.cs" />
+    <Compile Include="Participacion\ConsultaSST.cs" />
+    <Compile Include="Participacion\ImagenesReportes.cs" />
+    <Compile Include="Participacion\MiembrosActaConvivencia.cs" />
+    <Compile Include="Participacion\MiembrosActaCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\Participantes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\ParticipantesActasConvivencia.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\ResponsablesQuejas.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\SeguimientoActaConvivencia.cs" />
+    <Compile Include="Participacion\TemasActaConvivencia.cs" />
+    <Compile Include="Participacion\TemasActaCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\TipoPrincipalActa.cs" />
+    <Compile Include="Participacion\TipoPrioridadMiembro.cs" />
+    <Compile Include="PlanCapacitacion\Plan_Capacitacion.cs" />
+    <Compile Include="PlanCapacitacion\PlanCapacitacion_Soporte.cs" />
+    <Compile Include="Planificacion\ActividadEconomica.cs" />
+    <Compile Include="Participacion\Reporte.cs" />
+    <Compile Include="Participacion\TipoReporte.cs" />
+    <Compile Include="Planificacion\Aspecto_Base.cs" />
+    <Compile Include="Planificacion\ClasificacionPeligroDx.cs" />
+    <Compile Include="Planificacion\Condiciones_Riesgo_Perfil.cs" />
+    <Compile Include="Planificacion\DiagnosticoCie10Dx.cs" />
+    <Compile Include="Planificacion\DocDxCondicionesDeSalud.cs" />
+    <Compile Include="Organizacion\Fase.cs" />
+    <Compile Include="Organizacion\PlanDeEstudio.cs" />
+    <Compile Include="Organizacion\Recurso.cs" />
+    <Compile Include="Organizacion\RecursoFase.cs" />
+    <Compile Include="Organizacion\RecursoporSede.cs" />
+    <Compile Include="Organizacion\RecursoTipoRecurso.cs" />
+    <Compile Include="Organizacion\RolPorTematica.cs" />
+    <Compile Include="Organizacion\Tematica.cs" />
+    <Compile Include="Organizacion\TematicaPorEmpresa.cs" />
+    <Compile Include="Organizacion\TipoRecurso.cs" />
+    <Compile Include="Organizacion\Documentacion_Organizacion.cs" />
+    <Compile Include="Organizacion\TipoModulo_Organizacion.cs" />
+    <Compile Include="Planificacion\ActividadEvaluacion.cs" />
+    <Compile Include="Planificacion\Actividad_Criterio.cs" />
+    <Compile Include="Planificacion\AntecedentesExposicionLaboral.cs" />
+    <Compile Include="Planificacion\Aspecto.cs" />
+    <Compile Include="Planificacion\Ciclo.cs" />
+    <Compile Include="Planificacion\ClasificacionDePeligro.cs" />
+    <Compile Include="Organizacion\Competencia.cs" />
+    <Compile Include="Planificacion\Config_Valoracion_SubEstand.cs" />
+    <Compile Include="Planificacion\Consecuencia.cs" />
+    <Compile Include="Planificacion\ConsecuenciaPorPeligro.cs" />
+    <Compile Include="Planificacion\Criterio.cs" />
+    <Compile Include="Planificacion\Cumplimiento_Evaluacion.cs" />
+    <Compile Include="Planificacion\DxCondicionesDeSalud.cs" />
+    <Compile Include="Planificacion\Empresa_Aspecto.cs" />
+    <Compile Include="Planificacion\Empresa_Evaluar.cs" />
+    <Compile Include="Planificacion\Estado_RequisitoslegalesOtros.cs" />
+    <Compile Include="Planificacion\Estandar.cs" />
+    <Compile Include="Planificacion\EstimacionDeRiesgo.cs" />
+    <Compile Include="Planificacion\EstimacionDeRiesgoPorRAM.cs" />
+    <Compile Include="Planificacion\Evaluacion_Estandar_Minimo.cs" />
+    <Compile Include="Planificacion\Evaluacion_Inicial_Aspecto.cs" />
+    <Compile Include="Planificacion\Grupo.cs" />
+    <Compile Include="Planificacion\GTC45.cs" />
+    <Compile Include="Planificacion\INSHT.cs" />
+    <Compile Include="Planificacion\InterpretacionDeProbabilidad.cs" />
+    <Compile Include="Planificacion\InterpretacionNivelDeRiesgo.cs" />
+    <Compile Include="Planificacion\MatrizRequisitosLegales.cs" />
+    <Compile Include="Planificacion\NivelDeDeficiencia.cs" />
+    <Compile Include="Planificacion\NivelDeExposicion.cs" />
+    <Compile Include="Planificacion\ObjetivosEmpresa.cs" />
+    <Compile Include="Planificacion\Ocupaciones_Perfil.cs" />
+    <Compile Include="Planificacion\Peligro.cs" />
+    <Compile Include="Planificacion\PerfilSocioDemograficoPlanificacion.cs" />
+    <Compile Include="Planificacion\PersonaExpuesta.cs" />
+    <Compile Include="Planificacion\Probabilidad.cs" />
+    <Compile Include="Planificacion\ProbabilidadPorPersonaExpuesta.cs" />
+    <Compile Include="Planificacion\PruebasClinicasDx.cs" />
+    <Compile Include="Planificacion\PruebasPClinicasDx.cs" />
+    <Compile Include="Planificacion\RAM.cs" />
+    <Compile Include="Planificacion\RequisitosLegalesOtros.cs" />
+    <Compile Include="Planificacion\RequisitosLegalesPosipedia.cs" />
+    <Compile Include="Planificacion\Requisitos_Matriz.cs" />
+    <Compile Include="Planificacion\SedePeligro.cs" />
+    <Compile Include="Planificacion\SintomatologiaDx.cs" />
+    <Compile Include="Planificacion\SubEstandar.cs" />
+    <Compile Include="Planificacion\TipoDePeligro.cs" />
+    <Compile Include="Planificacion\TipoMetodologia.cs" />
+    <Compile Include="Planificacion\Valoracion_Aspecto.cs" />
+    <Compile Include="Planificacion\Valoracion_Criterio.cs" />
+    <Compile Include="Planificacion\Valoracion_Final.cs" />
+    <Compile Include="Planificacion\ZonaLugar.cs" />
+    <Compile Include="PlanCapacitacion\PlanCapacitacion_Asignaciones.cs" />
+    <Compile Include="PlanTrabajoAnual\PlanEmpresa.cs" />
+    <Compile Include="PlanTrabajoAnual\PlanEmpresaActividad.cs" />
+    <Compile Include="Politica\Mod_OtrasInteracciones.cs" />
+    <Compile Include="Politica\mPolitica.cs" />
+    <Compile Include="LiderazgoGerencial\Presupuesto.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usuarios\DatosAdicionalesUsuario.cs" />
+    <Compile Include="Usuarios\PreguntaSeguridad.cs" />
+    <Compile Include="Usuarios\RespuestaAPreguntaSeguridad.cs" />
+    <Compile Include="Vulnerabilidad\vul_eme_Consolidado.cs" />
+    <Compile Include="Vulnerabilidad\vul_eme_IdentificacionAmenazas.cs" />
+    <Compile Include="Vulnerabilidad\vul_eme_Personas.cs" />
+    <Compile Include="Vulnerabilidad\vul_eme_Recursos.cs" />
+    <Compile Include="Vulnerabilidad\vul_eme_sistemas_procesos.cs" />
+    <Compile Include="Vulnerabilidad\vul_Identificacion_Personas.cs" />
+    <Compile Include="Vulnerabilidad\vul_Personas.cs" />
+    <Compile Include="Vulnerabilidad\vul_Recursos.cs" />
+    <Compile Include="Vulnerabilidad\vul_SistemasProcesos.cs" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert Registro Tbl_PlantillaCorreoSistema.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\insert tabla gerentes positiva.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert TBL_OCUPACION.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\insert Tbl_TipoInconsistenciaLaboral.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert Tabla TBL_TipoInconsistenciaLaboral.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\insert tbl_Tipo_Reporte.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\InsertItemRevision.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_ParametrosSistema.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_plantillaCorreoNotificacion.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_PlantillasCorreo.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\INSERT_TBL_CIU.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_TBL_CriteriosSST.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\insert_Tbl_DiaFestivo.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\insert_tbl_dias_laborables.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\insert_Tbl_Etnia.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_ObjetivoAnalisis.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Ocupacion_De_Perfil.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Modulos_Plan_Accion.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Tipo_Analisis_Puesto_Trabajo.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Update_Capitulo_Diagnosticos.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707192308340_TablasAccionesAuditoria.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707270433028_AdicionCampoNombrePersonaAusencias.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707271949044_AdicionarNuevoCampoTablaPerfilSocioDemografico.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707311522480_creaciontablaconfiguracioninspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707311838252_AjusteTablaConfiguracion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708022051144_agregarNuevoCampoDxOtro.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708041635522_MigAgregarFK_EmpresaTbl_MatrizRequisitosLegales.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708072133370_adicionarCampoEdadPerfilSocioDemografico.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708211019539_creatablasplanaccioninspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708232016483_creatablaplanaccioncorrectiva.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708242104448_creatablasverificarinspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708242152417_TablasPlanInspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708082244428_Cambio_Estado_Actividad_Acciones.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708101358433_prueba.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708101620100_moduloReporteCondicionesActosInseguros.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708211019539_creatablasplanaccioninspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708232016483_creatablaplanaccioncorrectiva.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708242104448_creatablasverificarinspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708242152417_TablasPlanInspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708251503331_cambioforaneadeinspeccionsedeproceso.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708251503331_cambioforaneadeinspeccionsedeproceso.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201708251550320_modificacionTablasModuloReporteCondicionesActosInseguros.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709042137465_InitialCreate.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709051653311_ModificacionOcupacionTablasPerfilSocioDemogrico.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709060342408_TablasUCProveedoresYContratistas.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709132113288_cambioForaneaProcesoReporteInseguros.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709152053233_miggestcambiomodajustseptcrist.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709202152172_ajustetblrequisitoslgalesposipediaFKEmpresa.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709221644035_CambiosTablasInspecciones.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709252335051_CreacionTablasEquiposyElementosProteccionPersonal.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201709262122062_Consecutivo-Plan-AccionInspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710022056512_creatablaconsultasst.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710031347447_creatablasconsultasst.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710170213397_EstudioPuestoTrabajo.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710191443062_cambiosEnTablasDePerfilSocioDemografico.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710261731393_ActualizarDesarrollo.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710262058054_CreacionModeloActaComiteConvivenciaLaboral.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710272154302_CampoSedeQuejasySeguimiento.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201710301610582_ModeloRevision.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201711071818404_modificacionDxSalud.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201711022026137_campoOtrotblgestiondelcambio.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201711082227461_gestioncambiocampoOtroTblgestioncambiomig.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201711141306400_cambiotipidatoplanaccionIns.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201711161756596_planpesv.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201711191710524_PlanTrabajoCronograma.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201801161559239_DiaFestivo.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\Sp_AcomuladoTotalContigenciasReportesAusentismo.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_DesactivarUsuariosSistema.sql" />
+    <Compile Include="Revision\ActaRevision.cs" />
+    <Compile Include="Revision\AdjuntoAgendaRevision.cs" />
+    <Compile Include="Revision\AgendaRevision.cs" />
+    <Compile Include="Revision\ItemRevision.cs" />
+    <Compile Include="Revision\ParticipanteRevision.cs" />
+    <Compile Include="Revision\PlanAccionRevision.cs" />
+    <Compile Include="SG_SSTContext.cs" />
+    <Compile Include="Usuarios\CausalRechazoUsuariosSistema.cs" />
+    <Compile Include="Usuarios\ParametroSistema.cs" />
+    <Compile Include="Usuarios\PasswordTemporalUsuariosSistema.cs" />
+    <Compile Include="Usuarios\PlantillaCorreosSistema.cs" />
+    <Compile Include="Usuarios\PermisoDenegadoPorRol.cs" />
+    <Compile Include="Usuarios\PermisoSistema.cs" />
+    <Compile Include="Usuarios\RecursoSistema.cs" />
+    <Compile Include="Usuarios\RecursoPorRol.cs" />
+    <Compile Include="Usuarios\RolSistema.cs" />
+    <Compile Include="Usuarios\UsuarioParaAprobar.cs" />
+    <Compile Include="Usuarios\UsuarioPorRol.cs" />
+    <Compile Include="Usuarios\UsuarioRechazadoSistema.cs" />
+    <Compile Include="Usuarios\UsuarioSistema.cs" />
+    <Compile Include="Usuarios\UsuariosSistemaEmpresa.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707210245020_AddcampoTBL_Incidentes.sql" />
+    <None Include="ScriptsToUpdate\ScriptFromMigrations\201709032259591_AddCampoCapituloDiagnosticos.qsl" />
+    <None Include="Scripts\jquery-3.1.1.min.map" />
+    <None Include="Scripts\jquery-3.1.1.slim.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201705251525574_Inicial.resx">
+      <DependentUpon>201705251525574_Inicial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705251630024_creaciontblplaneacioninspecccion.resx">
+      <DependentUpon>201705251630024_creaciontblplaneacioninspecccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705261412160_cambiomigracionperfilsocmod.resx">
+      <DependentUpon>201705261412160_cambiomigracionperfilsocmod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705272126152_ModicaTbl_Ausencias.resx">
+      <DependentUpon>201705272126152_ModicaTbl_Ausencias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705290326057_AddTipoContigencias.resx">
+      <DependentUpon>201705290326057_AddTipoContigencias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705292145305_Tbls_Accion_Segundo.resx">
+      <DependentUpon>201705292145305_Tbls_Accion_Segundo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705301640489_cambiomigmartesperfil.resx">
+      <DependentUpon>201705301640489_cambiomigmartesperfil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706010143117_AddUsuariosSistema.resx">
+      <DependentUpon>201706010143117_AddUsuariosSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706021951473_adicionForaneaPlaneaccionInspeccion.resx">
+      <DependentUpon>201706021951473_adicionForaneaPlaneaccionInspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706071408518_EvalEtandMini-and-EmpleTercero.resx">
+      <DependentUpon>201706071408518_EvalEtandMini-and-EmpleTercero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706111829110_Tablas_Reporte_Incidentes.resx">
+      <DependentUpon>201706111829110_Tablas_Reporte_Incidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706112243262_Upd_tipoDocumentos.resx">
+      <DependentUpon>201706112243262_Upd_tipoDocumentos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706151348105_desbloqueo.resx">
+      <DependentUpon>201706151348105_desbloqueo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706171716138_Tablas_Reporte_Incidentes_02.resx">
+      <DependentUpon>201706171716138_Tablas_Reporte_Incidentes_02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191517401_Ampliar_Tipo_Documento.resx">
+      <DependentUpon>201706191517401_Ampliar_Tipo_Documento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191640405_TituloScript.resx">
+      <DependentUpon>201706191640405_TituloScript.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706191719269_Incidente_Actualizacion_General.resx">
+      <DependentUpon>201706191719269_Incidente_Actualizacion_General.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706232005261_AdicionForaneaTablaMI.resx">
+      <DependentUpon>201706232005261_AdicionForaneaTablaMI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706252105246_Ajuste_Empleado_Tercero.resx">
+      <DependentUpon>201706252105246_Ajuste_Empleado_Tercero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706261958105_Añadir_tablas_auditorias.resx">
+      <DependentUpon>201706261958105_Añadir_tablas_auditorias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706262044267_UpdateModuloAdministracionUsuariosSistema.resx">
+      <DependentUpon>201706262044267_UpdateModuloAdministracionUsuariosSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706270404466_AddtablasSistema.resx">
+      <DependentUpon>201706270404466_AddtablasSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706272103269_Cambio_Campo_ProgramaAuditoria.resx">
+      <DependentUpon>201706272103269_Cambio_Campo_ProgramaAuditoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706281526593_Modificacion_tabla_auditoria.resx">
+      <DependentUpon>201706281526593_Modificacion_tabla_auditoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706281949461_Modificacion_Tabla_Perfil_Socio_Democratico.resx">
+      <DependentUpon>201706281949461_Modificacion_Tabla_Perfil_Socio_Democratico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706292143137_EliminarCampoPerfilSocioDemografico.resx">
+      <DependentUpon>201706292143137_EliminarCampoPerfilSocioDemografico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706302213023_AdicionGestionClavesTemporales.resx">
+      <DependentUpon>201706302213023_AdicionGestionClavesTemporales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707031756362_Tablas_Auditoria_Actividad.resx">
+      <DependentUpon>201707031756362_Tablas_Auditoria_Actividad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707040240237_cambioformatofechainspeccion.resx">
+      <DependentUpon>201707040240237_cambioformatofechainspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707041715453_cambiofechacrearinspeccion.resx">
+      <DependentUpon>201707041715453_cambiofechacrearinspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707052256508_creaciontblmaestroconfiguracionrelacioninspeccion.resx">
+      <DependentUpon>201707052256508_creaciontblmaestroconfiguracionrelacioninspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707060138368_cambionombretablas.resx">
+      <DependentUpon>201707060138368_cambionombretablas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707060444085_ActualizacionEntidadUsuariosParaAprobar.resx">
+      <DependentUpon>201707060444085_ActualizacionEntidadUsuariosParaAprobar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707061322153_cambionombreconfiguracion.resx">
+      <DependentUpon>201707061322153_cambionombreconfiguracion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707071242402_ModificarPerfilSocioDemograficoRelaciones.resx">
+      <DependentUpon>201707071242402_ModificarPerfilSocioDemograficoRelaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707081707408_cambiomodelrequisitoslegalestablas.resx">
+      <DependentUpon>201707081707408_cambiomodelrequisitoslegalestablas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707082150249_Cambio_Tabla_Acciones.resx">
+      <DependentUpon>201707082150249_Cambio_Tabla_Acciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707101426198_Tabla_Reportes.resx">
+      <DependentUpon>201707101426198_Tabla_Reportes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707101903097_CreacionTablaAsistenteInspeccion.resx">
+      <DependentUpon>201707101903097_CreacionTablaAsistenteInspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707102057336_creaciontblinspeccion.resx">
+      <DependentUpon>201707102057336_creaciontblinspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707102227408_condicioninsegura.resx">
+      <DependentUpon>201707102227408_condicioninsegura.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707102238457_cambiodatoconfiguracion.resx">
+      <DependentUpon>201707102238457_cambiodatoconfiguracion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707102337397_create_tbl_plan_empresa.resx">
+      <DependentUpon>201707102337397_create_tbl_plan_empresa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707120319530_CreateEmpleadosTematicas.resx">
+      <DependentUpon>201707120319530_CreateEmpleadosTematicas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707121310159_Crtblplanaccionporinspeccion.resx">
+      <DependentUpon>201707121310159_Crtblplanaccionporinspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707121356043_cambioforaneas.resx">
+      <DependentUpon>201707121356043_cambioforaneas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707122211338_AlterTblEmpleadoPorTematica.resx">
+      <DependentUpon>201707122211338_AlterTblEmpleadoPorTematica.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707150403192_CambioTBL_Incidentes.resx">
+      <DependentUpon>201707150403192_CambioTBL_Incidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707150510469_Cambio_Add_Telefono_tbl_sede.resx">
+      <DependentUpon>201707150510469_Cambio_Add_Telefono_tbl_sede.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707150805246_Cambio_adicional_tbl_incidentes.resx">
+      <DependentUpon>201707150805246_Cambio_adicional_tbl_incidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707150815477_Cambio_tañano_campos_tbl_incidentes.resx">
+      <DependentUpon>201707150815477_Cambio_tañano_campos_tbl_incidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707180358076_ActualizaTablaUsuariosSistema.resx">
+      <DependentUpon>201707180358076_ActualizaTablaUsuariosSistema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707192308340_TablasAccionesAuditoria.resx">
+      <DependentUpon>201707192308340_TablasAccionesAuditoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707210245020_AddcampoTBL_Incidentes.resx">
+      <DependentUpon>201707210245020_AddcampoTBL_Incidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707270433028_AdicionCampoNombrePersonaAusencias.resx">
+      <DependentUpon>201707270433028_AdicionCampoNombrePersonaAusencias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707271949044_AdicionarNuevoCampoTablaPerfilSocioDemografico.resx">
+      <DependentUpon>201707271949044_AdicionarNuevoCampoTablaPerfilSocioDemografico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707311522480_creaciontablaconfiguracioninspeccion.resx">
+      <DependentUpon>201707311522480_creaciontablaconfiguracioninspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707311838252_AjusteTablaConfiguracion.resx">
+      <DependentUpon>201707311838252_AjusteTablaConfiguracion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708022051144_agregarNuevoCampoDxOtro.resx">
+      <DependentUpon>201708022051144_agregarNuevoCampoDxOtro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708041635522_MigAgregarFK_EmpresaTbl_MatrizRequisitosLegales.resx">
+      <DependentUpon>201708041635522_MigAgregarFK_EmpresaTbl_MatrizRequisitosLegales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708091640361_adicioncampotablainspeccion.resx">
+      <DependentUpon>201708091640361_adicioncampotablainspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708101358433_prueba.resx">
+      <DependentUpon>201708101358433_prueba.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709032259591_AddCampoCapituloDiagnosticos.resx">
+      <DependentUpon>201709032259591_AddCampoCapituloDiagnosticos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708101620100_moduloReporteCondicionesActosInseguros.resx">
+      <DependentUpon>201708101620100_moduloReporteCondicionesActosInseguros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708251550320_modificacionTablasModuloReporteCondicionesActosInseguros.resx">
+      <DependentUpon>201708251550320_modificacionTablasModuloReporteCondicionesActosInseguros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708242104448_creatablasverificarinspeccion.resx">
+      <DependentUpon>201708242104448_creatablasverificarinspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708242152417_TablasPlanInspeccion.resx">
+      <DependentUpon>201708242152417_TablasPlanInspeccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708251503331_cambioforaneadeinspeccionsedeproceso.resx">
+      <DependentUpon>201708251503331_cambioforaneadeinspeccionsedeproceso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708291712206_modgestiondelcambio.resx">
+      <DependentUpon>201708291712206_modgestiondelcambio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708291740401_gestioncambiomodificacionajuste.resx">
+      <DependentUpon>201708291740401_gestioncambiomodificacionajuste.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709042137465_InitialCreate.resx">
+      <DependentUpon>201709042137465_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709051653311_ModificacionOcupacionTablasPerfilSocioDemogrico.resx">
+      <DependentUpon>201709051653311_ModificacionOcupacionTablasPerfilSocioDemogrico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709060342408_TablasUCProveedoresYContratistas.resx">
+      <DependentUpon>201709060342408_TablasUCProveedoresYContratistas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709132113288_cambioForaneaProcesoReporteInseguros.resx">
+      <DependentUpon>201709132113288_cambioForaneaProcesoReporteInseguros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710061457101_Crear_comunicados_app.resx">
+      <DependentUpon>201710061457101_Crear_comunicados_app.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710122127071_AdicionCampoEmailPersonaParaCUComunicaciones.resx">
+      <DependentUpon>201710122127071_AdicionCampoEmailPersonaParaCUComunicaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710132242209_ajustegestcambiofkclspelfkpelmodoct131017.resx">
+      <DependentUpon>201710132242209_ajustegestcambiofkclspelfkpelmodoct131017.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710161753590_PesvCreacionTablas.resx">
+      <DependentUpon>201710161753590_PesvCreacionTablas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710170126518_TablaObjetivosst.resx">
+      <DependentUpon>201710170126518_TablaObjetivosst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710170213397_EstudioPuestoTrabajo.resx">
+      <DependentUpon>201710170213397_EstudioPuestoTrabajo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710170455439_NuevasTablasUC28ProveedoresYContratistas.resx">
+      <DependentUpon>201710170455439_NuevasTablasUC28ProveedoresYContratistas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710172140339_plantrabajoapp.resx">
+      <DependentUpon>201710172140339_plantrabajoapp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710191443062_cambiosEnTablasDePerfilSocioDemografico.resx">
+      <DependentUpon>201710191443062_cambiosEnTablasDePerfilSocioDemografico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710201512263_CreacionModeloActasCopasst.resx">
+      <DependentUpon>201710201512263_CreacionModeloActasCopasst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710262058054_CreacionModeloActaComiteConvivenciaLaboral.resx">
+      <DependentUpon>201710262058054_CreacionModeloActaComiteConvivenciaLaboral.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710272154302_CampoSedeQuejasySeguimiento.resx">
+      <DependentUpon>201710272154302_CampoSedeQuejasySeguimiento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710301440281_creacampootropeligrotipo.resx">
+      <DependentUpon>201710301440281_creacampootropeligrotipo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710302042160_ModificacionTablasUC45ParticipacionConsultaSST.resx">
+      <DependentUpon>201710302042160_ModificacionTablasUC45ParticipacionConsultaSST.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710311435240_pesvial_agregados.resx">
+      <DependentUpon>201710311435240_pesvial_agregados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711021533368_cu_algoritmo_software.resx">
+      <DependentUpon>201711021533368_cu_algoritmo_software.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711061858269_bateriasPsicosocial.resx">
+      <DependentUpon>201711061858269_bateriasPsicosocial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711071521434_CambioDateTimeNullCasoDeUso28.resx">
+      <DependentUpon>201711071521434_CambioDateTimeNullCasoDeUso28.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711071818404_modificacionDxSalud.resx">
+      <DependentUpon>201711071818404_modificacionDxSalud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711081449030_ModeloRevisionDireccion.resx">
+      <DependentUpon>201711081449030_ModeloRevisionDireccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711082227461_gestioncambiocampoOtroTblgestioncambiomig.resx">
+      <DependentUpon>201711082227461_gestioncambiocampoOtroTblgestioncambiomig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711141306400_cambiotipidatoplanaccionIns.resx">
+      <DependentUpon>201711141306400_cambiotipidatoplanaccionIns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711150200156_RecomendacionesBateriaPsicosocial.resx">
+      <DependentUpon>201711150200156_RecomendacionesBateriaPsicosocial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711160137576_EnfermedadesLaborales.resx">
+      <DependentUpon>201711160137576_EnfermedadesLaborales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711161756596_planpesv.resx">
+      <DependentUpon>201711161756596_planpesv.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711162110095_cu_algoritmo_15_16_17_26.resx">
+      <DependentUpon>201711162110095_cu_algoritmo_15_16_17_26.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711191710524_PlanTrabajoCronograma.resx">
+      <DependentUpon>201711191710524_PlanTrabajoCronograma.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711201642466_cu_algoritmo_11202017.resx">
+      <DependentUpon>201711201642466_cu_algoritmo_11202017.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711212058298_cu_usuarios_susritos_app.resx">
+      <DependentUpon>201711212058298_cu_usuarios_susritos_app.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711212237270_CambioEnCamposCU46yCU47.resx">
+      <DependentUpon>201711212237270_CambioEnCamposCU46yCU47.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711221216114_cambioProcesoDx.resx">
+      <DependentUpon>201711221216114_cambioProcesoDx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711222154548_cu_algoritmo_comunicaciones_app.resx">
+      <DependentUpon>201711222154548_cu_algoritmo_comunicaciones_app.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711270800088_algoritmo-incidentes.resx">
+      <DependentUpon>201711270800088_algoritmo-incidentes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711291806470_cu_20_algoritmo.resx">
+      <DependentUpon>201711291806470_cu_20_algoritmo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711291828208_change_cu_20_algoritmo.resx">
+      <DependentUpon>201711291828208_change_cu_20_algoritmo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711300611537_cu_20_add_columns_allgoritmo.resx">
+      <DependentUpon>201711300611537_cu_20_add_columns_allgoritmo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712011549150_cu_empresa_filtros_algoritmo.resx">
+      <DependentUpon>201712011549150_cu_empresa_filtros_algoritmo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712011909203_cu_algoritmo_pending.resx">
+      <DependentUpon>201712011909203_cu_algoritmo_pending.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712060204012_cu_algoritmo_campoempresa_nit.resx">
+      <DependentUpon>201712060204012_cu_algoritmo_campoempresa_nit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712061343041_cu_encuestas_algoritmo.resx">
+      <DependentUpon>201712061343041_cu_encuestas_algoritmo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712061441288_cu_encuestas_2_algoritmo.resx">
+      <DependentUpon>201712061441288_cu_encuestas_2_algoritmo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712071259562_addcampologoempresaTblemp.resx">
+      <DependentUpon>201712071259562_addcampologoempresaTblemp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712111141307_ModificacionCampoDiagnostico.resx">
+      <DependentUpon>201712111141307_ModificacionCampoDiagnostico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712121349216_SecondCreate.resx">
+      <DependentUpon>201712121349216_SecondCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141623187_cu_20_algoritmo_subtotales.resx">
+      <DependentUpon>201712141623187_cu_20_algoritmo_subtotales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712291632139_cu_algoritmo_comunicaciones_log.resx">
+      <DependentUpon>201712291632139_cu_algoritmo_comunicaciones_log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801161559239_DiaFestivo.resx">
+      <DependentUpon>201801161559239_DiaFestivo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801182154580_AdicionFuncionalidadPreguntasSeguridad.resx">
+      <DependentUpon>201801182154580_AdicionFuncionalidadPreguntasSeguridad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801290332095_ActualizacionModuloUsuarios.resx">
+      <DependentUpon>201801290332095_ActualizacionModuloUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801290606241_AgregarDatosAdicionales.resx">
+      <DependentUpon>201801290606241_AgregarDatosAdicionales.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ScriptsToUpdate\Funtions\11_fn_Indicadores_Eventos.sql" />
+    <Content Include="ScriptsToUpdate\Funtions\13_fn_Alertas_Ausentismo.sql" />
+    <Content Include="ScriptsToUpdate\Funtions\MesesSinAusencias.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insertar_AspectosBase.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_DepartamentosMunicipios.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_ParametrosSistema.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_PlantillasCorreo.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_CausalesRechazoUsuarioSistema.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Estado_Empl.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Incidente_Consecuencia.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_RolesSistema.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Sexo.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Sitio_Incidente.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_TipoCotizante.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_TipoTercero.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Tipo_Incidente.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_Tipo_Jornada.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_VinculacionLaboral.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_Tbl_ZonaLugar.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Insert_TipoDocumentos.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\MaestroPPAL.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\UpdateDataTbl_Criterios.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\UPDATE_TBL_ASPECTOS_BASE.sql" />
+    <Content Include="ScriptsToUpdate\InsertMaestros\Update_Tbl_Criterios_valor.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201705272126152_ModicaTbl_Ausencias.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201705281659381_Modificacion_Terceros.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201705281717460_Modificacion_EmpresaTercero.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201705292145305_Tbls_Accion_Segundo.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201705301640489_cambiomigmartesperfil.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706010143117_AddUsuariosSistema.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706021951473_adicionForaneaPlaneaccionInspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706060542366_ModifyEvaluacionEstandMinimos-YA NO SIRVE.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706071408518_EvalEtandMini-and-EmpleTercero.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706111829110_Tablas_Reporte_Incidentes.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706112243262_Upd_tipoDocumentos.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706132313282_creaciontablasinspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706151348105_desbloqueo.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706252105246_Ajuste_Empleado_Tercero.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706191719269_Incidente_Actualizacion_General.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706191640405_TituloScript.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706191517401_Ampliar_Tipo_Documento.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706171221000_Tablas_Reporte_Incidentes_02.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706192142156_UpdateAdministracionUsuarios.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706270404466_AddtablasSistema.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706272103269_Cambio_Campo_ProgramaAuditoria.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706281526593_Modificacion_tabla_auditoria.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201706302213023_AdicionGestionClavesTemporales.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707031756362_Tablas_Auditoria_Actividad.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707041715453_cambiofechacrearinspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707060444085_ActualizacionEntidadUsuariosParaAprobar.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707052256508_creaciontblmaestroconfiguracionrelacioninspeccion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707061239459_cambionombretablaconfiguracion-maestro.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707071242402_ModificarPerfilSocioDemograficoRelaciones.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707061322153_cambionombreconfiguracion.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707081707408_cambiomodelrequisitoslegalestablas.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707082150249_Cambio_Tabla_Acciones.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707101426198_Tabla_Reportes.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707120319530_CreateEmpleadosTematicas.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707122211338_AlterTblEmpleadoPorTematica.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707150403192_CambioTBL_Incidentes.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707150510469_Cambio_Add_Telefono_tbl_sede.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707150805246_Cambio_adicional_tbl_incidentes.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707150815477_Cambio_tañano_campos_tbl_incidentes.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201707180358076_ActualizaTablaUsuariosSistema.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AcumuladoTotalContingencias.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_ALERTA_AUSENTISMO_CONSULTAR.sql" />
+    <Content Include="ScriptsToUpdate\ScriptFromMigrations\201705290326057_AddTipoContigencias.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_CANTIDAD_ENFERMEDADES.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_CONTINGENCIA.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_COSTO.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_DEPARTAMENTO.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_ENFERMEDADES.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_EPS.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_GRUPOS_ETARIOS.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_NUMERO_EVENTOS.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_OCUPACION.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_PROCESO.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_SEDE.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_SEXO.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENCIAS_VINCULACION.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_AUSENTISMO_CONSULTAR.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_BuscarUsuariosParaAprobar.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_EMPLEADO_LISTAR.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_ObtenerCantidadUsuariosAprobar.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_PRORROGAS_CONSULTAR.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\SP_RELACIONESLABTERCERO.sql" />
+    <Content Include="ScriptsToUpdate\StoreProcedures\sp_trae_email_gerente.sql" />
+    <Content Include="ScriptsToUpdate\Views\ReportesEIndicadores.sql" />
+    <Content Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SG-SST.EntidadesDominio\SG-SST.EntidadesDominio.csproj">
+      <Project>{D9F2CEB3-2AA8-4934-9AA3-4C435A6D6CC3}</Project>
+      <Name>SG-SST.EntidadesDominio</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Habilite la restauración del paquete NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

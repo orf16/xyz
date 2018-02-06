@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Links de Consulta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Consulta SST</a></li>
+    <li class="active">Links de Consulta</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Links de Consulta</div>
+    
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Links de Consulta</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+                            <p><em>*Ayuda</em></p>
+                            <p><em>*Ayuda</em></p>
+                            <p><em>*Ayuda</em></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body form-horizontal">
+        <div style="background-color:transparent">
+            <h5>Estimado Usuario en este Módulo podra Conocer:</h5>
+            <div class="well">
+                <ul>
+                    <li>
+                        @Html.ActionLink("Politica", "Politica", new { @class = "btn btn-link", @target = "_blank" })
+
+                    </li>
+                    <li>
+                        @Html.ActionLink("Matriz de Riesgo", "Matriz", new { @class = "btn btn-link", @target = "_blank" })
+
+                    </li>
+                    <li>
+                        @Html.ActionLink("Matriz Requisitos Legales", "MRequisitos", new { @class = "btn btn-link", @target = "_blank" })
+
+                    </li>
+                    <li>
+                        @Html.ActionLink("Roles y Responsabilidades", "Roles", new { @class = "btn btn-link", @target = "_blank" })
+
+                    </li>
+                    <li>
+                        @Html.ActionLink("Plan de Emergencia", "Plan", new { @class = "btn btn-link", @target = "_blank" })
+
+                    </li>
+
+                </ul>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

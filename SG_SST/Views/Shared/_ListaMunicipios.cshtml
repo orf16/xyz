@@ -1,0 +1,5 @@
+﻿@model List<SG_SST.EntidadesDominio.Ausentismo.EDMunicipio>
+@foreach (var item in Model)
+{
+    <option data-value="@item.IdMunicipio" value="@item.Nombre" />
+}

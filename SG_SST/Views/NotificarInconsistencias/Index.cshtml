@@ -1,0 +1,151 @@
+﻿@model SG_SST.Models.Empresa.NotificarInconsistenciasModels
+
+@{
+    ViewBag.Title = "Notificar Inconsistencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.NotificacionLaboralStatus != null)
+{
+    if (ViewBag.NotificacionLaboralStatus != "")
+    {
+        <script type="text/javascript">
+            //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.NotificacionLaboralStatus',
+                type: 'success',
+                //confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });            
+        </script>
+    }
+    else if (ViewBag.NotificacionLaboralStatusError != "")
+    {
+        <script type="text/javascript">
+            //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.NotificacionLaboralStatusError',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });            
+        </script>
+    }
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="@Url.Action("Index","RelacionesLaborales")">Relaciones Laborales</a></li>
+    <li class="active">Notificar Inconsistencias</li>
+</ol>
+
+@*Empresa / Notificar Inconsistencias*@
+
+@*<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-0">*@
+@using (Html.BeginForm("EnvioCorreo", "NotificarInconsistencias", FormMethod.Post, new { id = "idEnvioCorreoNotifica" }))
+{
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:black">NOTIFICAR INCONSISTENCIAS</div>
+        <div class="panel-body form-horizontal">
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda</h4>
+                                </div>
+                                <div class="modal-body " style="color:black; text-align:justify">
+
+                                    <p>En la opción de Notificar Inconsistencia, el Sistema envía reporte a la Gerencia de la Sucursal de POSITIVA donde está ubicada la sede principal de su empresa a través de correo electrónico. Lo anterior para realizar la validación correspondiente.</p>
+                                    <p>Recuerde que la información de las relaciones laborales de sus trabajadores son consultados de los datos existentes en los sistemas de POSITIVA COMPAÑÍA DE SEGUROS S.A. Si existe alguna diferencia por favor realice la notificación a través de este módulo.</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" align="center">
+                <div class="col-md-10">
+                    <h4>Razón Social Empresa: @Model.Nombre_Empresa - NIT: @Model.Documento_Empresa</h4>
+                </div>
+            </div>
+            <div class="row" align="center">
+                <div class="col-sm-2"><b>Tipo de inconsistencia:</b></div>
+                <div class="col-sm-6">
+                    @Html.DropDownList("dd_tipoInconsistencia", (List<SelectListItem>)Model.lstTiposInconsistencias, "...Escoja un motivo...", new { @class = "dropdown1 form-control" })
+                </div>
+            </div>
+            <br />
+            <div class="row" align="center">
+                <div class="col-sm-2"><b>Observación:</b></div>
+                <div class="col-sm-6">
+                    <textarea rows="4" id="idObservacion" name="idObservacion" maxlength="150" cols="50" class="form-control" style="resize:none"></textarea>
+                </div>
+            </div>
+            <br />
+            <div class="row" align="center">
+                <button type="button" onclick="ValidaEnvioNotificacion();" class="boton botonactive">Notificar Inconsistencia</button>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+
+    var urlBase = ""
+    try {
+        urlBase = utils.getBaseUrl();
+    } catch (e) {
+        console.error(e.message);
+        throw new Error("Revisa tienes errores");
+    };
+    function ValidaEnvioNotificacion() {
+
+        var $IDtipoInconsistencia = $("#dd_tipoInconsistencia");
+        var $idObservacion = $("#idObservacion");
+
+        if ($IDtipoInconsistencia.val().length == 0)
+            swal("Estimado Usuario", 'El tipo de Inconsistencia Laboral es obligatoria');
+        else if ($idObservacion.val().length == 0)
+            swal("Estimado Usuario", 'El campo observación  es obligatorio');
+        else if ($idObservacion.val().length > 150)
+            swal("Estimado Usuario", 'El campo Observación debe tener hasta 150 caracteres');
+        else {
+            utils.showLoading();
+            $("#idEnvioCorreoNotifica").submit();
+            utils.closeLoading();
+        }
+    }
+
+</script>
+@*</div>
+    </div>
+    </div>*@

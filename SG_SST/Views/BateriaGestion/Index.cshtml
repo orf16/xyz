@@ -1,0 +1,578 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDBateriaGestion>
+
+@{
+    ViewBag.Title = "Gestionar Batería Psicosocial";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li class="active">Gestionar Batería Psicosocial</li>
+</ol>
+
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaAntes');
+        ConstruirDatePickerPorElemento('FechaDespues');
+    });
+    //Eliminar Aplicacion bateria
+    $(document).ready(function () {
+        $('.btnEliminar').click(function () {
+            var Id_Elm = $(this).attr('id');
+
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea eliminar este registro de aplicación de cuestionario ?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BateriaGestion/EliminarAplicacion",
+                    data: '{IdGestion: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.probar == false) {
+                            if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+
+                                location.reload(true);
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                type: "warning",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: true
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                location.reload(true);
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                    }
+                });
+
+            });
+        });
+    });
+
+    //Ver los resultados
+    $(document).ready(function () {
+        $('.entradaresultados').click(function () {
+            var Id_Elm = $(this).attr('name');
+            var probar=false;
+
+            swal({
+                title: "Estimado Usuario",
+                text: "es usted un psicólogo con posgrado en salud ocupacional, con licencia vigente de prestación de servicios en psicología ocupacional ?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+                window.location.href="/BateriaGestion/ResultadoGeneral?IdGestion=" + Id_Elm + "&form=0";
+            });
+        });
+    });
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".paginver");
+        var numItems = items.length;
+        var perPage = 5;
+        items.slice(perPage).hide();
+        $(".paginationver").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+    jQuery(function ($) {
+        var items = $(".pagincom");
+        var numItems = items.length;
+        var perPage = 5;
+        items.slice(perPage).hide();
+        $(".paginationcom").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">GESTIÓN DE BATERÍA PSICOSOCIAL</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / GESTIÓN DE BATERÍA PSICOSOCIAL</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                @*<p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>ESTA ES LA PÁGINA PRINCIPAL DEL MÓDULO DE BATERÍA PSICOSOCIAL DESDE AQUÍ EL USUARIO PUEDE VER LAS APLICACIONES PARA LAS DIFERENTES INSTRUMENTOS DE LA BATERIA DISPONIBLES</strong></p>*@
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Generalidades</strong></u></p>
+                                <p style="text-align:justify">Para realizar el proceso de diagnóstico de riesgo psicosocial, se debe seleccionar las herramientas a utilizar con sus trabajadores de acuerdo a:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>• Cuestionario Intralaboral Forma A</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>• Cuestionario Intralaboral Forma B</strong></p>
+                                <p style="margin-bottom:20px;text-align:justify">Es importante aclarar que cada cuestionario lleva implícito el diligenciamiento de la <strong>ficha de datos generales</strong></p>
+                                <p style="margin-bottom:20px;text-align:justify">Este módulo solo puede ser utilizado por psicólogos con posgrado en salud ocupacional, con licencia vigente de prestación de servicios en psicología ocupacional</p>
+                                <p style="text-align:justify">Cada aplicación de cuestionario puede tener tres estados disponibles: 1. Convocatoria - Inactivo, 2. Activo, 3. Finalización. Los <strong>estados</strong> se necesitan para administrar la interacción de Alissta con el usuario de cada uno de los cuestionarios, por ejemplo: si el usuario de Alissta requiere que no se incluyan más diligenciamientos que afecten el resultado general de la aplicación. Si necesita conocer la descripción de estos estados en la parte inferior de esta ayuda encontrará la información</p>
+                                <p style="text-align:justify"><strong>NOTA:</strong> Señor empleador recuerde que la aplicación de las baterías de riesgos psicosocial requiere el diligenciamiento del consentimiento informado de sus trabajadores debidamente firmado. La aceptación en el aplicativo ALISSTA no lo exime.</p>
+    
+    @*<p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>UNA APLICACIÓN DE CUESTIONARIO ES UNA CONVOCATORIA PARA DILIGENCIAR UN CUESTIONARIO DETERMINADO POR EL USUARIO, LA CUAL SE COMPONE DE CONVOCADOS O PERSONAS QUE SON INVITADAS A REALIZAR DICHO CUESTIONARIO</strong></p>*@
+
+                                
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Crear una aplicación de cuestionario</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:left;"> Para crear una aplicación de cuestionario presione <button type="button" class="boton botonactive" style="cursor:default;">NUEVA APLICACIÓN DE CUESTIONARIO</button></p>
+
+                                
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>APLICACIONES DE CUESTIONARIOS ACTIVOS O EN CONVOCATORIA</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> La primera tabla muestra al usuario las aplicaciones que se encuentran en estado <strong>Activo</strong> o <strong>en Convocatoria</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg1.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>APLICACIONES DE CUESTIONARIOS FINALIZADOS</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> La segunda tabla muestra al usuario las aplicaciones que se encuentran en estado <strong>Finalizado</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg2.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Lista de columnas de las tablas de gestión de baterias</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Nombre: nombre del cuestionario(s) que van a realizar los convocados</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Estado: Estado de la aplicación del cuestionario, existen 3 estados disponibles: <strong>Convocatoria - Inactivo</strong>, <strong>Activo - Aplicación en curso</strong> y <strong>Finalización - Inactivo</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Fecha de Registro: fecha cuando fue creada la aplicación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Fecha Finalización: fecha cuando se cambia la apliación al estado <strong>Finalización - Inactivo</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">cuestionarios Finalizados / Planeados: relación de cuestionarios que han finalizado sobre las cuestionarios planeadas</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Progreso: porcentaje de progreso de la aplicación su máximo valor es de 100%</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Opciones de cada aplicación</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Configurar</strong>: Si presiona este botón <i class="glyphicon glyphicon-cog" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede dirigirse a una página donde puede cambiar el estado de la aplicación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Administración de usuarios</strong>: Si presiona este botón <i class="glyphicon glyphicon-user" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede dirigirse a una página donde puede revisar los resultados de los cuestionarios, eliminar usuarios o reenviar correos</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Convocar Usuarios</strong>: Si presiona este botón <i class="glyphicon glyphicon-envelope" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede dirigirse a una página donde puede invitar y enviar correos a personas para realizar el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Eliminar Aplicación</strong>: Si presiona este botón <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede eliminar una aplicación de cuestionario, si la aplicación posee cuestionarios terminados no se permite la eliminación de la aplicación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Resultado General</strong>: Si presiona este botón <i class="glyphicon glyphicon-list-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede ver los resultados generales de la aplicación del cuestionario si su estado es 'Finalizado'</p>
+
+
+
+                                
+                            
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Filtrar aplicaciones de baterías</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">El usuario puede filtrar las aplicaciones de baterías mediante dos parámetros: <strong>fecha de registro</strong> y el <strong>tipo de batería</strong>, luego seleccionar los filtros deseados haga click en  <button type="button" class="boton botonactive" style="cursor:default;">BUSCAR</button> para realizar la busqueda y mostrar los resultados. Si no existen filtros diligenciados el sistema mostrará todos los registros</p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Lista de estados de una aplicación</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1.Convocatoria - Inactivo: Si la aplicación del cuestionario se encuentra inactivo, los usuarios no podrán ingresar a realizar el diligenciamiento, marque este estado si desea planear la aplicación del cuestionario y convocar personas para su posterior diligenciamiento</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2.Activo - Aplicación en curso: Si la aplicación del cuestionario se encuentra activo, los usuario pueden diligenciar el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3.Finalización - Inactivo: Si la aplicación del cuestionario se encuentra finalizado, los usuario no pueden diligenciar el cuestionario y se habilitará al usuario de Alissta para ver los resultados de los cuestionarios</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Contenido del Panel*@
+
+        
+
+
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Agregar Aplicación de Batería</h4>
+            </div>
+            
+            <div class="col-sm-12 col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                <span class="titulosorganigrama" style="font-size:18px;">Estimado usuario recuerde que este módulo solo puede ser utilizado por psicólogos con posgrado en salud ocupacional, con licencia vigente de prestación de servicios en psicología ocupacional, según la Resolución 2646 de 2008 </span>
+            </div>
+
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+                    
+                    <center>
+                        <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                            <button id="CrearPlanVial" class="boton botonactive col-margin" onclick="location.href='@Url.Action("NuevaAplicacionCuestionario", "BateriaGestion")';return false;">NUEVA APLICACIÓN DE CUESTIONARIO</button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Consultar Gestión de Baterias</h4>
+            </div>
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+                    @using (Html.BeginForm("Index", "BateriaGestion", FormMethod.Post))
+                    {
+
+
+                    <div class="col-sm-12 col-md-3">
+                        <label>Fecha Registro Inicio</label>
+                        @Html.TextBox("FechaAntes", (string)ViewBag.val_fecha1, new { @class = "form-control form-width-100" })
+                    </div>
+                    <div class="col-sm-12 col-md-3">
+                        <label>Fecha Registro Fin</label>
+                        @Html.TextBox("FechaDespues", (string)ViewBag.val_fecha2, new { @class = "form-control form-width-100" })
+                    </div>
+                    <div class="col-sm-12 col-md-5">
+                        <label>Tipo de Batería</label>
+                        @Html.DropDownList("Tipo", null, "-- Seleccione un Tipo --", htmlAttributes: new { @class = "form-control" })
+                        <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <center>
+                        <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                            <button id="Buscar" class="boton botonactive col-margin" type="submit">BUSCAR</button>
+                        </div>
+                    </center>
+                    }
+                </div>
+            </div>
+        </div>
+                    <div class="form-group row internal-panel-body">
+                        
+
+                        
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="Tabla-Gestion1 table-responsive add-side-padding">
+                            <table id="Grid3" class="table table-bordered" style="border: 2px solid lightslategray">
+
+                                <thead>
+                                    <tr class="titulos_tabla">
+                                        <th colspan="10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                            <span>APLICACIONES DE CUESTIONARIOS ACTIVOS O EN CONVOCATORIA</span>
+                                        </th>
+                                    </tr>
+                                    <tr class="titulos_tabla">
+
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                            <span>Nombre</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:14%;">
+                                            <span>Estado</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:14%;">
+                                            <span>Fecha de Registro</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                            <span>Cuestionarios Finalizados / Planeados</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:13%;">
+                                            <span>Progreso</span>
+                                        </th>
+
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+
+                                        </th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var ListaActivos = Model.Where(s => s.EstadoInt != 3).ToList();
+                                        if (ListaActivos.Count > 0)
+                                        {
+                                            foreach (var item in ListaActivos)
+                                            {
+                                                var ListaConvocados = item.ListaUsuarios;
+                                                var ListaTerminado = item.ListaUsuarios.Where(s => s.RegistroOperacion == "Fin").ToList();
+                                                decimal NumConv = ListaConvocados.Count();
+                                                decimal NumTerm = ListaTerminado.Count();
+                                                string rel = NumTerm.ToString() + "/" + NumConv.ToString();
+                                                decimal porc = 0;
+                                                if (NumConv!=0)
+                                                {
+                                                    porc = Math.Round((NumTerm / NumConv), 3);
+                                                }
+
+                                                string decimalstr = String.Format("{0:P1}", porc);
+                                                <tr class="paginver">
+
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                        <span>@item.NombreBateria.Replace("Estres", "Estrés")</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@item.Estado</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center;max-width:80px;">
+                                                        @{
+                                                            string Fecha_str = "";
+                                                            try
+                                                            {
+                                                                Fecha_str = item.FechaRegistro.ToString("dd/MM/yyyy");
+                                                            }
+                                                            catch (Exception)
+                                                            {
+
+                                                            }
+                                                            <span>@Fecha_str</span>
+                                                        }
+                                                    </td>
+
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@rel</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@decimalstr</span>
+                                                    </td>
+
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <a id="@item.Pk_Id_BateriaGestion.ToString()" href="@Url.Action("Configurar", "BateriaGestion", new { IdGestion = item.Pk_Id_BateriaGestion })" class="btn btn-sm btn-positiva" title="Configurar" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-cog"></span>
+                                                        </a>
+                                                        <a id="@item.Pk_Id_BateriaGestion.ToString()" href="@Url.Action("AdmoUsuarios", "BateriaGestion", new { IdGestion = item.Pk_Id_BateriaGestion, orden="1", filtro="1" })" class="btn btn-sm btn-positiva " title="Administrar Usuarios" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-user"></span>
+                                                        </a>
+                                                        <a id="@item.Pk_Id_BateriaGestion.ToString()" href="@Url.Action("AplicacionCuestionario", "BateriaGestion", new { IdGestion = item.Pk_Id_BateriaGestion })" class="btn btn-sm btn-positiva" title="Convocar Usuarios" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-envelope"></span>
+                                                        </a>
+                                                        <a id="@item.Pk_Id_BateriaGestion.ToString()" class="btn btn-sm btn-positiva btnEliminar" title="Eliminar Aplicación de Batería" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-erase"></span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="6" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                                                        <span>No existen registros</span>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+                                    }
+                                </tbody>
+                            </table>
+                            @{
+                                if (ListaActivos.Count > 5)
+                                {
+                                    <center><div class="pagination paginationver" id="paginador1"></div></center>
+                                }
+                            }
+                            
+                        </div>
+                        <div class="Tabla-Gestion2 table-responsive add-side-padding">
+                            <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray">
+                                <thead>
+                                    <tr class="titulos_tabla ">
+                                        <th colspan="10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;">
+                                            <span>APLICACIONES DE CUESTIONARIOS FINALIZADOS</span>
+                                        </th>
+                                    </tr>
+                                    <tr class="titulos_tabla">
+
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                            <span>Nombre</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:14%;">
+                                            <span>Estado</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                            <span>Fecha de Registro</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                            <span>Fecha Finalización</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                            <span>Cuestionarios Finalizados / Planeados</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                            <span>Progreso</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:12%;">
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var ListaFinalizados = Model.Where(s => s.EstadoInt == 3).ToList();
+                                        if (ListaFinalizados.Count > 0)
+                                        {
+                                            foreach (var item in ListaFinalizados)
+                                            {
+                                                var ListaConvocados = item.ListaUsuarios;
+                                                var ListaTerminado = item.ListaUsuarios.Where(s => s.RegistroOperacion == "Fin").ToList();
+                                                decimal NumConv = ListaConvocados.Count();
+                                                decimal NumTerm = ListaTerminado.Count();
+                                                string rel = NumTerm.ToString() + "/" + NumConv.ToString();
+                                                decimal porc = 0;
+                                                if (NumConv != 0)
+                                                {
+                                                    porc = Math.Round((NumTerm / NumConv), 3);
+                                                }
+                                                string decimalstr = String.Format("{0:P1}", porc);
+
+                                                <tr class="pagincom">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                        <span>@item.NombreBateria.Replace("Estres", "Estrés")</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@item.Estado</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center;max-width:80px;">
+                                                        @{
+                                                            string Fecha_str1 = "";
+                                                            try
+                                                            {
+                                                                Fecha_str1 = item.FechaRegistro.ToString("dd/MM/yyyy");
+                                                            }
+                                                            catch (Exception)
+                                                            {
+
+                                                            }
+                                                            <span>@Fecha_str1</span>
+                                                        }
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        @{
+                                                            string Fecha_str2 = "";
+                                                            try
+                                                            {
+                                                                Fecha_str2 = item.FechaRegistro.ToString("dd/MM/yyyy");
+                                                            }
+                                                            catch (Exception)
+                                                            {
+
+                                                            }
+                                                            <span>@Fecha_str2</span>
+                                                        }
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@rel</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@decimalstr</span>
+                                                    </td>
+
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <a id="@item.Pk_Id_BateriaGestion.ToString()" href="@Url.Action("Configurar", "BateriaGestion", new { IdGestion = item.Pk_Id_BateriaGestion })" class="btn btn-sm btn-positiva" title="Configurar" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-cog"></span>
+                                                        </a>
+                                                        <a id="@item.Pk_Id_BateriaGestion.ToString()" href="@Url.Action("AdmoUsuarios", "BateriaGestion", new { IdGestion = item.Pk_Id_BateriaGestion, orden="1", filtro="1" })" class="btn btn-sm btn-positiva " title="Administrar Usuarios" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-user"></span>
+                                                        </a>
+                                                        <a name="@item.Pk_Id_BateriaGestion.ToString()"  class="btn btn-sm btn-positiva entradaresultados" title="Resultados Generales" style="margin-bottom:5px">
+                                                            <span class="glyphicon glyphicon-list-alt"></span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="7" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                                    <span>No existen registros</span>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                </tbody>
+                            </table>
+                            @{
+                                if (ListaFinalizados.Count > 5)
+                                {
+                                    <center><div class="pagination paginationcom" id="paginador1"></div></center>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,134 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.Rol>
+
+@using System.Configuration;
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+
+@if (ViewBag.respuestaGuardado == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Señor usuario',
+        'Rol guardado con éxito',
+        'success'
+        )
+    </script>
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<div style="overflow-y:scroll;height:auto">
+    <table class="table table-condensed table-bordered table-hover table-striped" style="border: 2px solid lightslategray">
+
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @Html.Label("ROLES")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @Html.Label("RESPONSABILIDADES")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @Html.Label("RENDICION DE CUENTA")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @Html.Label("")
+            </th>
+        </tr>
+
+        @{
+            foreach (var item in Model)
+            {
+                int responsabilidades = 1;
+                int rendiciones = 1;
+                <tr>
+                    @if (item.Descripcion != ConfigurationManager.AppSettings["rolResponsableSGSST"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolRepresentanteLegal"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolProfesionalSST"])
+                    {
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Descripcion)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle" title="Este Rol NO se puede eliminar porque se utiliza en otros módulos del SGSST">
+                            <strong>@Html.DisplayFor(modelItem => item.Descripcion)</strong>
+                        </td>
+                    }
+                    <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        @foreach (var respxRol in item.ResponsabilidadesPorRoles)
+                        {
+                            @Html.Label(responsabilidades.ToString() + "- " + "  ")
+                            @Html.DisplayFor(modelItem => respxRol.Responsabilidades.Descripcion)
+                            <br />
+                            responsabilidades = responsabilidades + 1;
+                        }
+                    </td>
+                    <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                        @foreach (var rendxRol in item.RendicionDeCuentasPorRoles)
+                        {
+                            @Html.Label(rendiciones.ToString() + "- " + "  ")
+                            @Html.DisplayFor(modelItem => rendxRol.RendicionDeCuentas.Descripcion)
+                            <br />
+                            rendiciones = rendiciones + 1;
+                        }
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a href="javascript:void(0);" onclick="EditarRolResp(@item.Pk_Id_Rol)"
+                           title="Editar Rol" id="agregarRend" name="agregarRend"
+                           class="btn btn-link-1-google-plus btn-circle btn-md btn-search">
+                            <span class="glyphicon glyphicon-pencil" name="iconoRend"></span>
+                        </a>
+                        @if (item.Descripcion != ConfigurationManager.AppSettings["rolResponsableSGSST"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolRepresentanteLegal"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolProfesionalSST"])
+                        {  
+                            <a href=""
+                               data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Rol)"
+                               title="Eliminar Rol"
+                               class="btn btn-link-1-google-plus btn-circle btn-md btn-search">
+                                <i class="glyphicon glyphicon-erase" name="iconoRend"></i>
+                            </a>
+                            <div id="@string.Format("modalEliminar{0}", item.Pk_Id_Rol)" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                @*<span aria-hidden="true">&times;</span>*@
+                                            </button>
+                                            <h4 class="modal-title title">Eliminar Rol</h4>
+                                        </div>
+                                        <div class="modal-body " style="text-align:center; color:black">
+                                            <center><p>¿Esta seguro que desea eliminar el Rol seleccionado?</p></center>
+                                        </div>
+                                        <div class="modal-footer">
+                                            @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Pk_Id_Rol },
+                                            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (item.Descripcion == ConfigurationManager.AppSettings["rolResponsableSGSST"])
+                        {
+                            <a href="@Url.Action("ActaRolPorResponsabilidad_PDF")"
+                               class="btn btn-link-1-google-plus btn-circle btn-md btn-search" title="Generar Acta">
+                                <i class="glyphicon glyphicon-download-alt" name="iconoRend"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        }
+    </table>
+</div>

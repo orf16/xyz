@@ -1,0 +1,208 @@
+﻿@model SG_SST.Models.Comunicaciones.ComunicacionesInternasModel
+
+@{
+    ViewBag.Title = "Encuestas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+
+<style>
+    .plabel {
+        border: none;
+    }
+
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+
+    body {
+        /*font-family: Gill Sans MT;*/
+        padding: 10px;
+    }
+
+    fieldset {
+        border: solid 1px lightslategray;
+        padding: 10px;
+        display: block;
+        clear: both;
+        margin: 5px 0px;
+    }
+
+    legend {
+        padding: 0px 10px;
+        background: lightslategray;
+        color: black;
+        border: solid 1px black;
+    }
+
+    input.add {
+        float: right;
+    }
+
+    input.fieldname {
+        float: left;
+        clear: left;
+        display: block;
+        margin: 5px;
+    }
+
+    select.fieldtype {
+        float: left;
+        display: block;
+        margin: 5px;
+    }
+
+    input.remove {
+        float: left;
+        display: block;
+        margin: 5px;
+    }
+
+    #yourform label {
+        float: left;
+        clear: left;
+        display: block;
+        margin: 5px;
+    }
+
+    #yourform input, #yourform textarea {
+        float: left;
+        display: block;
+        margin: 5px;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Comunicación</a></li>
+    <li class="active">Encuestas</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        ENCUESTAS
+    </div>
+
+    @*Boton Ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Encuestas</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+
+                            <div style="text-align:justify; line-height:2">
+                                Alissta coloca a su disposición una funcionalidad básica de encuestas, con el fin de utilizarlas en mediciones de percepción, programas de gestión, entre otros temas asociados a la gestión de la seguridad y salud en el trabajo.
+                            </div>
+                            <br />
+                            <div style="text-align:justify; line-height:2">
+                                Al dar clic en la opción <button class="boton botonactive" disabled>Crear Encuesta</button>, aparecerá un nuevo formulario donde podrá registrar el nombre de la encuesta e ir definiendo pregunta por pregunta con varias posibilidades de respuesta, desde campo abierto hasta menú de opciones de respuesta.
+                            </div>
+                            <br />
+                            <div style="text-align:justify; line-height:2">
+                                Una vez haya finalizado la encuesta de clic en <button class="boton botonactive" disabled>Guardar Encuesta</button>. Para que la encuesta sea aplicada, de clic en la opción “Generar Link”, aparecerá un link el cual debe copiarlo y enviarlo al personal objeto de la encuesta por los medios que considere, como email directo, comunicado interno, entre otros.
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//////*@
+
+    <div class="panel-body form-horizontal">
+        <center>
+            <button type="button" class="boton botonactive" onclick="CrearEncuesta()">Crear Encuesta</button>
+            <br />
+            <br />
+            <div class="table-responsive">
+                <table id="gridcomunicadosapp" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+        </center>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.PK_Id_Encuesta)
+@Html.HiddenFor(x => x.CuerpoHtmlTemp)
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <form id="frmActividades">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <h4 class="modal-title title">Crear Encuesta</h4>
+                </div>
+                <div class="modal-body">
+
+                    <img src="~/Images/baner_alissta_1.jpg" height="140" width="825" />
+                    <br />
+                    <b>Título de la Encuesta:</b> @Html.TextBoxFor(x => x.Titulo, new { @class = "form-control", @style="widh:10%" })
+                    <div id="link_url" style="display:none;">Link de la Encuesta: @Html.TextBoxFor(x => x.URL, new { @class = "form-control", @style = "widh:10%", @readonly = "readonly" })</div>
+                    <br />
+                    <fieldset>
+                        <legend>Diseñe su Encuesta</legend>
+                        <div id="buildyourform"></div>
+                    </fieldset>
+                    <center>
+                        <table width="50%" class="noborder">
+                            <tr class="noborder">
+                                <td class="noborder"><button type="button" class="add boton botonactive" id="add">Agregue Campo</button></td>
+                                <td class="noborder"><button type="button" class="add boton botoninfo" id="preview">Vista Preliminar</button></td>
+                                <td class="noborder"><button id="enviar" type="button" class="boton botonactive" onclick="GenerarLink();" style="display:none;">Generar Link</button></td>
+                            </tr>
+                        </table>
+                    </center>        
+
+                    <br />
+
+                    <div id="myform"></div>
+                    <button type="button" onclick="ReCrear();" class="boton botoninfo" style="margin-bottom:2%">Re-Hacer</button>
+
+                    <div class="modal-footer">
+                        <button type="button" class="boton botonactive" onclick="GuardarEncuesta();">Guardar Encuesta</button>
+                        &nbsp;
+                        <a href="#" onclick="CerrarModal();" style="float:right; text-align:center" class="boton botoninfo">Atras</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="myModal3" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Publicado</h4>
+            </div>
+            <div id="partials" class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Comunicaciones/ComunicacionesInternas.js")

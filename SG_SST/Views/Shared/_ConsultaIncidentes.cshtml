@@ -1,0 +1,92 @@
+﻿
+@model List<SG_SST.Models.ReporteIncidente.IncidenteModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row form-group" style="margin:1px;">
+        <h4 style="visibility:hidden">Ausentismos</h4>
+        <table class="table table-bordered" id="tblausentismos" style="font-size:x-small; border: 2px solid lightslategray">
+            <thead>
+                <tr class="titulos_tabla">
+                    <th>Fecha Inicial</th>
+                    <th>Fecha Final</th>
+                    <th>Número de Identificación</th>
+                    <th>Posible Consecuencia</th>
+                    <th>Sede</th>
+                    <th>Tipo de Incidente</th>
+                    <th>Lugar del Incidente</th>
+                    <th>Sitio del Incidente</th>
+                    <th>Ver</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var a in Model)
+                {
+                    <tr id="content_@a.Id_Incidente">
+                        <td hidden>@Html.DisplayName(a.Id_Incidente.ToString())</td>
+                        <td id="fregistro_@a.Id_Incidente">@string.Format("{0}", a.FechaInicial)</td>
+                        <td id="fregistro_@a.Id_Incidente">@string.Format("{0}", a.FechaFinal)</td>
+                        <td id="depto_@a.Id_Incidente">@string.Format("{0}", a.DocumentoEmpleado)</td>
+                        <td id="munici_@a.Id_Incidente">@string.Format("{0}", a.Consecuencia)</td>
+                        <td id="sede_@a.Id_Incidente">@string.Format("{0}", a.NombreSede)</td>
+                        <td id="conting_@a.Id_Incidente">@string.Format("{0}", a.TipoIncidente)</td>
+                        <td id="fechaIni_@a.Id_Incidente">@string.Format("{0}", a.lugarIncidente)</td>
+                        <td id="fechaIni_@a.Id_Incidente">@string.Format("{0}", a.SitioIncidente)</td>
+                        <td id="@a.Id_Incidente">
+                            <a href="javascript:void(0)" class="btn btn-search btn-md verIncidenteBtn" style="font-size: inherit" data-toggle="modal" data-target="#ProrrogaModal">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </a>
+                            @*<input type="button" class="btn btn-info verIncidenteBtn" style="font-size: inherit" data-toggle="modal" data-target="#ProrrogaModal" value="Ver" />*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" name="id" id="id" value="1" />
+        <div class="text-center">
+            <ul class="pagination">
+                     
+                <li id="traerpaginado_0"><a href="javascript:paginaInicial();">&laquo;</a></li>
+                @if (ViewBag.PageCount != null)
+                {
+                    if (ViewBag.PageCount > 0)
+                    {
+                        for (int i = 1; i <= ViewBag.PageCount; i++)
+                        {
+                            <li id="traerpaginado_@i"><a href="javascript:SiguientePagina(@i);">@i</a></li>
+                        }
+                    }
+                }
+                <li id="traerpaginado_@ViewBag.PageCount"><a href="javascript:SiguientePagina(@ViewBag.PageCount);">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>   
+
+}
+
+@{
+    <script>
+        var urlBase = utils.getBaseUrl();
+        var urlIncidentes = '/Incidente';
+        console.log($(this).parent().attr('id'))
+        $(document).ready(function () {
+            $(".verIncidenteBtn").click(function () {
+                var id = $(this).parent().attr('id');
+                $.ajax({
+                    type: "post",
+                    url: urlBase + urlIncidentes + '/ObtenerIncidente',
+                    data: { IdIncidente: id}
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.Mensaje == 'OK') {
+                        window.open(urlBase + urlIncidentes + response.Data);
+                        //window.location.href = urlBase + urlIncidentes + response.Data
+                    }
+                }).fail(function (response) {
+                    console.log("Error en la peticion: " + response.Data);
+                });
+
+            });
+        });
+
+    </script>
+}

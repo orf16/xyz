@@ -1,0 +1,218 @@
+﻿@{
+    ViewBag.Title = "Registrar Ausencia";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Planificación</a></li>
+    <li><a href="javascript:void(0)">Ausentismo Laboral</a></li>
+    <li class="active">Registrar Ausencia</li>
+</ol>
+
+﻿@model SG_SST.Models.Ausentismo.AusenciaModel
+@if (Model != null)
+{
+    var salario = Model.DatosTrabajor.Salario == 0 ? 800000 : Model.DatosTrabajor.Salario;
+    var sexos = new List<SelectListItem>() { new SelectListItem() { Value = "M", Text = "Masculino" }, new SelectListItem() { Value = "F", Text = "Femenino" } };
+    var tiposVinculacion = new List<SelectListItem>() { new SelectListItem() { Value = "Dependiente", Text = "Dependiente" }, new SelectListItem() { Value = "Independiente", Text = "Independiente" } };
+    @*<h2>Registrar Ausencia</h2>*@
+    <form id="form_reg_ausen">
+        
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">
+                DATOS DEL TRABAJADOR
+            </div>
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda</h4>
+                                </div>
+                                <div class="modal-body " style="color:black; text-align:justify">
+                                    <p>En esta funcionalidad registre los datos generales y específicos del ausentismo del trabajador. Por favor para iniciar digite el número de documento del trabajador con ausencia en campo indicado, termine dando enter o clic fuera del campo para que Alissta busque los datos del trabajador. Se traerán los datos básicos del trabajador como (nombre, fecha de nacimiento, ocupación según código CIUO, sexo, EPS y salario. por favor complete los datos restantes como (departamento, municipio, sede, tipo de vinculación).</p>
+                                    <p>Continúe dando clic a la opción “nueva ausencia” para registrar un nuevo ausentismo, o clic en la opción “prorroga” para registrar una ampliación de una incapacidad o prorrogación.</p>
+                                    <p>Al dar clic en “nueva ausencia” seleccione:</p>
+                                    <p>
+                                        1. Contingencia: podrá escoger entre 12 tipos de ausencias laborales, algunas contingencias habilitan el campo de diagnóstico, donde deberá registrar el código de la enfermedad según código CIE10.<br>
+                                        2. Registres fecha de inicio y fecha fin de la ausencia en el campo indicado.<br>
+                                        3. Días de ausencia: se calcularan automáticamente a partir de la fecha inicio y fecha fin.<br>
+                                        4. Proceso: seleccione el proceso al cual pertenece el trabajador.<br>
+                                        5. Factor prestacional: indique el factor prestacional que tiene la empresa, debe ser igual o mayor a 1, este dato lo puede consultar con el área de RRHH o nómina de su empresa.<br>
+                                        6. Observaciones: registre algún comentario o especificación de la ausencia relevante o complementaria.
+                                    </p>
+                                    <p>Finalice dando clic en la opción “guardar” o clic en “cancelar” para anular el guardado del registro.</p>
+                                    <p>Al dar clic en “prorroga”, aparecerán a continuación la relación de ausentismos del trabajador ya registrados anteriormente. Si desea agregar una prorroga a una ausencia, escoja la que corresponda y de clic en el botón “prorroga” de la parte derecha sobre la ausencia a prorrogar.</p>
+                                    <p>Aparecerá un nuevo mensaje con la información de la ausencia y debe completar las nuevas fechas inicio y fin de la prórroga, finalice la operación dado clic en “guardar”.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body form-horizontal">
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Empresa:", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @if (Model.EmpresasUsuarias.Count > 0)
+                    {
+                        <div class="col-md-3">
+                            @Html.Label("Empresas Asociadas:", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DropDownListFor(model => model.IdEmpresaUsuaria, Model.EmpresasUsuarias, "Seleccione Empresa...", new { @class = "form-control" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-3">
+                            @Html.Label("Empresas Asociadas:", new { @class = "control-label", @style = "display:none;" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DropDownListFor(model => model.IdEmpresaUsuaria, Model.EmpresasUsuarias, new { @class = "form-control bloqueado", @style = "display:none;" })
+                        </div>
+                    }
+                    <div class="col-md-3">
+                        @Html.Label("Nro. Documento Trabajador:", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.Documento, new { @class = "form-control", @placeholder = "Nro. Doc. Trabajador", required = "required" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Departamento: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.Departamento, Model.Departamentos, "Seleccione un departamento...", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Nombre: ", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.DatosTrabajor.Nombre1, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Municipio: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.Municipio, Model.Municipios, "Seleccione un municipio...", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Sexo: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.DatosTrabajor.Sexo, sexos, "Seleccione su sexo...", new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Sede: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.idSede, Model.Sedes, "Seleccione sede...", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Fecha de Nacimiento: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.DatosTrabajor.FechaNacimiento, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Ocupación CIUO: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.DatosTrabajor.Ocupacion, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Tipo vinculación: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.TipoVinculacion, tiposVinculacion, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("EPS: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.DatosTrabajor.NombreEps, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Label("Salario: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(model => model.DatosTrabajor.Salario, new { @Value = "", @class = "form-control", @Name = "DatosTrabajor_Salario" })
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.IdEmpresa)
+                <div class="row form-group col-xs-12" id="Preguntas" style="display:none;">
+                    <div class="col-xs-12" style="text-align:center">
+                        @*<label class="control-label col-md-7">Es un evento nuevo:</label>*@
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-3">
+                            <button type="button" id="Si" class="boton botoninfo">NUEVA AUSENCIA</button>
+                            @*<input type="radio" name="genderRadios" id="No"> No*@
+                        </div>
+                        <div class="col-xs-3">
+                            <button type="button" id="No" class="boton botoninfo">PRORROGA</button>
+                            @*<input type="radio" name="genderRadios" id="Si"> Si*@
+                        </div>
+                        <div class="col-xs-3"></div>
+                    </div>
+                </div>
+            </div>           
+            <div class="panel-body form-horizontal">
+                <section id="datosAusentismo"></section>
+            </div>
+        </div>
+    </form>
+    @Scripts.Render("~/Scripts/Ausencias/GetDatosAfiliado.js")
+}
+@{
+    if (ViewBag.Mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                title: 'Atención',
+                text: 'Debe estar autenticado para registrar una Ausencia.',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location.href = '../Home/Index';
+                }
+            });
+        </script>
+    }
+}

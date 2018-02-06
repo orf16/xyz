@@ -1,0 +1,97 @@
+﻿@model SG_SST.Models.Planificacion.ActividadModel
+<div class="@Model.Id_Actividad row show-grid body-actv">
+    <div class="col-md-5">@Model.Descripcion</div>
+    <div class="col-md-3">@Model.Responsable</div>
+    <div class="col-md-2">@string.Format("{0}/{1}/{2}", Model.FechaFin.Day, Model.FechaFin.Month, Model.FechaFin.Year)</div>
+    <div class="col-md-1">
+        <button id="edi_@Model.Id_Actividad" type="button" data-id="@Model.Id_Actividad" class="btn-edit-activ btn-popup-activ btn btn-default btn-sm">
+            Editar
+        </button>
+    </div>
+    <div class="col-md-1">
+        <button id="elim_@Model.Id_Actividad" type="button" data-id="@Model.Id_Actividad" class="btn-elim-activ btn-popup-activ btn btn-default btn-sm">
+            Eliminar
+        </button>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.btn-edit-activ').on('click', function (e) {
+            var posicionObjMod = 0;
+            var actividadEditar = $(this).attr('data-id');
+            var actividadesGuardadas = sessionStorage.getItem('Actividades');
+            if (actividadesGuardadas) {
+                var actividades = JSON.parse(actividadesGuardadas);
+                var result = $.grep(actividades, function (obj) {
+                    return obj.Id_Actividad == actividadEditar;
+                });
+                $('#idActv').val(result[0].Id_Actividad);
+                $('#Actividad').val(result[0].Descripcion);
+                $('#Responsable').val(result[0].Responsable);
+                console.log('fecha obtenida ' + result[0].FechaFin);
+                $('#FechaFin').val(result[0].FechaFin);
+                $('#btn_crear_act').hide();
+                $('#btn_edit_act').show();
+                result = null;
+                $('#CrearNuevaActividad').modal('show');
+            }
+        });
+        $('#btn_edit_act').on('click', function (event) {
+            var valoresModificados = $('#form_agr_actv input[type="text"]');
+            if (valoresModificados) {
+                var actividadMod = valoresModificados[0].value;
+                var responsableMod = valoresModificados[1].value;
+                var fechaMod = valoresModificados[2].value;
+                if (actividadMod != '' && responsableMod != '' && fechaMod != '') {
+                    var actividadEditar = parseInt($('#idActv').val());
+                    var actividadesGuardadas = sessionStorage.getItem('Actividades');
+                    if (actividadesGuardadas) {
+                        var actividades = JSON.parse(actividadesGuardadas);
+                        var result = $.grep(actividades, function (obj) {
+                            return obj.Id_Actividad == actividadEditar;
+                        });
+                        result[0].Descripcion = actividadMod;
+                        result[0].Responsable = responsableMod;
+                        result[0].FechaFin = fechaMod;
+                        var columActualizar = $('.' + actividadEditar).find('div');
+                        if (columActualizar) {
+                            columActualizar[0].textContent = result[0].Descripcion;
+                            columActualizar[1].textContent = result[0].Responsable;
+                            columActualizar[2].textContent = result[0].FechaFin;
+                        }
+                        sessionStorage.removeItem('Actividades');
+                        sessionStorage.setItem('Actividades', JSON.stringify(actividades));
+                    }
+                }
+            }
+            $('#CrearNuevaActividad').modal('hide');
+            //swal('Atención', 'La Actividad se editó con éxito.');
+            event.preventDefault ? event.preventDefault() : event.returnValue = false;
+        });
+        $('.btn-elim-activ').on('click', function (event) {
+            var actividadEditar = $(this).attr('data-id');
+            console.log(actividadEditar);
+            var actividadesGuardadas = sessionStorage.getItem('Actividades');
+            var nuevasActividades = null;
+            event.preventDefault ? event.preventDefault() : event.returnValue = false;
+            if (actividadesGuardadas) {
+                var actividades = JSON.parse(actividadesGuardadas);
+                nuevasActividades = $.grep(actividades, function (obj) {
+                    return obj.Id_Actividad != actividadEditar;
+                });
+                //for (var i = 0; i < nuevasActividades.length; i++) {
+                //    nuevasActividades[i].Id_Actividad = i + 1;
+                //}
+                sessionStorage.removeItem('Actividades');
+                sessionStorage.setItem('Actividades', JSON.stringify(nuevasActividades));
+                $(this).parent().parent().remove();
+                //if (!GestionarActividadesGeneradas()) {
+                //    $('#container_actividades').hide();
+                //    $('.calif_crit').find('input[type=radio]').each(function () {
+                //        $(this).prop('checked', false);
+                //    });
+                //}
+            }
+        });
+    });
+</script>

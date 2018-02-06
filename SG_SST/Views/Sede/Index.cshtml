@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.Sede>
+
+@{
+    ViewBag.Title = "Listado Sedes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type:'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ul class="nav nav-pills" role="tablist">
+    <li class=""><a id="tab3" href="#step3" role="tab" data-toggle="tab" class="titulo-crear-recursos">Listado Sedes</a></li>
+</ul>
+<hr />
+<p>
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+            htmlAttributes: new { @type = "button", @class = "btn btn-success btn-xs" })
+</p>
+<hr />
+<table class="table table-condensed  table-responsive table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre_Sede)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion_Sede)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sector)
+        </th>
+        <th>
+            <p>Departamento</p>
+        </th>
+        <th>
+            <p>Municipio</p>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre_Sede)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Direccion_Sede)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sector)
+        </td>
+        <td>
+            
+        </td>
+        <td>
+            
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Pk_Id_Sede }) |
+            @Html.ActionLink("Detalle", "Details", new { id=item.Pk_Id_Sede }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.Pk_Id_Sede })
+        </td>
+    </tr>
+}
+
+</table>
+<hr />

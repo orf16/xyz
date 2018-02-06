@@ -1,0 +1,1788 @@
+﻿@model SG_SST.Models.Incidentes.IncidentesATModel
+
+@{
+    ViewBag.Title = "Investigación de Incidentes y AT";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    table, tr, td {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+
+    input {
+        height: 27px;
+        font: 14px;
+        line-height: 1.42857143;
+        color: #aaaaaa;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    select, option {
+        height: 27px;
+        font: 14px;
+        line-height: 1.42857143;
+        color: #aaaaaa;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Reporte e Investigación</a></li>
+    <li><a href="javascript:void(0)">Investigación, Incidentes, Accidentes y E.L</a></li>
+    <li class="active">Investigación de Incidentes y AT</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        Investigación de Incidentes y AT
+    </div>
+    <div class="panel-body form-horizontal">
+        <center>
+            <form id="frmIncidentesAT">
+                @Html.HiddenFor(x => x.PK_Incidentes_AT_Id)
+                <table border="0" width="100%">
+                    <tr>
+                        <td>
+                            <div id="accordion">
+                                <h3>I. Informe sobre la Investigación</h3>
+                                <div>
+                                    <table border="0">
+                                        <tr>
+                                            <td colspan="2" align="left">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>Incidente</td>
+                                                        <td><input type="checkbox" name="boIncidente" id="boIncidente" value="true" /></td>
+                                                        <td>Accidente de Trabajo</td>
+                                                        <td><input type="checkbox" name="AccidenteTrabajo" id="AccidenteTrabajo" value="true" /></td>
+                                                        <td>Leve</td>
+                                                        <td><input type="checkbox" name="Leve" id="Leve" value="true" /></td>
+                                                        <td>Grave</td>
+                                                        <td><input type="checkbox" name="Grave" id="Grave" value="true" /></td>
+                                                        <td>Mortal</td>
+                                                        <td><input type="checkbox" value="true" name="Mortal" id="Mortal" value="true" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td width="255" align="left">&nbsp;</td>
+                                            <td width="169" align="left">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="227">Fecha de la Investigación</td>
+                                            <td width="321">Departamento</td>
+                                            <td colspan="2">Municipio</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="FechaInvestigacionI" id="FechaInvestigacionI" class="form-control" /></td>
+                                            <td>@Html.DropDownListFor(x => x.pk_DepartamentoI, new System.Web.Mvc.SelectList(Model.DepartamentoI, "Pk_Id_Departamento", "Nombre_Departamento"), "-- Departamento --", new { @class = "form-control", onchange = "CargarMunicipios(this.value);" }) </td>
+                                            <td colspan="2">@Html.DropDownListFor(x => x.pk_MunicipioI, new System.Web.Mvc.SelectList(Model.MunicipioI, "Pk_Id_Municipio", "Nombre_Municipio"), "-- Municipio --", new { @class = "form-control" }) </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dirección</td>
+                                            <td>Hora en la que se realizo la Investigación</td>
+                                            <td colspan="2">Responsable de la Investigación</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="DireccionI" id="DireccionI" class="form-control" /></td>
+                                            <td align="center">
+                                                DE:
+                                                <input type="text" name="HoraInicialI" id="HoraInicialI" style="width:25%;" />
+                                                A:
+                                                <input type="text" name="HoraFinalI" id="HoraFinalI" style="width:25%;" />
+                                            </td>
+                                            <td colspan="2"><input type="text" name="ResponsablesI" id="ResponsablesI" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td colspan="12"><b>Material audiovisual anexo (especificar cantidad)</b></td>
+                                                        <td colspan="2">Cuales?</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="8%">Fotografias          </td>
+                                                        <td width="2%"><input type="checkbox" name="FotografiasI" id="FotografiasI" value="true" /></td>
+                                                        <td width="5%">Videos          </td>
+                                                        <td width="2%"><input type="checkbox" name="VideosI" id="VideosI" value="true" /></td>
+                                                        <td width="13%">Cintas de Audio          </td>
+                                                        <td width="2%"><input type="checkbox" name="CintasAudioI" id="CintasAudioI" value="true" /></td>
+                                                        <td width="9%">Ilustraciones          </td>
+                                                        <td width="2%"><input type="checkbox" name="IlustracionesI" id="IlustracionesI" value="true" /></td>
+                                                        <td width="9%">Diagramas          </td>
+                                                        <td width="2%"><input type="checkbox" name="DiagramasI" id="DiagramasI" value="true" /></td>
+                                                        <td width="4%">Otros          </td>
+                                                        <td width="3%"><input type="checkbox" name="OtrosI" id="OtrosI" value="true" /></td>
+                                                        <td width="32%">
+                                                            <label>
+                                                                <input type="text" name="CualesI" id="CualesI" style="width:100%;" class="form-control" />
+                                                            </label>
+                                                        </td>
+                                                        <td width="7%"><input type="submit" name="button" id="button" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(1);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(1);">Guardar Parcial</button>
+                                    </center>
+                                    
+                                </div>
+                                <h3>II. Identificación general del empleador</h3>
+                                <div>
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td colspan="4">
+                                                <table width="74%" border="0">
+                                                    <tr>
+                                                        <td width="196"><b>Tipo de Vinculación:</b></td>
+                                                        <td width="20"><input type="radio" name="TipoVinculacionII" id="TipoVinculacionII2" /></td>
+                                                        <td width="108">(1) Empleador</td>
+                                                        <td width="20"><input type="radio" name="TipoVinculacionII" id="TipoVinculacionII3" /></td>
+                                                        <td width="108">(2) Contratante</td>
+                                                        <td width="20"><input type="radio" name="TipoVinculacionII" id="TipoVinculacionII" /></td>
+                                                        <td width="139">(3) Cooperativa</td>
+                                                        <td width="15">&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="43%">&nbsp;</td>
+                                            <td colspan="2"><b>Tipo de Identificación:</b></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Actividad económica principal</td>
+                                            <td colspan="2">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>Nit</td>
+                                                        <td><input type="radio" name="TipoIdentificacionII" id="TipoIdentificacionII2" value="NIT" /></td>
+                                                        <td>CC</td>
+                                                        <td><input type="radio" name="TipoIdentificacionII" id="TipoIdentificacionII3" value="CC" /></td>
+                                                        <td>CE</td>
+                                                        <td><input type="radio" name="TipoIdentificacionII" id="TipoIdentificacionII4" value="CE" /></td>
+                                                        <td>NU</td>
+                                                        <td><input type="radio" name="TipoIdentificacionII" id="TipoIdentificacionII5" value="NU" /></td>
+                                                        <td>PA</td>
+                                                        <td><input type="radio" name="TipoIdentificacionII" id="TipoIdentificacionII" value="PA" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="text" name="ActividadEconomicaII" id="ActividadEconomicaII" class="form-control" value="@Model.ActividadEconomicaII" />  
+                                            </td>
+                                            <td colspan="2"><input type="text" name="NumeroIdentificacionII" id="NumeroIdentificacionII" class="form-control" value="@Model.NumeroIdentificacionII" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dirección Principal</td>
+                                            <td>Teléfono</td>
+                                            <td>Fax</td>
+                                            <td>Nombre o Razón Social</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="DireccionPpalII" id="DireccionPpalII" class="form-control" value="@Model.DireccionPpalII" /></td>
+                                            <td><input type="text" name="TelefonoII" id="TelefonoII" class="form-control" value="@Model.TelefonoII" /></td>
+                                            <td><input type="text" name="FaxII" id="FaxII" class="form-control" value="@Model.FaxII" /></td>
+                                            <td><input type="text" name="NombreRazonSocialII" id="NombreRazonSocialII" class="form-control" value="@Model.NombreRazonSocialII" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Departamento</td>
+                                            <td colspan="2">Municipio</td>
+                                            <td>Zona</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="st_DepartamentoII" id="st_DepartamentoII" class="form-control" value="@Model.st_DepartamentoII" /></td>
+                                            <td colspan="2"><input type="text" name="st_MunicipioII" id="st_MunicipioII" class="form-control" value="@Model.st_MunicipioII" /></td>
+                                            <td>
+                                                <table border="0">
+                                                    <tr>
+                                                        <td width="20"><input type="Radio" name="ZonaUrbanaII" id="ZonaUrbanaII2" value="U" /></td>
+                                                        <td width="55">Urbana</td>
+                                                        <td width="20"><input type="Radio" name="ZonaUrbanaII" id="ZonaUrbanaII" value="R" /></td>
+                                                        <td width="77">Rural</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Correo electrónico</td>
+                                            <td colspan="2">Centro de Trabajo donde labora el trabajador involucrado</td>
+                                            <td>Zona Centro de Trabajo</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="EmailII" id="EmailII" class="form-control" value="@Model.EmailII" /></td>
+                                            <td colspan="2">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td style="text-align:justify">¿Son los datos del Centro de Trabajo los mismos de la Sede Principal?</td>
+                                                        <td><input type="Radio" name="SedePrincipalII" id="SedePrincipalII2" value="S" /></td>
+                                                        <td>Si</td>
+                                                        <td><input type="Radio" name="SedePrincipalII" id="SedePrincipalII" value="N" /></td>
+                                                        <td>No</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table border="0">
+                                                    <tr>
+                                                        <td width="20"><input type="Radio" name="ZonaII" id="ZonaII2" value="U" /></td>
+                                                        <td width="55">Urbana</td>
+                                                        <td width="20"><input type="Radio" name="ZonaII" id="ZonaII" value="R" /></td>
+                                                        <td width="77">Rural</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Actividad económica del Centro Trabajo</td>
+                                            <td>Teléfono</td>
+                                            <td>Fax</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <select name="ActEconoCentroTrabajoII" id="ActEconoCentroTrabajoII" class="form-control"></select>
+                                            </td>
+                                            <td><input type="text" name="CentroCostoTelefonoII" id="CentroCostoTelefonoII" class="form-control" /></td>
+                                            <td><input type="text" name="CentroCostoFaxII" id="CentroCostoFaxII" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dirección Centro de Trabajo</td>
+                                            <td colspan="2">Departamento</td>
+                                            <td>Municipio</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="DireccionCentroTrabajoII" id="DireccionCentroTrabajoII" class="form-control" /></td>
+                                            <td colspan="2">@Html.DropDownListFor(x => x.pk_DeptoCentroCostoII, new System.Web.Mvc.SelectList(Model.DeptoCentroCostoII, "Pk_Id_Departamento", "Nombre_Departamento"), "-- Departamento --", new { @class = "form-control", onchange = "CargarMncpioCentroCostoII(this.value);" }) </td>
+                                            <td>@Html.DropDownListFor(x => x.pk_MncpioCentroCostoII, new System.Web.Mvc.SelectList(Model.MncpioCentroCostoII, "Pk_Id_Municipio", "Nombre_Municipio"), "-- Municipio --", new { @class = "form-control" }) </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        @*<tr>
+                                            <td>&nbsp;</td>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>*@
+                                    </table>
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(2);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(2);">Guardar Parcial</button>
+                                    </center>
+                                    
+                                </div>
+                                <h3>III. Información de la persona involucrada en el Incidente o Accidente</h3>
+                                <div>
+                                   
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>Tipo de Vinculación:</td>
+                                            <td colspan="7">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td><input type="Radio" name="TipoVinculacionIII" id="TipoVinculacionIII2" value="P" /></td>
+                                                        <td>(1) Planta</td>
+                                                        <td><input type="Radio" name="TipoVinculacionIII" id="TipoVinculacionIII3" value="M" /></td>
+                                                        <td>(2) Misión</td>
+                                                        <td><input type="Radio" name="TipoVinculacionIII" id="TipoVinculacionIII4" value="C" /></td>
+                                                        <td>(3) Cooperador</td>
+                                                        <td><input type="Radio" name="TipoVinculacionIII" id="TipoVinculacionIII5" value="E" /></td>
+                                                        <td>(4) Estudiante o Aprendiz</td>
+                                                        <td><input type="Radio" name="TipoVinculacionIII" id="TipoVinculacionIII" value="I" /></td>
+                                                        <td>(5) Independiente</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tipo de Identificación:</td>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>Nit</td>
+                                                        <td><input type="Radio" name="TipoIdentificacionIII" id="TipoIdentificacionIII2" /></td>
+                                                        <td>CC</td>
+                                                        <td><input type="Radio" name="TipoIdentificacionIII" id="TipoIdentificacionIII3" /></td>
+                                                        <td>CE</td>
+                                                        <td><input type="Radio" name="TipoIdentificacionIII" id="TipoIdentificacionIII4" /></td>
+                                                        <td>NU</td>
+                                                        <td><input type="Radio" name="TipoIdentificacionIII" id="TipoIdentificacionIII5" /></td>
+                                                        <td>PA</td>
+                                                        <td><input type="Radio" name="TipoIdentificacionIII" id="TipoIdentificacionIII" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td width="25%">Primer Apellido</td>
+                                            <td width="25%">Segundo Apellido</td>
+                                            <td width="25%">Primer Nombre</td>
+                                            <td width="25%">Segundo Nombre</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><input type="text" name="NumeroIdentificacionIII" id="NumeroIdentificacionIII" class="form-control" /></td>
+                                            <td><input type="text" name="PrimerApellidoIII" id="PrimerApellidoIII" class="form-control" /></td>
+                                            <td><input type="text" name="SegundoApellidoIII" id="SegundoApellidoIII" class="form-control" /></td>
+                                            <td><input type="text" name="PrimerNombreIII" id="PrimerNombreIII" class="form-control" /></td>
+                                            <td><input type="text" name="SegundoNombreIII" id="SegundoNombreIII" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="14%">Fecha de Nacimiento</td>
+                                                        <td width="9%">Sexo</td>
+                                                        <td width="25%">EPS a la que esta afiliado</td>
+                                                        <td width="21%">AFP a la que esta afiliado</td>
+                                                        <td width="31%">ARL a la que esta afiliado</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" name="FechaNacimientoIII" id="FechaNacimientoIII" class="form-control" /></td>
+                                                        <td>
+                                                            <select name="SexoIII" id="SexoIII" class="form-control">
+                                                                <option value="M">M</option>
+                                                                <option value="F">F</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="EPSIII" id="EPSIII" class="form-control">
+                                                                <option value="1">CafeSalud EPS</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="AFPIII" id="AFPIII" class="form-control">
+                                                                <option value="1">Porvenir S.A</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="ARLIII" id="ARLIII" class="form-control">
+                                                                <option value="1">Positiva ARL</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="11%">Teléfono</td>
+                                                        <td width="11%">Fax</td>
+                                                        <td width="28%">Correo electrónico del trabajador</td>
+                                                        <td width="28%">Dirección Centro de Trabajo</td>
+                                                        <td width="20%">Zona</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" name="TelefonoIII" id="TelefonoIII" class="form-control" /></td>
+                                                        <td><input type="text" name="FaxIII" id="FaxIII" class="form-control" /></td>
+                                                        <td><input type="text" name="EmailIII" id="EmailIII" class="form-control" /></td>
+                                                        <td><input type="text" name="DireccionCentroTrabajoIII" id="DireccionCentroTrabajoIII" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="100%" border="0">
+                                                                <tr>
+                                                                    <td><input type="radio" name="ZonaIII" id="ZonaIII" value="true" /></td>
+                                                                    <td>Urbana</td>
+                                                                    <td><input type="radio" name="ZonaIII" id="ZonaIII" value="false" /></td>
+                                                                    <td>Rural</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="13%">Cargo</td>
+                                                        <td width="13%">Código ocupación</td>
+                                                        <td width="18%">Ocupación habitual</td>
+                                                        <td width="16%">Fecha ingreso a la empresa</td>
+                                                        <td width="20%">Tiempo en la ocupación</td>
+                                                        <td width="20%">Antiguedad en el cargo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" name="CargoIII" id="CargoIII" class="form-control" /></td>
+                                                        <td><input type="text" name="CodigoOcupacionIII" id="CodigoOcupacionIII" class="form-control" /></td>
+                                                        <td><input type="text" name="OcupacionIII" id="OcupacionIII" class="form-control" /></td>
+                                                        <td><input type="text" name="FechaIngresoIII" id="FechaIngresoIII" class="form-control" /></td>
+                                                        <td>
+                                                            <input type="text" name="TiempoOcupacionAIII" id="TiempoOcupacionAIII" style="width:30px;" />
+                                                            Años
+                                                            <input type="text" name="TiempoOcupacionMIII" id="TiempoOcupacionMIII" style="width:30px;" />
+                                                            Meses
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="AntiguedadAIII" id="AntiguedadAIII" style="width:30px;" />
+                                                            Años
+                                                            <input type="text" name="AntiguedadMIII" id="AntiguedadMIII" style="width:30px;" />
+                                                            Meses
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">Jornada de trabajo habitual</td>
+                                            <td colspan="2">Salario u Honorarios (Mensual)</td>
+                                            <td colspan="3">Fecha de muerte del trabajador</td>
+                                            @*<td width="22">&nbsp;</td>
+                                            <td width="35">&nbsp;</td>*@
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td><input type="checkbox" value="true" name="DiurnoIII" id="DiurnoIII" /></td>
+                                                        <td>(1) Diurno</td>
+                                                        <td><input type="checkbox" value="true" name="NocturnoIII" id="NocturnoIII" /></td>
+                                                        <td>(2) Nocturno</td>
+                                                        <td><input type="checkbox" value="true" name="MixtoIII" id="MixtoIII" /></td>
+                                                        <td>(3) Mixto</td>
+                                                        <td><input type="checkbox" value="true" name="TurnosIII" id="TurnosIII" /></td>
+                                                        <td>(4) Turnos</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td colspan="2"><input type="text" name="SalarioHonorariosIII" id="SalarioHonorariosIII"  class="form-control" /></td>
+                                            <td colspan="3"><input type="text" name="FechaMuerteIII" id="FechaMuerteIII"  class="form-control" /></td>
+                                            @*<td width="81">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>*@
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">El trabajador recibió atención oportuna en primeros auxilios</td>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><input type="text" name="AtencionOportunaIII" id="AtencionOportunaIII"  class="form-control" /></td>
+                                            <td colspan="2">&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(3);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(3);">Guardar Parcial</button>
+                                    </center>
+
+                                </div>
+                                <h3>IV. Información sobre el Incidente o Accidente de Trabajo</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr colspan="8">
+                                            <td width="17.5%">Fecha de ocurrencia</td>
+                                            <td width="17.5%">Hora de ocurrencia</td>
+                                            <td width="25%" align="center"><b>Jornada</b></td>
+                                            <td width="40%" align="center"><b>Día de la semana en que ocurrió el evento</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="FechaOcurrenciaIV" id="FechaOcurrenciaIV" class="form-control" /></td>
+                                            <td><input type="text" name="HoraOcurrenciaIV" id="HoraOcurrenciaIV" class="form-control" /></td>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td><input type="checkbox" value="true" name="JornadaIV" id="JornadaIV" /></td>
+                                                        <td>(1) Normal</td>
+                                                        <td><input type="checkbox" value="true" name="ExtraIV" id="ExtraIV" /></td>
+                                                        <td>(2) Extra </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>LU</td>
+                                                        <td><input type="checkbox" value="true" name="LunesIV" id="LunesIV" /></td>
+                                                        <td>MA</td>
+                                                        <td><input type="checkbox" value="true" name="MartesIV" id="MartesIV" /></td>
+                                                        <td>MI</td>
+                                                        <td><input type="checkbox" value="true" name="MiercolesIV" id="MiercolesIV" /></td>
+                                                        <td>JU</td>
+                                                        <td><input type="checkbox" value="true" name="JuevesIV" id="JuevesIV" /></td>
+                                                        <td>VI</td>
+                                                        <td><input type="checkbox" value="true" name="ViernesIV" id="ViernesIV" /></td>
+                                                        <td>SA</td>
+                                                        <td><input type="checkbox" value="true" name="SabadoIV" id="SabadoIV" /></td>
+                                                        <td>DO</td>
+                                                        <td><input type="checkbox" value="true" name="DomingoIV" id="DomingoIV" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr colspan="12">
+                                            <td width="40%">¿Estaba realizando su labor habitual?</td>
+                                            <td>&nbsp;</td>
+                                            <td width="30%">Tipo de Incidente o Accidente</td>
+                                            <td width="30%">Especifique tipo de Incidente o Accidente</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>Si</td>
+                                                        <td><input type="Radio" name="LaborHabitualIV" id="LaborHabitualIV2" value="S" /></td>
+                                                        <td><input type="text" name="LaborHabitualIVS" id="LaborHabitualIVS" class="form-control" /></td>
+                                                        <td>No</td>
+                                                        <td><input type="Radio" name="LaborHabitualIV" id="LaborHabitualIV" value="N" /></td>
+                                                        <td><input type="text" name="LaborHabitualIVN" id="LaborHabitualIVN" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <select name="TipoIncidenteIV" id="TipoIncidenteIV" class="form-control">
+                                                    <option value="1">Violencia</option>
+                                                    <option value="2">Tránsito</option>
+                                                    <option value="3">Deportivo</option>
+                                                    <option value="4">Recreativo o cultural</option>
+                                                    <option value="5">Propios del trabajo</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="EspecTipoIncidenteIV" id="EspecTipoIncidenteIV" class="form-control" /></td>
+                                        </tr>
+                                        <tr colspan="12">
+                                            <td width="30%">IPS que atendió el accidente</td>
+                                            <td width="30%">Departamento</td>
+                                            <td width="30%">Municipio</td>
+                                            <td width="10%">Zona</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="IPSAtendioIV" id="IPSAtendioIV" class="form-control" /></td>
+                                            <td>@Html.DropDownListFor(x => x.pk_DepartamentoIV, new System.Web.Mvc.SelectList(Model.DepartamentoIV, "Pk_Id_Departamento", "Nombre_Departamento"), "-- Departamento --", new { @class = "form-control", onchange = "CargarMunicipioIV(this.value);" }) </td>
+                                            <td>@Html.DropDownListFor(x => x.pk_MncpioIV, new System.Web.Mvc.SelectList(Model.MncpioIV, "Pk_Id_Municipio", "Nombre_Municipio"), "-- Municipio --", new { @class = "form-control" }) </td>
+                                            <td>
+                                                <table width="20%" border="0">
+                                                    <tr>
+                                                        <td><input type="radio" name="ZonaIV" id="ZonaIV2" value="U" /></td>
+                                                        <td>Urbana</td>
+                                                        <td><input type="radio" name="ZonaIV" id="ZonaIV" value="R" /></td>
+                                                        <td>Rural</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr colspan="12">
+                                            <td width="25%">Tiempo laborado previo al incidente AT</td>
+                                            <td width="22.5%">Lugar exacto donde ocurrió el Incidente o Accidente</td>
+                                            <td width="22.5%">Sitio exacto donde ocurrió el Incidente o Accidente</td>
+                                            <td width="30%">Otro sitio / especifique</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="TiempoLaboradoPrevioIV" id="TiempoLaboradoPrevioIV" class="form-control" /></td>
+                                            <td>
+                                                <select name="LugarExactoIV" id="LugarExactoIV" class="form-control">
+                                                    <option value="1">Dentro de la empresa</option>
+                                                    <option value="2">Fuera de la empresa</option>
+                                                    <option value="3">Otra empresa</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select name="SitioExactoIV" id="SitioExactoIV" class="form-control">
+                                                    <option value="1">Almacenes o depósitos</option>
+                                                    <option value="1">Áreas de producción</option>
+                                                    <option value="1">Áreas recreativas o deportivas</option>
+                                                    <option value="1">Corredores o pasillos</option>
+                                                    <option value="1">Escaleras</option>
+                                                    <option value="1">Parqueaderos o áreas de circulación vehicular</option>
+                                                    <option value="1">Oficinas</option>
+                                                    <option value="1">Otras áreas comunes</option>
+                                                    <option value="1">Otro</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td><input type="checkbox" value="true" name="OtroSitioIV" id="OtroSitioIV" /></td>
+                                                        <td><input type="text" name="EspecifiqueIV" id="EspecifiqueIV" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(4);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(4);">Guardar Parcial</button>
+                                    </center>
+                                    
+                                </div>
+                                <h3>V. Descripción del Incidente o Accidente de Trabajo</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="31%">Habian ocurrido eventos similares anteriormente</td>
+                                                        <td width="33%">Número de personas que presenciaron el Accidente</td>
+                                                        <td width="36%">Se han presentado otros Incidentes o AT en el área de trabajo</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="20%" border="0">
+                                                                <tr>
+                                                                    <td><input type="Radio" name="EventosSimilaresV" id="EventosSimilaresV2" value="S" /></td>
+                                                                    <td>Si</td>
+                                                                    <td><input type="Radio" name="EventosSimilaresV" id="EventosSimilaresV" value="N" /></td>
+                                                                    <td>No</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="NumeroPersonasV" id="NumeroPersonasV" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="20%" border="0">
+                                                                <tr>
+                                                                    <td><input type="Radio" name="OtrosIncidentesV" id="OtrosIncidentesV2" value="S" /></td>
+                                                                    <td>Si</td>
+                                                                    <td><input type="Radio" name="OtrosIncidentesV" id="OtrosIncidentesV" value="N" /></td>
+                                                                    <td>No</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="31%">¿El evento similar fue investigado?</td>
+                                                        <td width="33%">¿Se habia considerado esta condición como prioritaria en el panorama de riesgo?</td>
+                                                        <td width="36%">¿El trabajador ha estado involucrado en otros AT o Incidente anteriores?</td>
+                                                        <td width="36%">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="20%" border="0">
+                                                                <tr>
+                                                                    <td><input type="Radio" name="EventoSimilarV" id="EventoSimilarV2" value="S" /></td>
+                                                                    <td>Si</td>
+                                                                    <td><input type="Radio" name="EventoSimilarV" id="EventoSimilarV" value="N" /></td>
+                                                                    <td>No</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table width="20%" border="0">
+                                                                <tr>
+                                                                    <td><input type="Radio" name="CondicionPrioritariaV" id="CondicionPrioritariaV2" /></td>
+                                                                    <td>Si</td>
+                                                                    <td><input type="Radio" name="CondicionPrioritariaV" id="CondicionPrioritariaV" /></td>
+                                                                    <td>No</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <table width="20%" border="0">
+                                                                <tr>
+                                                                    <td><input type="Radio" name="TrabajadorInvolucradoV" id="TrabajadorInvolucradoV2" value="S" /></td>
+                                                                    <td>Si</td>
+                                                                    <td><input type="Radio" name="TrabajadorInvolucradoV" id="TrabajadorInvolucradoV" value="N" /></td>
+                                                                    <td>No</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>¿Se cuenta con panorama de riesgo actualizado?</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="20%" border="0">
+                                                    <tr>
+                                                        <td><input type="Radio" name="PanoramaRiesgoV" id="PanoramaRiesgoV2" value="S" /></td>
+                                                        <td>Si</td>
+                                                        <td><input type="Radio" name="PanoramaRiesgoV" id="PanoramaRiesgoV" value="N" /></td>
+                                                        <td>No</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Describa de forma detallada como ocurrio el Accidente</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <textarea name="DescripcionAccidenteV" id="DescripcionAccidenteV" class="form-control" style="resize:none" rows="5"></textarea>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(5);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(5);">Guardar Parcial</button>
+                                    </center>
+                                    
+                                </div>
+                                <h3>VI. Descripción del agente que produjo el Accidente</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td colspan="2">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="20%">Agente</td>
+                                                        <td width="20%">Material</td>
+                                                        <td width="20%">Marca</td>
+                                                        <td width="20%">Modelo</td>
+                                                        <td width="20%">Referencia</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" name="AgenteVI" id="AgenteVI" class="form-control" /></td>
+                                                        <td><input type="text" name="MaterialVI" id="MaterialVI" class="form-control" /></td>
+                                                        <td><input type="text" name="MarcaVI" id="MarcaVI" class="form-control" /></td>
+                                                        <td><input type="text" name="ModeloVI" id="ModeloVI" class="form-control" /></td>
+                                                        <td><input type="text" name="ReferenciaVI" id="ReferenciaVI" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="12%" rowspan="2">Peso</td>
+                                                        <td rowspan="2">Unidad Medida</td>
+                                                        <td>Tamaño</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td rowspan="2">Unidad Medida</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="10%">Altura</td>
+                                                        <td width="10%">Ancho</td>
+                                                        <td width="10%">Volumen</td>
+                                                        <td width="10%">Profundidad</td>
+                                                        <td width="12%">Velocidad</td>
+                                                        <td width="12%">Tiempo de Uso</td>
+                                                        <td width="14%">Fecha Mantenimiento</td>
+                                                        <td width="10%">Ha sido Reparado</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" name="PesoVI" id="PesoVI" class="form-control" /></td>
+                                                        <td><input type="text" name="PesoUnidadMedidaVI" id="PesoUnidadMedidaVI" class="form-control" /></td>
+                                                        <td><input type="text" name="AlturaVI" id="AlturaVI" class="form-control" /></td>
+                                                        <td><input type="text" name="AnchoVI" id="AnchoVI" class="form-control" /></td>
+                                                        <td><input type="text" name="VolumenVI" id="VolumenVI" class="form-control" /></td>
+                                                        <td><input type="text" name="ProfundidadVI" id="ProfundidadVI" class="form-control" /></td>
+                                                        <td><input type="text" name="VelocidadVI" id="VelocidadVI" class="form-control" /></td>
+                                                        <td><input type="text" name="VelocidadUnidadMedidaVI" id="VelocidadUnidadMedidaVI" class="form-control" /></td>
+                                                        <td><input type="text" name="TiempoUsoVI" id="TiempoUsoVI" class="form-control" /></td>
+                                                        <td><input type="text" name="FechaMantenimientoVI" id="FechaMantenimientoVI" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="20%" border="0">
+                                                                <tr>
+                                                                    <td><input type="Radio" name="ReparadoVI" id="ReparadoVI2" value="S" /></td>
+                                                                    <td>Si</td>
+                                                                    <td><input type="Radio" name="ReparadoVI" id="ReparadoVI" value="N" /></td>
+                                                                    <td>No</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="10%" rowspan="2">Explosivos</td>
+                                                        <td width="10%" rowspan="2">Unidad Medida</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>Temperatura</td>
+                                                        <td colspan="2">Sustancia</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>Voltaje Electrico</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="10%">Gases</td>
+                                                        <td width="10%">Cantidad</td>
+                                                        <td width="10%">Unidad Medida</td>
+                                                        <td colspan="2">Unidad Medida</td>
+                                                        <td width="10%">Cantidad</td>
+                                                        <td width="10%">Unidad Medida</td>
+                                                        <td width="10%">Unidad Medida</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="text" name="ExplosivosVI" id="ExplosivosVI" class="form-control" /></td>
+                                                        <td><input type="text" name="ExplosivosUnidadMedidaVI" id="ExplosivosUnidadMedidaVI" class="form-control" /></td>
+                                                        <td><input type="text" name="GasesVI" id="GasesVI" class="form-control" /></td>
+                                                        <td><input type="text" name="GasesCantidadVI" id="GasesCantidadVI" class="form-control" /></td>
+                                                        <td><input type="text" name="TemperaturaUnidadMedidaVI" id="TemperaturaUnidadMedidaVI" class="form-control" /></td>
+                                                        <td width="10%"><input type="text" name="SustanciaUnidadMedidaVI" id="SustanciaUnidadMedidaVI" class="form-control" /></td>
+                                                        <td width="1%">&nbsp;</td>
+                                                        <td><input type="text" name="SustanciaCantidadVI" id="SustanciaCantidadVI" class="form-control" /></td>
+                                                        <td>
+                                                            <input type="text" name="VoltajeElectricoVI" id="VoltajeElectricoVI" class="form-control" />
+                                                            <input type="text" name="VoltajeElectricoUnidadMedidaVI" id="VoltajeElectricoUnidadMedidaVI" class="form-control" />
+                                                        </td>
+                                                        <td><input type="text" name="UnidadMedidaVI" id="UnidadMedidaVI" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Detalles Adicionales</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><textarea name="DetallesAdicionalesVI" id="DetallesAdicionalesVI" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Elementos de protección personal</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>¿El trabajador necesitaba EPP?</td>
+                                                        <td><input type="Radio" name="EPPVI" id="EPPVI2" value="S" /></td>
+                                                        <td>Si</td>
+                                                        <td><input type="Radio" name="EPPVI" id="EPPVI" value="N" /></td>
+                                                        <td>No</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td>¿El trabajador estaba utilizando adecuadamente todos los EPP?</td>
+                                                        <td><input type="Radio" name="TrabajadorEPPVI" id="TrabajadorEPPVI2" /></td>
+                                                        <td>Si</td>
+                                                        <td><input type="Radio" name="TrabajadorEPPVI" id="TrabajadorEPPVI" /></td>
+                                                        <td>No</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Observaciones</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><textarea name="ObservacionesVI" id="ObservacionesVI" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(6);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(6);">Guardar Parcial</button>
+                                    </center>
+
+                                </div>
+                                <h3>VII. Caracterización del Accidente de Trabajo</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td colspan="5">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        @*<td width="36%">&nbsp;</td>*@
+                                                        <td @*width="64%"*@ align="center"><b>Ver Tabla</b></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">1. Tipo de Lesión</td>
+                                            <td width="20%">&nbsp;</td>
+                                            <td width="30%">2. Parte del cuerpo afectada</td>
+                                            <td width="20%">&nbsp;</td>
+                                            <td width="30%">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="CodTipoLesionVII" id="CodTipoLesionVII" class="form-control" /></td>
+                                            <td><input type="text" name="TipoLesionVII" id="TipoLesionVII" class="form-control" /></td>
+                                            <td><input type="text" name="CodigoParteCuerpoAfectadaVII" id="CodigoParteCuerpoAfectadaVII" class="form-control" /></td>
+                                            <td><input type="text" name="textfield66" id="textfield74" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">3. Mecanismo de Accidente</td>
+                                            <td width="30%">4. Agente de Accidente</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="CodMecaAccideneteVII" id="CodMecaAccideneteVII" class="form-control" /></td>
+                                            <td><input type="text" name="MecanismoAccidenteVII" id="MecanismoAccidenteVII" class="form-control" /></td>
+                                            <td><input type="text" name="CodAgenteAccideneteVII" id="CodAgenteAccideneteVII" class="form-control" /></td>
+                                            <td><input type="text" name="AgenteAccidenteVII" id="AgenteAccidenteVII" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="40%" align="center"><b>Análisis de Causalidad</b></td>
+                                                        <td width="60%" align="center"><b>Ver Tabla de Codificación NTC 3701</b></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">Descripción causas básicas</td>
+                                            <td colspan="2">Descripción causas inmediatas</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Factores Personales</td>
+                                            <td>&nbsp;</td>
+                                            <td>Actos Subestandar</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="CodFactoresPersonalesVII1" id="CodFactoresPersonalesVII1" class="form-control" /></td>
+                                            <td><input type="text" name="FactoresPersonalesVII1" id="FactoresPersonalesVII1" class="form-control" /></td>
+                                            <td><input type="text" name="CodActoSubestandarVII1" id="CodActoSubestandarVII1" class="form-control" /></td>
+                                            <td><input type="text" name="ActosSubestandarVII1" id="ActosSubestandarVII1" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="CodFactoresPersonalesVII2" id="CodFactoresPersonalesVII2" class="form-control" /></td>
+                                            <td><input type="text" name="FactoresPersonalesVII2" id="FactoresPersonalesVII2" class="form-control" /></td>
+                                            <td><input type="text" name="CodFactoresPersonalesVII2" id="CodFactoresPersonalesVII2" class="form-control" /></td>
+                                            <td><input type="text" name="FactoresPersonalesVII2" id="FactoresPersonalesVII2" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Factores de Trabajo</td>
+                                            <td>&nbsp;</td>
+                                            <td colspan="2">Condiciones Ambientales Substandar</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="CodFactoresTrabajoVII1" id="CodFactoresTrabajoVII1" class="form-control" /></td>
+                                            <td><input type="text" name="FactoresTrabajoVII1" id="FactoresTrabajoVII1" class="form-control" /></td>
+                                            <td><input type="text" name="CodCondAmbientalesVII1" id="CodCondAmbientalesVII1" class="form-control" /></td>
+                                            <td><input type="text" name="CondAmbientalesVII1" id="CondAmbientalesVII1" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="CodFactoresTrabajoVII2" id="CodFactoresTrabajoVII2" class="form-control" /></td>
+                                            <td><input type="text" name="FactoresTrabajoVII2" id="FactoresTrabajoVII2" class="form-control" /></td>
+                                            <td><input type="text" name="CodCondAmbientalesVII2" id="CodCondAmbientalesVII2" class="form-control" /></td>
+                                            <td><input type="text" name="CondAmbientalesVII2" id="CondAmbientalesVII2" class="form-control" /></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        @*<tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>*@
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(7);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(7);">Guardar Parcial</button>
+                                    </center>
+
+                                </div>
+                                <h3>VIII. Descripción de Incidente o AT por parte del trabajador y/o testigos importantes</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>POR FAVOR UTILIZAR EL ANEXO NO.1 PARA TESTIGOS SOBRE EL ACCIDENTE O INCIDENTE DE TRABAJO</td>
+                                            <td>
+                                                <input type="submit" name="button2" id="button2" value="Diligenciar Anexo" style="background-color:#FF7500; color:darkslategrey" />
+                                                <input type="submit" name="button3" id="button3" value="Adjuntar otro Anexo" style="background-color:#FF7500; color:darkslategrey" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                </div>
+                                <h3>IX. Análisis y recomendaciones del Grupo Investigador</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td><textarea name="DescripcionAnalisisIX" id="DescripcionAnalisisIX" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="35%"><b>Jefe Inmediato o Superior</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit</td>
+                                                                    <td><input type="Radio" name="TipoIdentJefeInmediantoIX" id="TipoIdentJefeInmediantoIX2" value="NIT" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="TipoIdentJefeInmediantoIX" id="TipoIdentJefeInmediantoIX3" value="CC" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="TipoIdentJefeInmediantoIX" id="TipoIdentJefeInmediantoIX4" value="CE" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="TipoIdentJefeInmediantoIX" id="TipoIdentJefeInmediantoIX5" value="NU" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="TipoIdentJefeInmediantoIX" id="TipoIdentJefeInmediantoIX" value="PA" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="JefeInmediatoNombresIX" id="JefeInmediatoNombresIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="JefeInmediatoCargoIX" id="JefeInmediatoCargoIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button4" id="button4" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="NumIdentJefeInmediatoIX" id="NumIdentJefeInmediatoIX" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="35%"><b>Encargado del P.S.O</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit </td>
+                                                                    <td><input type="Radio" name="TipoIdentEncargadoPSOIX" id="TipoIdentEncargadoPSOIX2" value="NIT" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="TipoIdentEncargadoPSOIX" id="TipoIdentEncargadoPSOIX3" value="CC" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="TipoIdentEncargadoPSOIX" id="TipoIdentEncargadoPSOIX4" value="CE" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="TipoIdentEncargadoPSOIX" id="TipoIdentEncargadoPSOIX5" value="NU" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="TipoIdentEncargadoPSOIX" id="TipoIdentEncargadoPSOIX" value="PA" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="EncargadoPSONombresIX" id="EncargadoPSONombresIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="EncargadoPSOCargoIX" id="EncargadoPSOCargoIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button5" id="button5" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="NumIdentPSOIX" id="NumIdentPSOIX" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        @*<td colspan="2">Integrante de COPASO o vigia</td>*@
+                                                        <td width="35%"><b>Integrante de COPASS o Vigia</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit </td>
+                                                                    <td><input type="Radio" name="TipoIdentCOPASOIX" id="TipoIdentCOPASOIX2" value="NIT" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="TipoIdentCOPASOIX" id="TipoIdentCOPASOIX3" value="CC" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="TipoIdentCOPASOIX" id="TipoIdentCOPASOIX4" value="CE" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="TipoIdentCOPASOIX" id="TipoIdentCOPASOIX5" value="NU" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="TipoIdentCOPASOIX" id="TipoIdentCOPASOIX" value="PA" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="COPASONombresCompletosIX" id="COPASONombresCompletosIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="COPASOCargoIX" id="COPASOCargoIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button6" id="button6" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="COPASONumIdentIX" id="COPASONumIdentIX" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        @*<td colspan="2">Brigadista de Emergencia</td>*@
+                                                        <td width="35%"><b>Brigadista de Emergencia</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit</td>
+                                                                    <td><input type="Radio" name="TipoIdentBrigadistaIX" id="TipoIdentBrigadistaIX2" value="NIT" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="TipoIdentBrigadistaIX" id="TipoIdentBrigadistaIX3" value="CC" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="TipoIdentBrigadistaIX" id="TipoIdentBrigadistaIX4" value="CE" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="TipoIdentBrigadistaIX" id="TipoIdentBrigadistaIX5" value="NU" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="TipoIdentBrigadistaIX" id="TipoIdentBrigadistaIX" value="PA" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="BrigadistaNombresIX" id="BrigadistaNombresIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="BrigadistaCargoIX" id="BrigadistaCargoIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button7" id="button7" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="NumeroIdentBrigadistaIX" id="NumeroIdentBrigadistaIX" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        @*<td colspan="2">Otro participante de la Investigacion</td>*@
+                                                        <td width="35%"><b>Otro participante de la Investigación</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit</td>
+                                                                    <td><input type="Radio" name="TipoIdentParticipanteIX" id="TipoIdentParticipanteIX2" value="NIT" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="TipoIdentParticipanteIX" id="TipoIdentParticipanteIX3" value="CC" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="TipoIdentParticipanteIX" id="TipoIdentParticipanteIX4" value="CE" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="TipoIdentParticipanteIX" id="TipoIdentParticipanteIX5" value="NU" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="TipoIdentParticipanteIX" id="TipoIdentParticipanteIX" value="PA" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="ParticipanteNombreIX" id="ParticipanteNombreIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="ParticipanteCargoIX" id="ParticipanteCargoIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button9" id="button9" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="NumIdentParticipanteIX" id="NumIdentParticipanteIX" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr style="vertical-align:bottom">
+                                                        @*<td colspan="2">Analisis especializado (Es obligatorio para accidentes mortales y graves, opcional para accdientes leves o incidentes)</td>*@
+                                                        <td width="35%"><b>Análisis Especializado (es obligatorio para accidentes mortales y graves, opcional para accdientes leves o incidentes)</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit</td>
+                                                                    <td><input type="Radio" name="TipoIdentAnalisisIX" id="TipoIdentAnalisisIX2" value="NIT" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="TipoIdentAnalisisIX" id="TipoIdentAnalisisIX3" value="CC" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="TipoIdentAnalisisIX" id="TipoIdentAnalisisIX4" value="CE" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="TipoIdentAnalisisIX" id="TipoIdentAnalisisIX5" value="NU" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="TipoIdentAnalisisIX" id="TipoIdentAnalisisIX" value="PA" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="AnalisisNombresIX" id="AnalisisNombresIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="CargoAnalisisIX" id="CargoAnalisisIX" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button10" id="button10" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="NumIdentAnalisisIX" id="NumIdentAnalisisIX" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Empresa que representa (cuando es un proveedor contratado por la empresa)</td>
+                                        </tr>
+                                        <tr>
+
+                                            <td><textarea name="EmpresaRepresentaIX" id="EmpresaRepresentaIX" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Observación del especialista</td>
+                                        </tr>
+                                        <tr>
+                                            <td><textarea name="ObservacionEspecialistaIX" id="ObservacionEspecialistaIX" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(9);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(9);">Guardar Parcial</button>
+                                    </center>
+
+                                </div>
+                                <h3>X. Empleador se compromete a adoptar estas medidas de intervención en la fuente, el medio o trabajador</h3>
+                                <div>
+                                    
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td colspan="5"><b>Sobre Causas Inmediatas</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="9%">Tipo</td>
+                                                        <td width="25%">Medidas de intervención</td>
+                                                        <td width="8%">&nbsp;</td>
+                                                        <td width="29%">Responsable implementación</td>
+                                                        <td width="29%">Fecha implementacion </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td><input type="checkbox" value="true" name="CausasInmediatasTipoC1X" id="CausasInmediatasTipoC1X" /></td>
+                                                                    <td>C</td>
+                                                                    <td><input type="checkbox" value="true" name="CausasInmediatasTipoP1X" id="CausasInmediatasTipoP1X" /></td>
+                                                                    <td>P</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="MedidasIntervencion1X" id="MedidasIntervencion1X" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>F</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoF1X" id="TipoF1X" /></td>
+                                                                    <td>M</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoM1X" id="TipoM1X" /></td>
+                                                                    <td>T</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoT1X" id="TipoT1X" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="RespImplementacion1X" id="RespImplementacion1X" class="form-control" /></td>
+                                                        <td><input type="text" name="FechaImplementacion1X" id="FechaImplementacion1X" class="form-control" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td><input type="checkbox" value="true" name="CausasInmediatasTipoC2X" id="CausasInmediatasTipoC2X" /></td>
+                                                                    <td>C</td>
+                                                                    <td><input type="checkbox" value="true" name="CausasInmediatasTipoP2X" id="CausasInmediatasTipoP2X" /></td>
+                                                                    <td>P</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="MedidasIntervencion2X" id="MedidasIntervencion2X" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>F</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoF2X" id="TipoF2X" /></td>
+                                                                    <td>M</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoM2X" id="TipoM2X" /></td>
+                                                                    <td>T</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoT2X" id="TipoT2X" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="RespImplementacion2X" id="RespImplementacion2X" class="form-control" /></td>
+                                                        <td><input type="text" name="FechaImplementacion2X" id="FechaImplementacion2X" class="form-control" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td><input type="checkbox" value="true" name="CausasInmediatasTipoC3X" id="CausasInmediatasTipoC3X" /></td>
+                                                                    <td>C</td>
+                                                                    <td><input type="checkbox" value="true" name="CausasInmediatasTipoP3X" id="CausasInmediatasTipoP3X" /></td>
+                                                                    <td>P</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="MedidasIntervencion3X" id="MedidasIntervencion3X" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>F</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoF3X" id="TipoF3X" /></td>
+                                                                    <td>M</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoM3X" id="TipoM3X" /></td>
+                                                                    <td>T</td>
+                                                                    <td><input type="checkbox" value="true" name="TipoT3X" id="TipoT3X" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="RespImplementacion3X" id="RespImplementacion3X" class="form-control" /></td>
+                                                        <td><input type="text" name="FechaImplementacion3X" id="FechaImplementacion3X" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td colspan="5"><b>Sobre Causas Básicas</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="9%">Tipo</td>
+                                                        <td width="25%">Medidas de intervención</td>
+                                                        <td width="8%">&nbsp;</td>
+                                                        <td width="29%">Responsable implementación</td>
+                                                        <td width="29%">Fecha implementación</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td><input type="checkbox" name="CausasBasicasTipoC1X" id="CausasBasicasTipoC1X" /></td>
+                                                                    <td>C</td>
+                                                                    <td><input type="checkbox" name="CausasBasicasTipoP1X" id="CausasBasicasTipoP1X" /></td>
+                                                                    <td>P</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="BasicasInmediatas1X" id="BasicasInmediatas1X" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>F</td>
+                                                                    <td><input type="checkbox" name="BasicasF1X" id="BasicasF1X" /></td>
+                                                                    <td>M</td>
+                                                                    <td><input type="checkbox" name="BasicasM1X" id="BasicasM1X" /></td>
+                                                                    <td>T</td>
+                                                                    <td><input type="checkbox" name="BasicasT1X" id="BasicasT1X" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="BasicasRespImplementacion1X" id="BasicasRespImplementacion1X" class="form-control" /></td>
+                                                        <td><input type="text" name="BasicasFechaImplementacion1X" id="BasicasFechaImplementacion1X" class="form-control" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td><input type="checkbox" name="CausasBasicasTipoC2X" id="CausasBasicasTipoC2X" /></td>
+                                                                    <td>C</td>
+                                                                    <td><input type="checkbox" name="CausasBasicasTipoP2X" id="CausasBasicasTipoP2X" /></td>
+                                                                    <td>P</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="BasicasInmediatas2X" id="BasicasInmediatas2X" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>F</td>
+                                                                    <td><input type="checkbox" name="checkbox" id="checkbox121" /></td>
+                                                                    <td>M</td>
+                                                                    <td><input type="checkbox" name="checkbox2" id="checkbox122" /></td>
+                                                                    <td>T</td>
+                                                                    <td><input type="checkbox" name="checkbox55" id="checkbox123" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="BasicasRespImplementacion2X" id="BasicasRespImplementacion2X" class="form-control" /></td>
+                                                        <td><input type="text" name="BasicasFechaImplementacion2X" id="BasicasFechaImplementacion2X" class="form-control" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td><input type="checkbox" name="CausasBasicasTipoC3X" id="CausasBasicasTipoC3X" /></td>
+                                                                    <td>C</td>
+                                                                    <td><input type="checkbox" name="CausasBasicasTipoP3X" id="CausasBasicasTipoP3X" /></td>
+                                                                    <td>P</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="BasicasInmediatas3X" id="BasicasInmediatas3X" class="form-control" /></td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>F </td>
+                                                                    <td><input type="checkbox" name="BasicasF3X" id="BasicasF3X" /></td>
+                                                                    <td>M</td>
+                                                                    <td><input type="checkbox" name="BasicasM3X" id="BasicasM3X" /></td>
+                                                                    <td>T</td>
+                                                                    <td><input type="checkbox" name="BasicasT3X" id="BasicasT3X" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td><input type="text" name="BasicasRespImplementacion3X" id="BasicasRespImplementacion3X" class="form-control" /></td>
+                                                        <td><input type="text" name="BasicasFechaImplementacion3X" id="BasicasFechaImplementacion3X" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(10);" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(10);">Guardar Parcial</button>
+                                    </center>
+
+                                </div>
+                                <h3>XI. Remisión del formato de Investigación a la ARL</h3>
+                                <div>
+                                    <p>
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                @*<td width="253">&nbsp;</td>
+                                                <td width="240">&nbsp;</td>
+                                                <td width="196">&nbsp;</td>*@
+                                                <td width="152">Fecha Remisión</td>
+                                                <td width="152">No. Folios</td>
+                                            </tr>
+                                            <tr>
+                                                @*<td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>*@
+                                                <td><input type="text" name="FechaRemisionXI" id="FechaRemisionXI" class="form-control" /></td>
+                                                <td><input type="text" name="NoFoliosXI" id="NoFoliosXI" class="form-control" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5">
+                                                    <table width="100%" border="0">
+                                                        <tr>
+                                                            <td width="35%"><b>Representante Legal</b></td>
+                                                            <td>&nbsp;</td>
+                                                            <td width="30%">Nombre y Apellidos</td>
+                                                            <td width="30%">Cargo</td>
+                                                            <td width="20%">Firma</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tipo de Identificación:</td>
+                                                            <td>
+                                                                <table width="50%" border="0">
+                                                                    <tr>
+                                                                        <td>Nit</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXI" id="TipoIdentificacionXI2" value="NIT" /></td>
+                                                                        <td>CC</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXI" id="TipoIdentificacionXI3" value="CC" /></td>
+                                                                        <td>CE</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXI" id="TipoIdentificacionXI4" value="CE" /></td>
+                                                                        <td>NU</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXI" id="TipoIdentificacionXI5" value="NU" /></td>
+                                                                        <td>PA</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXI" id="TipoIdentificacionXI" value="PA" /></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td rowspan="2"><textarea name="NombresXI" id="NombresXI" class="form-control" style="resize:none"></textarea></td>
+                                                            <td rowspan="2"><textarea name="CargoXI" id="CargoXI" class="form-control" style="resize:none"></textarea></td>
+                                                            <td rowspan="2"><input type="submit" name="button11" id="button11" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2"><input type="text" name="NumeroIdentificacionXI" id="NumeroIdentificacionXI" class="form-control" /></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fecha de remisión de recomendaciones de la ARL al empleador</td>
+                                                <td>Fecha de remisión de informe de la ARL a Dir. Territorio Min. Trabajo</td>
+                                                <td colspan="2">Responsable de remisión por parte de la ARL a la dirección territorioal de Min. Trabajo</td>
+                                                <td>Cargo</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" name="RecomendacionesARLXI" id="RecomendacionesARLXI" class="form-control" /></td>
+                                                <td><input type="text" name="RemisionInformeARLXI" id="RemisionInformeARLXI" class="form-control" /></td>
+                                                <td colspan="2"><input type="text" name="RemisionMinisterioTrabajoXI" id="RemisionMinisterioTrabajoXI" class="form-control" /></td>
+                                                <td><input type="text" name="CargoXI" id="CargoXI" class="form-control" /></td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                        <center>
+                                            @*<input type="button" value="Guardar Parcial" class="boton botonactive" onclick="GuardarParcial(11);" />*@
+                                            <button type="button" class="boton botonactive" onclick="GuardarParcial(11);">Guardar Parcial</button>
+                                        </center>
+                                    </p>
+                                </div>
+                                <h3>XII. Responsable de la verificación y seguimiento por parte del empleador, verificación y seguimiento por parte de la ARL</h3>
+                                <div>
+                                    <p>
+                                        <table width="100%" border="0">
+                                            <tr>
+                                                <td>
+                                                    <table width="100%" border="0">
+                                                        <tr>
+                                                            <td width="35%"><b>Jefe Inmediato o Superior</b></td>
+                                                            <td>&nbsp;</td>
+                                                            <td width="30%">Nombre y Apellidos</td>
+                                                            <td width="30%">Cargo</td>
+                                                            <td width="20%">Firma</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tipo de Identificación:</td>
+                                                            <td>
+                                                                <table width="50%" border="0">
+                                                                    <tr>
+                                                                        <td>Nit</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXII" id="TipoIdentificacionXII2" /></td>
+                                                                        <td>CC</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXII" id="TipoIdentificacionXII3" /></td>
+                                                                        <td>CE</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXII" id="TipoIdentificacionXII4" /></td>
+                                                                        <td>NU</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXII" id="TipoIdentificacionXII5" /></td>
+                                                                        <td>PA</td>
+                                                                        <td><input type="Radio" name="TipoIdentificacionXII" id="TipoIdentificacionXII" /></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td rowspan="2"><textarea name="NombresXII" id="NombresXII" class="form-control" style="resize:none"></textarea></td>
+                                                            <td rowspan="2"><textarea name="CargoXII" id="CargoXII" class="form-control" style="resize:none"></textarea></td>
+                                                            <td rowspan="2"><input type="submit" name="button12" id="button12" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2"><input type="text" name="NumeroIdentificacionXII" id="NumeroIdentificacionXII" class="form-control" /></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table width="50%" border="0">
+                                                        <tr>
+                                                            <td>¿Fueron efectivas las medidas de intervención?</td>
+                                                            <td><input type="Radio" name="MedidasIntervencionXII" id="MedidasIntervencionXII2" /></td>
+                                                            <td>Si</td>
+                                                            <td><input type="Radio" name="MedidasIntervencionXII" id="MedidasIntervencionXII" /></td>
+                                                            <td>No</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Observaciones y recomendaciones de la ARL</td>
+                                            </tr>
+                                            <tr>
+                                                <td><textarea name="ObservacionesXII" id="ObservacionesXII" class="form-control" style="resize:none"></textarea></td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                        <center>
+                                            @*<input value="Guardar Definitivo" onclick="GuardarDefinitivo();" type="button" />*@
+                                            <button type="button" class="boton botonactive" onclick="GuardarDefinitivo();">Guardar Definitivo</button>
+                                        </center>
+                                    </p>
+                                </div>
+                                <h3>Anexo No 1. (formato adicional para detallar información de testimonios)</h3>
+                                <div>
+
+                                    <table width="100%" border="0">
+                                        <tr>
+                                            @*<td width="14">&nbsp;</td>
+                                            <td width="23">&nbsp;</td>
+                                            <td width="598">&nbsp;</td>*@
+                                            <td width="215">Fecha del Incidente o Accidente</td>
+                                            <td width="215">Fecha del testimonio</td>
+                                        </tr>
+                                        <tr>
+                                            @*<td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>*@
+                                            <td><input type="text" name="AnexoFechaIncidente" id="AnexoFechaIncidente" class="form-control" /></td>
+                                            <td><input type="text" name="AnexoFechaTestimonio" id="AnexoFechaTestimonio" class="form-control" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">Testimonios sobre el Incidente o Accidente de Trabajo</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">
+                                                <table width="100%" border="0">
+                                                    <tr>
+                                                        <td width="35%"><b>Jefe Inmediato o Superior</b></td>
+                                                        <td>&nbsp;</td>
+                                                        <td width="30%">Nombre y Apellidos</td>
+                                                        <td width="30%">Cargo</td>
+                                                        <td width="20%">Firma</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Identificación:</td>
+                                                        <td>
+                                                            <table width="50%" border="0">
+                                                                <tr>
+                                                                    <td>Nit</td>
+                                                                    <td><input type="Radio" name="AnexoTipoIdentificacion" id="AnexoTipoIdentificacion2" /></td>
+                                                                    <td>CC</td>
+                                                                    <td><input type="Radio" name="AnexoTipoIdentificacion" id="AnexoTipoIdentificacion3" /></td>
+                                                                    <td>CE</td>
+                                                                    <td><input type="Radio" name="AnexoTipoIdentificacion" id="AnexoTipoIdentificacion4" /></td>
+                                                                    <td>NU</td>
+                                                                    <td><input type="Radio" name="AnexoTipoIdentificacion" id="AnexoTipoIdentificacion5" /></td>
+                                                                    <td>PA</td>
+                                                                    <td><input type="Radio" name="AnexoTipoIdentificacion" id="AnexoTipoIdentificacion" /></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td rowspan="2"><textarea name="AnexoNombres" id="AnexoNombres" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><textarea name="AnexoCargo" id="AnexoCargo" class="form-control" style="resize:none"></textarea></td>
+                                                        <td rowspan="2"><input type="submit" name="button13" id="button13" value="Adjuntar" style="background-color:#FF7500; color:darkslategrey" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><input type="text" name="AnexoNumIdentificacion" id="AnexoNumIdentificacion" class="form-control" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">¿Qué, Cómo, Cuándo y Dónde sucedio?</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"><textarea name="AnexoDondeSucedio" id="AnexoDondeSucedio" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">¿Por qué sucedio?</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"><textarea name="AnexoPorqueSucedio" id="AnexoPorqueSucedio" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">¿Cómo se hubiera podido evitar o prevenir?</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"><textarea name="AnexoPrevenir" id="AnexoPrevenir" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">Considero importante aclarar o adicionar lo siguiente</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"><textarea name="AnexoAdicionar" id="AnexoAdicionar" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">&nbsp;</td>
+                                            <td colspan="2">Firma</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">&nbsp;</td>
+                                            <td colspan="2"><textarea name="AnexoFirma" id="AnexoFirma" class="form-control" style="resize:none"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <center>
+                                        @*<input value="Guardar Parcial" onclick="GuardarParcial(12);" type="button" />*@
+                                        <button type="button" class="boton botonactive" onclick="GuardarParcial(12);">Guardar Parcial</button>
+                                    </center>
+                                    
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </center>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Incidentes/IncidentesAT.js")

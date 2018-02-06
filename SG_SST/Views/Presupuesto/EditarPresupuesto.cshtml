@@ -1,0 +1,844 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.ActividadPresupuesto>
+
+@{
+    ViewBag.Title = "Editar Presupuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Presupuesto</a></li>
+    <li class="active">Editar Presupuesto</li>
+</ol>
+
+<style>
+    .campos-tabla {
+        width: 160px;
+        display: block;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<form method="post" id="Presupuesto" action="@Url.Action("CrearPresupuesto", "Presupuesto")">
+    <input name="PK_Prepuesto" value="@ViewBag.Presupuesto.PK_Prepuesto" type="hidden" />
+    <input name="PK_Presupuesto_Por_Año" value="@ViewBag.PresupuestoPorAnio.PK_Presupuesto_Por_Año" type="hidden" />
+    <input name="FK_Presupuesto" value="@ViewBag.PresupuestoPorAnio.FK_Presupuesto" type="hidden" />
+    <input type="hidden" id="cantidadActividades" value="@Model.Count()" />
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">EDITAR PRESUPUESTO</div>
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="col-xs-4">
+                        <h5><b>Rubro total:</b></h5>
+                        <input name="RubroTotal" id="RubroTotal" value="@ViewBag.Presupuesto.RubroTotal" class="form-control" />
+                    </div>
+                    <div class="col-xs-5">
+                        <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                        @Html.DropDownList("FK_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                    </div>
+                    <div class="col-xs-3">
+                        <h5>
+                            <b>Período:</b>
+                        </h5>
+                        @Html.DropDownList("Periodo", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="TablaPresupuesto">
+        <div class="table-responsive" style="overflow-x:scroll">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <thead>
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle"> </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            ACTIVIDADES
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ENERO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">FEBRERO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">MARZO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ABRIL</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">MAYO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">JUNIO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">JULIO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">AGOSTO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">SEPTIEMBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">OCTUBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">NOVIEMBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">DICIEMBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">TOTAL ACTIVIDAD</th>
+                    </tr>
+                </thead>
+                <tbody id="actividades">
+                    @{
+                        int principales = 0;
+
+                        foreach (var actividad in Model)
+                        {
+
+                            if (actividad.actividadesPresupuesto != null)
+                            {
+
+                                int secundarias = 0;
+
+                                <tr name="@principales">
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <a data-toggle="collapse" onclick="habilitarFilas(@principales)">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                        <input name="@string.Format("[{0}].PK_Actividad_Presupuesto", principales)" type="hidden" class="campos-tabla" value="@actividad.PK_Actividad_Presupuesto" />
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"><input name="@string.Format("[{0}].DescripcionActividad", principales)" type="text" class="campos-tabla" value="@actividad.DescripcionActividad" /></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                </tr>
+
+                                foreach (var actividadSecudaria in actividad.actividadesPresupuesto)
+                                {
+                                    int terciarias = 0;
+                                    double sumaActividadPlaneada = 0;
+                                    <tr name="@principales">
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].PK_Actividad_Presupuesto", principales, secundarias)" type="hidden" class="campos-tabla" value="@actividadSecudaria.PK_Actividad_Presupuesto" />
+                                            <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].FK_Actividad_Presupuesto", principales, secundarias)" type="hidden" class="campos-tabla" value="@actividadSecudaria.FK_Actividad_Presupuesto" />
+
+                                            <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", actividadSecudaria.PK_Actividad_Presupuesto)" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+                                            <div id="@string.Format("modalEliminar{0}", actividadSecudaria.PK_Actividad_Presupuesto)" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                @*<span aria-hidden="true">&times;</span>*@
+                                                            </button>
+                                                            <h4 class="modal-title title">Eliminar Actividad</h4>
+                                                        </div>
+                                                        <div class="modal-body" style="color:black">
+                                                            <center><p>¿Seguro desea eliminar la actividad seleccionada?</p></center>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="boton botonactive" onclick="EliminarActividad(this, @actividadSecudaria.PK_Actividad_Presupuesto )" data-dismiss="modal">
+                                                                @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                                            </button>
+                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].DescripcionActividad", principales, secundarias)" type="text" class="form-control" value="@actividadSecudaria.DescripcionActividad" />
+                                        </td>
+
+                                        @foreach (var presupuestoMes in actividadSecudaria.presupuestosPorMes)
+                                        {
+                                            if (presupuestoMes.Mes == 1)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="enero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="1" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 2)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="febrero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="2" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 3)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="marzo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="3" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 4)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="abril" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="4" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 5)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="mayo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="5" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 6)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="junio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="6" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 7)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="julio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="7" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 8)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="agosto" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="8" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 9)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="septiembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{1}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="9" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 10)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="octubre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="10" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 11)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="noviembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="11" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 12)
+                                            {
+                                                sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                                <td name="diciembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="12" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                </td>
+                                            }
+                                            terciarias++;
+                                        }
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <input type="text" class="campos-tabla" name="total" value="@sumaActividadPlaneada" disabled style="text-align: right" />
+                                        </th>
+                                    </tr>
+                                        secundarias = secundarias + 1;
+
+                                }
+                            }
+                            else
+                            {
+                                int terciarias = 0;
+                                double sumaActividadPlaneada = 0;
+                                <tr>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <input type="checkbox" name="agruparActividades">
+                                        <input name="@string.Format("[{0}].PK_Actividad_Presupuesto", principales)" type="hidden" class="campos-tabla" value="@actividad.PK_Actividad_Presupuesto" />
+
+                                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", actividad.PK_Actividad_Presupuesto)" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar" class="btn btn-search">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </a>
+
+                                        <div id="@string.Format("modalEliminar{0}", actividad.PK_Actividad_Presupuesto)" class="modal fade" role="dialog">
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            @*<span aria-hidden="true">&times;</span>*@
+                                                        </button>
+                                                        <h4 class="modal-title title">Eliminar Actividad</h4>
+                                                    </div>
+                                                    <div class="modal-body" style="color:black">
+                                                        <center><p>¿Esta seguro de eliminar la actividad?</p></center>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="boton botonactive" onclick="EliminarActividad(this, @actividad.PK_Actividad_Presupuesto )" data-dismiss="modal">
+                                                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                                        </button>
+
+                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        <input name="@string.Format("[{0}].DescripcionActividad", principales)" type="text" class="campos-tabla" value="@actividad.DescripcionActividad" />
+                                    </th>
+                                    @foreach (var presupuestoMes in actividad.presupuestosPorMes)
+                                    {
+                                        if (presupuestoMes.Mes == 1)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="enero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="1" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 2)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="febrero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="2" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 3)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="marzo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="3" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 4)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="abril" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="4" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 5)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="mayo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="5" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 6)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="junio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="6" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 7)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="julio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="7" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 8)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="agosto" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="8" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 9)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="septiembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="9" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 10)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="octubre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="10" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 11)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="noviembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="11" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 12)
+                                        {
+                                            sumaActividadPlaneada = sumaActividadPlaneada + presupuestoMes.PresupuestoMes;
+                                            <td name="diciembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoMes" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="12" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" type="hidden" style="text-align: right" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" type="hidden" style="text-align: right" />
+                                            </td>
+                                        }
+                                        terciarias++;
+                                    }
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        <input type="text" class="campos-tabla" name="total" value="@sumaActividadPlaneada" disabled style="text-align: right" />
+                                    </td>
+                                </tr>
+                            }
+                            principales = principales + 1;
+                        }
+                        <input type="hidden" id="principales" value="@principales" />
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle"> </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:right; font-weight:bold">VALOR TOTAL MES</td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaEnero" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaFebrero" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaMarzo" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaAbril" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaMayo" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaJunio" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaJulio" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaAgosto" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaSeptiembre" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaOctubre" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaNoviembre" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaDiciembre" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaTotal" disabled style="background-color:#E6EAEE; text-align: right" />
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        @*<input type="button" id="buttonAgregar" class="form-control btn btn-warning btn-md tbr" value="Agregar Actividad" onclick="agregarActividad(true)" />*@
+                        <button type="button" id="buttonAgregar" class="boton botoninfo" onclick="agregarActividad(true)">Agregar Actividad</button>
+                    </div>
+
+                    <div class="col-md-3">
+                        @*<input type="button" class="form-control btn btn-warning btn-md tbr" value="Agrupar" onclick="agruparActividades1()" />*@
+                        <button type="button" class="boton botoninfo" onclick="agruparActividades1()">Agrupar</button>
+                    </div>
+                    <div class="col-md-3">
+                        @*<input type="submit" class="form-control btn btn-warning btn-md tbr" id="guardarActividad" value="Guardar" onclick="EditarPresupuesto()" />*@
+                        <button type="button" class="boton botonactive" id="guardarActividad" onclick="validarCamposPresupuestoEditar()">Guardar</button>
+                        <a id="guardarActividadModal" data-toggle="modal" data-target="#ModalGuardar" value="Guardar" class="boton botonactive" style='display:none;'>
+                            Guardar
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        @*<input type="button" class="form-control btn btn-warning btn-md tbr" value="Cancelar" onclick="CargarFormularioPresupuesto()" />*@
+                        @*<button type="button" class="boton botoncancel" onclick="CargarFormularioPresupuesto()">Cancelar</button>*@
+                        @Html.ActionLink("Cancelar", "BuscarPresupuestos", null,
+                        htmlAttributes: new { @type = "button", @class = "boton botoncancel" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive hidden">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <tr id="filaActividadPrincipal" class="titulos_tabla">
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a data-toggle="collapse">
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </a>
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input type="text" class="campos-tabla" />
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                </tr>
+                <tr id="filaActividad">
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <input type="checkbox" name="agruparActividades">
+                        <a data-toggle="modal" data-target="#modalActSinGuardar">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+                        <div id="modalActSinGuardar" name="modalActSinGuardar" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Eliminar Actividad</h4>
+                                    </div>
+                                    <div class="modal-body" style="color:black">
+                                        <center><p>¿Seguro desea eliminar la actividad seleccionada?</p></center>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botonactive" onclick="EliminarActividadSinGuardar(this)" data-dismiss="modal">
+                                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                        </button>
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name="DescripcionActividad" type="text" class="campos-tabla" />
+                    </td>
+                    <td name="enero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="1" />
+                    </td>
+                    <td name="febrero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="2" />
+                    </td>
+                    <td name="marzo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="3" />
+                    </td>
+                    <td name="abril" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="4" />
+                    </td>
+                    <td name="mayo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="5" />
+
+                    </td>
+                    <td name="junio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="6" />
+                    </td>
+                    <td name="julio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="7" />
+                    </td>
+                    <td name="agosto" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="8" />
+                    </td>
+                    <td name="septiembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="9" />
+                    </td>
+                    <td name="octubre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="10" />
+                    </td>
+                    <td name="noviembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="11" />
+                    </td>
+                    <td name="diciembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input name=".PresupuestoMes" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                        <input type="hidden" name=".Mes" value="12" />
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input type="text" class="campos-tabla" name="total" disabled style="background-color:#E6EAEE; text-align: right" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</form>
+
+<div id="ModalAgrupar" class="modal fade" role="dialog" name="modal">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    @*<span aria-hidden="true">&times;</span>*@
+                </button>
+                <h4 class="modal-title title">Agrupar Actividades</h4>
+            </div>
+            <div class="modal-body " style="color:black">
+                <center><p>Se debe seleccionar actividades para agrupar</p></center>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                @*<div class="row">
+                    <div class="col-md-2 col-md-offset-5">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalGuardar" class=" modal fade" role="dialog" name="modal">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    @*<span aria-hidden="true">&times;</span>*@
+                </button>
+                <h4 class="modal-title title">Guardar Actividades</h4>
+            </div>
+            <div class="modal-body " style="color:black">
+                <center><p>La cantidad total de las actividades NO debe sobrepasar la cantidad del rubro</p></center>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                @*<div class="row">
+                    <div class="col-md-2 col-md-offset-5">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalesEliminados">
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+    <script>
+        $(document).ready(function () {      
+                      
+            $('#TablaPresupuesto').find("input[type=decimal]").on({
+                "focus": function (event) {
+                    $(event.target).select();
+                },
+                "keyup": function (event) {
+                    $(event.target).val(function (index, value) {
+                        valor = value.replace(/\D/g, "")
+                                    .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        stringValor = "$".concat(valor)
+                        return stringValor;
+                    });
+                }
+            });
+            $("#RubroTotal").on({
+                "focus": function (event) {
+                    $(event.target).select();
+                },
+                "keyup": function (event) {
+                    $(event.target).val(function (index, value) {
+                        valor = value.replace(/\D/g, "")
+                                    .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        stringValor = "$".concat(valor)
+                        return stringValor;
+                    });
+                }
+            });
+            sumarPresupuestoMes();
+            var numero = parseFloat($('#RubroTotal').val().replace(",", "."))
+            $('#RubroTotal').val(darFormato(numero.toFixed(2)));
+            $('#TablaPresupuesto').find("input[type=decimal]").each(function (ind, element)
+            {
+                var numero = parseFloat($(element).val().replace(",", "."));
+                $(element).val(darFormato(numero.toFixed(2)));
+            });
+
+            $('#TablaPresupuesto').find("input[name=total]").each(function (ind, element)
+            {
+                var numero = parseFloat($(element).val().replace(",", "."));
+                $(element).val(darFormato(numero.toFixed(2)));
+            });
+        });
+
+    </script>
+}

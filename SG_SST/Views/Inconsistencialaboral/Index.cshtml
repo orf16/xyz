@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SG_SST.Models.Empleado.Inconsistecialaboral>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md col-md-10 col-md-offset-0">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><p class="text-center">NOTIFICAR - INCONSISTENCIA</p></div>
+
+            <p>
+                @Html.ActionLink("Notificar Inconsistencia", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TipoInconsistencia.DescripcionTipInc)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DescripcionInconsistencia)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoInconsistencia.DescripcionTipInc)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DescripcionInconsistencia)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.PKInconsistencia }) |
+                            @Html.ActionLink("Detalles", "Details", new { id = item.PKInconsistencia }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.PKInconsistencia })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

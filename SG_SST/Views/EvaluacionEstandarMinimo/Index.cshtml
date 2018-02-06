@@ -1,0 +1,130 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionEstandarMinimoModel
+
+@{
+    ViewBag.Title = "Estándares Mínimos";
+}
+
+@*<h2>Evaluación Estandar Mínimo</h2>*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@section OpcionesEvaluacion
+{
+    <ul class="nav nav-tabs">
+        <li><a href="@Url.Action("Index","Evaluacion")" style="color:gray">Evaluación Inicial SGSST</a></li>
+        <li class="active"><a href="javascript:void(0);" style="color:#ff7500">Estándares Mínimos SGSST</a></li>
+        <li><a href="@Url.Action("EvaluacionPositiva", "EvaluacionEstandarMinimo")" style="color:gray">Evaluación SST Positiva</a></li>
+    </ul>
+
+    @*<div class="form-inline">
+        <div class="form-group">
+            <a href="@Url.Action("Index","Evaluacion")" class="boton botonactive">Evaluación Inicial SGSST</a>
+        </div>
+        <div class="form-group">
+            <a href="javascript:void(0);" class="btn btn-basic" disabled="disabled">Estándares Mínimos SGSST</a>
+        </div>
+        <div class="form-group">
+            <a href="@Url.Action("EvaluacionPositiva", "EvaluacionEstandarMinimo")" class="boton botonactive">Evaluación SST Positiva</a>
+        </div>
+    </div>*@
+}
+
+<br />
+
+<section id="container_est_min" class="container_estmin panel panel-default">
+    <div class="panel-heading" style="color:black">
+        ESTÁNDARES MÍNIMOS
+    </div>
+
+    @*<a class="popup_ayuda glyphicon glyphicon-question-sign" aria-hidden="true" href="javascript:void(0);"></a>*@
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            @*<a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+               style="border: 1px solid lightslategray; border-radius:0px">
+                <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+            </a>*@
+            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black; text-align:justify">
+
+                            <p>A continuación se presenta la funcionalidad de realizar su autoevaluación de estándares mínimos de acuerdo a lo exigido por la resolución 1111 de 2017. La autoevaluación está divida en 4 partes o ciclos, planear, hacer, verificar y actuar.</p>
+                            <p>Para iniciar de clic en la opción “i. planear” y responda cada una de las preguntas del ciclo.</p>
+                            <p>Recuerde que debe responder la autoevaluación en orden. Podrá guardar la autoevaluación de manera parcial y continuar en otro momento, las preguntas ya respondidas no se borraran.</p>
+
+                            <p>Una vez finalice un ciclo puede ver los resultados parciales. Pero solo hasta que termine toda la autoevaluación no tendrá los resultados finales y otras funciones de presentación de resultados.</p>
+                            <p>Cada pregunta presenta un información contextual de cada aspecto para orientar la evaluación, esto en conformidad con la resolución 1111 de 2017. Cada ítem tiene un peso o valor porcentual para la calificación final, esta se podrá consultar una vez finalice la evaluación y descargue en Excel sus resultados. Las opciones de calificación de cada pregunta son:</p>
+
+                            <p>1. cumple totalmente<br />
+                            2. no cumple<br />
+                            3 no aplica. Si selecciona esta opción, debe seleccionar: justifica (donde explica en el campo de la derecha la razón de por qué no le aplica) o, no justifica (si selecciona esta opción, no se le dará el punto respectivo de la calificación de la pregunta)</p>
+
+                            <p>Plan de acción: esta opción se habilita al seleccionar como respuesta “no cumple”, y le permite definir un plan de acción específico para darle cumplimiento. El plan de acción total solo se mostrara cuando finalice la totalidad de la autoevaluación.</p>
+                            <p>Una vez finalice los 4 ciclos, se le mostrara la calificación actual, en función del criterio, valoración y acción respectiva. Esto en conformidad con el articulo 13 resolución 1111 de 2017.</p>
+                            <p>Dando clic en “plan de acción” visualizara los planes creados durante la autoevaluación, así mismo descargarles en Excel para gestionarlos. Dando clic en "informe final", podrá ver de manera gráfica los resultados por ciclos y totales y descargar los resultados en Excel por ciclo o totales.</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (Model != null && Model.CicloActual != null)
+        {
+            @Html.Partial("_ObtenerCriteriosPorCiclo", Model.CicloActual)
+        }
+        else if (Model != null && Model.Ciclos != null)
+        {
+            @Html.Partial("_Ciclos", Model.Ciclos)
+        }
+        if (Model != null && Model.CalificacionFinal != null)
+        {
+            @Html.Partial("_CalificacionFinal", Model.CalificacionFinal)
+        }
+}
+</section>
+
+@{
+    if (ViewBag.Mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                title: 'Atención',
+                text: 'Debe estar autenticado para realizar la evalación.',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location.href = '../Home/Login';
+                }
+            });
+        </script>
+    }
+}
+
+@Scripts.Render("~/Scripts/jquery.validate.min.js")

@@ -1,0 +1,524 @@
+﻿@model SG_SST.Models.EnfermedadLaboral.EnfermedadLaboralModel
+@{
+    ViewBag.Title = "Seguimiento a Presuntas Enfermedades Laborales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeadStyles{
+    <link rel="stylesheet" href="/Content/css/formularios.css" />
+    <link rel="stylesheet" href="/Content/css/bootstrap-iso.css" />
+    <link rel="stylesheet" href="/Content/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Content/css/bootstrap-datepicker3.css" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/miga-de-pan.css" rel="stylesheet">
+    <!-- Referencia a botones -->
+    <link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+}
+@*===============================================================================*@
+<div class="main">
+    <div class="page-header">
+
+        @using (Html.BeginForm("Registrar", "EnfermedadLaboralDiagnosticada", FormMethod.Post, new { @id = "frmEnfLabDiag", @class = "form-horizontal", enctype = "multipart/form-data" }))
+        {
+            <div class="container name_for">
+                <h2>SEGUIMIENTO A PRESUNTAS ENFERMEDADES LABORALES</h2>
+            </div>
+            <div class="container formulario">
+                <div class="row">
+                    <div align="right">
+                        <div id="ayuda" style="text-align:right">
+                            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                               title="Ayuda" class="btn btn-ayuda btn-md">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </a>
+                            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                @*<span aria-hidden="true">&times;</span>*@
+                                            </button>
+                                            <h4 class="modal-title title">Ayuda</h4>
+                                        </div>
+                                        <div class="modal-body " style="color:black; text-align:justify">
+                                            <p>1. Datos personales del trabajador: por favor en el campo de numero de documento digite el número de identificación del trabajador. Alissta validara el dato y traerá parte de la información general del trabajador. si la información traída no corresponde, consulte con su gestor o ejecutivo de cuenta asignado por positiva para su cuenta y realice la actualización de la información por los canales establecidos para tal fin.</p>
+                                            <p>Ingrese en el campo de "código/descripción cie10”, el código del diagnóstico principal de la enfermedad laboral. Seguidamente use el campo “diagnostico” para complementar o describir la enfermedad, estado u otra información relevante al caso. Puede que el trabajador presente más un diagnóstico, regístrelo aquí.</p>
+                                            <p>En el campo “Furel” (formato único de reporte de enfermedad laboral”, por favor cargue el formato diligenciado Furel del caso respectivo.</p>
+                                            <p>2. documentación: adjunte las comunicaciones recibidas como carta de EPS y soportes documentales solicitados por EPS para calificación y la fecha de envió.</p>
+                                            <p>3. instancias: puede registrar las estancias principales del proceso de calificación de la enfermedad laboral y su estado como: en estudio, origen laboral, origen común. Complete la descripción de cada instancia, fecha de calificación y quien califica.</p>
+                                            <p>Finalice el proceso dando clic en la opción “guardar”</p>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Seccion 1> Datos del trabajador-->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <h2>I. DATOS PERSONALES DEL TRABAJADOR</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Número de Documento</h2>
+                                @Html.TextBoxFor(x => x.NumeroDocumento, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Nombre del Trabajador</h2>
+                                @Html.TextBoxFor(x => x.NombreTrabajador, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Fecha de Nacimiento</h2>
+                                @Html.TextBoxFor(x => x.FechaNacimiento, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Género</h2>
+                                @Html.TextBoxFor(x => x.Geneero, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Dirección</h2>
+                                @Html.TextBoxFor(x => x.Direccion, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Teléfono</h2>
+                                @Html.TextBoxFor(x => x.Telefono, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Fax</h2>
+                                @Html.TextBoxFor(x => x.Fax, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Departamento</h2>
+                                @Html.TextBoxFor(x => x.Departamento, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Municipio</h2>
+                                @Html.TextBoxFor(x => x.Municipio, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Cargo</h2>
+                                @Html.TextBoxFor(x => x.Cargo, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-12 col-md-6 linea02">
+                                <h2>Diagnóstico</h2>
+                                @Html.TextAreaFor(x => x.Diagnostico, new { @rows = "10", @cols = "75" })
+                                @Html.ValidationMessageFor(x => x.Diagnostico)
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 linea02">
+                                <h2>Código/Descripción CIIE 10</h2>
+                                @Html.TextBoxFor(x => x.DiagnosticoCIIE10, new { display = "none" })
+                                @Html.Hidden("IdDiagnosticoCIIE10", new { name = "IdDiagnosticoCIIE10" })
+                                @Html.ValidationMessageFor(x => x.DiagnosticoCIIE10)
+                                <span class="error" id="errordiagnostico" style="display:none;">Debe seleccionar un diagnostico valido </span>
+                            </div>
+                            @*<div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                    <h2>Descripción</h2>
+                                    @Html.TextBoxFor(x => x.DescripcionCIIE10)
+                                </div>*@
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Furel</h2>
+                                @Html.TextBoxFor(x => x.Furel, new { type = "file" })
+                                @Html.ValidationMessageFor(x => x.Furel)
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02"></div>
+                        </div>
+                    </div>
+                    <!--Seccion 2> Documentos-->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <h2 class="note">II. DOCUMENTACIÓN</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Carta enviada por la EPS:</h2>
+                                @Html.TextBoxFor(x => x.CartaEPS, new { type = "file" })
+                                @Html.ValidationMessageFor(x => x.CartaEPS)
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Fecha de envío de documentos para calificar EPS:</h2>
+                                @Html.TextBoxFor(x => x.FechaDocumentosEPS, new
+                          {
+                              Value = (Model == null || Model.FechaDocumentosEPS.Year < 1000) ? "" : Model.FechaDocumentosEPS.ToString("dd/MM/yyyy"),
+                              placeholder = "dd/mm/aaaa"
+                          })
+                                @Html.ValidationMessageFor(x => x.FechaDocumentosEPS)
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Tipos de Documentos enviados a EPS para calificación</h2>
+                                @Html.TextBoxFor(x => x.TipoDocumentoCalificacion, new { type = "file" })
+                                @Html.ValidationMessageFor(x => x.TipoDocumentoCalificacion)
+                                @*aca adicionar la lista de documentos adicionados*@
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-12 linea02" data-content="archivoAdjunto" style="display:none;">
+                                <h2></h2>
+                            </div>
+                        </div>
+                        <span class="error" id="errorIdJornadaHabitual" style="display:none;">Este campo es obligatorio </span>
+                    </div>
+                    <!--Seccion 3> Instancias-->
+                    <div id="secInst" class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <h2 class="note">III. INSTANCIAS</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Nombre de la instancia</h2>
+                                @Html.TextBoxFor(x => x.InstanciaARegistrar.Nombre)
+                                @Html.ValidationMessageFor(x => x.InstanciaARegistrar.Nombre)
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Fecha de Calificación</h2>
+                                @Html.TextBoxFor(x => x.InstanciaARegistrar.FechaCalificacion, new
+                           {
+                               Value = (Model == null || Model.InstanciaARegistrar == null || Model.InstanciaARegistrar.FechaCalificacion.Year < 1000) ? "" : Model.InstanciaARegistrar.FechaCalificacion.ToString("dd/MM/yyyy"),
+                               placeholder = "dd/mm/aaaa"
+                           })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Quien Califica</h2>
+                                @Html.TextBoxFor(x => x.InstanciaARegistrar.QuienCalifica)
+                                @Html.ValidationMessageFor(x => x.InstanciaARegistrar.QuienCalifica)
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Estado</h2>
+                                @Html.DropDownListFor(x => x.InstanciaARegistrar.EstadoInstancia, Model.InstanciaARegistrar.EstadosInstancia, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-12 linea02">
+                                <button class="boton botonactive" type="button" id="btnNuevaInstancia">Nueva Instancia</button>
+                            </div>
+                        </div>
+                        <div id="nuevaInstancia" class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            @*@if (Model.InstanciasRegistradas != null && Model.InstanciasRegistradas.Count > 0)
+                            {
+                                foreach (var instancia in Model.InstanciasRegistradas)
+                                {
+                                    @Html.Partial("_NuevaInstanciaEnfermedadLaboral", instancia)
+                                }
+                            }*@
+                        </div>
+                    </div>
+                    @Html.HiddenFor(x => x.UsuarioQuienRegistraELD)
+                    @Html.HiddenFor(x => x.NumeroDocumento)
+                    @Html.HiddenFor(x => x.NombreTrabajador)
+                    @Html.HiddenFor(x => x.FechaNacimiento)
+                    @Html.HiddenFor(x => x.Geneero)
+                    @Html.HiddenFor(x => x.Direccion)
+                    @Html.HiddenFor(x => x.Telefono)
+                    @Html.HiddenFor(x => x.Fax)
+                    @Html.HiddenFor(x => x.Departamento)
+                    @Html.HiddenFor(x => x.Municipio)
+                    @Html.HiddenFor(x => x.Cargo)
+                    @*@Html.HiddenFor(x => x.TiposDocumentosCalificacion, new { type = "file"})*@
+                    <!-- Seccion06-Botones -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion03">
+                        @*<button class="boton botoninfo" type="button" id="btnModificar">Modificar</button>*@
+                        <input class="boton botonactive" type="submit" id="btnguardar" value="Guardar" />
+                        @*<input type="button" value="Nuevo Reporte" id="Nuevoreporte" class="boton botoninfo" />*@
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    var urlBase = utils.getBaseUrl();
+    var urlEnferLabDiag = '/EnfermedadLaboralDiagnosticada';
+    //sessionStorage.removeItem('Instancias');
+    var archivosEnviadosEPSCal = new Array();
+    var cantArchivosAdjuntos = 1;
+    $(document).ready(function () {
+        //se construyen los controles de fechas
+        ConstruirDatePickerPorElemento('FechaDocumentosEPS');
+        ConstruirDatePickerPorElemento('InstanciaARegistrar_FechaCalificacion');
+        ConstruirDatePickerPorElemento('FechaCalificacionModal');
+        //se cargan los diagnósticos para el autocomplete
+        $("#DiagnosticoCIIE10").autocomplete({
+            minLength: 2,
+            source: function (request, response) {
+                $.ajax({
+                    url: urlBase + urlEnferLabDiag + "/AutoCompletarDiagnostico",
+                    type: "POST",
+                    dataType: "json",
+                    data: { prefijo: request.term },
+                }).done(function (data) {
+                    $("#IdDiagnosticoCIIE10").val(0);
+                    response($.map(data, function (item) {
+                        return { label: item.Codigo + "-" + item.Descripcion, value: item.IdDiagnostico };
+                    }))
+                })
+            },
+            focus: function (event, ui) {
+                event.preventDefault();
+                $(this).val(ui.item.label);
+            },
+            select: function (event, ui) {
+                event.preventDefault();
+                $(this).val(ui.item.label);
+                $("#IdDiagnosticoCIIE10").val(ui.item.value);
+                $('#errordiagnostico').hide();
+            }
+        });
+        //se pintan las instancias guardadas en el storage
+        var instanciasGuardadas = sessionStorage.getItem('Instancias');
+        if (instanciasGuardadas) {
+            instancias = JSON.parse(instanciasGuardadas);
+            for (var i = 0; i < instancias.length; i++) {
+                var datos = {
+                    IdInstancia: instancias[i].IdInstancia,
+                    Nombre: instancias[i].Nombre,
+                    EstadoInstancia: instancias[i].EstadoInstancia,
+                    NombreEstadoInstancia: instancias[i].NombreEstadoInstancia,
+                    QuienCalifica: instancias[i].QuienCalifica,
+                    FechaCalificacion: instancias[i].FechaCalificacion
+                };
+                PopupPosition();
+                $.ajax({
+                    url: urlBase + urlEnferLabDiag + '/AgregarNuevaInstancia',
+                    type: 'post',
+                    data: { nuevaInstancia: datos }
+                }).done(function (response) {
+                    if (response != '' && response.Estado == 'OK') {
+                        $('#nuevaInstancia').append(response.Datos);
+                        $('#secInst input:text, select').val('');
+                    }
+                    OcultarPopupposition();
+                });
+            }
+        }
+        //se guarda información de los documentos adjuntos
+        $('#TipoDocumentoCalificacion').on('change', function (event) {
+            if (event) {
+                event.preventDefault();
+                var existe = 0;
+                var file = $(this).val().split('\\').pop();
+                $.each(archivosEnviadosEPSCal, function (index, valor) {
+                    if (valor == file)
+                        existe++;
+                });
+                if (existe == 0) {
+                    var archivo = $(this).prop("files")[0];
+                    if (archivo) {
+                        var tamanio = archivo.size;
+                        if (tamanio <= 5000000) {
+                            var formData = new FormData();
+                            formData.append('TipoDocumentoCalificacion', archivo);
+                            $.ajax({
+                                url: urlBase + urlEnferLabDiag + "/GuardarArchivoAdjunto",
+                                type: "POST",
+                                dataType: 'json',
+                                processData: false,
+                                contentType: false,
+                                data: formData,
+                                async: false
+                            }).done(function (response) {
+                                if (response != '' && response.Respuesta == 'OK') {
+                                    archivosEnviadosEPSCal.push(response.Nombre);
+                                    if (cantArchivosAdjuntos == 1) {
+                                        var archivo = $('div[data-content="archivoAdjunto"]');
+                                        archivo.children('h2').text(response.Nombre);
+                                        archivo.css('display', 'block');
+                                        cantArchivosAdjuntos++;
+                                    } else {
+                                        var ultDocAdj = $('div[data-content="archivoAdjunto"]:last');
+                                        var nuevoDocAdj = ultDocAdj.clone();
+                                        nuevoDocAdj.children('h2').text(response.Nombre);
+                                        $('div[data-content="archivoAdjunto"]:last').after(nuevoDocAdj);
+                                    }
+                                }
+                            }).fail(function (response) {
+                                console.log(response);
+                            });
+                        } else {
+                            swal("Informacion", '"El archivo adjunto no puede superar los 500Kb de tamanio.');
+                            return false;
+                        }
+                    }
+                }
+            } else
+                return false;
+        });
+        //se eliminan los mensajes de error de la sección "Instancias"
+        $('#secInst input:text, select').on('focus', function () {
+            $(this).siblings('span').css('display', 'none');
+        });
+        //se guardan las instancias creadas
+        $('#btnNuevaInstancia').on('click', function () {
+            var nombreInstancia = $('#InstanciaARegistrar_Nombre').val();
+            var estadoInstancia = $('#InstanciaARegistrar_EstadoInstancia').val();
+            var nombreEstadoInstancia = $('#InstanciaARegistrar_EstadoInstancia option:selected').text();
+            var quienCalifica = $('#InstanciaARegistrar_QuienCalifica').val();
+            var fechaCalificacion = $('#InstanciaARegistrar_FechaCalificacion').val();
+            var camposValidados = true;
+            if (nombreInstancia == '') {
+                var msgValidacion = $('#InstanciaARegistrar_Nombre').siblings('span[class="field-validation-error"]');
+                if (msgValidacion.length == 0)
+                    $('#InstanciaARegistrar_Nombre').after('<span class="field-validation-error">Este campo es obligatorio</span>');
+                else
+                    $('#InstanciaARegistrar_Nombre').siblings('span[class="field-validation-error"]').css('display', 'block');
+                camposValidados = false;
+            }
+            if (fechaCalificacion == '') {
+                var msgValidacion = $('#InstanciaARegistrar_FechaCalificacion').siblings('span[class="field-validation-error"]');
+                if (msgValidacion.length == 0)
+                    $('#InstanciaARegistrar_FechaCalificacion').after('<span class="field-validation-error">Este campo es obligatorio</span>');
+                else
+                    $('#InstanciaARegistrar_FechaCalificacion').siblings('span[class="field-validation-error"]').css('display', 'block');
+                camposValidados = false;
+            }
+            if (quienCalifica == '') {
+                var msgValidacion = $('#InstanciaARegistrar_QuienCalifica').siblings('span[class="field-validation-error"]');
+                if (msgValidacion.length == 0)
+                    $('#InstanciaARegistrar_QuienCalifica').after('<span class="field-validation-error">Este campo es obligatorio</span>');
+                else
+                    $('#InstanciaARegistrar_QuienCalifica').siblings('span[class="field-validation-error"]').css('display', 'block');
+                camposValidados = false;
+            }
+            if (estadoInstancia == '') {
+                var msgValidacion = $('#InstanciaARegistrar_EstadoInstancia').siblings('span[class="field-validation-error"]');
+                if (msgValidacion.length == 0)
+                    $('#InstanciaARegistrar_EstadoInstancia').after('<span class="field-validation-error">Este campo es obligatorio</span>');
+                else
+                    $('#InstanciaARegistrar_EstadoInstancia').siblings('span[class="field-validation-error"]').css('display', 'block');
+                camposValidados = false;
+            }
+            if (!camposValidados)
+                return false;
+            var instancias = new Array();
+            var instanciasGuardadas = sessionStorage.getItem('Instancias');
+            if (instanciasGuardadas) {
+                instancias = JSON.parse(instanciasGuardadas);
+                var ultimoId = instancias.length;
+                var datos = {
+                    IdInstancia: ultimoId + 1,
+                    Nombre: nombreInstancia,
+                    EstadoInstancia: estadoInstancia,
+                    NombreEstadoInstancia: nombreEstadoInstancia,
+                    QuienCalifica: quienCalifica,
+                    FechaCalificacion: fechaCalificacion
+                };
+                instancias.push(datos);
+            } else {
+                var datos = {
+                    IdInstancia: 1,
+                    Nombre: nombreInstancia,
+                    EstadoInstancia: estadoInstancia,
+                    NombreEstadoInstancia: nombreEstadoInstancia,
+                    QuienCalifica: quienCalifica,
+                    FechaCalificacion: fechaCalificacion
+                };
+                instancias.push(datos);
+            }
+            sessionStorage.setItem('Instancias', JSON.stringify(instancias));
+            PopupPosition();
+            $.ajax({
+                url: urlBase + urlEnferLabDiag + '/AgregarNuevaInstancia',
+                type: 'post',
+                data: { nuevaInstancia: datos }
+            }).done(function (response) {
+                if (response != '' && response.Estado == 'OK') {
+                    $('#nuevaInstancia').append(response.Datos);
+                    $('#secInst input:text, select').val('');
+                }
+                OcultarPopupposition();
+            });
+        });
+        $('#frmEnfLabDiag').on('submit', function () {
+            var instanciasGuardadas = sessionStorage.getItem('Instancias');
+            if (!instanciasGuardadas) {
+                swal("Informacion", '"Debe registrar al menos una instancia para poder continuar."');
+                return false;
+            }
+            $('#RutaTiposDocumentoCalificacion').val(archivosEnviadosEPSCal);
+            var fecha = new Date();
+            var dd = fecha.getDate() < 10 ? '0' + fecha.getDate() : fecha.getDate();
+            var mm = fecha.getMonth() + 1;
+            var yyyy = fecha.getFullYear();
+            var today = dd + '/' + mm + '/' + yyyy;
+            $('#InstanciaARegistrar_FechaCalificacion').val(today);
+            $('#InstanciaARegistrar_EstadoInstancia').val('0');
+        });
+        var respuesta = '@ViewBag.Mensaje';
+        if (respuesta) {
+            var tipoMensaje = 'success';
+            var mensaje = respuesta.split('[')[0];
+            var ok = respuesta.split('[')[1];
+            if (!ok) {
+                tipoMensaje = 'error'
+            }
+            swal({
+                title: 'Atención',
+                //text: 'Información guardada correctamente!!!',
+                text: mensaje,
+                html: true,
+                type: tipoMensaje,
+                //confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        window.location.href = '../EnfermedadLaboralDiagnosticada/Registrar';
+                    }
+                });
+            sessionStorage.removeItem('Instancias');
+        }
+    });
+    //carga la información para modificar la información
+    //de una instancia específica
+    function CargarDatosInstanciaModificar(idInstancia) {
+        if (idInstancia) {
+            PopupPosition();
+            $.ajax({
+                url: urlBase + urlEnferLabDiag + '/ObtenerDatosInstancia',
+                type: 'post',
+                data: { codInstancia: idInstancia }
+            }).done(function (response) {
+                if (response != '' && response.Estado == 'OK') {
+                    $('#instModificar').html('');
+                    $('#instModificar').append(response.Datos);
+                }
+                OcultarPopupposition();
+            });
+        }
+    }
+</script>
+@*@{
+        if (ViewBag.Mensaje != null)
+        {
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    swal({
+                        title: 'Atención',
+                        text: 'Información guardada correctamente!!!',
+                        type: 'sucess',
+                        //confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Aceptar",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            window.location.href = '../Home/Login';
+                        }
+                    });
+                });
+            </script>
+        }
+    }*@

@@ -1,0 +1,279 @@
+﻿@model IEnumerable<SG_SST.Dtos.Planificacion.MatrizGTC45>
+
+@{
+    ViewBag.Title = "Matriz GTC45/2012";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content" id="mensaje">
+
+</div>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Identificación de peligros, evaluación y valoración riesgos</a></li>
+    <li><a href="@Url.Action("VisualizarPeligrosSede", "Metodologia")">Consultar Metología</a></li>
+    <li class="active">Matriz GTC45/2012</li>
+</ol>
+
+@*<p>
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "AgregarPeligro", new { PK_TipoMedologia = ViewBag.IdMetodologia, Pk_Sede = ViewBag.sede.Pk_Id_Sede },
+    htmlAttributes: new { @type = "button", @class = "btn btn-success btn-xs", @name = "editarPeligro" })
+</p>*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@*<div class="container">
+
+    <div class="row">*@
+
+<div class="panel panel-default" style="border: transparent;background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        Matriz GTC45/2012
+    </div>
+    <br />
+
+    @*<div class="col-md-12">*@
+    <div class="table-responsive" @*style="overflow-x:scroll;height:auto"*@>
+
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla">
+                <th rowspan="3" style="vertical-align:middle; text-align:center; transform: rotate(270deg); border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_proceso</th>
+                <th rowspan="3" style="vertical-align:middle; text-align:center; transform: rotate(270deg); border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_zona_lugar</th>
+                <th rowspan="3" style="vertical-align:middle; text-align:center; transform: rotate(270deg); border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_actividad</th>
+                <th rowspan="3" style="vertical-align:middle; text-align:center; transform: rotate(270deg); border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_tarea</th>
+                <th rowspan="3" style="vertical-align:middle; text-align:center; transform: rotate(270deg); border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_rutina</th>
+                <th colspan="3" rowspan="2" style="vertical-align:middle; text-align:center; border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_peligro</th>
+                <th rowspan="3" style="vertical-align:middle;transform: rotate(270deg); border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_efectos_posibles</th>
+                <th colspan="3" rowspan="2" style="vertical-align:middle; text-align:center; border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_controles_existentes</th>
+                <th colspan="8" rowspan="2" style="vertical-align:middle; text-align:center; border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_evaluacion_valoracion</th>
+                <th colspan="3" rowspan="2" style="vertical-align:middle; text-align:center; border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_criterios_controles</th>
+                <th colspan="5" rowspan="2" style="vertical-align:middle; text-align:center; border: 2px solid lightslategray; text-transform:uppercase">@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_medidas_intervencion</th>
+                <th rowspan="3" style="vertical-align:middle; text-align:center; border: 2px solid lightslategray; padding:50px; text-transform:uppercase"></th>
+            </tr>
+            <tr></tr>
+            <tr class="titulos_tabla">
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_fuente_peligro
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_clasificacion
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_descripcion
+                </th>
+
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_fuentes
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_medio
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_trabajador
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_deficiencia
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_exposicion
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_probabilidad
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_interpretacion_probabilidad
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_consecuencia
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; padding:15px; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_riesgo
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_interpretacion_riesgo
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_aceptabilidad_riesgo
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_numero_expuestos
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_peor_consecuencia
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; padding:15px; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_existencia_legal
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_eliminacion
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_sustitucion
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_controles_ingenieria
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; padding:35px; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_controles_administrativos
+                </th>
+                <th style="transform: rotate(270deg); border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_elementos_proteccion
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Proceso)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Zona_lugar)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Actividad)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Tarea)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Rutinaria)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Fuente_Generadora_De_Peligro)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Clasificacion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Efectos_Posibles)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Fuente)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Medio)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Trabajador)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Nivel_De_Deficiencia)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Nivel_De_Exposicion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Nivel_De_Probablidad)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Interpretacion_Nivel_Probabilidad)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Nivel_De_Consecuencia)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Nivel_De_Riesgo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Interpretacion_Nivel_Riesgo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Aceptabilidad_Del_Riesgo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Numero_De_Expuestos)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Peor_Consecuencia)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.FLG_Requisito_Legal)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Eliminacion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Sustitucion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Controles_De_Ingenieria)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Controles_Administrativos)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Elementos_De_Proteccion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                        @*@Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "EditarPeligroGTC45", new { idPeligro = item.Id_Peligro, PK_TipoMedologia = ViewBag.IdMetodologia, Pk_Sede = ViewBag.sede.Pk_Id_Sede },
+                        htmlAttributes: new { @type = "button", @class = "btn btn-editar", @name = "editarPeligro" })*@
+                        <a name="editarPeligro" href="@Url.Action("EditarPeligroGTC45", null, new { idPeligro = item.Id_Peligro, PK_TipoMedologia = ViewBag.IdMetodologia, Pk_Sede = ViewBag.sede.Pk_Id_Sede })" class="btn btn-search btn-md" title="Editar">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        |
+                        @*<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Id_Peligro)" name="btnAbrirModal">
+                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                        </button>*@
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Id_Peligro)" name="btnAbrirModal" class="btn btn-search btn-md" title="Eliminar">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                        <div id="@string.Format("modalEliminar{0}", item.Id_Peligro)" class="modal fade" role="dialog" name="modal">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Eliminar Peligro</h4>
+                                    </div>
+                                    <div class="modal-body" style="text-align:center">
+                                        <p>¿Esta seguro que desea eliminar el peligro seleccionado?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botonactive" onclick="EliminarPeligro(this, @item.Id_Peligro)" data-dismiss="modal">
+                                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                        </button>
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<div>
+    @*@Html.ActionLink("Ir a la lista", "VisualizarPeligrosSede")*@
+
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "AgregarPeligro", new { PK_TipoMedologia = ViewBag.IdMetodologia, Pk_Sede = ViewBag.sede.Pk_Id_Sede },
+    htmlAttributes: new { @type = "button", @class = "boton botonactive", @name = "editarPeligro" })
+    |
+    @Html.ActionLink("Volver a Lista", "VisualizarPeligrosSede", null, htmlAttributes: new { @type = "button", @class = "boton botoninfo"})
+    
+    @*<a href="~/Views/Metodologia/VisualizarPeligrosSede" class="boton botoninfo">
+        Lista
+    </a>*@
+</div>
+
+<div id="modalesEliminados"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+}

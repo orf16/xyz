@@ -1,0 +1,103 @@
+﻿body {
+    font-family: 'Segoe UI', Tahoma;
+    color: black;
+}
+.Unalinea {
+    display: inline-block;
+    width: 100%;
+}
+.TipoCss {
+    font-size: 20px;
+    float: left;
+    width: 45%;
+    background-color: none;
+    padding: 0px;
+}
+
+    .TipoCss > input {
+        font-size: 20px;
+    }
+
+.Doslinea {
+    width: 100%;
+    background-color: none;
+    border: solid #bfbbce 1px;
+    padding: 0px;
+    font-size: 17px;
+    page-break-inside: avoid !important;
+}
+
+    .Doslinea .SubTitulo {
+        background-color: #8a8a8a;
+        margin: 0px;
+        padding-left: 5px;
+        margin: 0px 0px 2px 0px;
+    }
+
+.AccionInline {
+    display: inline-block;
+    width: 100%;
+    margin: 0px;
+    padding-left: 5px;
+}
+
+.AccionLeft49 {
+    float: left;
+    width: 49.5%;
+}
+
+textarea {
+    width: 98%;
+    outline: none;
+    border: solid 1px gray;
+    text-align: justify;
+    overflow: hidden;
+}
+
+.breakhere {
+    page-break-after: always;
+}
+
+.datagrid table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+    .datagrid table td {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    .datagrid table th {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    .datagrid table tbody tr td {
+        padding: 5px;
+    }
+    .datagrid table thead tr th {
+        text-align: center;
+    }
+    .datagrid table thead tr th {
+        text-align: center;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+    .datagrid table thead {
+        background-color: #a3a3a3;
+        color: black;
+    }
+    .datagrid table tbody tr .TdJustificar {
+        text-align: justify !important;
+        max-width: 500px;
+    }
+    .datagrid table tbody tr .TdCentrar {
+        text-align: center !important;
+    }
+input[type=text] {
+    outline: none;
+    border: solid 1px gray;
+}
+tr, td {
+    page-break-inside: avoid !important;
+}

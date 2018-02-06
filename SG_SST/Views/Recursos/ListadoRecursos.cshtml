@@ -1,0 +1,116 @@
+﻿@model IEnumerable<SG_SST.Models.Organizacion.RecursoporSede>
+
+@{
+    ViewBag.Title = "Listado Recursos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion")
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/Organizacion/ValidacionBuscar.js"></script>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Recursos en SST</a></li>
+    <li class="active">Listado Recursos Asignados</li>
+</ol>
+
+@if (ViewBag.mensaje != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            confirmButtonColor: '#7E8A97'
+        })
+
+    </script>
+}
+
+
+ 
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Listado Recursos</div>
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <span class="glyphicon glyphicon-question-sign"></span>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Listado Recursos</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="text-align:justify">Seleccione una Sede a la cual desea consultar el recurso. <select class="form-control"><option>--Seleccionar Sede</option></select> </p></li>
+                                    <li><p style="text-align:justify">Seleccione un Periodo<select class="form-control"><option>--Seleccionar Periodo--</option>><option>@DateTime.Now.Year</option></select></p></li>
+                                    <li><p style="text-align:justify"><button type="submit" class="boton botoninfo">Ver recursos Asignados</button> Click Para realizar la busqueda por la sede y el periodo seleccionados.</p></li>
+                                    <li><p style="text-align:justify"><img src="/Content/Images/pdf-simbolo-de-formato-de-archivo (1).png" /> Click Para descargar el listado de recursos en formato Pdf.</p></li>
+                                    <li><p style="text-align:justify"><img src="/Images/iconExcelp.png" /> Click Para exportar el listado de recursos a Excel.</p></li>
+                                    <li><p style="text-align:justify"><button type="button" class="btn btn-search btn-md"><span class="glyphicon glyphicon-search"></span></button> Click Para ampliar la informacion del recurso.</p></li>
+                                    <li><p style="text-align:justify"><button type="button" class="btn btn-search btn-md"><span class="glyphicon glyphicon-erase"></span></button> Click Para eliminar un recurso de la lista.</p></li>
+                                    <li><p style="text-align:justify"><button type="submit" class="boton botoninfo">Modificar</button> Click Para obtener la informacion del recurso en un formulario y poder realizar la modificación.</p></li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+        <form method="post" id="recursossede">
+            @Html.AntiForgeryToken()
+            <div class="panel-body form-horizontal">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Sede:</label>
+                            <div class="col-md-12">
+                                @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Sede --")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Periodo:</label>
+                            <div class="col-md-12">
+                                @Html.DropDownList("Periodo", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Periodo --")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Recursos Asignados:</label>
+                            <div class="col-md-12">
+                                <button type="button" name="ver" id="ver" class="boton botoninfo" onclick="ValidarBuscarRecursos();BuscarRecursosPorSede(this)">Ver Recursos Asignados</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tablaPV">
+                </div>
+            </div>
+        </form>
+</div>
+
+

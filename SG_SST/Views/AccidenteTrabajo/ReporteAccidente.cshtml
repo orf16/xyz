@@ -1,0 +1,14 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionPositivaModel
+
+@{
+    ViewBag.Title = "Reporte AT - ARL";
+}
+
+<h2>Reporte de accidente</h2>
+<div>
+    <center>
+        <h3>@Model.Mensaje</h3>
+        <iframe src="@Model.url" style="width:100%; height:500px; border:none"></iframe>
+    </center>
+</div>
+

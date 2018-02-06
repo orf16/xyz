@@ -1,0 +1,157 @@
+﻿@model IEnumerable<SG_SST.Models.Aplicacion.ManualGuiaAdBienes>
+
+@{
+    ViewBag.Title = "Guía Adquisición de Bienes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+@if (ViewBag.guardadoConExito == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Manual Adquisicón de Bienes guardado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Adquisiciones Bienes o Contratación</a></li>
+    <li class="active">Aquisición de Bienes</li>
+</ol>
+
+@*<h4 class="titulo-crear-recursos">Guía Adquisición de Bienes</h4>*@
+<form id="FormularioManualesAdq" method="post" enctype="multipart/form-data">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Guía Adquisición de Bienes
+        </div>
+        
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Adquisición de Bienes</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p align="justify">Esta opción permite cargar su guía, manual o procedimiento de gestión de proveedores, compras y adquisiciones en seguridad y salud en el trabajo “SST”. Este módulo sirve como repositorio de la gestión documental procedimental de su proceso de control de proveedores y compras en SST.</p>
+                                <p align="justify">El tamaño del archivo en cada cargue no puede exceder 10 Mb.</p>
+                                <p align="justify">Los formatos de documentos que acepta este módulo son PDF, DOC, DOCX, PPTX, PPT, XLSX, XLS, PNG, y JPG.</p>
+                                <br />
+                                <p>Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar un manual.</p>
+                                <br />
+                                <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar un manual.</p>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <p>Click en Cargar Manual para subir un archivo</p>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button class="boton botonactive" disabled>Cargar Manual</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6 col-md-offset-2">
+                        <input type="file" class="form-control" id="File" name="File" onchange="validaciontamañoManual()">
+                    </div>
+                    <button type="submit" class="boton botonactive" onclick="ValidarManualesAdq()">Cargar Manual</button>
+                </div>
+            </div>
+            
+            <br />
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Manual
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Descargar
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Eliminar
+                        </th>
+                    </tr>
+
+                    @foreach (var doc in Model)
+                    {
+                        <tr>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @doc.Nombre_Manual
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a href="@Url.Action("DescargarManualAdq", null, new { idManualAdq = doc.PK_ManualGuiaAdBienes })" class="btn btn-search btn-md" title="Descargar">
+                                    <span class="glyphicon glyphicon-download-alt"></span>
+                                </a>
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}",doc.PK_ManualGuiaAdBienes)" class="btn btn-search btn-md" title="Eliminar">
+                                    <span class="glyphicon glyphicon-erase"></span>
+                                </a>
+
+                                <div id="@string.Format("modalEliminar{0}", doc.PK_ManualGuiaAdBienes)" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+
+                                                <h4 class="modal-title title">Eliminar Manual de Adquisicón de Bienes</h4>
+                                            </div>
+                                            <div class="modal-body" style="text-align:center; color:black">
+                                                <p>¿Esta seguro desea eliminar Manual de Adquisicón de Bienes seleccionado?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="boton botonactive" data-dismiss="modal" onclick="EliminarManualAdq(this,@doc.PK_ManualGuiaAdBienes)">ELIMINAR</button>
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+<div name="modalesEliminados" hidden="hidden" id="modalesEliminados">
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+}
+    

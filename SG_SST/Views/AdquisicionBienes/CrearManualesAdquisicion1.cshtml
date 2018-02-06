@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Cargar Manual De Adquisiciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<h4 class="modal-title title">Guia de Adquisición de Bienes</h4>
+<form id="FormularioManualesAdq" method="post" enctype="multipart/form-data">
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+               style="border: 1px solid lightslategray; border-radius:0px">
+                <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <input type="file" class="form-control" id="File" name="File">
+        </div>
+    </div>
+    <button type="submit" class="boton botonactive" onclick="ValidarManualesAdq()">GUARDAR</button>
+</form>
+    @section Scripts {
+        @Scripts.Render("~/bundles/Aplicacion")
+    }

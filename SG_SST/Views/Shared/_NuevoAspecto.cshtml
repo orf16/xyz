@@ -1,0 +1,20 @@
+﻿@model SG_SST.Models.Planificacion.AspectosModel
+@if (Model != null)
+{
+    var Observaciones = string.Empty;
+    if (Model.Observaciones != null)
+    {
+        Observaciones = Model.Observaciones;
+    }
+    if (Model.IdAspecto == 0)
+    {
+        Model.IdAspecto = 1;
+    }
+    <tr id="@Model.IdAspecto">
+        <td>@Html.TextArea("AspectoEvaluar", string.Format("{0}. {1}", Model.IdAspecto, Model.AspectoEvaluar), new { @maxlength = "500", @readonly = "readonly", @class = "txtArea_asp", @rows = "1", @style = "height: 80px; text-align:justify; resize:none" })</td>
+        <td style="text-align:center; vertical-align:middle">@Html.RadioButton("Cumple", Model.Cumple, false, new { @style = "text-align:center", @Id = "Cumple_" + Model.IdAspecto, @Name = "aspecto_" + Model.IdAspecto, @class = "chk_asp" })</td>
+        <td style="text-align:center; vertical-align:middle">@Html.RadioButton("No cumple", Model.NoCumple, false, new { @style = "text-align:center", @Id = "NoCumple_" + Model.IdAspecto, @Name = "aspecto_" + Model.IdAspecto, @class = "chk_asp" })</td>
+        <td style="text-align:center; vertical-align:middle">@Html.RadioButton("Cumple parcial", Model.CumpleParcial, false, new { @style = "text-align:center", @Id = "CumpleParcial_" + Model.IdAspecto, @Name = "aspecto_" + Model.IdAspecto, @class = "chk_asp" })</td>
+        <td>@Html.TextArea("Observaciones", Observaciones, new { @maxlength = "500", @class = "txtArea_asp", @rows = "1", @style = "height: 80px; text-align:justify; resize:none" })</td>
+    </tr>
+}

@@ -1,0 +1,227 @@
+﻿@model SG_SST.Models.MedicionEvaluacion.ActividadAccion
+
+@{
+    TempData.Keep("FirmaAct");
+    SG_SST.EntidadesDominio.MedicionEvaluacion.EDActividad Actividad = new SG_SST.EntidadesDominio.MedicionEvaluacion.EDActividad();
+    if (TempData["FirmaAct"] != null)
+    {
+        Actividad = (SG_SST.EntidadesDominio.MedicionEvaluacion.EDActividad)TempData["FirmaAct"];
+    }
+    ViewBag.Title = "Editar Actividad";
+}
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/EditarActividad.js"></script>
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+    @{
+        string Ruta = ViewBag.EdicionKey;
+        if (Ruta == null)
+        {
+            <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+        }
+        else
+        {
+            if (Ruta != "")
+            {
+                if (Ruta != "NuevaAccion")
+                {
+                    string numeroRuta = Ruta.Replace("EditarAccion", "");
+                    string valorRuta = Ruta.Replace(numeroRuta, "");
+                    <li><a href="@Url.Action(valorRuta, "Acciones",new { id = numeroRuta })">Editar Acción</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+                }
+            }
+            else
+            {
+                <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+            }
+        }
+    }
+    <li class="active">Editar Actividad</li>
+</ol>
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">EDITAR ACTIVIDAD DEL PLAN DE ACCIÓN</div>
+    <div class="panel-body">
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / EDITAR ACTIVIDAD DEL PLAN DE ACCIÓN</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><strong>*</strong> Indica que el campo es obligatorio</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">ADJUNTAR</button> Para adjuntar una firma. Solo se aceptan imagenes</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">QUITAR FIRMA</button> Para quitar la firma cargada</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR ACTIVIDAD</button> Para guardar el registro de la actividad en la lista de actividades de la acción</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para cancelar el registro de la actividad y regresar al registro de la acción</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.Hidden("EdicionKey", (object)ViewBag.EdicionKey)
+            @Html.Hidden("Clave", (object)ViewBag.Clave)
+
+
+            @Html.AntiForgeryToken()
+            <div class="add-side-padding add-bottom-margin-05em">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(s => s.Actividad, "Descripción de la Actividad", htmlAttributes: new { @class = "" })
+                    @Html.TextAreaFor(s => s.Actividad, new { @class = "form-control form-width-100", rows = "3" })
+                    @Html.ValidationMessageFor(s => s.Actividad, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(s => s.Responsable, "Responsable (Nombre y Cargo)", htmlAttributes: new { @class = "" })
+                            @Html.EditorFor(s => s.Responsable, new { htmlAttributes = new { @class = "form-control form-width-100", autocomplete = "off" } })
+                            @Html.ValidationMessageFor(s => s.Responsable, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(s => s.Responsable, "Buscar Reponsable Por Cédula", htmlAttributes: new { @class = "" })
+                            @Html.TextBox("BuscarCedula", null, new { @class = "form-control form-width-100", @placeholder = "Esciba el número del documento a buscar...", autocomplete = "off" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(s => s.FechaFinalizacion, "Fecha de Finalización", htmlAttributes: new { @class = "" })
+                            @{
+
+                                if (Model != null)
+                                {
+                                    if (Model.FechaFinalizacion != DateTime.MinValue)
+                                    {
+                                        @Html.TextBoxFor(m => m.FechaFinalizacion, new { @class = "form-control form-width-100", @Value = Model.FechaFinalizacion.ToShortDateString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.FechaFinalizacion, new { @class = "form-control form-width-100", @Value = "" })
+                                    }
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.FechaFinalizacion, new { @class = "form-control form-width-100", @Value = "" })
+                                }
+                            }
+                            @Html.ValidationMessageFor(s => s.FechaFinalizacion, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="File1">Firma del responsable</label>
+                            <div class="input-group">
+                                <input type="file" name="File1" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-file-act" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-positiva-invert" id="btn-add-act" type="button">Adjuntar</button>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" id="sign-group-act">
+                            <div class="col-md-12 text-center col-margin">
+
+                                @{
+                                    if (Actividad.FirmaScrImage != null)
+                                    {
+                                        <img id="img-act" class="firma-acciones-estilo" src="@Actividad.FirmaScrImage" alt="" />
+                                        <button class="boton botoninfo" id="btn-delete-act" type="button">Quitar Firma</button>
+                                    }
+                                    else
+                                    {
+                                        <img id="img-act" class="firma-acciones-estilo" src="" alt="" />
+                                        <button class="boton botoninfo" id="btn-delete-act" type="button">Quitar Firma</button>
+                                    }
+                                }
+
+                            </div>
+                            <div class="col-md-12 text-center">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+
+
+            <div class="form-group">
+                <div id="div_novedad" class="divMensajes">
+                    <span id="msj_novedad"></span>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="boton botonactive col-margin" id="add-act-btn-act" type="submit" value="Agregar Actividad">Editar Actividad</button>
+
+                    </div>
+                    <div class="col-md-6">
+                        @{
+                            string ModoEdicion = ViewBag.EdicionKey;
+                            if (ModoEdicion != "")
+                            {
+                                ModoEdicion = ModoEdicion.Replace("EditarAccion", "");
+                                <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("EditarAccion","Acciones",new { id = ModoEdicion })';return false;">Cancelar</button>
+                            }
+                            else
+                            {
+                                <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("NuevaAccion","Acciones")';return false;">Cancelar</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+
+                            }
+
+    </div>
+</div>
+

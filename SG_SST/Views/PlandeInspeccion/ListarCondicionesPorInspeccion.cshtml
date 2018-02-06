@@ -1,0 +1,248 @@
+﻿@{@model SG_SST.Models.Aplicacion.CrearInspeccionModel
+
+    ViewBag.Title = "Listado Condiciones Inseguras";
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Mensaje del Sistema:',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        })
+
+        $('document').ready(function () {
+            swal({
+                type: 'warning',
+                title: 'Mensaje del Sistema:',
+                text: 'Seleccione las Condiciones Para el Plan de Acción.',
+                confirmButtonColor: '#7E8A97'
+            });
+        });
+    </script>
+}
+
+}
+<!DOCTYPE html>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<style>
+
+       .container-main {
+        margin: 60px auto;
+        margin-bottom:10%;
+        padding-bottom:3em; 
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+         background-color:white;
+       }
+         .container-main h4 {
+            font-size: 23px;
+            text-shadow: 4px 4px 5px #DDD;
+            padding-top:1%;
+            padding-bottom:2%;
+    }
+         .table{
+             width:95%;
+             margin: 10px auto;
+              
+         }
+</style>
+
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Inspecciones de Seguridad</a></li>
+    <li class="active">Listado Condiciones Inseguras Inspección</li>
+</ol>
+<hr />
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body onload="">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Listado Condiciones Inseguras</div>
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+                   style="border: 1px solid lightslategray; border-radius:0px">
+                    <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Información de Ayuda/Generar Plan de Accion a Condición Insegura</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p><em>*Ayuda</em></p>
+                                <p><em>*Ayuda</em></p>
+                                <p><em>*Ayuda</em></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+        <form id="listadocondiciones">
+
+            <table class="table table-bordered table-hover" style="border-color: lightslategray;border-bottom: 1px solid lightslategray; width:100%;padding:2em" id="condicion">
+                <thead>
+                    <tr class="titulos_tabla">
+                        <td style="border-right: 1px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            <b>Seleccionar</b>
+                        </td>
+
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Tipo Prioridad</b>
+                        </td>
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Dias Desde</b>
+                        </td>
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Dias Hasta</b>
+                        </td>
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Descripción de la Condición</b>
+                        </td>
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                            <b>Ubicacion Especifica</b>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>   
+                    @{ var contador = 0; }   
+                    @foreach (var item in Model.Condiciones)
+                    {
+                  
+                    <tr id="@contador">
+                        <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                            <input type="checkbox" class="checkBox" id="checkcondicion" value="@item.pkcondicionvm" name1="@item.Diadesde" name2="@item.Diahasta" desc="@item.DescribeCondicionvm"/>
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Prioridad, new { id = "Prioridad", @class = "form-control", @style = "background-color:  white;color:black", @readonly = "readonly", @value = "@item.pkcondicionvm" })
+                                <label for="Descripcionconfiguracion" class="error" style="display:none;"></label>
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Diadesde, new { id = "Diadesde" ,@name="0", @class = "form-control", @style = "background-color: white;color:black" })
+                                <label for="diasdesde" class="error" style="display:none;"></label>
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Diahasta, new { id = "Diahasta" ,@name="1", @class = "form-control", @style = "background-color:  white;color:black" })
+                                <label for="diashasta" class="error" style="display:none;"></label>
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.DescribeCondicionvm, new { id = "DescribeCondicionvm" , @class = "form-control" })
+                            </td>
+                            <td style="border-color: lightslategray; border-bottom: 1px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Ubicacionespecificavm, new { id = "Ubicacionespecificavm" , @class = "form-control" })
+                            </td>
+                        </tr>
+                        contador++;
+                    }
+                </tbody>
+            </table>
+            <label for="checkcondicion" class="error" style="display:none;"></label>
+            <div class="" style="background-color:transparent">
+                <div class="row">
+                   
+
+                    <div class="row col-lg-10 col-lg-offset-7">
+                        <button type="button" class="boton botonactive" id="btnplanaccion" onclick="PlanAccion()">Plan de Acción</button>
+                        <button type="button" class="boton botoninfo" id="btnlistadoplan" data-toggle="modal" data-target="#@string.Format("modalplanes")">Lista Planes</button>
+                    </div>
+
+
+                </div>
+            </div>  
+        </form>
+        <form id="planacciones">
+            <div id="planaccion" class="container-main">
+
+                <h4 class="titulo-crear-recursos titulos_tabla" style="vertical-align:middle; text-align:center">Generar Plan de Acción a Inspección</h4>
+                @*<hr style="border-top-color:#FD7500; padding-left:2em" />*@
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <label>Actividad:</label>
+                            <input type="text" class="form-control" name="actividad" id="actividad" />
+                            <label for="actividad" class="error" style="display:none;"></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Responsable:</label>
+                            <input type="text" class="form-control" name="responsable" id="responsable" />
+                            <label for="responsable" class="error" style="display:none;"></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Fecha Finalización:</label>
+                            <input type="text" class="form-control" name="fechafin" id="fechafin" readonly style="background-color:#DDD;color:black" />
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="" style="background-color:transparent">
+                    <div class="row">
+                        <div class="row col-lg-12 col-lg-offset-7">
+                            <button type="button" class="boton botonactive" id="btnplanes" onclick="GrabaPlanes()">Guardar</button>
+                        </div>
+                      
+                           
+                       
+                    </div>
+                </div>
+            </div>
+
+            <div id="@string.Format("modalplanes")" class=" modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Lista Planes de Acción Condiciones Inseguras</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <table class="table" id="tablaPlanes" name="tablaPlanes"></table>
+                        </div>
+                        <center><div class="pagination" id="paginador5"></div></center>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal" id="btnindexinspeccion">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br />
+       
+    </div>
+    <button type="button" class="boton botoninfo" id="nuevainspeccion" onclick="location.href='@Url.Action("Index", "PlandeInspeccion")'">Nueva Inspección</button>
+</body>
+</html>

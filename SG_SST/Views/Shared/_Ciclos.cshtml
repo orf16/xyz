@@ -1,0 +1,28 @@
+﻿@model List<SG_SST.Models.Planificacion.CicloModel>
+<h4>Seleccione el ciclo para iniciar con la calificación</h4>
+<div class="ini_est_min">
+    <div class="inner_ciclos">
+        @{ 
+            var cicloActual = Model.Where(c => c.StandPorEvaluar > 0).FirstOrDefault();
+            foreach (var ciclo in Model)
+            {
+                if (ciclo.StandPorEvaluar == 0)
+                {
+                    <button id="@ciclo.IdCiclo" type="button" class="btn_est_min disabled btn btn-primary btn-lg">@ciclo.Nombre</button>
+                }
+                else
+                {
+                    if (ciclo.IdCiclo == cicloActual.IdCiclo)
+                    {
+                        <button id="@ciclo.IdCiclo" type="button" class="btn_est_min btn btn-default btn-lg">@ciclo.Nombre</button>
+                    }
+                    else
+                    {
+                        <button id="@ciclo.IdCiclo" type="button" class="btn_est_min bloqueado disabled btn btn-default btn-lg" disabled>@ciclo.Nombre</button>
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+@Scripts.Render("~/Scripts/EvaluacionEstandarMinimo/evaluacion-estandar-minimo.js")

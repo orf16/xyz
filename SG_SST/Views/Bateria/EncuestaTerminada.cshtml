@@ -1,0 +1,70 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDBateriaCuestionario>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Gracias por participar</title>
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+    <!-- Referencia a botones -->
+    @Styles.Render("~/bundles/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/Utilidades")
+
+</head>
+<body style="background-color:none; color:black; font-family:Arial; padding: 0px 20px 3px 20px">
+ 
+
+
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+
+            <div class="col-md-2 logo-empresa col-xs-6">
+                <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block">
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta">
+            </div>
+        </div>
+
+    </div>
+
+    @{
+        string Titulo = (string)ViewBag.formT;
+        <center><div class="col-sm-12 container" style="margin-top:6em"><h3>Estimado usuario usted ha terminado satisfactoriamente el @Titulo, muchas gracias por su participación</h3></div></center>
+    }
+    
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
+

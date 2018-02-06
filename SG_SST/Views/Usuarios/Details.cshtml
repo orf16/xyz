@@ -1,0 +1,58 @@
+﻿@model SG_SST.Models.Empresas.Usuario
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Usuario</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioRoles.FirstOrDefault().Rol.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioRoles.FirstOrDefault().Rol.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoDocumentos.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoDocumentos.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero_Documento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Numero_Documento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre_Usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre_Usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Imagen_Firma)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Imagen_Firma)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Pk_Id_Usuario }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

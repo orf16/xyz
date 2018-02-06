@@ -1,0 +1,399 @@
+﻿@model SG_SST.Models.Participacion.ActaConvivenciaQuejasVM
+
+@{
+    ViewBag.Title = "Seguimiento Quejas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Estimado Usuario',
+                text: '@ViewBag.mensaje',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+    
+    @if (ViewBag.mensaje1 != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'success',
+                title: 'Estimado Usuario',
+                text: '@ViewBag.mensaje1',
+                timer: 4000,
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+
+    }
+    
+}
+
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".trParticipante");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination1").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    jQuery(function ($) {
+        var items = $(".trOrdenDia");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination2").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+</script>
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Comites en SST</a></li>
+    <li><a href="javascript:void(0)">Comite Convivencia Laboral</a></li>
+    <li class="active">Seguimiento Quejas</li>
+</ol>
+
+<form method="post" enctype="multipart/form-data" id="CrearActa">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">SEGUIMIENTO QUEJAS RELACIONADAS CON SITUACIONES DE CONFLICTO</div>
+        
+        <!-- Botón Ayuda -->
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+
+                                <h4 class="modal-title title">Información de Ayuda/Acta Comité Convivencia Laboral</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p >En este formulario el usuario diligencia los datos del seguimiento quejas relacionas con situaciones de conflicto</p>
+                                <p > >	Fecha.</p>
+                                <p > >	Nombre de quien refiere la situación.</p>
+                                <p > >	Acciones realizadas.</p>
+                                <p > >	Responsable del seguimiento.</p>
+                                <p > >	Aspectos no resueltos.</p>
+                                <p > >	Compromisos adquiridos para el posterior seguimiento.</p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoninfo">EXPORTAR</button> Permite exporta el documento en formato PDF.</p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoninfo">GUARDAR</button> Permite guarda los datos diligenciados.</p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoncancel">CANCELAR</button> Permite cancelar la  acción de seguimiento, los campos diligenciados quedarán en blanco y vuelve al acta de convivencia.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <center>
+            <label>SEGUIMIENTO No: @Model.Consecutivo_Queja.ToString().PadLeft(3, '0')</label>
+            <input type="hidden" value=@Model.PK_Id_Queja name="PK_Id_Queja" id="PK_Id_Queja" />
+            <input type="hidden" value=@Model.Consecutivo_Caso name="Consecutivo_Caso" id="Consecutivo_Caso" />
+            <input type="hidden" value=@Model.Consecutivo_Queja name="Consecutivo_Queja" id="Consecutivo_Queja" />
+            <input type="hidden" value=@Model.PK_Id_Acta name="PK_Id_Acta" id="PK_Id_Acta" />
+            <input type="hidden" value=@Model.IdSede name="IdSede" id="IdSede" />
+        </center>
+
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label>1. FECHA:</label>
+                            @Html.TextBoxFor(model => Model.Fecha, new { @class = "form-control", Value = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @placeHolder = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @id = "Fecha", @name = "Fecha" })
+                            @*<input type="text" class="form-control" name="Fecha" id="Fecha" placeholder="dd/mm/aaaa" />*@
+                            <label for="FechaActa" class="error" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>No./Cod. Caso: @Model.Consecutivo_Caso.ToString().PadLeft(3, '0')</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>2. NOMBRE DE QUIEN REFIERE LA SITUACION:</label>
+                            @Html.TextBoxFor(model => Model.NombreRefiereSituacion, new { @class = "form-control", @id = "NombreRefiereSituacion", @name = "NombreRefiereSituacion", @maxlength = "50" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="form-group">
+
+                        <div class="col-md-12">
+
+                            <label>3. ACCIONES REALIZADAS:</label>
+                              @Html.TextAreaFor(model => Model.AccionARealizar, new { @class = "form-control", @rows = "6", style = "color:black;font-size:15px", @id = "AccionARealizar", @type = "search", @name = "AccionARealizar", @maxlength = "1000" })
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-6">&nbsp</label>
+                        <div class="col-md-10">
+                            <button type="button" id="AdicionarAccion" class="boton botoninfo" onclick="AdicionarAccionesQueja()">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="tAcciones" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            No.
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acciones
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.AccionesActaQuejas != null)
+                        {
+                            int fila = 1;
+                            foreach (var item in Model.AccionesActaQuejas)
+                            {
+
+                                <tr class="trAcciones" id="trAcciones">
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @fila
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.DisplayFor(modelItem => item.AccionARealizar)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn btn-search btn-md" data-toggle="modal" onclick="EliminarAccionQueja(@string.Format("{0}", item.Fk_Id_Queja), @string.Format("{0}", item.Pk_Id_AccionQueja))" title="Eliminar">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                fila++;
+                            }
+                        }
+                    }
+                    <tbody id="tbAccion"></tbody>
+                </table>
+                <div class="pagination-page pagination1" id="paginadorAccion" style="margin-left:45%"></div>
+            </div>
+
+            <hr style="border-top-color:lightslategray; width:100%" />
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-12">4. RESPONSABLE DEL SEGUIMIENTO:</label>
+                        <div class="col-md-8">
+                            <div>@Html.TextBoxFor(model => Model.Numero_Documento, new { @class = "form-control", @style = "color:black;font-size:15px", @id = "Numero_Documento", @name = "Numero_Documento", @maxlength = "15" })</div>
+                        </div>
+                        <div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <button type="button" class="btn-search" data-toggle="modal" onclick="DatosTrabajador()" title="Buscar">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-7">NOMBRE:</label>
+                        <div class="col-md-pull-12">
+                            @Html.TextBoxFor(model => Model.Nombre, new { @class = "form-control", @id = "Nombre", @name = "Nombre", @maxlength = "60" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-6">&nbsp</label>
+                        <div class="col-md-8">
+                            <button type="button" id="AdicionarResponsable" class="boton botoninfo" onclick="AdicionarResponsableQueja()">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" id="TResponsables">
+                <table class="table table-bordered" id="tResponsables" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla" id="trMiembros">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Documento Responsable
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Nombre
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.ResponsablesQuejas != null)
+                        {
+                            foreach (var item in Model.ResponsablesQuejas)
+                            {
+                                <tr class="trResponsable" id="trResponsable">
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.Numero_Documento)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn btn-search btn-md" data-toggle="modal" onclick="EliminarResponsableQueja(@string.Format("{0}", item.Fk_Id_Queja), @string.Format("{0}", item.Numero_Documento))" title="Eliminar">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    <tbody id="tbResponsables"></tbody>
+                </table>
+                <div class="pagination-page pagination2" id="paginadorResponsable" style="margin-left:45%"></div>
+            </div>
+
+            <hr style="border-top-color:lightslategray; width:100%" />
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>5. ASPECTOS NO RESUELTOS:</label>
+                            @Html.TextAreaFor(model => Model.AspectosNoResueltos, new { @class = "form-control", @rows = "7", @id = "AspectosNoResueltos", @name = "AspectosNoResueltos", @maxlength = "1000", style = "resize:none" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>6. COMPROMISOS ADQUIRIDOS PARA EL POSTERIOR SEGUIMIENTO:</label>
+                            @Html.TextAreaFor(model => Model.Compromisos, new { @class = "form-control", @rows = "7", @id = "Compromisos", @name = "Compromisos", @maxlength = "1000", style = "resize:none" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border-top-color:lightslategray; width:100%" />
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <a id="CancelarActa" href="@Url.Action("DatosActaConvivencia", new { PK_Id_Acta = @Model.PK_Id_Acta,  IdSede = @Model.IdSede})" class="boton botonactive" style="text-align:center">ATRAS</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <button type="button" id="GrabarActa" onclick="ActualizarQueja()" class="boton botoninfo" style="text-align:center">GUARDAR</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <a id="Exportar" href="@Url.Action("ActaQueja_PDF", new { PK_Id_Acta = @Model.PK_Id_Acta, IdSede = @Model.IdSede })" class="boton botoninfo" style="text-align:center">EXPORTAR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

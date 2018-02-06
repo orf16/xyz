@@ -1,0 +1,49 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionPositivaModel
+
+@{
+    ViewBag.Title = "Plan ARL";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Plan de trabajo anual SG-SST</a></li>
+    <li class="active">Plan ARL</li>
+</ol>
+<br />
+
+@using (Html.BeginForm("PlanArl", "PlanTrabajoAnual", FormMethod.Post, new { @id = "formEvaluacionPositiva", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <div class="form-group col-lg-12">
+            <div class="col-md-1">
+                @Html.Label("Año:", new { @class = "control-label" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(x => x.anioseleccionado, Model.Anios, "-- Seleccione --", new { @class = "form-control" })
+                <span class="msg-validacion">@Html.ValidationMessageFor(x => x.anioseleccionado)</span>
+            </div>
+            <div class="col-md-1">
+                @Html.Label("Empresa:", new { @class = "control-label" })
+            </div>
+            <div class="col-md-5" style="line-height:2.5">
+                @string.Format(Model.RazonSocial)
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="boton botonactive" id="consultarIndicador">Consultar</button>
+            </div>
+
+        </div>
+    </div>
+}
+
+<div>
+    <center>
+        <iframe src="@Model.url" style="width:100%; height:500px; border:none"></iframe>
+    </center>
+</div>

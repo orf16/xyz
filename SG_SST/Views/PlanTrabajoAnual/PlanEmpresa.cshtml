@@ -1,0 +1,434 @@
+﻿@model SG_SST.Models.PlanTrabajoAnual.PlanEmpresaModel
+
+@{
+    ViewBag.Title = "Plan de Trabajo Anual SST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+<style>
+    /*.bordertable, tr, td {
+        border: none;
+        ;
+    }*/
+
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+
+    }
+
+    input {
+        height: 27px;
+        font: 14px;
+        line-height: 1.42857143;
+        color: #aaaaaa;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    select, option {
+        height: 27px;
+        font: 14px;
+        line-height: 1.42857143;
+        color: #aaaaaa;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    .on {
+        background-color: #fbe9db;
+    }
+
+    .CellWithComment {
+        position: relative;
+    }
+
+    .CellComment {
+        display: none;
+        position: absolute;
+        z-index: 100;
+        border: 1px;
+        background-color: white;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #568abe;
+        padding: 3px;
+        color: #568abe;
+        top: 20px;
+        left: 20px;
+        width: 250px;
+    }
+
+    .CellWithComment:hover span.CellComment {
+        display: block;
+    }
+
+    input[type=file] {
+        color: transparent;
+        width:77%;
+        height:8%;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Plan de trabajo anual SG-SST</a></li>
+    <li class="active">Plan Empresa</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        PLAN DE TRABAJO ANUAL SST
+    </div>
+
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")" 
+                title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda / PLAN DE TRABAJO ANUAL</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+
+                            <div style="text-align:justify">
+                                Esta funcionalidad le permite crear su Plan de Trabajo por periodos máximos de doce (12) meses para lo cual tiene las siguientes opciones:
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                - <b>SEDE: </b>Los planes se crean por sedes, para lo cual seleccione la sede donde desea crear el Plan de Trabajo Anual. Recuerde que puede crear más de un Plan de Trabajo por sede, si así lo requiere para su SGSST. En los casos donde tenga creado un Plan de Trabajo antes y escoja un sede que tenga un plan, abajo le aparecerá el registro de los planes ya creados por dicha sede. Esto con fin de que valide si requiere un nuevo plan o ir directamente a uno ya creado y gestionarlo a través las acciones de edición, eliminación y búsqueda. Importante recordar de que si está seguro de eliminar un Plan de Trabajo, el sistema lo eliminara y no podrá recuperarse.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                - <b>PERIODO: </b>Defina el periodo en tiempo de su Plan de Trabajo, indicado Fecha Desde (inicio) y Fecha Hasta (fin). La opción le permitirá escoger las fechas respectivas del calendario.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                - <b>VIGENCIA: </b>En esta opción le permite escoger el año al cual le pertenece el Plan de Trabajo que va a crear.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                - <b>CREAR PLAN: </b>Seleccione esta opción una vez complete los campos anteriores y el sistema crea el registro inicial de su Plan de Trabajo para inicie a gestionarlo.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                Una vez creado el Plan de Trabajo, en la opción editar <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> el sistema le muestra una ventana para registrar actividad, en ella diligencie los siguientes campos y finalice con la opción <button class="boton botonactive" disabled>Guardar</button>, la opción <button class="boton botoncancel" disabled>Cancelar</button> anulará el registro de la actividad y regresará a la pantalla inicial de Planes de Trabajo.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                A. OBJETIVOS: Son alimentados directamente del módulo de objetivos.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                B. RECURSOS: Diligencie las opciones recursos humanos, tecnológicos, financieros, defina la fecha de programación de la actividad, hora inicial y final.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                C. ESTADO: Se tiene tres (3) opciones (PROGRAMADA, REPROGRAMADA Y EJECUTADA).
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                Abajo aparecerá la actividad grabada en un formato de cronograma donde se visualiza la actividad que acaba de registrar. Puede colocar el cursor sobre la actividad y dar clic para actualizar su estado (programada, reprogramada y ejecutada) y otra información. Los estados de las actividades tendrán un color así:
+                            </div>
+                            <br />
+                            <table width="60%" border="1" cellpadding="0" cellspacing="0" align="center">
+                                <tr>
+                                    <td width="158">Actividades Programadas</td>
+                                    <td bgcolor="#0066CC">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>Actividades Reprogramadas</td>
+                                    <td bgcolor="#FF9900">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>Actividades Ejecutadas</td>
+                                    <td width="20" bgcolor="#009900">&nbsp;</td>
+                                </tr>
+                            </table>
+                            <br />
+                            <div style="text-align:justify">
+                                IMPORTANTE INDICAR QUE LOS CAMBIOS DE ESTADO DE LAS ACTIVIDADES LAS DEBE REALIZAR EL USUARIO DE MANERA MANUAL.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                En la parte final si lo desea puede agregar las firmas de Representante Legal y Representante del SGSST para la validación del Plan de Trabajo de SGSST.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                NOTA: ALISSTA NO HACE VALIDACIÓN DE LAS FIRMAS O ARCHIVOS QUE SEAN CARGADOS, O ALGUNA VERIFICACIÓN DE QUE REALMENTE SON LAS FIRMAS DE ESTOS RESPONSABLES EN SU ORGANIZACIÓN; ESTA INFORMACIÓN ES RESPONSABILIDAD DE LA EMPRESA Y SUS USUARIOS. RECORDAR TERMINOS Y CONDICIONES DEL SERVICIO DE ALISSTA.
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body form-horizontal">
+        
+        <form id="frmplanempresa">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase" colspan="2" align="center">Periodo</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</th>
+                        </tr>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Sede</th>
+                            <th width="15%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha Desde</th>
+                            <th width="15%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha Hasta</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Vigencia</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;@Html.DropDownListFor(x => x.IdSede, Model.Sedes, "-- Seleccionar --", new { onchange = "CargarPlanAnual(this.value);", style = "width:95%" })</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;@Html.TextBoxFor(x => x.FechaDesde, new { onchange = "CargarVigencia(this.value);", @readonly = "readonly", style = "width:80%" })</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;@Html.TextBoxFor(x => x.FechaHasta, new { @readonly = "readonly", style = "width:80%" })</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;@Html.DropDownListFor(x => x.anioVigencia, Model.Vigencia, "-- Vigencia --")</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><button type="button" class="boton botonactive" onclick="CrearPlan();" style="width:100%">Crear Plan Anual</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr />
+
+            <div class="table-responsive">
+                <table id="planempresa" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+
+            <br />
+
+            <div class="table-responsive">
+                <table id="planactividadxempresa" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+
+            <br />
+
+            <div id="adjuntos" style="display:none;">
+                <center>
+                    <table class="noborder" width="60%">
+                        <tr class="noborder">
+                            <td class="noborder">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table width="100%" border="0">
+                                            <tr class="noborder">
+                                                <td class="noborder"><b>Representante Legal</b></td>
+                                                <td class="noborder">&nbsp;</td>
+                                            </tr>
+                                            <tr class="noborder">
+                                                <td class="noborder">@Html.TextBoxFor(x => x.RepresentanteLegalFile, new { id = "upload", type = "file", @class = "form-control", style = "background-color:transparent" })</td>
+                                                <td class="noborder"><a id="cargar1" href="#" class="btn btn-search btn-md" title="Ver Firma"><span class="glyphicon glyphicon-search"></span></a></td>
+                                            </tr>
+                                            <tr class="noborder">
+                                                <td class="noborder"><a href="#" id="hl-start-upload" class="boton botonactive">Adjuntar Firma</a></td>
+                                                <td class="noborder"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table width="100%" border="0">
+                                            <tr class="noborder">
+                                                <td class="noborder"><b>Representante SGSST</b></td>
+                                                <td class="noborder">&nbsp;</td>
+                                            </tr>
+                                            <tr class="noborder">
+                                                <td class="noborder">@Html.TextBoxFor(x => x.RepresentanteSGSSTFile, new { id = "upload1", type = "file", @class = "form-control", style = "background-color:transparent" })</td>
+                                                <td class="noborder"><a id="cargar2" href="#" class="btn btn-search btn-md" title="Ver Firma"><span class="glyphicon glyphicon-search"></span></a></td>
+                                            </tr>
+                                            <tr class="noborder">
+                                                <td class="noborder"><a href="#" id="hl-start-upload1" class="boton botonactive">Adjuntar Firma</a></td>
+                                                <td class="noborder"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    @Html.HiddenFor(x => x.RepresentanteLegal)
+                                    @Html.HiddenFor(x => x.RepresentanteSGSST)
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+            </div>
+
+            <hr />
+
+            <div class="table-responsive">
+                <table id="tblresumen" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+
+            <hr />
+            <center>
+                <table width="20%" id="divporc" style="display:none;" class="noborder">
+                    <tr>
+                        <td class="noborder" align="center">Porcentaje de Ejecuci&ograve;n Plan de Trabajo: <input id="promedios" type="text" style="border:none;font-weight:bold;width:25%;" readonly /></td>
+                    </tr>
+                </table>
+            </center>
+        </form>
+    </div>
+</div>
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <form id="frmActividades">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <h4 class="modal-title title">Registrar Actividad</h4>
+                </div>
+                <div class="modal-body ">
+                    <p>
+                        @Html.HiddenFor(x => x.pk_id_plan_empresa)
+                        @Html.HiddenFor(x => x.pk_id_actividad)
+                        @Html.HiddenFor(x => x.FechaDesdeTemp)
+                        @Html.HiddenFor(x => x.FechaHastaTemp)
+                        <div class="row">
+                            <fieldset>
+                                <legend>Objetivos</legend>
+                                <div class="col-md-6">
+                                    @Html.Label("Descripción", new { @class = "control-label" })
+                                    @Html.DropDownListFor(x => x.ObjetivosDescripcion, Model.objetivosst, "-Seleccionar Opcion-", new { @class = "form-control", @onchange = "CargarMetas(this.value);" })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("Metas", new { @class = "control-label" })
+                                    @Html.TextBoxFor(x => x.ObjetivosMetas, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+
+                            </fieldset>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                @Html.Label("Actividad", new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.Actividad, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.Label("Responsable", new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.Responsable, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <fieldset>
+                                <legend>Recursos</legend>
+                                <div class="col-md-6">
+                                    @Html.Label("Recursos Humanos", new { @class = "control-label" })
+                                    @Html.TextBoxFor(x => x.RecursosHumanos, new { @class = "form-control" })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.Label("Recursos Tecnológico", new { @class = "control-label" })
+                                    @Html.TextBoxFor(x => x.RecursosTecnologico, new { @class = "form-control" })
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                @Html.Label("Recursos Financiero", new { @class = "control-label" })
+                                @Html.TextBoxFor(x => x.RecursosFinanciero, new { @class = "form-control" })
+                            </div>
+                            @Html.Label("Fecha Programación", new { @class = "control-label" })<br />
+                            <div class="col-md-6">
+                                @Html.TextBoxFor(x => x.FechaProg, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.Label("Hora Inicial", new { @class = "control-label" })<br />
+                                @Html.TextBoxFor(x => x.HoraProgIni, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Hora Final", new { @class = "control-label" })<br />
+                                @Html.TextBoxFor(x => x.HoraProgFin, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.Label("Estado", new { @class = "control-label" })
+                                @Html.DropDownListFor(x => x.Estados, Model.Estado, "-- Estado --", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    @*<input type="submit" value="Grabar" class="boton botonactive" />*@
+                    <button type="button" class="boton botonactive" onclick="GuardarActividad()">GUARDAR</button>
+                    @*<input type="submit" value="Cancelar" class="btn btn-default btn-md" data-dismiss="modal" />*@
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Cargar Firma</h4>
+            </div>
+            <div class="modal-body">
+                <img id="ImgCarga">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal3" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Cargar Firma</h4>
+            </div>
+            <div class="modal-body">
+                <img id="ImgCarga1">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/PlanEmpresa/PlanEmpresa.js")

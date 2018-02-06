@@ -1,0 +1,283 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDSegVialParametro>
+
+
+
+@{
+    ViewBag.Title = "Pilar Valor Agregado";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="@Url.Action("PlanSeguridadVial", "PromocionPrevencion")">Plan de Seguridad Vial</a></li>
+    <li class="active">Valor Agregado</li>
+</ol>
+
+<script>
+    //Eliminar
+    $(document).ready(function () {
+        $('.eliminarParam').click(function () {
+            var Id_Elm = $(this).attr('id');
+
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea eliminar este parametro?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/PromocionPrevencion/EliminarParametro",
+                    data: '{IdParametro: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.Estado,
+                                type: "warning",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: true
+                            },
+                        function () {
+                            
+                        });
+                            location.reload(true);
+                        }
+                        if (response.probar == false) {
+                            if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+
+                                location.reload(true);
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                type: "warning",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            },
+                            function () {
+
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                location.reload(true);
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                    }
+                });
+
+            });
+        });
+    });
+    //Paginador
+    jQuery(function ($) {
+        var items = $("table tbody tr");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">VALORES AGREGADOS (5%)</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog" style="width:50%">
+                        <!-- Modal content-->
+                        <div class="modal-content" >
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Valores Agregados</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Objetivo del Pilar Valores Agregados o Innovaciones</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> El objetivo de este pilar es agregar parámetros adicionales importantes para la sede evaluada y conforman el 5% del total de la evaluación. Cada Parámetro tiene a su vez una lista de variables que son los items que se evaluarán. Es importante que la suma de los parámetros sea igual a 100</p>
+                                
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Advertencia</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Una vez creado un parámetro este no se podrá modificar, ya que el uso de su información puede estar vinculado a un plan estrátegico de seguridad vial. Si necesita registrar nuevos parámetros por favor elimine los parámetros existentes y cree unos nuevos.</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong> Del 5% que define la resolución 1231 usted podrá definir hasta 5 parámentros y la sumatoria de estos mismos será 100%</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong> Ejemplo 1:</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/PESV1.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong> Ejemplo 2:</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/PESV2.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar Parámetro</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para agregar un parámetro a este pilar presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR PARAMETRO</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Eliminar un Parámetro</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para eliminar un parámetro de este pilar presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> en la fila de la tabla de parámetros ya guardados</p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Consultar la lista de las variables del parámetro</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para consultar la lista de las variables de un parámetro de este pilar presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> en la fila de la tabla de parámetros ya guardados</p>
+                            
+                            
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Contenido del Panel*@
+
+        <center>
+            <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                <button id="ContinuarEval" onclick="location.href='@Url.Action("AgregarParametro", "PromocionPrevencion")';return false;" class="boton botonactive col-margin">AGREGAR PARÁMETRO</button>
+            </div>
+        </center>
+
+
+        <div class="form-group row internal-panel-body">
+            <div class="Tabla-Programa table-responsive add-side-padding">
+
+                @{
+                    if (Model.Count() > 0)
+                    {
+                        <table id="Grid3" class="table table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:70%;">
+                                        <span>Definición</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:10%;">
+                                        <span>Valor</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:10%;">
+                                        
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify">
+                                                <span>@item.ParametroDef</span>
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <span>@string.Format("{0:F1}", item.Valor_Parametro)</span>
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <a id="@item.Pk_Id_SegVialParametro.ToString()" href="#" name="" class="btn btn-sm btn-positiva eliminarParam" title="Eliminar" style="height:35px;">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                <a id="@item.Pk_Id_SegVialParametro.ToString()" href="@Url.Action("ListaVariables", "PromocionPrevencion", new { IdParametro = item.Pk_Id_SegVialParametro })" class="btn btn-sm btn-positiva" title="Ver lista de variables" style="height:35px">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                     }
+                                }
+                            </tbody>
+                            <tfoot style="border: 2px solid lightslategray;">
+                                <tr>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify">
+                                        <span>Total</span>
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <span>@ViewBag.Total</span>
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                            <center><div class="pagination" id="paginador1"></div></center>
+                    }
+
+
+                }
+
+
+            </div>
+
+          
+
+
+        </div>
+
+
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+
+            <div class="col-md-12">
+                <button class="boton botonactive" onclick="location.href='@Url.Action("PlanSeguridadVial", "PromocionPrevencion")';return false;">REGRESAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

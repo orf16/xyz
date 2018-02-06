@@ -1,0 +1,211 @@
+﻿@model List<SG_SST.Models.Ausentismo.IndicadoresModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="datos-indicadores">
+        <div class="indicadores-centre-align">
+            <div class="indicadores-content">
+                <table class="table-bordered" style="font-size:x-small; border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th class="text-left col-sm-4">Año @Model[0].AnioSeleccionado</th>
+                            <th class="text-center col-sm-1" colspan="4">Enero</th>
+                            <th class="text-center col-sm-1" colspan="4">Febrero</th>
+                            <th class="text-center col-sm-1" colspan="4">Marzo</th>
+                            <th class="text-center col-sm-1" colspan="4">Abril</th>
+                            <th class="text-center col-sm-1" colspan="4">Mayo</th>
+                            <th class="text-center col-sm-1" colspan="4">Junio</th>
+                            <th class="text-center col-sm-1" colspan="4">Julio</th>
+                            <th class="text-center col-sm-1" colspan="4">Agosto</th>
+                            <th class="text-center col-sm-1" colspan="4">Septiembre</th>
+                            <th class="text-center col-sm-1" colspan="4">Octubre</th>
+                            <th class="text-center col-sm-1" colspan="4">Noviembre</th>
+                            <th class="text-center col-sm-1" colspan="4">Diciembre</th>
+                        </tr>
+                        <tr>
+                            <th class="text-left col-sm-4">Tipo de Contingencia</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">tasa/100</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var datos in Model)
+                        {
+                            <tr>
+                                <td class="text-left col-sm-4">@Html.DisplayName(datos.Contingencia)</td>
+                                <td>@Html.DisplayName(datos.Ene.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Ene.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Ene.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Ene.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Feb.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Feb.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Feb.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Feb.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Mar.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Mar.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Mar.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Mar.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Abr.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Abr.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Abr.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Abr.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.May.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.May.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.May.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.May.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Jun.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Jun.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Jun.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Jun.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Jul.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Jul.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Jul.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Jul.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Ago.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Ago.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Ago.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Ago.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Sep.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Sep.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Sep.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Sep.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Oct.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Oct.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Oct.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Oct.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Nov.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Nov.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Nov.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Nov.Tasa.ToString())</td>
+
+                                <td>@Html.DisplayName(datos.Dic.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.Dic.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.Dic.VaribleILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Dic.Tasa.ToString())</td>
+                            </tr>
+                        }
+                        <tr class="total-indicadores">
+                            <td class="text-left col-sm-4">@Html.DisplayName("Total")</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ene.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ene.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ene.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ene.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Feb.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Feb.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Feb.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Feb.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Mar.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Mar.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Mar.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Mar.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Abr.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Abr.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Abr.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Abr.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.May.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.May.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.May.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.May.Tasa).ToString())</td>
+                            
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jun.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jun.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jun.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jun.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jul.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jul.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jul.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Jul.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ago.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ago.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ago.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Ago.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Sep.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Sep.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Sep.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Sep.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Oct.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Oct.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Oct.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Oct.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Nov.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Nov.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Nov.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Nov.Tasa).ToString())</td>
+
+                            <td>@Html.DisplayName(Model.Sum(r => r.Dic.VariableIF).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Dic.VariableIS).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Dic.VaribleILI).ToString())</td>
+                            <td>@Html.DisplayName(Model.Sum(r => r.Dic.Tasa).ToString())</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>            
+        </div>  
+    </div>
+}
+
+

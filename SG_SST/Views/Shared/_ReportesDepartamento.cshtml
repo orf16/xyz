@@ -1,0 +1,47 @@
+﻿@model List<SG_SST.Models.Ausentismo.ReportesModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <h2>Días ausentismo por Departamentos</h2>
+    <table class="table table-bordered" style="font-size:x-small; border: 2px solid lightslategray">
+        <thead>
+            <tr class="titulos_tabla">
+                <th>Departamento</th>
+                <th>Enero</th>
+                <th>Febrero</th>
+                <th>Marzo</th>
+                <th>Abril</th>
+                <th>Mayo</th>
+                <th>Junio</th>
+                <th>Julio</th>
+                <th>Agosto</th>
+                <th>Septiembre</th>
+                <th>Octubre</th>
+                <th>Noviembre</th>
+                <th>Diciembre</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var datos in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayName(datos.Departamento)</td>
+                    <td>@Html.DisplayName(datos.strEne)</td>
+                    <td>@Html.DisplayName(datos.strFeb)</td>
+                    <td>@Html.DisplayName(datos.strMar)</td>
+                    <td>@Html.DisplayName(datos.strAbr)</td>
+                    <td>@Html.DisplayName(datos.strMay)</td>
+                    <td>@Html.DisplayName(datos.strJun)</td>
+                    <td>@Html.DisplayName(datos.strJul)</td>
+                    <td>@Html.DisplayName(datos.strAgo)</td>
+                    <td>@Html.DisplayName(datos.strSep)</td>
+                    <td>@Html.DisplayName(datos.strOct)</td>
+                    <td>@Html.DisplayName(datos.strNov)</td>
+                    <td>@Html.DisplayName(datos.strDic)</td>
+                    <td>@Html.DisplayName(datos.strTotal)</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}

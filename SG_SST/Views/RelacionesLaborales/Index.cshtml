@@ -1,0 +1,209 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Cargar Relaciones Laborales de Terceros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+
+@*<p><em>Empresa / <b>CARGAR RELACIONES LABORALES DE TERCEROS</b></em></p>
+    <hr />*@
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="@Url.Action("Index","RelacionesLaborales")">Relaciones Laborales</a></li>
+    <li class="active">Consultar Relaciones Laborales de Terceros</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:black">
+        RELACIONES LABORALES DE TERCEROS
+    </div>
+
+    <!-- AYUDA-->
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black; text-align:justify">
+
+                            <p>Para cargar las relaciones laborales de terceros (Contratista, Cooperado y Misión) debe descargar la plantilla para diligenciarla y posteriormente cargarla en el sistema.</p>
+                            <p>
+                                En el proceso de cargue de las relaciones laborales de terceros, el sistema valida campo a campo su estructura e informa el resultado de este proceso. Si presenta algún error agradecemos corregirlo y volver a cargar el archivo
+                            </p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN AYUDA-->
+
+    <div class="panel-body">
+        <table class="table table-condensed table-responsive table-bordered table-striped">
+            <tr>
+                <td colspan="2">
+                    <center>
+                        <b>Para realizar el cargue de las relaciones laborales de terceros por favor descargue primero la plantilla, proceda con el diligenciamiento y suba el archivo con la información </b>
+                    </center>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <center>
+                        @using (Html.BeginForm("Download", "RelacionesLaborales"))
+                        {
+                            <label class="col-md-7">Descargar Plantilla</label>
+                            @*<input type="submit" value="Consultar" class="btn btn-warning" />*@
+                            <button type="submit" class="boton botoninfo">Descargar Archivo</button>
+                        }
+                    </center>
+                </td>
+            </tr>
+            <div class="panel panel-default" id="idDivCargarBoton">
+                <tr>
+                    <td>
+                        <center>
+                            <label class="col-md-7">Cargar Relaciones Laborales de Terceros</label>
+                            @*<input type="button" id="idCargar" class="boton botoninfo" value="Cargar Plantilla Relaciones" />*@
+                            <button type="button" id="idCargar" class="boton botoninfo">Cargar Plantilla Relaciones</button>
+                        </center>
+                    </td>
+                </tr>
+            </div>
+            <tr>
+                <td>
+                    @using (Html.BeginForm("CargarArchivoRelacionesLaborales", "RelacionesLaborales", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1) ; display:none;" id="idDivCargarPlantilla">
+                            <div class="panel-heading" style="color:black">
+                                Cargar Relaciones Laborales
+                            </div>
+
+
+                            <div class="panel-body form-horizontal">
+                                <div class="row">
+                                    <div class="form-group" style="margin-left: 5px">
+                                        <div class="col-md-4">
+
+                                            <input type="file" value="Cargar Documento" name="ArchivoRelacionesLaborales" class="form-control" />
+                                        </div>
+                                        <div class="col-md-4" style="margin-right: 10px">
+                                            @*<input type="submit" value="Cargar Documento" class="btn btn-warning" />*@
+                                            <button type="submit" class="boton botoninfo">Cargar Documento</button>
+                                        </div>
+                                        <div class="col-md-3" style="margin-right: 5px">
+                                            <div class="input-group">
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal" id="idSalirCargar">Salir</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divMensaje">   </div>
+                        </div>
+                    }
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+
+</div>
+
+@if (ViewBag.ErrorProcesaArchivo != null)
+{
+
+    if (ViewBag.ErrorProcesaArchivo)
+    {
+        <script type="text/javascript">
+                    $('#idDivCargarPlantilla').show(); //muestro mediante id
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+                    $('#idDivCargarPlantilla').hide(); //muestro mediante id
+        </script>
+    }
+}
+
+@if (ViewBag.MessagesOK != null)
+{
+    if (ViewBag.MessagesOK != "")
+    {
+
+        <script type="text/javascript">
+            //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.MessagesOK',
+                type: 'success',
+                //confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });
+        </script>
+    }
+}
+
+@if (ViewBag.MessagesERR != null)
+{
+    if (ViewBag.MessagesERR != "")
+    {
+        <script type="text/javascript">
+            //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.MessagesERR',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });
+        </script>
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+	$("#idCargar").on("click", function() {
+	    $('#idDivCargarPlantilla').show(); //muestro mediante id
+	    $('#idMensaje').empty();
+    });
+	$("#idSalirCargar").on("click", function() {
+	    $('#idDivCargarPlantilla').hide(); //oculto mediante id
+	    $('#idDivCargarBoton').show(); //muestro mediante clase
+                });
+            });
+</script>

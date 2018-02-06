@@ -1,0 +1,219 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDServicioProducto>
+
+@{
+    ViewBag.Title = "Proveedores y Contratistas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+}
+
+@if (ViewBag.editadoConExito == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Tipo de Servicio y Producto editado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+
+@if (ViewBag.guardadoConExito == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Tipo de Servicio y Producto guardado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+@if (ViewBag.respuestaEliminado == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Tipo de Servicio y Producto eliminado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+@section OpcionesEmpresa
+{
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:void(0);" style="color:#ff7500">Criterios</a></li>
+        <li><a href="@Url.Action("Calificar", "CriteriosSST")" style="color:gray">Selección y Evaluación</a></li>
+        <li><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")" style="color:gray">Visualizar Calificaciones de Proveedores y Contratistas</a></li>
+        <li><a href="@Url.Action("MostrarProveedores", "CriteriosSST")" style="color:gray">Listado de Proveedores y Contratistas</a></li>
+    </ul>
+}  
+
+<br />
+<ol class="breadcrumb">
+    <li class="active"><a href="@Url.Action("Create", "CriteriosSST")">Criterios</a></li>
+    @*<li><a href="@Url.Action("Calificar", "CriteriosSST")">Selección y Evaluación</a></li>
+    <li class="active"><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")">Visualizar Calificaciones de Proveedores</a></li>*@
+    @*<li><a href="@Url.Action("MostrarProveedores", "CriteriosSST")">Listado de Proveedores y Contratistas</a></li>*@
+</ol>
+<hr />
+@using (Html.BeginForm("Create", "CriteriosSST", FormMethod.Post, new { enctype = "multipart/form-data", @id = "grabarProductoCriterio" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default" name="panel" id="panel" style="background-color: rgba(196, 202,196, 0.1)">
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Criterios</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p align="justify">Esta pestaña “CRITERIOS” permite crear inventario de productos y servicios relacionados con SST. Así mismo seleccionar los criterios de evaluación que le aplique cada proveedor para la evaluación de los mismos en la prestación servicios o productos.</p>
+                                <p align="justify">Registre el nombre del tipo servicio y/o producto, luego escoja uno o varios criterios a tener en cuenta en la selección y evaluación. Estos estarán disponibles en el proceso siguiente para que evalué a el proveedor o proveedores.</p>
+                                <p align="justify">Puede editar y gestionar sus criterios cuando considere necesario.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <button type="button" class="boton botonactive" disabled>GUARDAR</button> para guardar el Tipo de Servicio Y Producto creado.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <span class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></span> para editar un Tipo de Servicio Y Producto.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <span class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></span> para eliminar un Tipo de Servicio Y Producto.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="col-md-2" style="line-height:2">Tipo de Servicio y Producto</label>
+                    <div class="col-md-10">
+                        <input type="text" name="Tipo_Servicio" id="Tipo_Servicio" class="form-control" />
+                        <input name="Pk_Id_Tipo_Servicio" id="Pk_Id_Tipo_Servicio" class="form-control" type="hidden" />
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="col-md-2" style="line-height:6.5">Criterio en SST</label>
+                    <div class="col-md-10">
+                        @*@Html.DropDownList("Pk_Id_Criterios", null, htmlAttributes: new { @class = "form-control selectpicker", @multiple = "multiple", title = "Seleccione ..." })*@
+                        @Html.DropDownList("Pk_Id_Criterio1", (SelectList)ViewBag.Pk_Id_Criterios, "-- Seleccione Los Criterios--", new { @class = "form-control selectpicker", @multiple = "multiple", @style = "height:200px" })
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-3 col-md-offset-5">
+                    <button type="submit" class="boton botonactive" onclick="ValidarCrearProductoCriterio()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<br />*@
+
+    <div id="TablaRol">
+        <div class="table-responsive">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+
+                <tr class="titulos_tabla">
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Tipo de Servicio y Producto")
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Criterio en SST")
+                    </th>                   
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Acciones")
+                    </th>
+                </tr>
+
+                @{
+                foreach (var item in Model)
+                {
+                    int criterios = 1;
+
+                    <tr>
+
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.DescripcionProducto)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                            @foreach (var proxCrit in item.CriterioLista)
+                            {
+                                @Html.Label(criterios.ToString() + "- " + "  ")
+                                @Html.DisplayFor(modelItem => proxCrit.NombreCriterioSST)
+                                <br />
+                                criterios = criterios + 1;
+                            }
+                        </td>            
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a href="javascript:void(0);" onclick="EditarProductoCriterio(@item.idServicioProducto)"
+                               title="Editar Tipo de Sevicio y Producto" class="btn btn-md btn-search">
+                                <span class="glyphicon glyphicon-pencil" name="iconoRend"></span>
+                            </a>
+                            <a href="" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.idServicioProducto)"
+                               title="Eliminar Tipo de Sevicio y Producto" class="btn btn-md btn-search">
+                                <i class="glyphicon glyphicon-erase" name="iconoEliminar"></i>
+                            </a>
+                            <div id="@string.Format("modalEliminar{0}", item.idServicioProducto)" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                     Modal content
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            </button>
+                                            <h4 class="modal-title title">Eliminar Tipo de Sevicio y Producto</h4>
+                                        </div>
+                                        <div class="modal-body " style="text-align:center; color:black">
+                                            <center><p>¿Esta seguro desea eliminar el Tipo de Sevicio y Producto seleccionado?</p></center>
+                                        </div>
+                                        <div class="modal-footer">
+                                            @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { idProducto = item.idServicioProducto },
+                                            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+               
+                        </td>
+                    </tr>
+                }
+
+                }
+            </table>
+        </div>
+    </div>
+
+}

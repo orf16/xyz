@@ -1,0 +1,218 @@
+﻿@model IEnumerable<SG_SST.Models.Planificacion.RequisitosLegalesPosipedia>
+@{
+    ViewBag.Title = "CrearMatrizSinDatos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Requisitos Legales y Otros</a></li>
+    <li class="active">Agregar requisitos legales</li>
+</ol>
+
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Estimado Usuario</strong> @ViewBag.Messages
+    </div>
+}
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Messages2
+    </div>
+}
+
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { @id = "idCrearMatriz" }))
+{
+    <body>
+
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white">
+                Agregar Requisitos Legales
+            </div>
+
+
+            @*Boton ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                       class="btn btn-ayuda btn-md"
+                       @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                        <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Agregar Requisitos Legales</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <p>Click en consultar para realizar la búsqueda por actividad económica</p>
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <button type="button" class="boton botoninfo" disabled>Consultar</button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <p>Click en Generar Matriz para dar nombre a la matriz creada</p>
+                                            </div>
+                                            <div class="col-xs-5">
+
+                                                <button type="button" class="boton botonactive" disabled>Generar Matriz</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*/////////////*@
+
+            <div class="panel-body form-horizontal">
+
+                <div class="form-group">
+                    <div class="row">
+
+
+
+                        <div class="col-md-4 col-md-offset-2">
+                            @Html.DropDownList("FK_Actividad_Economica", null, htmlAttributes: new { @class = "dropdown1 form-control", @onchange = "" }, optionLabel: "-- Seleccione el sector económico a consultar --")
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" onclick="BusquedaPorActividadEconomica()" class="boton botoninfo">Consultar</button>
+                            @*<a type="button" href="@Url.Action("Busqueda_PorActividadEconomica", "RequisitosLegalesOtros", new { Actividad_Economica = 1 }) " class="boton botoninfo">Consultar</a>*@
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="table-responsive" id="IDscBusqueda">
+                    <table class="table table-bordered" id="idtblOtrasInteracciones" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla">
+
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;text-align:center; vertical-align:middle">
+                                <p><b>SELECCIONAR</b></p> <p><b>TODO</b></p><input type="checkbox" class="checkAll" id="checkAll" name="checkAll" onclick="Seleccionarcheckbox()" />
+                            </td>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>N° Norma</b></th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Fecha Publicación</b></th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Ente</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Artículos</b></th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Descripción</b></th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Sugerencias</b></th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Clase de Peligro</b></th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Peligro</b></th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Aspectos</b></th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Impactos</b></th>
+
+                        </tr>
+                    </table>
+
+                </div>
+
+                @*<div class="row" align="left">
+                    <div>
+                        <div class="col-sm-12">
+
+
+                            <button class="boton botonactive" data-toggle="modal" data-target="#@string.Format("myModal1","")" style="margin-right:35px">Generar Matriz</button>
+
+
+                        </div>
+                    </div>
+                </div>*@
+
+            </div>
+
+            @*<div id="@string.Format("myModal1","")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                   
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+
+                            <h4 class="modal-title title">Requisitos Legales y Otros</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <p style="vertical-align:middle">Ingrese el nombre de la matriz:</p>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" id="idNombreMatriz" name="idNombreMatriz" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                  
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botonactive" onclick="validarNombreMatriz(idactividadeconomica = FK_Actividad_Economica)">Generar Matriz</button>
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+
+            <button type="button" class="boton botonactive" onclick="Agregar_RequisitoMatriz(idactividadeconomica = FK_Actividad_Economica)">Agregar</button>
+
+          
+
+
+        </div>
+    </body>
+}
+
+@*<script>
+        $(document).ready(function () {
+            paginador("idRequisitosLegales", "tr[name = pcs]", "#paginador");
+        });
+    </script>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/planificacion")
+    @Scripts.Render("~/bundles/ValidacionesPlanificacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}
+
+
+
+

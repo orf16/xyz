@@ -1,0 +1,227 @@
+﻿@{@model SG_SST.Models.Participacion.CrearActaConvivenciaVM
+
+    ViewBag.Title = "Acta Comite Convivencia Laboral";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ACTA COMITE CONVIVENCIA</title>
+    <style>
+        .table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel panel-default" style="background-color:white" id="InformacionGeneralInspeccion">
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent">
+                <center>
+                    <label>ACTA NÚMERO: @Model.Consecutivo_Acta.ToString().PadLeft(3, '0')</label>
+                </center>
+                <h4>1. FECHA:</h4>
+                @Html.TextBoxFor(model => Model.Fecha, new { @class = "form-control", Value = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @placeHolder = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @id = "Fecha", @name = "Fecha" })
+                <h4>2. TEMA DE LA REUNIÓN:</h4>
+                @Html.TextAreaFor(model => Model.TemaReunion, new { @class = "form-control", @id = "TemaReunion", @name = "TemaReunion", @cols = "200", @rows = "4" })
+                <h4>3. EMPRESA:</h4>
+                @Html.TextAreaFor(model => Model.NombreEmpresa, new { @class = "form-control", @id = "NombreEmpresa", @name = "NombreEmpresa", @cols = "200", @rows = "2" })
+                <h4 class="col-md-10">4. PARTICIPANTES:</h4>
+                <center>
+                    <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                        <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Documento Participante
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nombre Participante
+                            </th>
+                        </tr>
+                        @{
+                            if (Model.ParticipantesActaConvivencia != null)
+                            {
+                                foreach (var item in Model.ParticipantesActaConvivencia)
+                                {
+                                    <tr class="trParticipante" id="trParticipante">
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                            @Html.DisplayFor(modelItem => item.Numero_Documento)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                            @Html.DisplayFor(modelItem => item.Nombre)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        <tbody id="tbParticipantes"></tbody>
+                    </table>
+                </center>
+                <hr />
+            </div>
+
+            <h4 class="col-md-12">5. AGENDA DE LA REUNIÓN:</h4>
+            <center>
+                <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                    <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                        <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            No.
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Orden del día
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.TemasActaConvivencia != null)
+                        {
+                            int fila = 1;
+                            foreach (var item in Model.TemasActaConvivencia)
+                            {
+
+
+                                <tr class="trOrdenDia">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @fila
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Tema)
+                                    </td>
+                                </tr>
+
+                                fila = fila + 1;
+                            }
+                        }
+                    }
+                    <tbody id="tbTemas"></tbody>
+                </table>
+            </center>
+            <hr />
+        </div>
+        <h4 class="col-md-12">6. DESARROLLO DE LA REUNIÓN:</h4>
+        <center>
+            <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        No.
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Tema
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Observación
+                    </th>
+                </tr>
+                @{
+                    if (Model.TemasActaConvivencia != null)
+                    {
+                        int fila = 1;
+                        foreach (var item in Model.TemasActaConvivencia)
+                        {
+                            <tr class="trObservacion">
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @fila
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                    @Html.DisplayFor(modelItem => item.Tema)
+                                </td>
+                                <td contenteditable="true" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                    @Html.DisplayFor(modelItem => item.Observaciones, new { @class = "form-control", @id = "Observaciones", @name = "Observaciones", @maxlength = "200" })
+                                </td>
+                            </tr>
+                            fila++;
+                        }
+                    }
+                }
+                <tbody id="tbObservacion"></tbody>
+            </table>
+        </center>
+        <hr />
+    </div>
+    <h4>7. CONCLUSIONES GENERALES:</h4>
+    @Html.TextAreaFor(model => Model.Conclusiones, new { @class = "form-control", @rows = "6", cols = "200", @id = "Conclusiones", @name = "Conclusiones" })
+    <hr />
+    <h4 class="col-md-12">8. PLAN DE ACCIÓN:</h4>
+    <center>
+        <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+            <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    No.
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Actividad
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Responsable
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Fecha
+                </th>
+            </tr>
+            @{
+                if (Model.AccionesActaConvivencia != null)
+                {
+                    int fila = 1;
+                    foreach (var item in Model.AccionesActaConvivencia)
+                    {
+
+                        <tr class="trAcciones" id="trAcciones">
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                @fila
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                @Html.DisplayFor(modelItem => item.AccionARealizar)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                @Html.DisplayFor(modelItem => item.Responsable)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                @Html.DisplayFor(modelItem => item.FechaProbable, new { @value = item.FechaProbable.ToString("yyyy-MM-dd") })
+                            </td>
+                        </tr>
+                        fila++;
+                    }
+                }
+            }
+            <tbody id="tbAccion"></tbody>
+        </table>
+    </center>
+    <hr />
+    &nbsp
+    &nbsp
+    &nbsp
+    &nbsp
+    &nbsp
+    &nbsp
+    &nbsp
+    <div class="table-responsive" id="TParticipantes" style="margin:auto; border: none">
+        <table class="table table-responsive table-bordered" id="tParticipantes">
+            <tr class="titulos_tabla" id="trMiembros">
+                <th>
+                    &nbsp
+                </th>
+                <th style="text-align:left">
+                    &nbsp
+                </th>
+            </tr>
+            @{
+                if (Model.ParticipantesActaConvivencia != null)
+                {
+                    foreach (var item in Model.ParticipantesActaConvivencia)
+                    {
+                        <tr class="trParticipante" id="trParticipante">
+                            <td style="text-align:left" ; width="200" heigth="200">
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td style="text-align:left" ; width="20" heigth="20">
+                                ________________________________________________
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+            <tbody id="tbParticipantes"></tbody>
+        </table>
+    </div>
+</body>
+</html>

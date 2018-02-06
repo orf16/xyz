@@ -1,0 +1,357 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.ElementoMatriz>
+
+@{
+    ViewBag.Title = "Análisis DOFA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" src="../jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type=checkbox]').on('click', function () {
+            var parent = $(this).parent().attr('id');
+            $('#' + parent + ' input[type=checkbox]').removeAttr('checked');
+            $(this).attr('checked', 'checked');
+        });
+    });
+</script>
+
+<link rel="stylesheet" href="~/Content/css/sweetalert.css">
+<script src="~/js/sweetalert.min.js"></script>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+            'Estimado Usuario',
+            ' @ViewBag.Messages',
+            'warning'
+            )
+    </script>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Consideraciones internas y externas</a></li>
+    <li class="active">Análisis DOFA</li>
+</ol>
+
+<body onload="CargarElementoDOFA()">
+ 
+    <div class="tab-pane active" id="step1" name="step1">
+
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white">ANÁLISIS DOFA</div>
+
+            @*Boton Ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                        title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Análisis DOFA</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <p>Click en Agregar para crear un nuevo elemento de la matriz DOFA</p>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                @*@Html.ActionLink("Crear", "", "", null, new { @class = "boton botoninfo" })*@
+                                                <button type="button" class="boton botonactive" disabled>Agregar</button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <p>Click en Modificar para editar el elemento de la matriz DOFA</p>
+                                            </div>
+                                            <div class="col-xs-4">
+                                          
+                                                <button type="button" onclick="" class="boton botoninfo" disabled>Modificar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*/////////////*@
+
+
+            <div class="panel-body form-horizontal" id="grabarDOFA">
+                        
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-1">
+                        <p><b>TIPO DE ELEMENTO</b></p>
+                    @Html.DropDownList("elementosMatriz", null, htmlAttributes: new { @class = "form-control", @id="idelementomatriz"}, optionLabel: "-- Seleccionar --")
+                    </div>
+                    <div class="col-sm-6 col-sm-offset-0">
+                        <p><b>DESCRIPCIÓN DEL ELEMENTO</b></p>
+                        <textarea rows="4" cols="100" id="descripcion" class="form-control" placeholder="Describe Elemento DOFA" style="resize:none"></textarea>
+                    </div>
+                </div>
+                <br />
+                <hr />
+
+                <div class="row" align="center">
+                    @*<div class="col-sm-12">
+                        <div class="col-sm-6">*@
+                <button type="button" class="boton botonactive" onclick="validacion_AgregarMatrizDOFA()" style="margin-right:30px">Agregar</button>
+
+                @*<button type="button" data-toggle="modal" data-target="#@string.Format("myModal1","")" onclick="CargarElementoDOFA()" class="boton botoninfo" style="margin-right:30px">Modificar</button>*@
+                  
+
+                <div id="ModaleditarDOFA" class="modal fade" role="dialog">                          
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Modificar Elemento</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <textarea class=" form-control" rows="5" cols="9" required id="idDofa" style="resize:none"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botonactive" data-dismiss="modal" onclick="GrabarEdicionMatriz()">GRABAR</button>
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*<button type="button" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-erase"></i> Eliminar</button>*@
+
+                @*<button class="btn btn-warning" data-toggle="modal" data-target="#@string.Format("myModal1","")" onclick="CargarElementoDOFA()">
+                    Modificar
+                </button>*@
+
+                @*</div>
+                </div>*@
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-success" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #b3e2dd; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Oportunidades</p>
+                        </div>
+                        <div class="panel-body" id="opotunidades">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 4)// el 1 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                            <input type="checkbox" class="checkBox" id="checklista_opotunidades" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="panel panel-success" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #cfeccf; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Amenazas</p>
+                        </div>
+                        <div class="panel-body" id="amenazas">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 1)// el 1 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                            <input type="checkbox" class="checkBox" id="checklista_amenazas" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-yellow" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #fdcaa2; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Fortalezas</p>
+                        </div>
+                        <div class="panel-body" id="fortalezas">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 3)// el 2 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                            <input type="checkbox" class="checkBox" id="checklista_fortalezas" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="panel panel-danger" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #c1b3d7; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Debilidades</p>
+                        </div>
+                        <div class="panel-body" id="debilidades">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 2)// el 2 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                            <input type="checkbox" class="checkBox" id="checklista_debilidades" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+
+                                            <div class ="col-sm-10" style="margin-left:-10px; text-align:justify">
+
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+        </div>
+                    
+        <div class="row" align="center">
+            <button type="button" onclick="validarcheckbox_seleccionadoDOFA()" class="boton botoninfo" style="margin-right:30px">Modificar</button>
+        </div>
+
+        <br />
+
+        </div>
+    </div>
+</body>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+}
+
+<script>
+    $(document).ready(function () {
+    
+            var parent = $(this).parent().attr('id');
+            $('#' + parent + ' input[type=checkbox]').removeAttr('checked');
+            $(this).attr('checked', 'checked');
+    });
+</script>

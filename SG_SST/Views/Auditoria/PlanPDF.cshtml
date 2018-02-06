@@ -1,0 +1,255 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaInforme
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+        .Unalinea input {
+            font-size: 20px;
+            color: black;
+            text-align: left;
+            width: 300px !important;
+        }
+
+
+
+        .IDCss div {
+            float: left;
+            margin-right: 30px;
+        }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label>
+                <b>Sede</b>
+            </label>
+            @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.SedeAuditoria)
+        </div>
+        <div class="IDCss">
+            <div>
+                <b>Período</b>
+                @Html.DisplayFor(m => m.Informe_EDAuditoria.Periodo)
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>PLAN DE AUDITORÍA</b>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Nombre del Programa de Auditorias</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Titulo)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Año del Programa</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Año)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Objetivo</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Objetivo)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Alcance</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Alcance)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Criterios de la Auditoría</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Criterios)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft49">
+                <b>Proceso</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.NombreProceso1)
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Fecha de Realización</b>
+                <div>
+                    @{
+                        string Fecha_str1 = "";
+                        try
+                        {
+                            Fecha_str1 = Model.Informe_EDAuditoria.FechaRealizacion.ToString("dd/MM/yyyy");
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+                        @Html.Label(Fecha_str1, Fecha_str1)
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft49">
+                <b>Responsable del Proceso</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditado)
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Auditor</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditador)
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+
+            <div class="AccionLeft49">
+                <b>Requisito</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Requisito)
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Duración</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Duracion)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

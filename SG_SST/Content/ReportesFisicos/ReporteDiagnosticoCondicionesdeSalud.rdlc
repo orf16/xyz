@@ -1,0 +1,2652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Diagnostico Condiciones Salud</Value>
+                <Style>
+                  <FontFamily>Tahoma</FontFamily>
+                  <FontSize>18pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>#ff7500</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Height>0.49447in</Height>
+        <Width>24in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Tablix Name="table1">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>3.33631in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.69792in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.71875in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.71875in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.25in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox11">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Vigencia</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox11</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox13">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Fecha inicial</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox13</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox16">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Fecha final</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox16</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox81">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox81</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.25in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="vigencia">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!vigencia.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>vigencia</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="fecha_inicial">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!fecha_inicial.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>fecha_inicial</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Fecha_final">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Fecha_final.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Fecha_final</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox57">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox57</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.22in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Sede</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox4">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Nombre Municipio</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox4</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox6">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Zona lugar</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox6</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="textbox12">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Proceso</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>textbox12</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.21in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Sede">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Sede.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Sede</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Nombre_Municipio">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Nombre_Municipio.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Nombre_Municipio</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Zona_lugar">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Zona_lugar.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Zona_lugar</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Proceso">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Proceso.Value</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Proceso</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+              <KeepTogether>true</KeepTogether>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="table1_Sede">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Sede.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!Sede.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepTogether>true</KeepTogether>
+                </TablixMember>
+              </TablixMembers>
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSet1</DataSetName>
+        <Top>1.205in</Top>
+        <Left>0.3175cm</Left>
+        <Height>0.93in</Height>
+        <Width>11.47173in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+      <Tablix Name="Tablix4">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>2.2701in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.2701in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.70408in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.10111in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.46491in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.90461in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.14419in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.09649in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.46656in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.48026in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>2.57621in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.9046in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.79605in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.37116in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.24315in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox163">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Sede</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox163</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox165">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Total trabajadores zona lugar</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox165</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox167">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Sintomatologia</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox167</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox169">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Número trabajadores sintomatologia</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox169</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox225">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Porcentaje Sintomatologia</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox225</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox171">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Prueba Clinica</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox171</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox227">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Trabajadores prueba</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox227</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox229">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Porcentaje Prueba</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox229</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox231">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Prueba Paraclinica</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox231</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox179">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Trabajadores prueba paraclínicas</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox179</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox261">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Porcentaje Pruebas Paraclinicas</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox261</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox223">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Diagnostico cie10a</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox223</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox183">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Trabajadores diagnostico</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox183</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox267">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Porcentaje Disnostico</Value>
+                              <Style>
+                                <FontFamily>tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox267</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.24315in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Sede2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Sede.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Sede2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_trabajadores_zona_lugar1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Total_trabajadores_zona_lugar.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Total_trabajadores_zona_lugar1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Sintomatologia2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Sintomatologia.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Sintomatologia2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Número_trabajadores_sintomatologia">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Número_trabajadores_sintomatologia.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Número_trabajadores_sintomatologia</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox226">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Número_trabajadores_sintomatologia.Value/Fields!Total_trabajadores_zona_lugar.Value*100</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox226</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Prueba_Clinica">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Prueba_Clinica.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Prueba_Clinica</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Trabajadores_prueba">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Trabajadores_prueba.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Trabajadores_prueba</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox230">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Trabajadores_prueba.Value/Fields!Total_trabajadores_zona_lugar.Value*100</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox230</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Prueba_P_Clinica1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Prueba_P_Clinica.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Prueba_P_Clinica1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Trabajadores_prueba_p">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Trabajadores_prueba_p.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Trabajadores_prueba_p</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox262">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Trabajadores_prueba_p.Value/Fields!Total_trabajadores_zona_lugar.Value*100</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox262</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Diagnostico_cie10a">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Diagnostico_cie10a.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Diagnostico_cie10a</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Trabajadores_diagnostico">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Trabajadores_diagnostico.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Trabajadores_diagnostico</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox268">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Trabajadores_diagnostico.Value/Fields!Total_trabajadores_zona_lugar.Value*100</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox268</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="Detalles" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <FixedRowHeaders>true</FixedRowHeaders>
+        <DataSetName>DataSet3</DataSetName>
+        <Top>4.03564in</Top>
+        <Left>0.125in</Left>
+        <Height>0.4863in</Height>
+        <Width>35.55043in</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+      <Tablix Name="Tablix6">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>2.82292in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.1615in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>5.78258in</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.26371in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox215">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Sede</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox215</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox219">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Clase De Peligro</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox219</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox221">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Descripcion Del Peligro</Value>
+                              <Style>
+                                <FontFamily>Tahoma</FontFamily>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#7e8a97</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox221</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.26371in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="SEDE">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!SEDE.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>SEDE</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Descripcion_Del_Peligro">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Descripcion_Del_Peligro.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Descripcion_Del_Peligro</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Descripcion_Clase_De_Peligro1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Descripcion_Clase_De_Peligro.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Descripcion_Clase_De_Peligro1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="Detalles1" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DataSet2</DataSetName>
+        <Top>2.89035in</Top>
+        <Left>0.16831in</Left>
+        <Height>0.52742in</Height>
+        <Width>11.767in</Width>
+        <ZIndex>3</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Tablix>
+      <Chart Name="Chart2">
+        <ChartCategoryHierarchy>
+          <ChartMembers>
+            <ChartMember>
+              <Group Name="Chart2_CategoryGroup">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!Sede.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!Sede.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <Label>=Fields!Sede.Value</Label>
+            </ChartMember>
+          </ChartMembers>
+        </ChartCategoryHierarchy>
+        <ChartSeriesHierarchy>
+          <ChartMembers>
+            <ChartMember>
+              <Label>Total trabajadores zona lugar</Label>
+            </ChartMember>
+          </ChartMembers>
+        </ChartSeriesHierarchy>
+        <ChartData>
+          <ChartSeriesCollection>
+            <ChartSeries Name="Diagnostico_cie10a">
+              <ChartDataPoints>
+                <ChartDataPoint>
+                  <ChartDataPointValues>
+                    <Y>=Fields!Trabajadores_diagnostico.Value/Fields!Total_trabajadores_zona_lugar.Value*100</Y>
+                  </ChartDataPointValues>
+                  <ChartDataLabel>
+                    <Style />
+                    <UseValueAsLabel>true</UseValueAsLabel>
+                    <Visible>true</Visible>
+                  </ChartDataLabel>
+                  <Style />
+                  <ChartMarker>
+                    <Style />
+                  </ChartMarker>
+                  <DataElementOutput>Output</DataElementOutput>
+                </ChartDataPoint>
+              </ChartDataPoints>
+              <Type>Shape</Type>
+              <Style />
+              <ChartEmptyPoints>
+                <Style />
+                <ChartMarker>
+                  <Style />
+                </ChartMarker>
+                <ChartDataLabel>
+                  <Style />
+                </ChartDataLabel>
+              </ChartEmptyPoints>
+              <ValueAxisName>Primary</ValueAxisName>
+              <CategoryAxisName>Primary</CategoryAxisName>
+              <ChartSmartLabel>
+                <CalloutLineColor>Black</CalloutLineColor>
+                <MinMovingDistance>0pt</MinMovingDistance>
+              </ChartSmartLabel>
+            </ChartSeries>
+          </ChartSeriesCollection>
+        </ChartData>
+        <ChartAreas>
+          <ChartArea Name="Default">
+            <ChartCategoryAxes>
+              <ChartAxis Name="Primary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Título del eje</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+              <ChartAxis Name="Secondary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Título del eje</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Location>Opposite</Location>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+            </ChartCategoryAxes>
+            <ChartValueAxes>
+              <ChartAxis Name="Primary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Título del eje</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+              <ChartAxis Name="Secondary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Título del eje</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Location>Opposite</Location>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+            </ChartValueAxes>
+            <Style>
+              <BackgroundGradientType>None</BackgroundGradientType>
+            </Style>
+          </ChartArea>
+        </ChartAreas>
+        <ChartLegends>
+          <ChartLegend Name="Default">
+            <Style>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <FontSize>8pt</FontSize>
+            </Style>
+            <ChartLegendTitle>
+              <Caption>Sedes</Caption>
+              <Style>
+                <FontSize>8pt</FontSize>
+                <FontWeight>Bold</FontWeight>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </ChartLegendTitle>
+            <HeaderSeparatorColor>Black</HeaderSeparatorColor>
+            <ColumnSeparatorColor>Black</ColumnSeparatorColor>
+          </ChartLegend>
+        </ChartLegends>
+        <ChartTitles>
+          <ChartTitle Name="Default">
+            <Caption>% Diagnostico por sede</Caption>
+            <Style>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <FontWeight>Bold</FontWeight>
+              <TextAlign>General</TextAlign>
+              <VerticalAlign>Top</VerticalAlign>
+            </Style>
+          </ChartTitle>
+        </ChartTitles>
+        <Palette>BrightPastel</Palette>
+        <ChartBorderSkin>
+          <Style>
+            <BackgroundColor>Gray</BackgroundColor>
+            <BackgroundGradientType>None</BackgroundGradientType>
+            <Color>White</Color>
+          </Style>
+        </ChartBorderSkin>
+        <ChartNoDataMessage Name="NoDataMessage">
+          <Caption>Sin datos disponibles</Caption>
+          <Style>
+            <BackgroundGradientType>None</BackgroundGradientType>
+            <TextAlign>General</TextAlign>
+            <VerticalAlign>Top</VerticalAlign>
+          </Style>
+        </ChartNoDataMessage>
+        <DataSetName>DataSet3</DataSetName>
+        <Top>5.06963in</Top>
+        <Left>0.73849in</Left>
+        <Height>2.97314in</Height>
+        <Width>13.58114in</Width>
+        <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Color>LightGrey</Color>
+            <Style>Solid</Style>
+          </Border>
+          <BackgroundColor>White</BackgroundColor>
+          <BackgroundGradientType>None</BackgroundGradientType>
+        </Style>
+      </Chart>
+    </ReportItems>
+    <Height>8.87829in</Height>
+    <Style />
+  </Body>
+  <Width>57.69792in</Width>
+  <Page>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="SGSSTCERT">
+      <DataSourceReference>SGSSTCERT</DataSourceReference>
+      <rd:DataSourceID>c5802b69-b599-478e-ab6a-a5abd853fefd</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+     
+        <CommandText>SELECT DISTINCT 
+                         dbo.Tbl_Empresa.Nit_Empresa, dbo.Tbl_Empresa.Razon_Social, dbo.Tbl_Sede.Nombre_Sede AS Sede, dbo.Tbl_Municipio.Nombre_Municipio, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Lugar AS Zona_lugar, dbo.Tbl_Diagnosticos.Descripcion AS Diagnostico_cie10a, 
+                         dbo.Tbl_Tipo_De_Peligro.Descripcion_Del_Peligro AS Clasificación_del_peligro, dbo.Tbl_Clasificacion_De_Peligro.Descripcion_Clase_De_Peligro, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.vigencia, dbo.Tbl_Proceso.Descripcion_Proceso AS Proceso,
+						  
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx AS fecha_inicial, 
+						 MONTH(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx) AS Mes, 
+                         YEAR(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx) AS Año, 
+						 dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Final_Dx AS Fecha_final, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar AS [Total_trabajadores/zona-lugar], 
+						 dbo.Tbl_Sintomatologia_Dx.Sintomatologia, 
+                         dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia AS Número_trabajadores_sintomatologia, 
+
+						 (sum(dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia) / dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar)*100 as PorcentajeSintomatologia,
+
+						
+                         
+						  
+						  dbo.Tbl_Pruebas_Clinica_Dx.Prueba_Clinica, 
+						  SUM(dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba) 
+                         AS Trabajadores_prueba, 
+						 (SUM(dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba)/ sum(dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar))*100 PorcentajePrueba,
+						 
+						  
+						  dbo.Tbl_Pruebas_P_Clinica_Dx.Prueba_P_Clinica, 
+						  SUM(dbo.Tbl_Pruebas_P_Clinica_Dx.Trabajadores_Con_Prueba_P) 
+                         AS Trabajadores_prueba_p, 
+						(SUM(dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba) / sum(dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar))*100 as PorcentajePruebaP , 
+						 
+						  
+						  SUM(dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico) AS Trabajadores_diagnostico,
+						  
+						   ( sum(dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico)/ sum(dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar))*100 as PorcentajeDiagnostico
+						   
+						
+FROM            dbo.Tbl_Sede INNER JOIN
+                         dbo.Tbl_SedeMunicipio ON dbo.Tbl_Sede.Pk_Id_Sede = dbo.Tbl_SedeMunicipio.Fk_id_Sede INNER JOIN
+                         dbo.Tbl_Municipio ON dbo.Tbl_SedeMunicipio.Fk_Id_Municipio = dbo.Tbl_Municipio.Pk_Id_Municipio INNER JOIN
+                         dbo.Tbl_Empresa ON dbo.Tbl_Sede.Fk_Id_Empresa = dbo.Tbl_Empresa.Pk_Id_Empresa INNER JOIN
+                         dbo.Tbl_Dx_Condiciones_De_Salud ON dbo.Tbl_Sede.Pk_Id_Sede = dbo.Tbl_Dx_Condiciones_De_Salud.FK_Sede INNER JOIN
+                         dbo.Tbl_Proceso ON dbo.Tbl_Dx_Condiciones_De_Salud.FK_Proceso = dbo.Tbl_Proceso.Pk_Id_Proceso INNER JOIN
+                         dbo.Tbl_Dx_Condiciones_De_Salud AS tbl_dx_condiciones_de_salud_1 ON dbo.Tbl_Sede.Pk_Id_Sede = tbl_dx_condiciones_de_salud_1.FK_Sede AND 
+                         dbo.Tbl_Proceso.Pk_Id_Proceso = tbl_dx_condiciones_de_salud_1.FK_Proceso INNER JOIN
+                         dbo.Tbl_Pruebas_Clinica_Dx ON dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_Clinica_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_Clinica_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Pruebas_P_Clinica_Dx ON 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_P_Clinica_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_P_Clinica_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Sintomatologia_Dx ON dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Sintomatologia_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Sintomatologia_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Clasificacion_Peligro_Dx ON 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Clasificacion_Peligro_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Clasificacion_Peligro_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Clasificacion_De_Peligro ON 
+                         dbo.Tbl_Clasificacion_Peligro_Dx.FK_Clasificacion_De_Peligro = dbo.Tbl_Clasificacion_De_Peligro.PK_Clasificacion_De_Peligro LEFT OUTER JOIN
+                         dbo.Tbl_Peligro ON dbo.Tbl_Clasificacion_De_Peligro.PK_Clasificacion_De_Peligro = dbo.Tbl_Peligro.FK_Clasificacion_De_Peligro AND 
+                         dbo.Tbl_Sede.Pk_Id_Sede = dbo.Tbl_Peligro.FK_Sede AND dbo.Tbl_Proceso.Pk_Id_Proceso = dbo.Tbl_Peligro.FK_Proceso INNER JOIN
+                         dbo.Tbl_Tipo_De_Peligro ON dbo.Tbl_Clasificacion_De_Peligro.FK_Tipo_De_Peligro = dbo.Tbl_Tipo_De_Peligro.PK_Tipo_De_Peligro INNER JOIN
+                         dbo.Tbl_Diagnostico_Cie10_Dx ON 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Diagnostico_Cie10_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Diagnostico_Cie10_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Diagnosticos ON dbo.Tbl_Diagnostico_Cie10_Dx.FK_Diagnostico = dbo.Tbl_Diagnosticos.PK_Id_Diagnostico
+
+
+GROUP BY dbo.Tbl_Empresa.Razon_Social, dbo.Tbl_Sede.Nombre_Sede, dbo.Tbl_Dx_Condiciones_De_Salud.Lugar, dbo.Tbl_Dx_Condiciones_De_Salud.vigencia, 
+                         dbo.Tbl_Proceso.Descripcion_Proceso, dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx, MONTH(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx), 
+                         YEAR(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx), dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Final_Dx, dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico,
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar, dbo.Tbl_Sintomatologia_Dx.Sintomatologia, dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia, 
+                         dbo.Tbl_Pruebas_Clinica_Dx.Prueba_Clinica, dbo.Tbl_Pruebas_P_Clinica_Dx.Prueba_P_Clinica,dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba, dbo.Tbl_Diagnosticos.Descripcion, 
+                         CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia)
+                          ELSE '0' END, CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba)
+                          ELSE '0' END, CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Pruebas_P_Clinica_Dx.Trabajadores_Con_Prueba_P &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Pruebas_P_Clinica_Dx.Trabajadores_Con_Prueba_P)
+                          ELSE '0' END, CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico)
+                          ELSE '0' END, dbo.Tbl_Empresa.Nit_Empresa, dbo.Tbl_Municipio.Nombre_Municipio, dbo.Tbl_Tipo_De_Peligro.Descripcion_Del_Peligro, 
+                         dbo.Tbl_Clasificacion_De_Peligro.Descripcion_Clase_De_Peligro</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="Nit_Empresa">
+          <DataField>Nit_Empresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Razon_Social">
+          <DataField>Razon_Social</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sede">
+          <DataField>Sede</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Nombre_Municipio">
+          <DataField>Nombre_Municipio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Zona_lugar">
+          <DataField>Zona_lugar</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Diagnostico_cie10a">
+          <DataField>Diagnostico_cie10a</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Clasificación_del_peligro">
+          <DataField>Clasificación_del_peligro</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Descripcion_Clase_De_Peligro">
+          <DataField>Descripcion_Clase_De_Peligro</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="vigencia">
+          <DataField>vigencia</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Proceso">
+          <DataField>Proceso</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fecha_inicial">
+          <DataField>fecha_inicial</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Mes">
+          <DataField>Mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Año">
+          <DataField>Año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Fecha_final">
+          <DataField>Fecha_final</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Total_trabajadores_zona_lugar">
+          <DataField>Total_trabajadores/zona-lugar</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Sintomatologia">
+          <DataField>Sintomatologia</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Número_trabajadores_sintomatologia">
+          <DataField>Número_trabajadores_sintomatologia</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajeSintomatologia">
+          <DataField>PorcentajeSintomatologia</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Prueba_Clinica">
+          <DataField>Prueba_Clinica</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Trabajadores_prueba">
+          <DataField>Trabajadores_prueba</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajePrueba">
+          <DataField>PorcentajePrueba</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Prueba_P_Clinica">
+          <DataField>Prueba_P_Clinica</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Trabajadores_prueba_p">
+          <DataField>Trabajadores_prueba_p</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajePruebaP">
+          <DataField>PorcentajePruebaP</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Trabajadores_diagnostico">
+          <DataField>Trabajadores_diagnostico</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajeDiagnostico">
+          <DataField>PorcentajeDiagnostico</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet2">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+    
+        <CommandText>SELECT DISTINCT 
+                         Tbl_Empresa.Razon_Social, Tbl_Sede.Nombre_Sede AS SEDE, Tbl_Proceso.Descripcion_Proceso AS PROCESO, Tbl_Empresa.Nit_Empresa, 
+                         Tbl_Clasificacion_De_Peligro.Descripcion_Clase_De_Peligro, Tbl_Tipo_De_Peligro.Descripcion_Del_Peligro, Tbl_Municipio.Nombre_Municipio, 
+                         Tbl_Dx_Condiciones_De_Salud.Lugar
+FROM            Tbl_Sede INNER JOIN
+                         Tbl_SedeMunicipio ON Tbl_Sede.Pk_Id_Sede = Tbl_SedeMunicipio.Fk_id_Sede INNER JOIN
+                         Tbl_Municipio ON Tbl_SedeMunicipio.Fk_Id_Municipio = Tbl_Municipio.Pk_Id_Municipio INNER JOIN
+                         Tbl_Empresa ON Tbl_Sede.Fk_Id_Empresa = Tbl_Empresa.Pk_Id_Empresa INNER JOIN
+                         Tbl_Clasificacion_De_Peligro INNER JOIN
+                         Tbl_Clasificacion_Peligro_Dx ON 
+                         Tbl_Clasificacion_De_Peligro.PK_Clasificacion_De_Peligro = Tbl_Clasificacion_Peligro_Dx.FK_Clasificacion_De_Peligro INNER JOIN
+                         Tbl_Tipo_De_Peligro ON Tbl_Clasificacion_De_Peligro.FK_Tipo_De_Peligro = Tbl_Tipo_De_Peligro.PK_Tipo_De_Peligro INNER JOIN
+                         Tbl_Proceso INNER JOIN
+                         Tbl_Dx_Condiciones_De_Salud ON Tbl_Proceso.Pk_Id_Proceso = Tbl_Dx_Condiciones_De_Salud.FK_Proceso ON 
+                         Tbl_Clasificacion_Peligro_Dx.FK_DxCondicionesDeSalud = Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud ON 
+                         Tbl_Sede.Pk_Id_Sede = Tbl_Dx_Condiciones_De_Salud.FK_Sede LEFT OUTER JOIN
+                         Tbl_Peligro ON Tbl_Clasificacion_De_Peligro.PK_Clasificacion_De_Peligro = Tbl_Peligro.FK_Clasificacion_De_Peligro AND 
+                         Tbl_Proceso.Pk_Id_Proceso = Tbl_Peligro.FK_Proceso
+
+GROUP BY Tbl_Empresa.Razon_Social, Tbl_Sede.Nombre_Sede, Tbl_Proceso.Descripcion_Proceso, Tbl_Empresa.Nit_Empresa, 
+                         Tbl_Clasificacion_De_Peligro.Descripcion_Clase_De_Peligro, Tbl_Tipo_De_Peligro.Descripcion_Del_Peligro, Tbl_Municipio.Nombre_Municipio, 
+                         Tbl_Dx_Condiciones_De_Salud.Lugar</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Razon_Social">
+          <DataField>Razon_Social</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SEDE">
+          <DataField>SEDE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PROCESO">
+          <DataField>PROCESO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Nit_Empresa">
+          <DataField>Nit_Empresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Descripcion_Clase_De_Peligro">
+          <DataField>Descripcion_Clase_De_Peligro</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Descripcion_Del_Peligro">
+          <DataField>Descripcion_Del_Peligro</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Nombre_Municipio">
+          <DataField>Nombre_Municipio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Lugar">
+          <DataField>Lugar</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet3">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+       
+        <CommandText>
+
+
+SELECT DISTINCT 
+                         dbo.Tbl_Empresa.Nit_Empresa, dbo.Tbl_Empresa.Razon_Social, dbo.Tbl_Sede.Nombre_Sede AS Sede, dbo.Tbl_Municipio.Nombre_Municipio, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Lugar AS Zona_lugar, dbo.Tbl_Diagnosticos.Descripcion AS Diagnostico_cie10a, dbo.Tbl_Dx_Condiciones_De_Salud.vigencia, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx AS fecha_inicial, MONTH(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx) AS Mes, 
+                         YEAR(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx) AS Año, dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Final_Dx AS Fecha_final, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar AS [Total_trabajadores/zona-lugar], dbo.Tbl_Sintomatologia_Dx.Sintomatologia, 
+                         dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia AS Número_trabajadores_sintomatologia, 
+                         dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia / dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar * 100 AS PorcentajeSintomatologia, 
+                         dbo.Tbl_Pruebas_Clinica_Dx.Prueba_Clinica, SUM(dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba) AS Trabajadores_prueba, 
+                         dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba / dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar * 100 AS PorcentajePrueba, 
+                         dbo.Tbl_Pruebas_P_Clinica_Dx.Prueba_P_Clinica, SUM(dbo.Tbl_Pruebas_P_Clinica_Dx.Trabajadores_Con_Prueba_P) AS Trabajadores_prueba_p, 
+                         dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba / dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar * 100 AS PorcentajePruebaP, 
+                         SUM(dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico) AS Trabajadores_diagnostico, 
+                         dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico / dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar * 100 AS PorcentajeDiagnostico
+FROM            dbo.Tbl_Diagnostico_Cie10_Dx INNER JOIN
+                         dbo.Tbl_Sede INNER JOIN
+                         dbo.Tbl_SedeMunicipio ON dbo.Tbl_Sede.Pk_Id_Sede = dbo.Tbl_SedeMunicipio.Fk_id_Sede INNER JOIN
+                         dbo.Tbl_Municipio ON dbo.Tbl_SedeMunicipio.Fk_Id_Municipio = dbo.Tbl_Municipio.Pk_Id_Municipio INNER JOIN
+                         dbo.Tbl_Empresa ON dbo.Tbl_Sede.Fk_Id_Empresa = dbo.Tbl_Empresa.Pk_Id_Empresa INNER JOIN
+                         dbo.Tbl_Dx_Condiciones_De_Salud ON dbo.Tbl_Sede.Pk_Id_Sede = dbo.Tbl_Dx_Condiciones_De_Salud.FK_Sede INNER JOIN
+                         dbo.Tbl_Dx_Condiciones_De_Salud AS tbl_dx_condiciones_de_salud_1 ON dbo.Tbl_Sede.Pk_Id_Sede = tbl_dx_condiciones_de_salud_1.FK_Sede INNER JOIN
+                         dbo.Tbl_Pruebas_Clinica_Dx ON dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_Clinica_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_Clinica_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Pruebas_P_Clinica_Dx ON 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_P_Clinica_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Pruebas_P_Clinica_Dx.FK_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Sintomatologia_Dx ON dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud = dbo.Tbl_Sintomatologia_Dx.FK_DxCondicionesDeSalud AND 
+                         tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud = dbo.Tbl_Sintomatologia_Dx.FK_DxCondicionesDeSalud ON 
+                         dbo.Tbl_Diagnostico_Cie10_Dx.FK_DxCondicionesDeSalud = dbo.Tbl_Dx_Condiciones_De_Salud.Pk_DxCondicionesDeSalud AND 
+                         dbo.Tbl_Diagnostico_Cie10_Dx.FK_DxCondicionesDeSalud = tbl_dx_condiciones_de_salud_1.Pk_DxCondicionesDeSalud INNER JOIN
+                         dbo.Tbl_Diagnosticos ON dbo.Tbl_Diagnostico_Cie10_Dx.FK_Diagnostico = dbo.Tbl_Diagnosticos.PK_Id_Diagnostico
+GROUP BY dbo.Tbl_Empresa.Razon_Social, dbo.Tbl_Sede.Nombre_Sede, dbo.Tbl_Dx_Condiciones_De_Salud.Lugar, dbo.Tbl_Dx_Condiciones_De_Salud.vigencia, 
+                         dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx, MONTH(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx), 
+                         YEAR(dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Inicial_Dx), dbo.Tbl_Dx_Condiciones_De_Salud.Fecha_Final_Dx, 
+                         dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico, dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar, 
+                         dbo.Tbl_Sintomatologia_Dx.Sintomatologia, dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia, dbo.Tbl_Pruebas_Clinica_Dx.Prueba_Clinica, 
+                         dbo.Tbl_Pruebas_P_Clinica_Dx.Prueba_P_Clinica, dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba, dbo.Tbl_Diagnosticos.Descripcion, 
+                         CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Sintomatologia_Dx.Trabajadores_Sintomatologia)
+                          ELSE '0' END, CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Pruebas_Clinica_Dx.Trabajadores_Con_Prueba)
+                          ELSE '0' END, CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Pruebas_P_Clinica_Dx.Trabajadores_Con_Prueba_P &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Pruebas_P_Clinica_Dx.Trabajadores_Con_Prueba_P)
+                          ELSE '0' END, CASE WHEN dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar &gt; 0 AND 
+                         dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico &gt; 0 THEN (dbo.Tbl_Dx_Condiciones_De_Salud.Trabajadores_Lugar / dbo.Tbl_Diagnostico_Cie10_Dx.Trabajadores_Con_Diagnostico)
+                          ELSE '0' END, dbo.Tbl_Empresa.Nit_Empresa, dbo.Tbl_Municipio.Nombre_Municipio
+
+
+
+</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Nit_Empresa">
+          <DataField>Nit_Empresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Razon_Social">
+          <DataField>Razon_Social</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Sede">
+          <DataField>Sede</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Nombre_Municipio">
+          <DataField>Nombre_Municipio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Zona_lugar">
+          <DataField>Zona_lugar</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Diagnostico_cie10a">
+          <DataField>Diagnostico_cie10a</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="vigencia">
+          <DataField>vigencia</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="fecha_inicial">
+          <DataField>fecha_inicial</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Mes">
+          <DataField>Mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Año">
+          <DataField>Año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Fecha_final">
+          <DataField>Fecha_final</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="Total_trabajadores_zona_lugar">
+          <DataField>Total_trabajadores/zona-lugar</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Sintomatologia">
+          <DataField>Sintomatologia</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Número_trabajadores_sintomatologia">
+          <DataField>Número_trabajadores_sintomatologia</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajeSintomatologia">
+          <DataField>PorcentajeSintomatologia</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Prueba_Clinica">
+          <DataField>Prueba_Clinica</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Trabajadores_prueba">
+          <DataField>Trabajadores_prueba</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajePrueba">
+          <DataField>PorcentajePrueba</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Prueba_P_Clinica">
+          <DataField>Prueba_P_Clinica</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Trabajadores_prueba_p">
+          <DataField>Trabajadores_prueba_p</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajePruebaP">
+          <DataField>PorcentajePruebaP</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Trabajadores_diagnostico">
+          <DataField>Trabajadores_diagnostico</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PorcentajeDiagnostico">
+          <DataField>PorcentajeDiagnostico</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <Language>es-ES</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>ede90413-09a7-4c03-91a0-9c0ab2e5c976</rd:ReportID>
+</Report>

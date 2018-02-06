@@ -1,0 +1,304 @@
+﻿@{
+    ViewBag.Title = "Procesos Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/1.7/themes/redmond/jquery-ui.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/Empresas")
+}
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+@if (ViewBag.Message1 != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message1',
+           
+            confirmButtonColor: '#7E8A97'
+        })
+  
+    
+
+    </script>
+}
+@if (ViewBag.Message1a != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message1a',
+            
+            showConfirmButton: true,
+            confirmButtonText: 'Grabar Procesos',
+            confirmButtonColor: '#7E8A97'
+            
+            
+        });
+           
+        $('.confirm').on('click', function () {
+            window.location.href = "../Proceso/Create";
+        });
+
+        
+            
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .navigation-metodologia {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(202,209,218);
+    }
+
+    .navigation-metodologia:hover {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(175,184,196);
+    }
+
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li class="active">Gestión Procesos Empresa</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a id="tab1" href="#step1" data-toggle="tab" class="navigation-metodologia">Crear Procesos</a></li>
+    <li><a id="tab2" class="navigation-metodologia" href="#step2" data-toggle="tab">Cargar Mapa Procesos</a></li>
+</ul>
+
+<hr />
+
+<div class="tab-content">
+    <div class="tab-pane active" id="step1">
+
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white">CREAR PROCESOS EMPRESA</div>
+
+            @*Boton ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Crear Procesos</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <p>Click en Crear para registrar procesos</p>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                @*@Html.ActionLink("Crear", "", "", null, new { @class = "boton botoninfo" })*@
+                                                <button class="boton botonactive" disabled>Crear</button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <p>Click en Ver Mapa Procesos para visualizar</p>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                @*<a href="@Url.Action("Procesos", "") " class="boton botoninfo" title="Ver Procesos">
+                                                    Ver Mapa
+                                                </a>*@
+                                                <button class="boton botoninfo" disabled>Ver Mapa Procesos</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*/////////////*@
+
+            <div class="panel-body form-horizontal">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-6" align="center">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Crear Procesos</h4>
+                            <hr />
+                            @*@Html.ActionLink("Crear", "Create", "Proceso", null, new { @class = "boton botonactive" })*@
+                            <a href="@Url.Action("Create", "Proceso") " class="boton botonactive" style="text-decoration: none">
+                                Crear
+                            </a>
+                        </div>
+                        <div class="col-md-6" align="center">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Visualizar</h4>
+                            <hr />
+                            <a href="@Url.Action("CrearProceso", "Proceso") " class="boton botoninfo" style="text-decoration: none">
+                                Ver Mapa Procesos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-pane" id="step2">
+        @*///Modal que muestra el archivo  cargado del proceso.*@
+        <div id="imagen" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title title">Archivo Mapa de Procesos Cargado</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @if (ViewBag.espdf)
+                        {
+                            <div class="pdf-modales">
+                                @*<object data="@Url.Action("ProcesoPdf")" type="application/pdf" width="575" height="500"></object>*@
+                                <iframe src="@Url.Action("ProcesoPdf")" type="application/pdf" width="575" height="500"></iframe>
+                            </div>
+                        }
+                        else
+                        {
+                            <center><img src="@Url.Action("GetImagenP", "Proceso")" class="img-responsive img-rounded" /></center>
+                        }
+
+                    </div>
+                    <div class="modal-footer alert-dismissable">
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("CreateP", "Proceso", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:white">CARGAR ARCHIVO MAPA DE PROCESOS</div>
+
+                @*Boton ayuda*@
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda1")"
+                           title="Ayuda" class="btn btn-ayuda btn-md">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                        <div id="@string.Format("modalAyuda1")" class=" modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Ayuda / Cargar Mapa Procesos</h4>
+                                    </div>
+                                    <div class="modal-body" style="color:black">
+                                        <ul>
+                                            <li><p style="text-align:justify"> Click en Seleccionar archivo para cargar el archivo.<input type="file" class="form-control" disabled /></p></li>
+                                            <li><p style="text-align:justify"> <button class="btn btn-default" disabled>Cargar Archivo</button> Click Para almacenar en el sistema el archivo cargado. </p></li>
+                                            <li><p style="text-align:justify"> <button class="boton botoninfo" disabled>Ver Archivo</button> Click Para visualizar el archivo que se encuentra cargado.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body form-horizontal">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Cargar Mapa Procesos</h4>
+                                <hr />
+                                <div class="input-group" id="">
+                                    <input type="file" name="CargarImagenP" class="form-control" style="color:orange" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-positiva-invert" id="btn-add-file-edit" type="submit">Cargar Mapa</button>
+                                    </span>
+                                </div>
+                            </div>
+                        
+
+                            <div class="col-md-6" align="center">
+                                <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Visualizar Archivo</h4>
+                                <hr />
+                                <button type="button" class="boton botoninfo" data-toggle="modal" data-target="#imagen">Ver Archivo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

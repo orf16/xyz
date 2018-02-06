@@ -1,0 +1,311 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaPrograma
+@{
+    ViewBag.Title = "Editar Programa";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/MedicionyEvaluacion/AuditoriaEditarPrograma.js")"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li class="active">Editar Programa de Auditoría</li>
+</ol>
+<div class="panel panel-default std-panel-body">
+        <div class="panel-heading panel-heading-custom">EDITAR PROGRAMA DE AUDITORIAS</div>
+        <div class="panel-body">
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Editar Programa de auditorias</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR</button> Para guardar un nuevo programa de auditorias</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">ADJUNTAR FIRMA</button> Para adjuntar una firma. Solo se aceptan imagenes</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">QUITAR FIRMA</button> Para quitar la firma cargada</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para regresar al listado de programas de auditorias</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Pk_Id_Programa)
+                @Html.HiddenFor(m => m.Fk_Id_Sede)
+
+                <div class="form-group row internal-panel-body">
+
+                    <div class="col-sm-6">
+                        <label class="control-label col-md-4">Sede:</label>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(m => m.SedeAuditoria, htmlAttributes: new { @class = "form-control ", @disabled = true })
+                            <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label class="control-label col-md-4">
+                            <b>Año:</b>
+                        </label>
+                        <div class="col-md-6">
+                            @{
+                                int year = Model.Año;
+                                List<SelectListItem> ListaAños = new List<SelectListItem>();
+                                for (int i = 2010; i < 2051; i++)
+                                {
+                                    if (i == year)
+                                    {
+                                        ListaAños.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString(), Selected = true });
+                                    }
+                                    else
+                                    {
+                                        ListaAños.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+                                    }
+                                }
+                                @Html.DropDownListFor(m => m.Año, ListaAños, null, htmlAttributes: new { @class = "form-control form-width-100" })
+                            }
+                            <span id="val-año" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row internal-panel-body">
+
+                    <div class="col-sm-6">
+                        <label class="control-label col-md-4">
+                            <b>Fecha Programación:</b>
+                        </label>
+                        <div class="col-md-8">
+                            @Html.EditorFor(m => m.Fecha_Programacion, new { htmlAttributes = new { @class = "form-control form-width-100", @Value = Model.Fecha_Programacion.ToString("dd/MM/yyyy") } })
+                            <span id="val-fecha" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label style="text-decoration:underline" title="Indique la frecuencia en la que se realizarán las auditorias dentro de este programa" class="control-label col-md-4">Periodicidad:</label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("ListaPeriodo", null, "-- Seleccione la Periodicidad --", htmlAttributes: new { @class = "form-control form-width-100" })
+                            <span id="val-periodo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <label class="control-label col-md-12">
+                            <b>Nombre del Programa:</b>
+                        </label>
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.Titulo, htmlAttributes: new { @class = "form-control ", maxlength = 500 })
+                            <span id="val-titulo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <label class="control-label col-md-6">Objetivo:</label>
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(m => m.Objetivo, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                            <span id="val-objetivo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <label class="control-label col-md-6">Alcance:</label>
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(m => m.Alcance, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                            <span id="val-alcance" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <label class="control-label col-md-6">Metodología:</label>
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(m => m.Metodologia, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                            <span id="val-metodologia" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <label class="control-label col-md-6">Competencias a Auditar:</label>
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(m => m.Competencia, htmlAttributes: new { @class = "form-control form-width-100 ", rows = 3, maxlength = 3000 })
+                            <span id="val-competencia" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <label class="control-label col-md-6">Recursos:</label>
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(m => m.Recursos, htmlAttributes: new { @class = "form-control form-width-100 ", rows = 3, maxlength = 3000 })
+                            <span id="val-recursos" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="internal-panel">
+                    <div class="internal-panel-header panel-heading">
+                        <h4>Información del Responsable de SGSST y Presidente COPASST</h4>
+                    </div>
+                    <div class="internal-panel-body add-top-margin-05em">
+
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="height-38px">
+                                    <b>Firma del responsable del SGSST</b>
+                                </div>
+
+                                <div class="text-left">
+                                    <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                                        <img id="ImagenFirmaResId" src="@ViewBag.SrcRes" alt="" class="ImagenFirmaAud" />
+                                    </div>
+                                    <div class="col-md-12 add-bottom-margin-05em">
+                                        <input type="file" id="UploadPhotoRes" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                                    </div>
+                                    <div class="row text-center ">
+
+                                        <a href="#" class="boton botoninfo" id="AgregarFirmaRes" style="margin-bottom:5px;">
+                                            Adjuntar Firma
+                                        </a>
+                                        <a href="#" class="boton botoninfo" id="QuitarFirmaRes">
+                                            Quitar Firma
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Nombre:</label>
+                                        <div class="col-sm-10">
+                                            @Html.EditorFor(s => s.Nombre_Responsable, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 1000 } })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <div class="form-group">
+                                            <label>Número de Documento</label>
+                                            <div class="input-group">
+                                                @Html.EditorFor(s => s.Numero_Id_Responsable, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 1000 } })                                               
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-positiva-invert" id="buscar_id_res" type="button">BUSCAR</button>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="height-38px">
+                                    <b>Firma del presidente de Copasst</b>
+                                </div>
+
+                                <div class="text-left">
+                                    <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                                        <img id="ImagenFirmaPresId" src="@ViewBag.SrcPres" alt="" class="ImagenFirmaRes" />
+                                    </div>
+                                    <div class="col-md-12 add-bottom-margin-05em">
+                                        <input type="file" id="UploadPhotoPres" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                                         
+                                    </div>
+                                    <br />
+                                    <div class="row text-center">
+
+                                        <a href="#" id="AgregarFirmaPres" class="boton botoninfo" style="margin-bottom:5px;">
+                                            Adjuntar Firma
+                                        </a>
+                                        <a href="#" class="boton botoninfo" id="QuitarFirmaPres">
+                                            Quitar Firma
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Nombre:</label>
+                                        <div class="col-sm-10">
+                                            @Html.EditorFor(s => s.Nombre_Copasst, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 1000 } })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <div class="form-group">
+                                            <label>Número de Documento</label>
+                                            <div class="input-group">
+                                                @Html.EditorFor(s => s.Numero_Id_Copasst, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 1000 } }) 
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-positiva-invert" id="buscar_id_pres" type="button">BUSCAR</button>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row internal-panel-body">
+                            <div class="col-md-12">
+                                <div id="div_novedad">
+                                    <span id="msj_novedad"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="GuardarPrograma" class="boton botonactive col-margin">GUARDAR ACTUALIZACIÓN</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="boton botoncancel" onclick="location.href='@Url.Action("Programa", "Auditoria")';return false;">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+

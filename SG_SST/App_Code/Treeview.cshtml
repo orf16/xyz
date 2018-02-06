@@ -1,0 +1,21 @@
+﻿@helper GetTreeView(List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis> ListaAnalisis, int parentID)
+{
+    foreach (var i in ListaAnalisis.Where(a => a.Parent_Id.Equals(parentID)))
+    {
+            <li data-nodeid="@i.Pk_Id_Analisis">
+                @{var subAnalisis = ListaAnalisis.Where(a => a.Parent_Id.Equals(i.Id_Analisis)).Count();
+                    string btnElim = @i.Id_Analisis.ToString() + "elim";
+                    }
+                
+                <a id="@i.Id_Analisis">@i.ValorTxt</a><span id="@btnElim"></span>
+                @if (subAnalisis > 0)
+                    {
+                        <ul>
+                            @*llamada recursiva de subitems*@
+                            @Treeview.GetTreeView(ListaAnalisis, i.Id_Analisis)
+                        </ul>
+                    }
+                
+            </li>
+    }
+}

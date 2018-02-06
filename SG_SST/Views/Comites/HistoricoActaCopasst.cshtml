@@ -1,0 +1,230 @@
+﻿@{@model SG_SST.Models.Participacion.CopasstVM
+    ViewBag.Title = "Histórico Actas Copasst";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".paginver");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".paginationver").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Comites en SST</a></li>
+    <li><a href="javascript:void(0)">Copasst</a></li>
+    <li class="active">Histórico Actas Copasst</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">HISTORICO ACTAS COPASST</div>
+    <!-- Botón Ayuda -->
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Información de Ayuda/Acta Copasst</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;">El sistema muestra el histórico de las actas copasst creadas previamente. Si se desea crear una nueva se debe seleccionar la opción  <button id="Crear_Acta" class="boton botonactive">Crear Acta</button> </p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><a new { pk_id_acta=item.PK_Id_Acta, idsede=@Model.Fk_Id_Sede , consecutivo_acta=item.Consecutivo_Acta })" title="Editar" class="btn btn-search btn-md"><span class="glyphicon glyphicon-pencil"></span></a> Permite editar un acta diligenciada previamente. </p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><a new { pk_id_acta=item.PK_Id_Acta })" title="Exportar" class="btn btn-search btn-md"><span class="glyphicon glyphicon-export"></span></a> Permite exportar el documento en formato PDF. </p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><button type="button" class="btn-search" title="Visualizar"><span class="glyphicon glyphicon-eye-open"></span></button> Permite visualizar en el sistema el documento PDF que tenga adjunto el acta. </p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><button id="Crear_Acta" class="boton botonactive">ATRAS</button> Esta opción devuelve al usuario al inicio, permitiendo seleccionar una nueva sede para crear una acta copasst. </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <span>@ViewBag.Mensaje</span>
+        <br />
+    </div>
+
+    <div class="panel-body form-horizontal">
+        @using (Html.BeginForm("CrearActaCopasst", "Comites", FormMethod.Post,
+                             new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-horizontal add-side-padding">
+                <p align="center" style="margin-bottom:20px">
+                    <a href="@Url.Action("CrearActaCopasst", new { IdSede = @Model.Fk_Id_Sede })" id="Crear_Acta" class="boton botonactive">Crear Acta</a> @*onclick="CrearActaCopasst()"*@
+                </p>
+                <input type="hidden" name="#IdSede" id="IdSede" value="@Model.Fk_Id_Sede" />
+                <div class="table-responsive" style="margin:auto;">
+                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Acta No.
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Fecha
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nombre del Comité
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Acta registrada por
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Acción
+                            </th>
+                        </tr>
+            @{
+            if (Model.ActasCopasst != null)
+            {
+                foreach (var item in Model.ActasCopasst)
+                {
+                    if (item.NombreArchivo != null)
+                    {
+                    <tr class=paginver>
+                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            @Html.DisplayFor(modelItem => item.Consecutivo_Acta)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            @Html.DisplayFor(modelItem => item.Fecha, new { @value = item.Fecha.ToString("yyyy-MM-dd") })
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                            @Html.DisplayFor(modelItem => item.TemaReunion)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                            @Html.DisplayFor(modelItem => item.NombreUsuario)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a href="@Url.Action("MiembroActaCopasstGuardados", new { PK_Id_Acta = item.PK_Id_Acta, IdSede = @Model.Fk_Id_Sede, consecutivo_acta = item.Consecutivo_Acta })" title="Editar" class="btn btn-search btn-md">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                            |
+                            <a href="@Url.Action("ActaCopasst_PDF", new { PK_Id_Acta = item.PK_Id_Acta })" title="Exportar en PDF" class="btn btn-search btn-md">
+                                <span class="glyphicon glyphicon-export"></span>
+                            </a>
+                            |
+                            <button type="button" class="btn-search" data-toggle="modal" data-target="#@string.Format("modal1{0}", item.PK_Id_Acta)" title="Visualizar">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </button>
+
+                            <div id="@string.Format("modal1{0}", item.PK_Id_Acta)" class=" modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                            <h4 class="modal-title title">  </h4>
+                                        </div>
+                                        <div class="modal-body ">
+
+                                            @*<center><img src="@Url.Action("MostrarOtrasInteraccionesPDF", new { item.ID_OtrasInteraciones })"/></center>*@
+                                            <div class="pdf-modales">
+                                                @*<object data="@Url.Action("MostrarOtrasInteraccionesPDF", new { item.ID_OtrasInteraciones })" type="application/pdf" width="575" height="500"></object>*@
+                                                <iframe src="@Url.Action("VisualizarActaCopasstPDF", new { item.PK_Id_Acta })" type="application/pdf" width="560" height="500"></iframe>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer alert-dismissable">
+                                            @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </td>
+                    </tr>
+                    }
+                    else
+                    {
+                        <tr class=paginver>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Consecutivo_Acta)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Fecha, new { @value = item.Fecha.ToString("yyyy-MM-dd") })
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                @Html.DisplayFor(modelItem => item.TemaReunion)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                @Html.DisplayFor(modelItem => item.NombreUsuario)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a href="@Url.Action("MiembroActaCopasstGuardados", new { PK_Id_Acta = item.PK_Id_Acta, IdSede = @Model.Fk_Id_Sede, consecutivo_acta = item.Consecutivo_Acta })" title="Editar" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+                                |
+                                <a href="@Url.Action("ActaCopasst_PDF", new { PK_Id_Acta = item.PK_Id_Acta })" title="Exportar en PDF" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-export"></span>
+                                </a>
+                            </td>
+                        </tr>
+
+                    }
+                }
+            }
+}
+                    </table>
+                    <center><div class="pagination paginationver" id="paginationver"></div></center>
+                    <div class="col-lg-1 col-md-offset-0">
+                        <button type="button" id="Atras" onclick="location.href='@Url.Action("HistoricoActaCopasst", "Comites")';return false;" class="boton botonactive">ATRAS</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+

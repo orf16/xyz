@@ -1,0 +1,163 @@
+﻿@model SG_SST.Models.Organizacion.Recurso
+
+@{
+    ViewBag.Title = "Crear Recurso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion");
+}
+
+
+@if (ViewBag.mensaje != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            confirmButtonColor: '#7E8A97'
+        })
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Recursos en SST</a></li>
+    <li class="active">Crear Recurso Sedes</li>
+</ol>
+
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Crear Recurso</div>
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Crear Recursos</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <ul>
+                                <li><p style="text-align:justify">Seleccione una Sede donde desea asignar el recurso.@Html.DropDownList("Fk_Id_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Sede --") </p></li>
+                                <li><p style="text-align:justify">Seleccione un Periodo de asignación para el recurso.<select class="form-control"><option>--Seleccionar Periodo--</option>><option>@DateTime.Now.Year</option></select></p></li>
+                                <li><p style="text-align:justify"><button type="submit" class="boton botoninfo">ASIGNAR</button> Para continuar con el registro y asignar el recurso a la Sede.</li>
+                                <li><p style="text-align:justify">Nombre Recurso <input type="text" class="form-control" placeholder="Debe ingresar el nombre del Recurso" /></li>
+                                <li><p style="text-align:justify">Seleccione el tipo de recurso.@Html.DropDownList("Fk_Id_TipoRecurso", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Tipo --") </p></li>
+                                <li><p style="text-align:justify">Seleccione la fase del recurso.@Html.DropDownList("Fk_Id_Fase", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Fase --") </p></li>
+                                <li><p style="text-align:justify"><button type="submit" class="boton botonactive">Grabar Recurso</button> Para almacenar en el sistema el recurso asignado.</li>
+                                <li><p style="text-align:justify"><button type="submit" class="boton botoncancel">Cancelar</button> Para cancelar el proceso de asignación.</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*/////////////*@
+    <form action="@Url.Action("GrabarRecurso")" id="grabarrecurso">
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="col-md-8">Sede:</label>
+                        <div class="col-md-12">
+                            @Html.DropDownList("Fk_Id_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Sede --")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-8">Periodo:</label>
+                        <div class="col-md-12">
+                            @Html.DropDownList("Periodo", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Periodo --")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-8">Asignar Recurso:</label>
+                        <div class="col-md-12">
+                            <button type="submit" class="boton botoninfo" onclick="ValidacionCrearRecursos()" data-toggle="modal">ASIGNAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myModal1" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <h4 class="modal-title title">Agregar Recurso</h4>
+                    </div>
+                    <div class="modal-body" style="color:black">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Nombre Recurso:</h5>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" name="Nombre_Recurso" placeholder="Ingrese Nombre" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Tipo Recurso:</h5>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("Fk_Id_TipoRecurso", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Tipo --")
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Fase Recurso:</h5>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("Fk_Id_Fase", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Fase --")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="modal-footer">
+                            <button type="submit" name="Guardar" id="Guardar" class="boton botonactive" onclick="ValidacionCrearRecursos()">Grabar Recurso</button>
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+        
+
+@*<hr />
+        <div>
+            <a href="@Url.Action("index","Recursos") " class="btn btn-default btn-md" title="Menu Recursos"> <span class="glyphicon glyphicon-home"></span></a>
+            <a href="@Url.Action("ListadoRecursos","Recursos") " class="btn btn-success btn-md" title="Recursos Asignados"> <span class="glyphicon glyphicon-search"></span> Ver Recursos</a>
+        </div>
+    <hr />*@

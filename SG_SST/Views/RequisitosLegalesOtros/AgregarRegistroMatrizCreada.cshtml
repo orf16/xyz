@@ -1,0 +1,201 @@
+﻿@model SG_SST.Models.Planificacion.RequisitosLegalesOtros
+
+@{
+    ViewBag.Title = "Registrar Registro Matriz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Estimado Usuario</strong> @ViewBag.Messages
+    </div>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <a href="~/Views/RequisitosLegalesOtros/AgregarRegistroMatrizCreada.cshtml">~/Views/RequisitosLegalesOtros/AgregarRegistroMatrizCreada.cshtml</a>
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Messages2
+    </div>
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Requisitos Legales y Otros</a></li>
+    <li><a href="javascript:void(0)">Agregar Nuevo Requisito Legal</a></li>
+    <li class="active">Registrar Registro Matriz</li>
+</ol>
+
+@using (Html.BeginForm("GrabarRequisitosLegalesOtros_Formulario", "RequisitosLegalesOtros", FormMethod.Post, new { @id = "idGuardarRegistroMatrizCreada" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Registrar Requisito Legal
+        </div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Registrar Requisito Legal</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+
+                                <div class="row" style="text-align:justify">
+                                    Digite la información específica del requisito legal a registrar. Recuerde que todos los campos son obligatorios.
+                                </div>
+                                <br />
+                                <div class="row" style="text-align:justify">
+                                    Finalmente cierre el proceso seleccionando <button class="boton botonactive" disabled>Agregar</button>
+                                </div>
+
+                                @*<div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p align="justify">
+                                                 REGISTRE DE MANERA MANUAL LA INFORMACIÓN ESPECIFICA DEL REQUISITO LEGAL. LOS CAMPOS SON                            OBLIGATORIOS. FINALMENTE CIERRE EL PROCESO DANDO CLICK EN LA OPCIÓN GRABAR,Y SE AGREGARA A SU MATRIZ.
+                                            </p>
+                                        </div>                                    
+                                    </div>
+                                    <br />
+                                </div>*@
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal"> 
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Tipo Norma:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Tipo_Norma, new { htmlAttributes = new { @class = "form-control"} })
+                </div>
+
+                <div class="col-md-2">
+                    <label>N° Norma:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Numero_Norma, new { htmlAttributes = new { @class = "form-control"} })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Fecha Publicación:</label>
+                </div>
+                <div class="col-md-2">                 
+                 @Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control", @id = "idFechaPublicacion" } })
+               
+                 </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Artículo:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Articulo, new { htmlAttributes = new { @class = "form-control"} })
+                </div>
+                <div class="col-md-2">
+                    <label>Ente:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Ente, new { htmlAttributes = new { @class = "form-control"} })
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Descripción:</label>
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "5", @style = "resize: none;" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Sugerencias:</label>
+                        <div class="col-md-8" style="resize:none">
+                            @Html.TextAreaFor(model => model.Sugerencias, new { @class = "form-control", rows = "5", @style = "resize: none;" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="well well-sm">
+                <h4 style="margin-left:40%; text-decoration:underline"><b>Peligros Aspectos e Impactos</b></h4>
+                <br />
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Clase de peligo:</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Clase_De_Peligro, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-2">
+                        <label>Peligro:</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Peligro, new { htmlAttributes = new { @class = "form-control"} })
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Aspectos:</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Aspectos, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-2">
+                        <label>Impactos:</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Impactos, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <table></table>
+            </div>
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+                <button type="submit" id="actRegistro" onclick="validarRequisitoslegalesAgregarMatrizCreada()" class="boton botonactive">Agregar</button>          
+            </div>            
+        </div>
+    </div>      
+    <a href="@Url.Action("ListadoMastrices", "RequisitosLegalesOtros")" class="btn btn-search btn-md" title="Formulario Principal"> 
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </a>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+}

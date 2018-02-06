@@ -1,0 +1,248 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEHMInspecciones>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+
+        .imagenEHM {
+            page-break-inside: avoid !important;
+        }
+    </style>
+</head>
+
+<body>
+    @{
+        <div class="Doslinea">
+            <div class="SubTitulo">
+                <b>Inspecciones por Equipos, Maquinaría o Herramientas</b>
+            </div>
+
+            <div>
+                @{
+                    <div class="datagrid">
+                        <table>
+                            <thead style="font-size:15px;">
+                                <tr>
+                                    <th>
+                                        <p>No</p>
+                                    </th>
+                                    <th>
+                                        <p>Descripción</p>
+                                    </th>
+                                    <th>
+                                        <p>Elementos Inspeccionados</p>
+                                    </th>
+                                    <th>
+                                        <p>Fecha Planeación</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size:15px;">
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <span>@item.IdConsecutivo</span>
+                                            </td>
+                                            <td style="text-align:justify">
+                                                <span>@item.EDDescribeinspeccion</span>
+                                            </td>
+                                            <td style="text-align:justify">
+                                                <span>@item.EDNombreInspeccion</span>
+                                            </td>
+                                            <td style="text-align:center">
+                                                @{
+                                                    string Fecha_str = "";
+                                                    try
+                                                    {
+                                                        Fecha_str = item.Fecha.ToString("dd/MM/yyyy");
+                                                    }
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                    <span>@Fecha_str</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                }
+            </div>
+        </div>
+    }
+
+
+
+</body>
+</html>
+
+

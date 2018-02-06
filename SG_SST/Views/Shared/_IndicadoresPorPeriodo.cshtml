@@ -1,0 +1,181 @@
+﻿@model List<SG_SST.Models.Planificacion.CicloModel>
+@{
+    var idCiclo = "cicloActual";
+    var opciones = Model.Select(c => new SelectListItem() { Value = c.IdCiclo.ToString(), Text = c.Nombre }).ToList();
+    opciones.Add(new SelectListItem() { Value = "5", Text = "Calificación de los Ciclos..." });
+
+}
+<script src="~/Scripts/EvaluacionEstandarMinimo/reportes-estandar-minimos.js"></script>
+<div class="panel-heading" style="color:black">
+    Gráfica de Calificación del Estándar por cada ciclo del EM-SGSST
+</div>
+<div class="container-graficas">
+    <div class="inner-graficas">
+        <div class="form-group row">
+            <div class="col-xs-4">
+                <h4>Ciclos estándares mínimos:</h4>
+            </div>
+            <div class="col-xs-4">
+                @Html.DropDownList(idCiclo, opciones, "Seleccione un ciclo...", new { @class = "form-control" })
+            </div>
+            <div class="col-xs-4">
+                <button id="volver_calf_est" type="button" class="btn btn-default">
+                    Volver a calificación de Estándares
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <h3 id="tit_ciclo"></h3>
+        </div>
+        <div id="graficarEst"></div>
+        <div class="form-group row">
+            <button id="descargarGraficaFinalExcel" style="margin-top: 10px" type="button" class="agr_aspec btn btn-default">
+                Descargar Excel
+            </button>
+            <button id="descargarExcelParcial" style="margin-top: 10px; display:none;" type="button" class="agr_aspec btn btn-default">
+                Descargar Excel
+            </button>
+            <button id="descargarEstandaresMinimos" style="margin-top: 10px" type="button" class="agr_aspec btn btn-default">
+                Descargar Estandares Minimos
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var rangoColores = ["#A9CCE3", "#D4AC0D", "#58D68D", "#F1948A", "#73C6B6", "#B03A2E", "#A569BD", "#138D75", "#D4AC0D", "#85C1E9", "#A93226", "#616A6B", "#34495E", "#2874A6"];
+        var urlBase = utils.getBaseUrl();
+        var urlReportes = urlBase + '/EvaluacionEstandarMinimo';
+        var anchoSVG = 960;
+        var altoSVG = 500;
+        $('#volver_calf_est').on('click', function () {
+            window.location.href = urlReportes + '/Index';
+        });
+        $.ajax({
+            url: urlReportes + urlAccion,
+            type: 'post',
+            data: { idCiclo: cicloSelect }
+        }).done(function (response) {
+            if (response != null && response != undefined && response != '' && response.Mensaje == 'OK') {
+                var data = response.Datos.Estandares;
+                var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+                    width = 500 - margin.left - margin.right,
+                    height = 300 - margin.top - margin.bottom, padding = 100;
+
+                //se configuran los colores
+                var color = d3.scaleOrdinal().range(rangoColores);
+                // set the ranges
+                var x = d3.scaleBand()
+                            .rangeRound([0, width])
+                            //.range([padding, width - padding * 2])
+                          .paddingInner(0.05);//.padding(0.1);
+
+                var y = d3.scaleLinear()
+                          .range([height, 0])
+
+                var xAxis = d3.axisBottom(x)
+                                .scale(x);
+
+                // function for the x grid lines
+                function make_x_axis() {
+                    return d3.axisBottom()
+                        .scale(x)
+                        .ticks(5)
+                }
+
+                // function for the y grid lines
+                function make_y_axis() {
+                    return d3.axisLeft()
+                        .scale(y)
+                        .ticks(5)
+                }
+
+                var svg = d3.select("#graficarEst").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", altoSVG)
+                  .append("g")
+                    .attr("transform",
+                          "translate(" + margin.left + "," + margin.top + ")");
+
+                // Scale the range of the data in the domains
+                x.domain(data.map(function (d) { return d.Descripcion; }));
+                y.domain([0, d3.max(data, function (d) { return d.CalificacionFinal; })]);
+                // append the rectangles for the bar chart
+                svg.selectAll(".bar")
+                    .data(data)
+                  .enter().append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function (d) { return x(d.Descripcion); })
+                    .attr("width", x.bandwidth() - 10)
+                    .attr("y", function (d) { return y(d.CalificacionFinal); })
+                        .transition().duration(3000)
+                        .delay(function (d, i) { return i * 200; })
+                    .attr("height", function (d) { return height - y(d.CalificacionFinal); })
+                    .style("fill", function (d) { return color(d.Descripcion) });
+
+                // Draw the x Grid lines
+                //svg.append("g")
+                //    .attr("class", "grid")
+                //    .attr("transform", "translate(0," + height + ")")
+                //    .call(make_x_axis()
+                //        .tickSize(-height, 0, 0)
+                //        .tickFormat("")
+                //    )
+                // Draw the y Grid lines
+                svg.append("g")
+                    .attr("class", "grid")
+                    .call(make_y_axis()
+                        .tickSize(-width, 0, 0)
+                        .tickFormat("")
+                    )
+                //svg.selectAll(".bar2")
+                //  .data(data)
+                //  .enter().append("rect")
+                //  .attr("class", "bar2")
+                //  .attr("x", function (d) { return x(d.Descripcion); })
+                //  .attr("y", function (d) { return y(d.CalificacionFinal); })
+                //  .attr("width", x.bandwidth() - 10)
+                //  .attr("height", function (d) { return (height - y(d.CalificacionFinal))/2; })
+                //  .attr("transform", "translate (" + (+height / 2) + "," + (-height / 2) + ") skewX(" + -45 + ")")
+                //  .style("fill", function (d) { return color(d.Descripcion) });
+
+                //svg.selectAll(".bar3")
+                //  .data(data)
+                //  .enter().append("rect")
+                //  .attr("class", "bar3")
+                //  .attr("x", function (d) { return x(d.Descripcion); })
+                //  .attr("y", function (d) { return y(d.CalificacionFinal)/2; })
+                //  .attr("width", (x.bandwidth() - 10)/2)
+                //  .attr("height", function (d) { return (height - y(d.CalificacionFinal)); })
+                //  .attr("transform", "translate (" + (+height / 2) + "," + (-height / 2) + ") skewX(" + -45 + ")")
+                //  .style("fill", function (d) { return color(d.Descripcion) });
+
+                //grupo para manejar el eje x. Los nombres de las contingencias
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .attr("class", "x axis")
+                    .call(xAxis)
+                    .selectAll("text")
+                        .style("text-anchor", "end")
+                        .attr("dx", "-.82em")
+                        .attr("dy", ".55em")
+                        .attr("width", x.bandwidth() - 10)
+                        .attr("transform", "rotate(318)")
+                        .style("font-size", "10px")
+                        .style("font-weight", "600")
+                        .style("font-family", "Georgia")
+                        .style("fill", "black");
+                //grupo para mostrar el eje y
+                svg.append("g")
+                    .call(d3.axisLeft(y))
+                    .selectAll("text")
+                        .attr("dx", "-1.4em")
+                        .attr("dy", ".55em")
+                ;
+            }
+            OcultarPopupposition();
+        });
+
+
+    });
+</script>

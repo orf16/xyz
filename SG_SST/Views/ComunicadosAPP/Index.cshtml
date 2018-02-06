@@ -1,0 +1,218 @@
+﻿@model SG_SST.Models.Comunicaciones.ComunicadosAPPModel
+
+@{
+    ViewBag.Title = "Comunicados APP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js">
+    @section Scripts {
+        @Scripts.Render("~/bundles/simplePagination")
+    }
+</script>
+
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+
+<style>
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Organización</a></li>
+    <li><a href="javascript:void(0)">Comunicación</a></li>
+    <li class="active">Comunicados APP</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        COMUNICADOS APP
+    </div>
+
+    @*Boton Ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Comunicados APP</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">                           
+                            <div style="text-align:justify">
+                                Alissta Web tiene para sus usuarios Alissta APP, una aplicación móvil con algunas de las funcionalidades de Alissta web. Con ella el colaborador de su empresa tendrá a disposición información del SGSST en tiempo real y lo hará más participativo en la seguridad y salud laboral.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                Los comunicados APP permitirán enviar mensajes a sus trabajadores a través del móvil en relación al SGSST, tales como recordatorios de capacitaciones, invitaciones, rendiciones parciales de cuentas, etc., estos mensajes serán en tiempo real. Recordar que solo las personas vinculadas con la empresa y afiliadas a positiva seguros (ARL), podrán acceder a las funcionalidades del App.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                Inicie dando clic en la opción <button class="boton botonactive" disabled>crear comunicado App</button>, aparecerá una ventana emergente con un formulario muy corto para la construcción del comunicado vía App, allí podrá escoger las personas a quienes le enviara el comunicado usando cargos o directamente con el número de identificación de las personas. En asunto y texto, escriba el título y contenido del mensaje respectivamente. Sr. Usuario recuerde que el mensaje del comunicado debe ser de máximo 300 caracteres. Guarde el comunicado dando clic en <button class="boton botonactive" disabled>Guardar Comunicado</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//////*@
+
+    <div class="panel-body form-horizontal">
+        <center>
+            <button type="button" class="boton botonactive" onclick="CrearComunicado()">Crear Comunicado APP</button>
+            <br /><br />
+            <div class="table-responsive">
+                <table id="gridcomunicadosapp" class="table table-bordered" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">nombre del comunicado</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Estado del Comunicado</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de la Creación</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de Envío</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acciones</th>
+                    </tr>
+                </table>
+            </div>
+        </center>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.IDComunicadosAPP)
+<div id="myModal1" class="modal fade" role="dialog">
+    <form id="frmcomunicacionesexternas">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <h4 class="modal-title title">Crear Comunicado APP</h4>
+                </div>
+                <div class="modal-body">
+                    <table width="100%" border="0">
+                        <tr class="noborder">
+                            <td class="noborder" align="left">Para:</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">
+                                <table border="0" class="noborder">
+                                    <tr class="noborder">
+                                        <td class="noborder">
+                                            <select name="Destinatarios" multiple id="Destinatarios" style="width:400px;" class="form-control"></select>
+                                        </td>
+                                        <td valign="top" class="noborder"><a href="#" onclick="QuitarCampos();" class="btn btn-search btn-md" title="Quitar Campo"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">
+                                @*<input type="button" value="Cargos" onclick="AgregarCargos();" class="boton botoninfo" style="width:10%; text-align:center" />*@
+                                <button type="button" onclick="AgregarCargos();" class="boton botoninfo">Cargos</button>
+                                @*<input type="button" value="Personas" onclick="AgregarPersonas();" class="boton botoninfo" style="width:10%; text-align:center" />*@
+                                <button type="button" onclick="AgregarPersonas();" class="boton botoninfo">Personas</button>
+                            </td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">Asunto del Comunicado:</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">@Html.TextBoxFor(x => x.Titulo, new { style = "width:100%", @class = "form-control" })</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">Texto del Comunicado</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">@Html.TextAreaFor(x => x.Asunto, new { @class = "form-control" })</td>
+                        </tr>
+                    </table>
+
+                    <br />
+                    <button type="button" id="guardarc" class="boton botonactive" onclick="GuardarComunicado('G');">Guardar Comunicado</button>
+                    <button id="enviar" type="button" class="boton botonactive" onclick="GuardarComunicado('E');" style="display:none;">Enviar Comunicado</button>
+                    <br />
+                    <div class="modal-footer">
+                        <a href="#" onclick="CerrarModal();" style="float:right; text-align:center" class="boton botoninfo">Atras</a>
+                    </div>
+                </div>  
+             </div>
+        </div>
+    </form>
+</div>
+
+<div id="myModal0" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Seleccionar Cargos</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="txtbuscar" class="form-control" onkeypress="BuscarCargos(event, this.value);" placeholder="Buscar Cargo" />
+                <br />
+                <table id="cargos" width="30%" border="1" class="table table-condensed table-responsive  table-bordered" style="border: 2px solid lightslategray">
+                    @*<tr class="titulos_tabla">
+                        <td style="border-right: 2px solid lightslategray; text-align:center" width="10%">&nbsp;</td>
+                        <td>Cargo</td>
+                    </tr>*@
+                </table>
+                <input type="checkbox" name="chktodos" id="chktodos" onclick="CheckTodos();"> Seleccionar Todo
+                <div class="modal-footer">
+                    @*<input type="button" value="Aceptar" onclick="AsignarCargos();" />*@
+                    <button type="button" class="boton botonactive" onclick="AsignarCargos();" style="margin-right:2%">Aceptar</button>
+                    <a href="#" onclick="CerrarModal1();" style="float:right;text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Seleccionar Personas</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="txtbuscarpersona" class="form-control" onkeypress="BuscarPersonas(event, this.value);" placeholder="Buscar Personas" style="width:50%" />
+                <br />
+
+                <div class="table-responsive">
+                    <table id="personas" class="table table-bordered" style="border: 2px solid lightslategray">
+                        @*<tr class="titulos_tabla">
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Id. Persona</b></td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Nombre Persona</b></td>
+                        </tr>*@
+                    </table>
+                </div>
+                <input type="checkbox" name="chktodos1" id="chktodos1" onclick="CheckTodos1();"> Seleccionar Todo
+                <div class="modal-footer">
+                    @*<input type="checkbox" name="chktodos1" id="chktodos1" onclick="CheckTodos1();"> Seleccionar Todo
+                    <input type="button" value="Aceptar" onclick="AsignarPersonas();" /><a href="#" onclick="CerrarModal2();" style="float:right;">< &nbsp; Atras</a>*@
+                    <button type="button" class="boton botonactive" onclick="AsignarPersonas();">Aceptar</button>
+                    &nbsp;
+                    <a href="#" onclick="CerrarModal2();" style="float:right;text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Comunicaciones/ComunicadosAPP.js")

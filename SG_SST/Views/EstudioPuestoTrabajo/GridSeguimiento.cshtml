@@ -1,0 +1,52 @@
+﻿<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@model SG_SST.EntidadesDominio.EstudioPuestoTrabajo.EDEstudioPuestoTrabajo
+@if (Model != null)
+{
+    {
+        if (Model.listaSeguimiento.Count > 0)
+        {
+            <div class="Tabla-Programa table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+
+                            <th class="col-md-7" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Actividad</span>
+                            </th>
+                            <th class="col-md-3" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Fecha</span>
+                            </th>
+                            <th class="col-md-4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Responsable</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    @{
+                        foreach (var item in Model.listaSeguimiento)
+                        {
+                            <tr>
+                                <td class="col-md-7" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                    @Html.DisplayFor(modelItem => item.Actividad)
+                                </td>
+                                <td class="col-md-3" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                    @Html.DisplayFor(modelItem => item.FechaStr)
+                                </td>
+                                <td class="col-md-4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                    @Html.DisplayFor(modelItem => item.Responsable)
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                </table>
+                <center><div class="pagination" id="paginador1"></div></center>
+            </div>
+        }
+
+    }
+ }

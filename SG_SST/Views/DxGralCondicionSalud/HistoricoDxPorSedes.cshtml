@@ -1,0 +1,198 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Planificacion.EDDxSalud>
+
+@{
+    ViewBag.Title = "Histórico De Diagnóstico Por Sedes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Dx. Gral. condiciones de salud</a></li>
+    <li class="active">Histórico de Diagnóstico</li>
+</ol>
+
+@*@if (ViewBag.respuesta == true)
+    {
+        <script type="text/javascript">
+            swal(
+            'Estimado Usuario',
+            '@ViewBag.mensaje',
+            'success'
+            )
+        </script>
+    }*@
+
+@if (Model.Count() == 0)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'No hay diagnósticos de condiciones generales de salud grabados',
+        'warning'
+        )
+    </script>
+}
+
+    @*<div class="row">
+        <div class="col-md-11 col-md-offset-0">*@
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Histórico de Diagnóstico
+        </div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p align="justify">
+                                    Esta función le permite ver todos los diagnósticos creados y/o filtrarlos por sede. Haciendo  clic en la opción generar reporte, se descargará en Excel toda la información registrada de todos los diagnósticos creados. Pero si requiere un diagnostico especifico, filtre por sede y luego de clic en el icono de Excel de la derecha en la celda acciones respectivamente del diagnóstico que requiere.
+
+                                    Puede también descargarlo en formato pdf dando clic en el icono de pdf o consultarlo en el aplicativo con la opción de la lupa. Aquí también poder eliminar el registro de los diagnósticos uno a uno.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+
+            <div class="row">
+
+                <div class="col-md-4">
+                    <b>Sede de la Empresa</b>
+                    <div class="input-group">
+                        <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+                        @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarDx()" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-md-offset-4">
+                    <a href="@Url.Action("DescargarReporteExcel", null, new { })">
+                        <img src="~/Images/iconExcelp.png" />
+                    </a><b>Generar Reporte</b>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="table-responsive" id="tablaHistoricoDx">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Nombre de la Sede
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Proceso
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Zona o lugar
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Fecha de Diligenciamiento del  Diagnóstico
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Vigencia
+                        </th>
+                        <th width="210" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input name="IdSede" type="hidden" value="@item.Pk_Id_Sede" />
+                                @Html.DisplayFor(modelItem => item.NombreSede)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @item.nombreProceso
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @item.ZonaLugar
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input name="IdMetodologia" type="hidden" value="@item.FechaCreacionDiagnostico" />
+                                @item.FechaCreacionDiagnostico.ToString("dd/MM/yyyy")
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @item.vigencia
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @*@Html.ActionLink("visualizar", "MostrarMatriz", new { idSede = item.IdSede, idMetodologia = item.IdMetodologia }, htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })*@
+                                <a href="@Url.Action("HistoricoDxSedesPorAnio", null, new { idDxSalud = item.IdDxCondicionesDeSalud })" class="btn btn-search btn-md" title="Visualizar" style="margin-right:1%">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </a>
+                                <a href="@Url.Action("DescargarExcelDxSedesPorAnio", null, new { idDxSalud = item.IdDxCondicionesDeSalud })" style="margin-right:1%; margin-left:1%">
+                                    <img src="~/Images/iconExcelp.png" title="Descargar Excel" />
+                                </a>
+
+
+                                <a href="@Url.Action("DescargarPDFDxSedesPorAnio", null, new { idDxSalud = item.IdDxCondicionesDeSalud })">
+                                    <img src="~/Content/Images/pdf-simbolo-de-formato-de-archivo (1).png" title="Descargar PDF" />
+                                </a>
+
+                                <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.IdDxCondicionesDeSalud)" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar" class="btn btn-search btn-md" style="margin-left:1%">
+                                    <span class="glyphicon glyphicon-erase"></span>
+                                </a>
+
+                                <div id="@string.Format("modalEliminar{0}", item.IdDxCondicionesDeSalud)" class=" modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+
+                                                <h4 class="modal-title title">Eliminar diagnóstico</h4>
+                                            </div>
+                                            <div class="modal-body" style="text-align:center; color:black">
+                                                <p>¿Seguro desea eliminar el diagnóstico seleccionado?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="boton botonactive" data-dismiss="modal" onclick="EliminarDx(this,@item.IdDxCondicionesDeSalud)">ELIMINAR</button>
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="modalesEliminados"></div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/Planificacion")
+    }

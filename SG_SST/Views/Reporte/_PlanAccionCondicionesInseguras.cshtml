@@ -1,0 +1,80 @@
+﻿
+<div class="table-responsive">
+    <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaActividades">
+        <thead>
+            <tr class="titulos_tabla">
+
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Actividad</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Responsable</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de ejecución</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody id="actividades">
+            <tr id="filaActividad" name="filaActividad">
+
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" name="nombreActividad[]" id="nombreActividad" class="form-control" />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" id="RespActividad" name="RespActividad[]" class="form-control" />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                    <input type="text" class="datepicker form-control" id="FecEjecucion" name="FecEjecucion[]" onclick="obtenerFecha(this)" readonly>
+
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    <input type="button" id="eliminarFila" value="Eliminar" onclick="eliminarActividad(this)">
+                </td>
+
+            </tr>
+
+
+
+
+        </tbody>
+
+    </table>
+</div>
+
+<div class="row">
+</div>
+
+<br />
+<div class="row">
+  
+
+<div class="col-md-4">
+
+
+    <input type="button" value="Agregar" class="boton botonactive" id="agregarFila">
+
+
+</div>
+    <div class="col-md-4">
+
+        <input type="button" value="Guardar Plan" class="boton botonactive" id="adicionarPlan">
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            firstDay: 1,
+            format: "dd/mm/yyyy",
+            language: 'es',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true
+        });
+      
+    });
+</script>

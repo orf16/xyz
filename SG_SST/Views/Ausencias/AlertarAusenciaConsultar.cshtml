@@ -1,0 +1,69 @@
+﻿@model List<SG_SST.EntidadesDominio.Ausentismo.EDAlertaAusentismo>
+
+<div style="background-color:rgba(253, 245, 154, 0.78); text-align:center; ">
+    La siguiente tabla muestra alertas sobre casos que se encuentren en rango de 60 a 120 dias de ausentismo (<text style="color:gold">color amarillo</text>) y una segunda alerta para casos que superen los 120 dias de ausentismo (<text style="color:red">color rojo</text>)
+</div>
+<p>
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; text-align:center">
+                Documento Persona
+            </th>
+            @*
+                Modificación de código INICIO - Título: Agregar campo nombre persona ausente - Creado: 2/02/2018 - Autor: Javier García <javier.garcia@kerocorp.com> - Kerocorp - Descripción: Se agrega el campo del nombre de la persona ausente
+            *@
+            <th style="border-right: 2px solid lightslategray; text-align:center">
+                Nombre Empleado
+            </th>
+            @*
+                Modificación de código FIN
+            *@
+            <th style="border-right: 2px solid lightslategray; text-align:center">
+                Días Ausencia
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (item.DiasAusencia <= 120)
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; color: ">
+                        @Html.DisplayFor(modelItem => item.DocumentoPersona)
+                    </td>
+                    @*
+                        Modificación de código INICIO - Título: Agregar campo nombre persona ausente - Creado: 2/02/2018 - Autor: Javier García <javier.garcia@kerocorp.com> - Kerocorp - Descripción: Se agrega el campo del nombre de la persona ausente
+                    *@
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; color: ">
+                        @Html.DisplayFor(modelItem => item.EmpleadoNombre)
+                    </td>
+                    @*
+                        Modificación de código FIN
+                    *@
+                    <td style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle; color:#f1dd00">
+                        @Html.DisplayFor(modelItem => item.DiasAusencia)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; color: ">
+                        @Html.DisplayFor(modelItem => item.DocumentoPersona)
+                    </td>
+                    @*
+                        Modificación de código INICIO - Título: Agregar campo nombre persona ausente - Creado: 2/02/2018 - Autor: Javier García <javier.garcia@kerocorp.com> - Kerocorp - Descripción: Se agrega el campo del nombre de la persona ausente
+                    *@
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; color: ">
+                        @Html.DisplayFor(modelItem => item.EmpleadoNombre)
+                    </td>
+                    @*
+                        Modificación de código FIN
+                    *@
+                    <td style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle; color:#fb5e5e">
+                        @Html.DisplayFor(modelItem => item.DiasAusencia)
+                    </td>
+                </tr>
+            }
+        }
+    </table>

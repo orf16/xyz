@@ -1,0 +1,310 @@
+﻿
+<style>
+
+    .campos-tabla {
+        width: 160px;
+        display: block;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+</style>
+
+<div class="table-responsive" style="overflow-x:scroll">
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <thead>
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle"> </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ACTIVIDADES</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ENERO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">FEBRERO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">MARZO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ABRIL</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">MAYO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">JUNIO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">JULIO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">AGOSTO</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">SEPTIEMBRE</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">OCTUBRE</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">NOVIEMBRE</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">DICIEMBRE</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">TOTAL ACTIVIDAD</th>
+            </tr>
+        </thead>
+        <tbody id="actividades">
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    <input type="checkbox" name="agruparActividades"> 
+                    <a data-toggle="modal" data-target="#modalActSinGuardarXX">
+                        <span class="glyphicon glyphicon-erase"></span>
+                    </a>
+                    <div id="modalActSinGuardarXX" name="modalActSinGuardarXX" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Eliminar Actividad</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <center><p>¿Seguro desea eliminar la actividad seleccionada?</p></center>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botonactive" onclick="EliminarActividadSinGuardar(this)" data-dismiss="modal">
+                                        @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                    </button>
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                  
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" name="DescripcionActividad" class="campos-tabla" />
+                </td>
+                <td name="enero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right"/>
+                </td>
+                <td name="febrero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="marzo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="abril" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="mayo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="junio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="julio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="agosto" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="septiembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="octubre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="noviembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td name="diciembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" name="total" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" disabled />
+                </td>
+            </tr>
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle"> 
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:right; font-weight:bold">
+                    VALOR TOTAL MES
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaEnero" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaFebrero" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaMarzo" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaAbril" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaMayo" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaJunio" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaJulio" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaAgosto" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaSeptiembre" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaOctubre" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaNoviembre" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaDiciembre" disabled />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" id="sumaTotal" disabled />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    <div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    @*<input type="button" id="buttonAgregar" class="form-control btn btn-warning btn-md tbr" value="Agregar Actividad" onclick="agregarActividad()" />*@
+                    <button type="button" id="buttonAgregar" class="boton botoninfo" onclick="agregarActividad(true)">Agregar Actividad</button>
+                </div>
+                <div class="col-md-3">
+                    @*<input type="button" class="form-control btn btn-warning btn-md tbr" value="Agrupar" onclick="agruparActividades1()" />*@
+                    <button type="button" class="boton botoninfo" onclick="agruparActividades1()">Agrupar</button>
+                </div>
+                <div class="col-md-3">                   
+                    <button type="button" class="boton botonactive" id="guardarActividad" onclick="validarCamposPresupuestoGuardar()">Guardar</button>
+                    @*<a class="boton botonactive"  id="guardarActividad" onclick="validarCamposPresupuestoBuscar()" onclick="GuardarActividades()">Guardar</a>*@
+                    <a id="guardarActividadModal" data-toggle="modal" data-target="#ModalGuardar" value="Guardar" class="boton botonactive" style='display:none;'>
+                        Guardar
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    @*<input type="button" class="form-control btn btn-warning btn-md tbr" value="Cancelar" onclick="CargarFormularioPresupuesto()" />*@
+                    @*<button type="button" class="boton botoncancel"  href="@Url.Action("CrearPresupuesto", "Presupuesto")">Cancelar</button>*@
+                    @Html.ActionLink("Cancelar", "CrearPresupuesto", null, htmlAttributes: new { @type = "button", @class = "boton botoncancel" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="hidden table-responsive">
+    <table class="table table-bordered" style="border:2px solid lightslategray">
+        <tr id="filaActividadPrincipal">
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                <a data-toggle="collapse">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </a>
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="text" class="campos-tabla" />
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+        </tr>
+        <tr id="filaActividad">
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                <input type="checkbox" name="agruparActividades">
+                <a data-toggle="modal" data-target="#modalActSinGuardar">
+                    <span class="glyphicon glyphicon-erase"></span>
+                </a>
+                <div id="modalActSinGuardar" name="modalActSinGuardar" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Eliminar Actividad</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <center><p>¿Seguro desea eliminar la actividad seleccionada?</p></center>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botonactive" onclick="EliminarActividadSinGuardar(this)" data-dismiss="modal">
+                                    @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                </button>
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="text" name="DescripcionActividad" class="campos-tabla" />
+            </td>
+            <td name="enero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="febrero" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="marzo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="abril" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="mayo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="junio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="julio" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="agosto" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="septiembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="octubre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="noviembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td name="diciembre" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" style="text-align: right" />
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                <input type="text" class="campos-tabla" style="background-color:#E6EAEE; text-align: right" name="total" disabled />
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="modalesEliminados">
+
+</div>
+@*@section Scripts {
+    @Scripts.Render("~/bundles/LiderazgoGerencial")
+    <script>
+        $(document).ready(function () {
+           // $("#buttonAgregar").click();
+            $('#testing').numeric(",");
+        });
+
+    </script>
+}*@

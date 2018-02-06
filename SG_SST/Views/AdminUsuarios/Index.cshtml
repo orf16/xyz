@@ -1,0 +1,204 @@
+﻿@model SG_SST.Models.AdminUsuarios.AdministrarUsuariosModel
+    @{ Layout = null;}
+<title>Administración de usuarios</title>
+<link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<link href="~/Content/miga-de-pan.css" rel="stylesheet" />
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/css/sweetalert.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/utils.js"></script>
+<script src="~/js/sweetalert.min.js"></script>
+<script src="~/Scripts/Transversal/generales.js"></script>
+
+<div class="container container-index header-alissta" style="height:26px;">
+    <div class="col-md-2 logo-empresa col-xs-6">
+        <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block" style="height:54px;">
+    </div>
+    <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+        <img src="~/Images/alissta-logo.png" alt="logo alissta">
+    </div>
+</div>
+<div class="panel panel-default" id="contenido" style="margin:53px; background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:black">
+        Administración de Usuarios
+    </div>
+    @using (Html.BeginForm("Index", "AdminUsuarios", FormMethod.Post, new { @id = "formEvaluacion", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel-body form-horizontal">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Tipo documento empleador:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.TipoDocumentoEmpresa, Model.TiposDocumento, "Seleccione una opción...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.TipoDocumentoEmpresa, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Número identificación empleador:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    <a class="msg-ayuda">
+                        @Html.TextBoxFor(x => x.DocumentoEmpresa, new { @class = "form-control", @placeholder = "no incluye dígito de verificación" })
+                        <label>El número de identificación del empleador no incluye dígito de verificación.</label>
+                    </a>
+                    @Html.ValidationMessageFor(x => x.DocumentoEmpresa, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Tipo identificación Usuario:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.TipoDocumento, Model.TiposDocumento, "Seleccione una opción...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.TipoDocumento, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Número identificación Usuario:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.Documento, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Documento, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Razón social empleador:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.RazonSocialEmpresa, new { @class = "form-control bloqueado", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(x => x.RazonSocialEmpresa, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Municipio sede principal empleador:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.MunicipioSedePpalEmpresa, new { @class = "form-control bloqueado", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(x => x.MunicipioSedePpalEmpresa, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Nombres de Usuario:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.Nombres, new { @class = "form-control bloqueado", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(x => x.Nombres, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Apellidos del Usuario:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.Apellidos, new { @class = "form-control bloqueado", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(x => x.Apellidos, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Rol del Usuario:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.DropDownListFor(x => x.IdRolSeleccionado, Model.RolesRegistrados, "Seleccione una opción...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.IdRolSeleccionado, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Correo Electrónico:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.EmailPersona, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.EmailPersona, string.Empty, new { @class = "error" })
+                </div>
+                
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Pregunta de seguridad 1:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.ConfiguracionPreguntasSeguridad.CodPreguntaUno, Model.ConfiguracionPreguntasSeguridad.PreguntasSeguridad, "Seleccione una opción...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfiguracionPreguntasSeguridad.CodPreguntaUno, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Respuesta de seguridad:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.ConfiguracionPreguntasSeguridad.RespuestaUno, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfiguracionPreguntasSeguridad.RespuestaUno, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Pregunta de seguridad 2:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.ConfiguracionPreguntasSeguridad.CodPreguntaDos, Model.ConfiguracionPreguntasSeguridad.PreguntasSeguridad, "Seleccione una opción...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfiguracionPreguntasSeguridad.CodPreguntaDos, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Respuesta de seguridad:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.ConfiguracionPreguntasSeguridad.RespuestaDos, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfiguracionPreguntasSeguridad.RespuestaDos, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Pregunta de seguridad 3:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.ConfiguracionPreguntasSeguridad.CodPreguntaTres, Model.ConfiguracionPreguntasSeguridad.PreguntasSeguridad, "Seleccione una opción...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfiguracionPreguntasSeguridad.CodPreguntaTres, string.Empty, new { @class = "error" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Respuesta de seguridad:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.ConfiguracionPreguntasSeguridad.RespuestaTres, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ConfiguracionPreguntasSeguridad.RespuestaTres, string.Empty, new { @class = "error" })
+                </div>
+            </div>
+                @Html.HiddenFor(x => x.RazonSocialEmpresa)
+                @Html.HiddenFor(x => x.Nombres)
+                @Html.HiddenFor(x => x.Apellidos)
+                @Html.HiddenFor(x => x.MunicipioSedePpalEmpresa)
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <button type="submit" class="boton botonactive">Crear usuario</button>
+                </div>
+                <div class="col-md-1">
+                    @Html.ActionLink("Ir a Inicio", "Index", "Home", null, new { @class = "boton botoncancel" })
+                    @*<button type="submit" class="">Crear usuario</button>*@
+                </div>
+            </div>
+        </div>
+    }
+</div>
+    @{
+        if (ViewBag.Mensaje != null)
+        {
+            <script type="text/javascript">
+                swal({
+                    title: 'Atención',
+                    text: '@ViewBag.Mensaje',
+                    type: 'success',
+                    //confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Aceptar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false,
+                    html: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        window.location.href = '../Home/Login';
+                    }
+                });
+            </script>
+        }
+    }
+
+@Scripts.Render("~/Scripts/AdminUsuarios/AdminUsuarios.js")
+

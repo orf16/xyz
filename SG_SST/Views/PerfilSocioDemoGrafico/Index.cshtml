@@ -1,0 +1,967 @@
+﻿@model SG_SST.EntidadesDominio.Planificacion.EDPerfilSocioDemografico
+@{
+    ViewBag.Title = "Modificar PerfilSociodemográfico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+
+    $(function () {
+        $("#Pk_Id_Sede").val("");
+        $("#ZonaLugar").val("");
+        $("#Fk_Id_Departamento").val("");
+        $("#FK_Estrato").val("");
+        $("#FK_Estado_Civil").val("");
+        $("#FK_Raza").val("");
+        $("#FK_VinculacionLaboral").val("");
+
+
+    });
+
+    function stopRKey(evt) {
+        var evt = (evt) ? evt : ((event) ? event : null);
+        var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+        if ((evt.keyCode == 13) && (node.type == "text")) { return false; }
+    }
+    document.onkeypress = stopRKey;
+
+</script>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Planificación</a></li>
+    <li><a href="@Url.Action("Listado", "PerfilSocioDemoGrafico")">Perfil Sociodemográfico</a></li>
+    <li class="active">Guardar Perfil SocioDemográfico</li>
+</ol>
+
+@*<form method="post" action="@Url.Action("GrabarPerfilSocioDemografico")" id="PerfilSocioDemografico" name="PerfilSocioDemografico">*@
+
+
+@using (Html.BeginForm("GrabarPerfilSocioDemografico", "PerfilSocioDemoGrafico", FormMethod.Post, new { @id = "PerfilSocioDemografico", @class = "form-horizontal" }))
+{
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Perfil SocioDemográfico</div>
+        @*<div class="row center-block well" align="center" id="divFormulario">*@
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body" style="color:black; text-align:justify">
+
+
+                                -	Por favor ingrese el número de identificación del trabajador, con el fin de iniciar el proceso de registro del perfil sociodemográfico. Recuerde que esta opción le permite registrar uno a uno los datos de cada trabajador como datos generales, exposición a peligros, grado de escolaridad, ingresos, composición familiar, grupo etario y características para el desempeño del cargo entre otros.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+
+            @*<div class="panel panel-default"  >*@
+
+            <div class="col-md-6 col-md-offset-1">
+                @*<div class="input-group">*@
+                <label class="col-md-4" style="line-height:2.5">Ingresar Cédula:</label>
+                @*<span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-cloud-download"></span></span>*@
+                <div class="col-md-7">
+                    <input type="text" class="form-control" name="PK_Numero_Documento_Empl" id="PK_Numero_Documento_Empl" placeholder=" " @*style="border:hidden"*@ maxlength="10" />
+                </div>
+                @*</div>*@
+            </div>
+
+
+
+            <div class="col-md-4">
+                @*<input type="button" value="Obtener Datos" class="btn btn-warning form-control" id="btnsiarp" onclick="ObtenerSiarp()" />*@
+                @* <button type="button" class="boton botoninfo" id="btnsiarp" onclick="ObtenerSiarp()">Obtener Datos</button>*@
+                <button type="button" class="boton botoninfo" id="btnsiarp" onclick="ObtenerSiarp2()">Obtener Datos</button>
+
+            </div>
+
+        </div>
+        @*<div class="col-md-4" id="exportandoExcel">
+
+                <a href="@Url.Action("exportarexcel", "PerfilSocioDemoGrafico" )" class="boton botonactive" style="margin-right:35px">Crear Reporte</a>
+
+            </div>*@
+
+        @*</div>*@
+    </div>
+    @*</div>*@
+
+    <div style="background-color:rgba(196, 202,196, 0.1)" class="well" id="formPlan" hidden="hidden">
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Primer Nombre:</label>
+                    <div class="col-md-11">
+                        <input type="text" id="Nombre1" name="Nombre1" class="form-control" maxlength="100" readonly />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Segundo Nombre:</label>
+                    <div class="col-md-11">
+                        <input type="text" id="Nombre2" name="Nombre2" class="form-control" maxlength="100" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Primer Apellido:</label>
+                    <div class="col-md-11">
+                        <input type="text" id="Apellido1" name="Apellido1" class="form-control" maxlength="100" readonly />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Segundo Apellido:</label>
+                    <div class="col-md-11">
+                        <input type="text" id="Apellido2" name="Apellido2" class="form-control" maxlength="100" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group has-feedback">
+                    <label class="col-md-7">E.P.S:</label>
+                    <div class="col-md-11">
+
+                        <input type="text" id="eps" name="eps" class="form-control" accept="" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group has-feedback">
+                    <label class="col-md-7">A.F.P:</label>
+                    <div class="col-md-11">
+
+                        <input type="text" id="afp" name="afp" class="form-control" accept="" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-7">Sede:</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarSedeMunicipio()" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-8">Municipio:</label>
+                    <div class="col-md-10">
+
+                        <input type="text" id="IdMunicipio_Sede" name="IdMunicipio_Sede" class=" form-control" readonly />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-7">Departamento:</label>
+                    <div class="col-md-10">
+
+                        <input type="text" id="IdDepartamento_Sede" name="DepartamentoSede" class="form-control" readonly />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-7">Zona/Lugar:</label>
+                    <div class="col-md-10">
+                        <input type="text" id="ZonaLugar" name="ZonaLugar" class="form-control  style=" text-align right" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Proceso:</label>
+                    <div class="col-md-12">
+                        @Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control", }, optionLabel: "-- Seleccionar --")
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h4>Exposición a Peligros</h4>
+
+
+        <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaRiesgoClonada" hidden="hidden">
+            <thead>
+                <tr class="titulos_tabla">
+
+                    @*<th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Sede</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Zona o lugar</th>*@
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Clasificación del Peligro</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Descripción del Peligro</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Tiempo de Exposición  en  Meses</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Acción</th>
+                </tr>
+            </thead>
+            <tbody id="actividadesClonada">
+                <tr id="filaRiesgoClonada" name="filaRiesgoClonada">
+
+                    @*<td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarSedeMunicipio()" }, optionLabel: "-- Seleccionar --")
+
+
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" id="ZonaLugar" name="ZonaLugar" class="form-control  style=" text-align right" />
+                        </td>*@
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        @Html.DropDownList("FK_Tipo_De_Peligro", null, htmlAttributes: new { @class = "form-control", @onchange = "ConsultarClasesPeligrosPerfil(this)" }, optionLabel: "-- Seleccionar --")
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @*Descripcion/otro*@
+                        <div class="col-md-12">
+                            <div id="divSelectClas" name="divSelectClas">
+                                <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>
+                            </div>
+                            <input id="Otro" name="Otro" type="hidden" class="form-control" />
+                        </div>
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        <input type="text" id="tiempoExpos" name="tiempoExpos" class="form-control" onkeydown="darFormatoSoloNumerosPer(this)" style="text-align:center" maxlength="3" />
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @*<input type="button" id="eliminarFila" value="Eliminar" onclick="eliminarActividad(this)">*@
+                        <a data-toggle="modal" title="Borrar Actividad" class="btn btn-search btn-md" onclick="eliminarCondicionDeRiesgo(this)">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                    </td>
+
+
+                </tr>
+
+
+
+
+
+
+            </tbody>
+        </table>
+
+
+
+        <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaRiesgo">
+            <thead>
+                <tr class="titulos_tabla">
+                    @*<th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Sede</th>
+                     <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Zona o lugar</th>*@
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform: uppercase;">Clasificación del Peligro</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform: uppercase;">Descripción del Peligro</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform: uppercase;">Tiempo de Exposición  en  Meses</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform: uppercase;">Acción</th>
+                </tr>
+            </thead>
+            <tbody id="actividades">
+                <tr id="filaRiesgo" name="filaRiesgo">
+
+                    @*<td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarSedeMunicipio()" }, optionLabel: "-- Seleccionar --")
+
+
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        <input type="text" id="ZonaLugar" name="ZonaLugar" class="form-control  style=" text-align right" />
+                    </td>*@
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        @Html.DropDownList("FK_Tipo_De_Peligro", null, htmlAttributes: new { @class = "form-control col-md-12", @onchange = "ConsultarClasesPeligrosPerfilEditado(this)" }, optionLabel: "-- Seleccionar --")
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @*Descripcion/otro*@
+                        <div class="col-md-12">
+                            <div id="divSelectClas" name="divSelectClas">
+                                <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>
+                            </div>
+                            <input id="Otro" name="Otro" type="hidden" class="form-control" />
+                        </div>
+                       
+                       </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle ">
+                        <input type="text" id="tiempoExpos" name="tiempoExpos" class="form-control" onkeydown="darFormatoSoloNumerosPer(this)" style="text-align:center" maxlength="3" />
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @*<input type="button" id="eliminarFila" value="Eliminar" onclick="eliminarActividad(this)">*@
+                        <a data-toggle="modal" title="Borrar Actividad" style="text-align:center" class="btn btn-search btn-md" onclick="eliminarCondicionDeRiesgo(this)">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                    </td>
+
+
+                </tr>
+
+
+
+
+
+
+            </tbody>
+        </table>
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="boton botonactive" id="agregarCondiesgoDeRiesgo">Agregar Nueva Exposición</button>
+            </div>
+        </div>
+        <br /><br />
+
+
+
+        <div class="col-md-4" hidden="hidden">
+
+
+            <input type="text" id="nitEmpresa" name="nitEmpresa" value="@(ViewBag.NitEmpresa)" />
+
+
+        </div>
+        <div class="col-md-4" hidden="hidden">
+
+            <label class="col-md-3">Tipo de Documento:</label>
+            <input type="text" id="idtipodoc" name="idtipodoc" required pattern="[0-9]" class=" form-control" /> >
+
+        </div>
+
+
+
+
+
+
+
+        <br />
+
+        <div class="row">
+            @*<br />*@
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7" style="font-size:larger">Grado de Escolaridad</label>
+                    <hr style="border-top-color:lightslategray; width:97%" />
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Primaria Incompleta"> Primaria Incompleta
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Primaria Completa"> Primaria Completa
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Bachillerato Completo"> Bachillerato Completo
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Bachillerato Icompleto"> Bachillerato Icompleto
+                        </label>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+            <br />
+
+
+            @*<div class="row">*@
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad " value="Técnico"> Técnico
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Tecnólogo"> Tecnólogo
+                        </label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Profesional Universitario"> Profesional Universitario
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Profesional con Especialización"> Profesional con Especialización
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            @*</div>*@
+
+            @*<div class="row">*@
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Postgrado con Maestría"> Postgrado con Maestría
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Postgrado con Doctorado"> Postgrado con Doctorado
+                        </label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="GradoEscolaridad" id="GradoEscolaridad" value="Sin Escolaridad"> Sin Escolaridad
+                        </label>
+                    </div>
+                </div>
+            </div>
+            @*</div>*@
+        </div>
+
+
+        <span id="errorGradoEscolaridad"></span>
+        <br />
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7" style="font-size:larger">Ingresos</label>
+                    <hr style="border-top-color:lightslategray; width:97%" />
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="Ingresos" id="Ingresos" value="Menos de un SMLV"> Menos de un SMLV
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="Ingresos" id="Ingresos" value="Entre 1 y 4 SMLV"> Entre 1 y 4 SMLV
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="Ingresos" id="Ingresos" value="Entre 5 y 10 SMLV"> Entre 5 y 10 SMLV
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="Ingresos" id="Ingresos" value="11 SMLV o más"> 11 SMLV o más
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <span id="errorIngresos"></span>
+        <br />
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7" style="font-size:larger">Lugar de residencia</label>
+                    <hr style="border-top-color:lightslategray; width:97%; margin-bottom:-5px" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-md-7">Departamento:</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("Fk_Id_Departamento", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarMunicipios()" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-md-7">Ciudad/Municipio:</label>
+                    <div class="col-md-10">
+                        <select class="form-control" id="Fk_Id_Municipio" name="Fk_Id_Municipio"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Dirección:</label>
+                    <div class="col-md-10">
+                        <input type="text" id="Direccion" name="Direccion" class="form-control" readonly>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7" style="font-size:larger">Composición Familiar</label>
+                    <hr style="border-top-color:lightslategray; width:97%" />
+                    <div class="col-md-4">
+                        <label>
+                            Conyuge o compañero permanente
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label>
+                            <input type="radio" name="Conyuge" id="Conyuge" value="true"> Si
+                        </label>
+
+                        <label>
+                            <input type="radio" name="Conyuge" id="Conyuge" value="false"> No
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span id="errorConyuge"></span>
+
+        <div class="row">
+            <div class="col-md-1">
+                <label>
+                    Hijos
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label>
+                    <input type="radio" name="Hijos" id="Hijos" value="true"> Si
+                </label>
+                <label>
+                    <input type="radio" name="Hijos" id="Hijos" value="false"> No
+                </label>
+            </div>
+        </div>
+
+        <span id="errorHijos"></span>
+
+        <hr style="border-top-color:lightslategray; width:100%" />
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-10">Estrato Socioeconómico:</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("FK_Estrato", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-7">Estado Civil:</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("FK_Estado_Civil", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-7">Etnia:</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("FK_Etnia", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label class="col-md-3">Ocupación CIUO:</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" id="OcupacionPerfil" name="OcupacionPerfil" readonly />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-2">Edad:</label>
+                    <div class="col-md-4">
+
+                        <input type="text" class="form-control left" id="idFechaNacimiento" name="idFechaNacimiento" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <br />
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7" style="font-size:larger">Sexo</label>
+                    <hr style="border-top-color:lightslategray; width:97%" />
+                    <div class="col-md-2">
+                        <label>
+                            <input type="radio" name="Sexo" id="Sexo" value="M"> Masculino
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label>
+                            <input type="radio" name="Sexo" id="Sexo" value="F"> Femenino
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <span id="errorSexo"></span>
+        <br />
+
+        <div class="row">
+            @*<fieldset class="radiogroup">
+                <div class="radio">*@
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7" style="font-size:larger">Grupo Etario</label>
+                    <hr style="border-top-color:lightslategray; width:97%" />
+
+                    @*<div class="radio">*@
+                    <div class="col-md-2">
+                        <label>
+                            <input type="radio" name="Grupo" id="GrupoEtariosID" value="Menores de 18 años a 25 años">Menores de 18 años a 25 años
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="Grupo" value="26 a 35 años">26 a 35 años
+                        </label>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>
+                            <input type="radio" name="Grupo" value="36 a 45 años">36 a 45 años
+                        </label>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <label>
+                            <input type="radio" name="Grupo" value="46 a 55 años"> 46 a 55 años
+                        </label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>
+                            <input type="radio" name="Grupo" value="Mayores a los 55 Años"> Mayores a los 55 Años
+                        </label>
+                    </div>
+
+                    @*</div>*@
+                </div>
+            </div>
+            @*</div>
+                </fieldset>*@
+        </div>
+        <input type="text" name="GrupoEtarios" id="GrupoEtarios" hidden="hidden"><br />
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Vinculación Laboral:</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("FK_VinculacionLaboral", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Turno de Trabajo:</label>
+                    <div class="col-md-10">
+                        <input type="text" id="TurnoTrabajo" name="TurnoTrabajo" class="form-control" />
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-7">Cargo:</label>
+                    <div class="col-md-10">
+                        <input type="text" id="Cargo" name="Cargo" class="form-control" maxlength="100" readonly />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group has-feedback">
+                    <label class="col-md-7">Fecha de ingreso a la empresa:</label>
+                    <div class="col-md-10">
+
+                        <input type="text" class="form-control left" id="fechaIngresoEmpresa" name="fechaIngresoEmpresa" onchange="calcularTiempoAnt()" accept="" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group has-feedback">
+                    <label class="col-md-7">Fecha de ingreso en el último cargo:</label>
+                    <div class="col-md-10">
+                        <i class="glyphicon glyphicon-calendar form-control-feedback"></i>
+                        <input type="text" class="form-control left" id="FechaIngresoUltimoCargo" name="FechaIngresoUltimoCargo" accept="" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="form-group" style="margin-left:3px">
+                <label class="col-md-7">Antiguedad en la empresa:</label>
+
+            </div>
+
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="col-md-7">Años</label>
+                    <div class="col-md-10">
+                        <input class="form-control left" id="anyos" name="anyos" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="col-md-7">Meses</label>
+                    <div class="col-md-10">
+                        <input class="form-control left" id="meses" name="meses" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="col-md-7">Días</label>
+                    <div class="col-md-10">
+                        <input class="form-control left" id="dias" name="dias" readonly>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        @*<div class="row">
+
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <label class="col-md-7">Antecedentes de exposición laboral en Años:</label>
+                        <div class="col-md-3">
+                            <input type="text" id="AntecedentesExpLaboral" name="AntecedentesExpLaboral" maxlength="3" class="form-control" />
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>*@
+
+        <br />
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-7">CARACTERÍSTICAS PARA EL DESEMPEÑO DEL CARGO:</label>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-8">CARACTERÍSTICAS FÍSICAS:</label>
+                    <div class="col-md-12">
+                        <textarea id="caracteristicasFisicas" name="caracteristicasFisicas" class="form-control" rows="6" cols="6" style="resize:none" maxlength="996"></textarea>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-8">CARACTERÍSTICAS PSICOLÓGICAS:</label>
+                    <div class="col-md-12">
+                        <textarea id="caracteristicasPsicologicas" name="caracteristicasPsicologicas" class="form-control" rows="6" cols="6" style="resize:none" maxlength="996"></textarea>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-8">EVALUACIONES MÉDICAS REQUERIDAS:</label>
+                    <div class="col-md-12">
+                        <textarea id="evaluacionesMedicasRequeridas" name="evaluacionesMedicasRequeridas" class="form-control" rows="6" cols="6" style="resize:none" maxlength="996"></textarea>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" align="center" id="btnFormPerfil">
+
+
+            @*<div class="col-md-4">*@
+
+
+            <button type="button" data-toggle="modal" data-target="#@string.Format("modalactualizarp")" class="boton botonactive">Guardar Perfil </button>
+
+            <div id="@string.Format("modalactualizarp")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@<span aria-hidden="true"></span><span aria-hidden="true"></span>
+                            </button>
+                            <h4 class="modal-title title">Estimado Usuario</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+                            <center><p>¿Está seguro de guardar la información?</p></center>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button type="submit" id="actRegistro" onclick="validarPerfilSocioDemografico()" class="boton botonactive">Si</button>
+
+
+
+
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            @*</div>*@
+
+            @*<div class="col-md-4">
+
+                    <button type="button" id="btnExport" class="boton botonactive">Descargar Plantilla </button>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4">
+
+                    <a href="@Url.Action("exportarexcel", "PerfilSocioDemoGrafico" )" class="boton botonactive" style="margin-right:35px">Crear Reporte</a>
+
+                </div>*@
+        </div>
+    </div>
+    @*<br />
+        <br />*@
+
+
+    @*<div>
+            <a href="@Url.Action("Listado","PerfilSocioDemoGrafico")" class="boton botoninfo" title="Listado Perfiles" style="text-decoration:none">
+                Listado Perfiles
+            </a>
+        </div>*@
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+}

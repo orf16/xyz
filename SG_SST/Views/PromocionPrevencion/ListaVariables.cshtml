@@ -1,0 +1,158 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDSegVialDetalle>
+
+@{
+    ViewBag.Title = "Ver Lista de Variables";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="@Url.Action("PlanSeguridadVial", "PromocionPrevencion")">Plan de Seguridad Vial</a></li>
+    <li><a href="@Url.Action("ValoresAgregados", "PromocionPrevencion")">Valor Agregado</a></li>
+    <li class="active">Ver Lista de Variables</li>
+</ol>
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $("table tbody tr");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">LISTA DE VARIABLES</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Lista de Variables</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Regresar a lista de parámetros de valores agregados</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para regresar presione <button type="button" class="boton botonactive" style="cursor:default;">REGRESAR</button></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Contenido del Panel*@
+
+
+
+
+        <div class="form-group row internal-panel-body">
+            <div class="Tabla-Programa table-responsive add-side-padding">
+
+                @{
+                    if (Model.Count() > 0)
+                    {
+                        <table id="Grid3" class="table table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:70%;">
+                                        <span>Descripción</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:10%;">
+                                        <span>Criterio de Aval</span>
+                                    </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify">
+                                                <span>@item.VariableDesc</span>
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <span>@item.CriterioAval</span>
+                                            </td>
+                                        </tr>
+                                     }
+                                }
+                            </tbody>
+                        </table>
+                            <center><div class="pagination" id="paginador1"></div></center>
+                    }
+
+
+                }
+
+
+            </div>
+
+          
+
+
+        </div>
+
+
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+
+            <div class="col-md-12">
+                <button class="boton botonactive" onclick="location.href='@Url.Action("ValoresAgregados", "PromocionPrevencion")';return false;">REGRESAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,330 @@
+﻿@model SG_SST.Models.Planificacion.RequisitosLegalesOtros
+
+@{
+    ViewBag.Title = "Editar Requisitos Legales Otros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Requisitos Legales y Otros</a></li>
+    <li><a href="@Url.Action("ListadoMastrices","RequisitosLegalesOtros")">Consultar Matrices</a></li>
+    <li class="active">Editar Requisitos Legales y Otros</li>
+</ol>
+
+@*  @using (Html.BeginForm("RequisitosLegalesOtros", "GrabarRequisitosLegalesOtros", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {*@
+
+<form method="post" action="@Url.Action("GuardarEdicionRequisitosLegalesOtros", new { varid = @ViewBag.PK_RequisitosLegalesOtros, @id = "idModificarRequisitoMatriz" })">
+    @Html.HiddenFor(model => model.PK_RequisitosLegalesOtros)
+    @Html.HiddenFor(model => model.FK_Empresa)
+    @Html.HiddenFor(model => model.Empresa)
+    @Html.HiddenFor(model => model.Norma)
+
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Editar Requisitos Legales y Otros</div>
+
+        @*Boton Ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                   class="btn btn-ayuda btn-md"
+                   @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                    <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Editar Nuevo Requisito Legal</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p>Información del módulo</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Sistema:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Sistema, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Sistema, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="col-md-2">
+                    <label>Fecha Publicación:</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="date" value="@Model.FechaPublicacion.ToString("DD-MM-YYYY")" name="FechaPublicacion" class="form-control" style="background-color:whitesmoke" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Ente:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Ente, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ente, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-2">
+                    <label>Artículo:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Articulo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Articulo, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Descripción:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-2">
+                    <label>Modificado por:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Modificacion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Modificacion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Sugerencias:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Sugerencias, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Sugerencias, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-2">
+                    <label>Partes Interesadas:</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.PartesInteresadas, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PartesInteresadas, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+
+
+            <div class="panel panel-yellow">
+
+                <div class="well well-sm">
+                    <table>
+                        <tr>
+                            <td class="titulo_peligros"><label>Peligros Aspectos e Impactos</label></td>
+                        </tr>
+                    </table>
+
+                    <table>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <label>Clase de peligo:</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Clase_De_Peligro, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Clase_De_Peligro, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Peligro:</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Peligro, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Peligro, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Aspectos:</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Aspectos, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Aspectos, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Impactos:</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Impactos, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Impactos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Evidencia de Cumplimiento</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.EditorFor(model => model.Evidencia_Cumplimiento, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Evidencia_Cumplimiento, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="class panel panel-yellow">
+
+
+                        <div class="well well-sm">
+                            <table>
+                                <tr>
+                                    <td class="titulo_peligros"><label>Evaluación</label></td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>Cumplimiento:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownList("FK_Cumplimiento_Evaluacion", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                                    @Html.ValidationMessageFor(model => model.FK_Cumplimiento_Evaluacion, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>Hallazgo:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.EditorFor(model => model.Hallazgo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Hallazgo, "", new { @class = "text-danger" })
+                                </div>
+                                <table>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-md-2">
+                            <label>Estado:</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.DropDownList("FK_Estado_RequisitoslegalesOtros", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                            @Html.ValidationMessageFor(model => model.FK_Estado_RequisitoslegalesOtros, "", new { @class = "text-danger" })
+                        </div>
+
+
+
+
+                        <div class="col-md-2">
+                            <label>Responsable:</label>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Responsable, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Responsable, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Fecha de Seguimiento del control:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="date" value="@Model.Fecha_Seguimiento_Control.ToString("yyyy-MM-dd")" name="Fecha_Seguimiento_Control" class="form-control" style="background-color:whitesmoke" />
+                        </div>
+
+
+
+
+                        <div class="col-md-2">
+                            <label>Fecha de Actulización:</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="date" value="@Model.Fecha_Actualizacion.ToString("yyyy-MM-dd")" name="Fecha_Actualizacion" class="form-control" style="background-color:whitesmoke" />
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-10"></div>
+            <div class="col-md-2">
+                <input type="submit" value="Guardar Registro" class="form-control btn btn-warning" />
+                @*  <button type="submit" class="btn btn-warning">Guardar</button> *@
+            </div>
+        </div>
+    </div>
+
+    <a href="@Url.Action("index","RequisitosLegalesOtros") " class="btn btn-search btn-md" title="Formulario Principal">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </a>
+
+</form>
+@* }*@

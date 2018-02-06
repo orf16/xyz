@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Gobierno Organizacional";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+
+@*<div class="row">
+    <div class="col-sm-1"><img src="~/Content/Images/edificio-de-banco.png" /></div>
+</div>*@
+<ul class="nav nav-pills" role="tablist">
+    <li class=""><a id="tab3" href="#step3" role="tab" data-toggle="tab" class=""><h3> Menu Gestión Gobierno</h3></a></li>
+</ul>
+<hr />
+
+<div @*class="container"*@>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="panel panel-yellow">
+                <div class="panel-heading text-center">GOBIERNO ORGANIZACIONAL</div>
+                <div class="panel-body">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="row ">
+                            <a href="@Url.Action("misionM","Gobierno") " class="btn btn-warning btn-md tbr form-control" title="Mision Empresa"> <span class="glyphicon glyphicon-globe"></span> Mision Empresa</a> 
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <a href="@Url.Action("visionV", "Gobierno") " class="btn btn-warning btn-md tbr form-control" title="Vision Empresa"> <span class="glyphicon glyphicon-send"></span> Vision Empresa</a>
+                        </div>
+                        
+                        <hr />
+                        <div class="row">
+                            <a href="@Url.Action("MenuProcesos","Proceso") " class="btn btn-warning btn-md tbr form-control" title="Mapa Procesos"> <span class="glyphicon glyphicon-tasks"></span> Mapa Procesos</a>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <a href="@Url.Action("index","Organigrama") " class="btn btn-warning btn-md tbr form-control" title="Organigrama Empresa"> <span class="glyphicon glyphicon-tower"></span> Organigrama Empresa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+

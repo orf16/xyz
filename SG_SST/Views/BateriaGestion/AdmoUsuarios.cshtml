@@ -1,0 +1,907 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDBateriaUsuario>
+
+@{
+    ViewBag.Title = "Administración de Usuarios";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li><a href="@Url.Action("Index", "BateriaGestion")">Gestionar Batería Psicosocial</a></li>
+    <li class="active">Administración de Usuarios</li>
+</ol>
+
+<script>
+    //Guardar Plan
+    $(function () {
+        $("#CambiarEstado").bind("click", function () {
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea cambiar el estado de esta aplicación de cuestionario?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type:"warning",
+                closeOnConfirm: false
+            },
+            function () {
+                var onEventLaunchGuardar = new postGuardar();
+                onEventLaunchGuardar.launchGuardar();
+            });
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var IdGestion = $("#Id").val();
+            var Estado = $("#Estado").val();
+            var stringArray = new Array();
+            stringArray[0] = IdGestion;
+            stringArray[1] = Estado;
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/BateriaGestion/CambiarEstado",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "El estado de esta aplicación de cuestionario fue cambiada correctamente",
+                        type: "success",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true
+                    },
+                          function () {
+                              var url = "/BateriaGestion/Configurar?IdGestion=" + IdGestion + "";
+                              window.location.href = url;
+                          });
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Copiar Link
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+
+        swal({
+            title: "Estimado Usuario",
+            text: "El link se ha copiado en el portapapeles",
+            type: "success",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false
+        });
+    }
+    //Filtrar
+    $(function () {
+        $("#filtrar").bind("click", function () {
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+    $(function () {
+        $("#buscar_btn").bind("click", function () {
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+    function postGuardar1() {
+        this.launchGuardar1 = function () {
+
+            var stringArray = new Array();
+            stringArray[0] = $("#Ordenar").val();
+            stringArray[1] = $("#Filtrar").val();
+            stringArray[2] = $("#IdGestion").val();
+            stringArray[3] = $("#buscar").val();
+
+            if (stringArray[3]!=null) {
+                if (stringArray[3]!="") {
+                    var url = "/BateriaGestion/AdmoUsuarios?IdGestion=" + stringArray[2] + "&orden="+stringArray[0]+"&filtro="+stringArray[1]+"&doc="+stringArray[3];
+                }
+                else {
+                    var url = "/BateriaGestion/AdmoUsuarios?IdGestion=" + stringArray[2] + "&orden="+stringArray[0]+"&filtro="+stringArray[1]+"";
+                }
+            }
+            else {
+                var url = "/BateriaGestion/AdmoUsuarios?IdGestion=" + stringArray[2] + "&orden="+stringArray[0]+"&filtro="+stringArray[1]+"";
+            }
+            
+            window.location.href = url;
+        }
+    }
+    //Eliminar usuario
+    $(document).ready(function () {
+        $('.btnEliminar').click(function () {
+            var Id_Elm = $(this).attr('id');
+
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea eliminar a este usuario de la aplicación de este cuestionario ?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BateriaGestion/EliminarConvocado1",
+                    data: '{IdConvocado: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.probar == false) {
+                            if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                                swal({
+                                    title: "Estimado Usuario",
+                                    text: data.resultado,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    type: "warning",
+                                    closeOnConfirm: true
+                                },
+                            function () {
+                                location.reload(true);
+                            });
+
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                type: "warning",
+                                closeOnConfirm: true
+                            });
+                        }
+                        else {
+
+                            
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                type: "success",
+                                closeOnConfirm: true
+                            },
+                            function () {
+                                location.reload(true);
+                            });
+                            
+                        
+                        
+
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    
+                    }
+                });
+
+            });
+        });
+    });
+
+    //Reenviar correo usuario
+    $(document).ready(function () {
+        $('.reenviar').click(function () {
+            var Id_Elm = $(this).attr('id');
+
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea reenviar el correo de invitación a este usuario?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/BateriaGestion/ReenviarCorreo",
+                    data: '{IdConvocado: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.probar == false) {
+                            if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                                swal({
+                                    title: "Estimado Usuario",
+                                    text: data.resultado,
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    type: "warning",
+                                    closeOnConfirm: true
+                                },
+                            function () {
+                                location.reload(true);
+                            });
+
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                type: "warning",
+                                closeOnConfirm: true
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                type: "success",
+                                closeOnConfirm: true
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                    }
+                });
+
+            });
+        });
+    });
+
+
+    //Ver los resultados
+    $(document).ready(function () {
+        $('.entradaresultados').click(function () {
+            var Id_Elm = $(this).attr('name');
+            var probar=false;
+
+            swal({
+                title: "Estimado Usuario",
+                text: "es usted un psicólogo con posgrado en salud ocupacional, con licencia vigente de prestación de servicios en psicología ocupacional ?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+                window.location.href="/BateriaGestion/ResultadosAplicacion?IdUsuario=" + Id_Elm + "";
+            });
+        });
+    });
+
+</script>
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">ADMINITRACIÓN DE USUARIOS</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / ADMINITRACIÓN DE USUARIOS</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>EN ESTA SECCIÓN DE MÓDULO DE BATERIAS PSICOSOCIALES EL USUARIO PUEDE CONSULTAR QUE USUARIOS HACEN PARTE DE LA APLICACIÓN DEL INSTRUMENTO DE BATERIA PSICOSOCIAL, LAS FUNCIONES QUE POSSE ESTA SECCIÓN SON: FILTRAR USUARIOS, VER ESTADOS DE DILIGENCIAMIENTO, ELIMINAR USUARIOS, VER RESULTADOS DEL CUESTIONARIO Y REENVIAR CORREOS</strong></p>
+                           
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Filtrar usuarios</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Para filtrar usuarios se debe elegir en la lista deplegable <strong>Filtrar por</strong> y luego presionar <button type="button" class="boton botonactive" style="cursor:default;">FILTRAR</button> tambien puede ordenarlos por nombre o cédula</p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Consultar estado de diligenciamiento de usuarios</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">El sistema le mostrará en una tabla las diferentes personas que hacen parte de la aplicación de la batería, en las primeras columnas se mostrará la información básica <strong>Nombre</strong>, <strong>Documento</strong>, <strong>Correo Electrónico</strong> y <strong>Cuestionario a realizar</strong> luego de estas columnas aparecen datos del envió del correo y datos de diligenciamiento que se explicarán a continuación:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>1. Correo Enviado:</strong> Si en esta casilla aparece el icono (<span class="glyphicon glyphicon-ok"></span>) y una fecha, quiere decir que el correo se ha enviado al correo suministrado y la fecha será la fecha de envió de dicho correo. <strong>NOTA: el sistema no validará si al usuario de la batería ha recibido el correo, es importante que el usuario de Alissta verifique que efectivamente esta persona ha recibido o no el correo enviado</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:40%;" src="~/Content/Bateria/Imagenes/batg10.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>2. Acepta Condiciones:</strong> Si en esta casilla aparece el icono (<span class="glyphicon glyphicon-ok"></span>), quiere decir que el usuario de la batería ha leído y aceptado las condiciones en la página dispuesta para tal fin antes de diligenciar el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:40%;" src="~/Content/Bateria/Imagenes/batg11.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>3. Terminado:</strong> Si en esta casilla aparece el icono (<span class="glyphicon glyphicon-ok"></span>) y una fecha, quiere decir que el usuario de la batería ha diligenciado la totalidad del cuestionario en la fecha que aparece en la casilla. Cuando el estado de la aplicación del cuestionario cambie a <strong>finalizado</strong> el sistema mostrará un botón que le permitirá ver los <strong>resultados</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:40%;" src="~/Content/Bateria/Imagenes/batg12.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Eliminar usuarios de la aplicación de batería</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Esta función estará habilitada para usuarios que no han leído y aceptado las condiciones del diligenciamiento del cuestionario, presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para eliminar un usuario de la aplicación del cuestionario</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Ver resultado del cuestionario diligenciado</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Esta función estará habilitada para usuarios que han finalizado el diligenciamiento del cuestionario, presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto">Ver Resultados</i> para ir a la página que le mostrará los resultados del cuestionario <strong>NOTA: para ver esta opción se tienen que cumplir dos condiciones, la primera condición es que el convocado diligencie el cuestionario en su totalidad y la segunda condición es que el usuario de Alissta debe dar por finalizada la aplicación del cuestionario, este cambio lo puede realizar en la sección de 'configuración'</strong></p>
+                                
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Reenviar correo a usuario</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Esta función estará habilitada para usuarios que se les haya enviado un correo de invitación, presione <i class="glyphicon glyphicon-repeat" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para reenviar un correo</p>
+
+
+                                <strong></strong>
+                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Hidden("IdGestion", (string)ViewBag.IdGestion)
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información de la Aplicación</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Registro:</label>
+                        <span id="FechaRegistro">@ViewBag.FechaRegistro</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre del Cuestionario:</label>
+                        <span id="DesEncuesta">@ViewBag.Nombre.Replace("Estres", "Estrés")</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Estado:</label>
+                        <span id="DesEncuesta">@ViewBag.EstadoStr</span>
+                    </div>
+                    @{
+                        if ((int)ViewBag.EstadoNumber == 3)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Fecha de Finalización:</label>
+                                <span id="fechafin">@ViewBag.FechaFinalizacion</span>
+                            </div>
+                        }
+                    }
+                    @{
+                        if ((int)ViewBag.EstadoNumber == 1)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra inactivo, los usuarios no podrán ingresar a realizar el diligenciamiento, marque este estado si desea planear el cuestionario y convocar personas para su posterior diligenciamiento</span>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12">
+                                <h4 id="expliestado1">Para visualizar los resultados de cada uno de los usuarios el estado de la aplicación del cuestionario debe ser 'finalizado'</h4>
+                            </div>
+                        }
+                        if ((int)ViewBag.EstadoNumber == 2)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra activo, los usuario pueden diligenciar el cuestionario</span>
+                            </div>
+                            <div class="col-sm-12 col-md-12">
+                                <h4 id="expliestado1">Para visualizar los resultados de cada uno de los usuarios el estado de la aplicación del cuestionario debe ser 'finalizado'</h4>
+                            </div>
+                        }
+                        if ((int)ViewBag.EstadoNumber == 3)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra finalizado, los usuario no pueden diligenciar el cuestionario y se habilitará al usuario de Alissta para ver los resultados de el cuestionario</span>
+                            </div>
+                        }
+                    }
+                </div>
+
+
+            </div>
+            <br />
+        </div>
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Listado de Usuarios</h4>
+            </div>
+
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body add-top-margin-05em">
+                    <div class="row add-bottom-margin-05em" >
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label>Buscar por número de documento</label>
+                        </div>
+
+                    </div>
+                    <div class="row add-top-margin-05em">
+                        <div class="col-sm-12 col-md-4">
+                            <label class="hidden-md hidden-lg">buscar por</label>
+                            @Html.TextBox("buscar", (string)ViewBag.doc, null, htmlAttributes: new { @class = "form-control form-width-100" })
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body add-top-margin-05em">
+                    <div class="row">
+                        <div class="col-md-4 hidden-sm hidden-xs">
+                            <label>Ordenar por</label>
+                        </div>
+                        <div class="col-md-5 hidden-sm hidden-xs">
+                            <label>Filtrar por</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                            <label class="hidden-md hidden-lg">Ordenar por</label>
+                            @Html.DropDownList("Ordenar", null, null, htmlAttributes: new { @class = "form-control form-width-100" })
+                        </div>
+                        <div class="col-sm-12 col-md-5 add-bottom-margin-05em">
+                            <label class="hidden-md hidden-lg">Ordenar por</label>
+                            @Html.DropDownList("Filtrar", null,null, htmlAttributes: new { @class = "form-control form-width-100" })                       
+                        </div>
+                        <div class="col-sm-12 col-md-2 ">
+                            <button id="filtrar" class="boton botonactive col-margin">BUSCAR</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body">
+                    <div class="Tabla-Gestion1 table-responsive add-top-margin-05em">
+                        <table id="Grid3" class="table table-bordered" style="border: 2px solid lightslategray">
+
+                            <thead>
+                                <tr class="titulos_tabla" style="font-size:12px;">
+                                    <th colspan="10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        <span>LISTADO DE USUARIOS CONVOCADOS HABILITADOS</span>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_tabla" style="font-size:12px;">
+                                    
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:20%">
+                                        <span>Nombre</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        <span>Documento</span>
+                                    </th>
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        <span>Correo Electrónico</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:5%">
+                                        <span>Cuestionario</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%">
+                                        <span>Correo Enviado</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%">
+                                        <span>Acepta Condiciones</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%">
+                                        <span>Terminado</span>
+                                    </th>
+
+                                    @{
+                                        if ((int)ViewBag.EstadoNumber == 3)
+                                        {
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%">
+                                                <span>Ver Resultado</span>
+                                            </th>
+                                        }
+                                    }
+                                    
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%">
+                                        <span>Eliminar</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%">
+                                        <span>Reenviar Correo</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+
+                                    if (Model.Count() > 0)
+                                    {
+                                        string Formdata = "";
+                                        foreach (var item in Model)
+                                        {
+
+                                            <tr class="paginver" style="font-size:12px;">
+
+                                                @{
+                                                    var itemED = Model.Where(s => s.TokenPrivado == item.TokenPrivado).ToList();
+
+                                                    if (itemED.Count >= 2)
+                                                    {
+
+
+                                                        if (item.TokenPrivado != Formdata)
+                                                        {
+                                                        <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle;width:20%">
+                                                            <span>@item.Nombre</span>
+                                                        </td>
+                                                        <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                            <span>@item.NumeroIdentificacion</span>
+                                                        </td>
+                                                        <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center;">
+                                                                @{
+                                                                    if (item.CorreoElectronico != null)
+                                                                    {
+                                                                    <span>@item.CorreoElectronico</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                    <span>INIVTADO POR LINK PUBLICO</span>
+                                                                    }
+                                                            }
+
+                                                        </td>
+                                                        }
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;width:20%;">
+                                                                            <span>@item.Nombre</span>
+                                                                        </td>
+                                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                                            <span>@item.NumeroIdentificacion</span>
+                                                                        </td>
+                                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center;">
+                                                                            @{
+                                                                                if (item.CorreoElectronico != null)
+                                                                                {
+                                                                                    <span>@item.CorreoElectronico</span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span>INIVTADO POR LINK PUBLICO</span>
+                                                                                }
+                                                                            }
+
+                                                                        </td>
+                                                                                }
+                                                }
+                                                
+                                                
+                                                
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center;">
+                                                    @{
+                                                        if (item.NumeroIntentos != 1)
+                                                        {
+                                                            <span>@item.NombreEncuesta</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>EXTRALABORAL</span>
+                                                        }
+                                                    }
+
+                                                </td>
+                                                @{
+                                                    if (itemED.Count >= 2)
+                                                    { 
+                                                    if (item.TokenPrivado != Formdata)
+                                                    {
+                                                        <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                            @{
+                                                                if (item.EstadoEnvio != 0)
+                                                                {
+                                                                    if (item.EstadoEnvio == 1 && item.CorreoElectronico != null)
+                                                                    {
+                                                                        string FechaEnvio = "";
+                                                                        try
+                                                                        {
+                                                                            FechaEnvio = String.Format("{0:MM/dd/yy H:mm:ss}", item.FechaEnvio);
+                                                                        }
+                                                                        catch (Exception)
+                                                                        {
+                                                                        }
+
+                                                                        <span class="glyphicon glyphicon-ok"></span><span>  @FechaEnvio</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span></span>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span></span>
+                                                                }
+                                                            }
+                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                                        @{
+                                                                            if (item.EstadoEnvio != 0)
+                                                                            {
+                                                                                if (item.EstadoEnvio == 1 && item.CorreoElectronico != null)
+                                                                                {
+                                                                                    string FechaEnvio = "";
+                                                                                    try
+                                                                                    {
+                                                                                        FechaEnvio = String.Format("{0:MM/dd/yy H:mm:ss}", item.FechaEnvio);
+                                                                                    }
+                                                                                    catch (Exception)
+                                                                                    {
+                                                                                    }
+
+                                                                                    <span class="glyphicon glyphicon-ok"></span><span>  @FechaEnvio</span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span></span>
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span></span>
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                            }
+                                                }
+                                                
+                                                
+                                                @{
+                                                    if (item.ConfirmacionParticipacion != null)
+                                                    {
+                                                        if (item.ConfirmacionParticipacion == "Aceptado")
+                                                        {
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><span class="glyphicon glyphicon-ok"></span></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"></td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.RegistroOperacion == "Fin")
+                                                        {
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><span class="glyphicon glyphicon-remove"></span></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"></td>
+                                                        }
+                                                    }
+                                                }
+
+                                                @{
+                                                    if (item.RegistroOperacion != null)
+                                                    {
+                                                        if (item.RegistroOperacion == "Fin")
+                                                        {
+                                                            string FechaFin = "";
+                                                            try
+                                                            {
+                                                                FechaFin = String.Format("{0:MM/dd/yy H:mm:ss}", item.FechaRespuesta);
+                                                            }
+                                                            catch (Exception)
+                                                            {
+                                                            }
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><span class="glyphicon glyphicon-ok"></span><span> @FechaFin</span></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"></td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"></td>
+                                                    }
+                                                }
+                                                @{
+                                                    if ((int)ViewBag.EstadoNumber == 3)
+                                                    {
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                            @{
+                                                                if (item.RegistroOperacion != null)
+                                                                {
+                                                                    if (item.RegistroOperacion == "Fin" && item.ConfirmacionParticipacion == "Aceptado")
+                                                                    {
+                                                                        <a name="@item.Pk_Id_BateriaUsuario.ToString()"  class="btn btn-sm btn-positiva entradaresultados" title="Ver Resultados" style="margin-bottom:5px">
+                                                                            <span>Ver Resultados</span>
+                                                                        </a>
+                                                                    }
+                                                                }
+
+                                                            }
+
+                                                        </td>
+                                                                }
+                                                }
+                                                
+                                                                             
+
+    @{
+        if (itemED.Count >= 2)
+        {
+            if (item.TokenPrivado != Formdata)
+            {
+                if (item.ConfirmacionParticipacion != null)
+                {
+                    if (item.ConfirmacionParticipacion == "Aceptado")
+                    {
+                        <td rowspan="2" style="border-right: 2px solid lightslategray;"></td>
+                    }
+                    else
+                    {
+                        <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a id="@item.Pk_Id_BateriaUsuario.ToString()" class="btn btn-sm btn-positiva btnEliminar" title="Eliminar Usuario" style="margin-bottom:5px">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </a>
+                        </td>
+                    }
+                }
+                else
+                {
+                    if (item.RegistroOperacion == "Fin")
+                    {
+                        <td rowspan="2" style="border-right: 2px solid lightslategray;"></td>
+                    }
+                    else
+                    {
+                        <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a id="@item.Pk_Id_BateriaUsuario.ToString()" class="btn btn-sm btn-positiva btnEliminar" title="Eliminar Usuario" style="margin-bottom:5px">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </a>
+                        </td>
+                    }
+                }
+                if (item.CorreoElectronico != null)
+                {
+                    <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a id="@item.Pk_Id_BateriaUsuario.ToString()" class="btn btn-sm btn-positiva reenviar" title="Reenviar correo a Usuario" style="margin-bottom:5px">
+                            <span class="glyphicon glyphicon-repeat"></span>
+                        </a>
+                    </td>
+                }
+                else
+                {
+                    <td rowspan="2" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        
+                    </td>
+                }
+
+            }
+        }
+        else
+        {
+            if (item.ConfirmacionParticipacion != null)
+            {
+                if (item.ConfirmacionParticipacion == "Aceptado")
+                {
+                    <td  style="border-right: 2px solid lightslategray;"></td>
+                }
+                else
+                {
+                    <td  style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a id="@item.Pk_Id_BateriaUsuario.ToString()" class="btn btn-sm btn-positiva btnEliminar" title="Eliminar Usuario" style="margin-bottom:5px">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+                    </td>
+                }
+            }
+            else
+            {
+                if (item.RegistroOperacion == "Fin")
+                {
+                    <td  style="border-right: 2px solid lightslategray;"></td>
+                }
+                else
+                {
+                    <td  style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a id="@item.Pk_Id_BateriaUsuario.ToString()" class="btn btn-sm btn-positiva btnEliminar" title="Eliminar Usuario" style="margin-bottom:5px">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+                    </td>
+                }
+            }
+            if (item.CorreoElectronico != null)
+            {
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    <a id="@item.Pk_Id_BateriaUsuario.ToString()" class="btn btn-sm btn-positiva reenviar" title="Reenviar correo a Usuario" style="margin-bottom:5px">
+                        <span class="glyphicon glyphicon-repeat"></span>
+                    </a>
+                </td>
+            }
+            else
+            {
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    
+                </td>
+            }
+
+        }
+
+
+
+    }
+                                                    
+                                                
+                                            </tr>
+                                                                Formdata = item.TokenPrivado;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                        <tr>
+                                                            <td colspan="9" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                                                <span>No existen registros</span>
+                                                            </td>
+                                                        </tr>
+                                                            }
+
+                                                        }
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+            </div>
+            <br />
+
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("index", "BateriaGestion")';return false;" class="boton botonactive col-margin">REGRESAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

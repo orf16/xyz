@@ -1,0 +1,378 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEPP>
+
+    @{
+        ViewBag.Title = "Cargue Masivo EPP";
+    }
+    <script src="~/Scripts/Aplicacion/EPPCargueMasivo.js"></script>
+    <link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/miga-de-pan.css" rel="stylesheet">
+    <!-- Referencia a botones -->
+    <link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+    <ol class="breadcrumb">
+        <li><a href="javascript:void(0)">Aplicación</a></li>
+        <li><a href="javascript:void(0)">Administración de Elementos de Protección Personal</a></li>
+        <li class="active">Cargue Masivo de EPP</li>
+    </ol>
+    @Html.AntiForgeryToken()
+    
+
+@{
+    string MB_limit = ViewBag.LimiteMB.ToString();
+    @Html.Hidden("MB_limit", @MB_limit);
+    @Html.Hidden("estadohtml","get");
+}
+
+
+    <div class="panel panel-default std-panel-body">
+        <div class="panel-heading panel-heading-custom">CARGUE MASIVO DE ELEMENTOS DE PROTECCIÓN PERSONAL</div>
+        <div class="panel-body">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Cargue Masivo EPP</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p style="margin-bottom:20px;line-height: 200%;"><u><strong>OBJETIVO DE CARGUE MASIVO EPP</strong></u></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> En esta función del módulo de elementos de protección personal, el usuario puede crear uno o varios elementos de protección personal importandolos de una hoja de cálculo</p>
+
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Primer Paso:</strong> Descargue la plantilla, para ello presione  <button type="button" class="boton botonactive" style="cursor:default;">DESCARGAR PLANTILLA</button></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Segundo Paso:</strong> Cargue la plantilla diligenciada, para ello elija el archivo (formato XLSX) y presione <button type="button" class="boton botonactive" style="cursor:default;">CARGAR</button> </p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Tercer Paso:</strong> El sistema validará si se encuentra bien diligenciada o por el contrario presenta inconsistencias y le mostrara un mensaje de confirmación. En caso de no estar bien diligenciada el sistema mostrará celdas sombreadas, si el usuario se ubica en la celda sombreada el sistema mostrará un mensaje de validación</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Cuarto Paso:</strong> diligenciar por cada fila el valor del RIESGO CONTROLADO, este campo es obligatorio</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Quinto Paso (opcional):</strong> diligenciar por cada fila el valor CARGOS ASOCIADOS, IMAGEN y FICHA TÉCNICA</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Sexto Paso:</strong> para guardar los EPP presione  <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR EPP</button></p>
+                                    <hr />
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Manual Cargue Masivo de EPP</strong> Si desea información más detallada por favor haga click en el siguiente botón para descargar un manual de uso  <button type="button" onclick="location.href='@Url.Action("Download_Manual", "AdmoEPP")';return false;" class="boton botonactive" style="cursor:default;">DESCARGAR MANUAL DE USO</button></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @{
+                int NumeroFilas = 0;
+                foreach (var item in Model)
+                {
+                    NumeroFilas = NumeroFilas + 1;
+                }
+                if (NumeroFilas > 0)
+                {
+                    <div class="col-md-12 Epptable" style="overflow-x:scroll;height:auto;max-height:500px;">
+                        <label for="File1">@NumeroFilas EPP cargados</label>
+                        <table class="table table-responsive table-bordered" id="Grid3" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;">
+                                        <span>NOMBRE EPP</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:200px">
+                                        <span>PARTE DEL CUERPO A PROTEGER</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:200px">
+                                        <span>RIESGO CONTROLADO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:250px">
+                                        <span>ESPECIFICACIÓN TÉCNICA</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:250px">
+                                        <span>USO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:250px">
+                                        <span>MANTENIMIENTO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>VIDA ÚTIL</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>REPOSICIÓN</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>DISPOSICIÓN FINAL</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>CARGOS ASOCIADOS</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>IMAGEN</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>FICHA TÉCNICA</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    string IdTabla = "Tabla_" + item.Pk_Id_EPP;
+                                    string IdTbody = "TbodyCargos_" + item.Pk_Id_EPP;
+                                    string IdSpan = "SpanTabla_" + item.Pk_Id_EPP;
+                                    <tr class="paginacc">
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @Html.DisplayFor(model => item.NombreEPP)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @Html.DisplayFor(model => item.ParteCuerpo)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @Html.DropDownList("Pk_Id_Clasif_Peligro", null, "-- Seleccione una Clasificación --", htmlAttributes: new { @class = "form-control form-width-100" })
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.EspecificacionTecnica)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.Uso)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.Mantenimiento)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.VidaUtil)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.Reposicion)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.DisposicionFinal)
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                            <a href="#" name="@item.Pk_Id_EPP" nameEPP="@item.NombreEPP" class="btn btn-sm btn-positiva MostrarCargos" title="Agregar Cargos" style="height:35px;">
+                                                <span class="glyphicon glyphicon-plus"></span>Agregar Cargo<span id="@IdSpan"> (0)</span>
+                                            </a>
+                                            <div style="display:none;">
+                                                <div id="TablaCargoEPP @item.Pk_Id_EPP">
+                                                    <table id="@IdTabla" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                                        <thead>
+                                                            <tr class="titulos_tabla">
+                                                                <th class="col-sm-8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                    <p>Cargo</p>
+                                                                </th>
+                                                                <th class="col-sm-2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                    <p>Número de Trabajadores</p>
+                                                                </th>
+                                                                <th class="col-sm-2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                    <p>Eliminar Cargo</p>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="@IdTbody"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @{
+                                                string IdImagen = "Imagen_" + item.Pk_Id_EPP.ToString() + "";
+                                                string IdImagenD = "Imagen_D_" + item.Pk_Id_EPP.ToString();
+                                                string IdImagenC = "Imagen_C_" + item.Pk_Id_EPP.ToString();
+                                                <div id="ImagenEPP @item.Pk_Id_EPP">
+                                                    <img style="max-width: 100%;max-height: 100%;display:none;margin-bottom:5px;" id="@IdImagenC" class="firma-EHM-estilo" src="" alt="" style="cursor:pointer;min-height:100px;min-width:100%; border: 0.3px solid #999999" />
+                                                </div>
+                                                <a href="#" name="@item.Pk_Id_EPP" nameEPP="@item.NombreEPP" class="btn btn-sm btn-positiva MostrarImagen" title="Agregar Imagenes" style="height:35px;">
+                                                    Agregar/Editar Imagen
+                                                </a>
+                                                <label style="display:none" id="@IdImagen"></label>
+                                                <label style="display:none" id="@IdImagenD"></label>                                         
+                                           }
+                                            
+                                        </td>
+                                        <td class="td_principal" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center;">
+                                            @{
+                                                string IdArchivo = "Archivo_" + item.Pk_Id_EPP.ToString() + "";
+                                                string IdArchivoD = "Archivo_D_" + item.Pk_Id_EPP.ToString();
+                                                string IdArchivoC = "Archivo_C_" + item.Pk_Id_EPP.ToString();
+                                                <div id="ArchivoEPP @item.Pk_Id_EPP">
+                                                    <label  class="col-md-12" id="@IdArchivoC"></label>
+                                                   @*<span  id="@IdArchivoC"></span>*@ 
+                                                </div>
+                                                <a href="#" name="@item.Pk_Id_EPP" nameEPP="@item.NombreEPP" class="btn btn-sm btn-positiva MostrarArchivo" title="Adjuntar Ficha Técnica" style="height:35px;">
+                                                    Adjuntar Ficha Técnica
+                                                </a>
+
+                                                <input id="@IdArchivo" type="text" style="display:none" />
+                                                <input id="@IdArchivoD" type="text" style="display:none" />
+
+                                                @*<label class="col-md-12" style="display:block" id="@IdArchivo"></label>
+                                                <label class="col-md-12" style="display:block" id="@IdArchivoD"></label>*@
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </table>
+
+                    </div>
+                                }
+            }
+
+            <div class="col-sm-12 form-group">
+                <div id="div_novedad_validar">
+                    <span id="msj_glyphicon"></span><span id="msj_novedad_validar"></span>
+                </div>
+            </div>
+
+            <div class="internal-panel add-bottom-margin-05em">
+                <div class="internal-panel-body">
+                    <div class="form-group row remove-bottom-margin">
+                        @using (Html.BeginForm("Upload", "AdmoEPP", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <div class="col-sm-12"><label for="File1">Cargar Archivo (Únicamente Formato xlsx)</label></div>
+                                    <div class="col-sm-6"><input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-file-xls" /></div>
+                                    <div class="col-sm-6"><button class="boton botonactive" id="btn-add-file" type="submit">CARGAR</button></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="GuardarEPP" class="boton botonactive col-margin">GUARDAR EPP</button>
+                </div>
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="DescargarPlantilla" onclick="location.href='@Url.Action("Download", "AdmoEPP")';return false;" class="boton botonactive col-margin">DESCARGAR PLANTILLA</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="boton botoninfo" onclick="location.href='@Url.Action("MatrizEPP", "AdmoEPP")';return false;">CONSULTAR MATRIZ</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<div id="myModal" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 10px;">
+        <CENTER><H3>CARGOS ASOCIADOS AL EPP CARGADO</H3></CENTER>
+        <div class="col-md-12" style="margin-bottom:5px;">
+            <label id="Nombre_EPP"></label>
+        </div>
+
+        <div class="col-md-6" style="margin-bottom:5px;">
+            <label>Cargo</label>
+            @Html.DropDownList("Pk_Id_Cargo", null, "-- Seleccione un Cargo --", htmlAttributes: new { @class = "form-control form-width-100", @id= "NombreCargo" })
+        </div>
+        <div class="col-md-3 col-md-offset-3" style="margin-bottom:5px;">
+            <label>Número de Trabajadores</label>           
+            <input class="form-control form-width-100 text-box single-line" id="NumeroTrabajadores" min="1" type="number" >
+        </div>
+        <div class="col-md-6" style="margin-bottom:5px;">           
+            <button id="Agregar_Cargo" class="boton botonactive col-margin">AGREGAR CARGO</button>
+        </div>
+        <span id="val-error" class="text-danger field-validation-error val-message col-sm-12" style="display:none;"></span>
+        <input id="IdTabla" type="text" style="display:none"/>
+          <div id="tabla_modal"></div>  
+          <center><button id="close_modal" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+<div id="myModal1" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 10px;">
+        <CENTER><H3>IMAGEN DEL EPP</H3></CENTER>
+        <div class="col-md-12" style="margin-bottom:5px;">
+            <label id="Nombre_EPP_img"></label>
+        </div>
+        <center><div id="imagen_modal"></div></center>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <label for="File2">Cargar Imagen</label>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <div class="col-sm-6"><input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-img" /></div>
+                <div class="col-sm-6"><button class="boton botonactive" id="btn-adj-img" type="submit">ADJUNTAR</button></div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <h6>Estimado usuario, recuerde respetar los derechos de autor y propiedad intelectual al intentar subir una imagen</h6>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 add-bottom-margin-05em">
+            <div class="form-group">
+                <div class="col-sm-12"></div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <label for="File2">Eliminar Imagen</label>
+                <button id="EliminarImagen" class="boton botonactive col-margin">ELIMINAR IMAGEN</button>
+            </div>
+        </div>
+        <span id="val-error-imagen" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;"></span>
+        <input id="IdTabla_img" type="text" style="display:none" />
+        <center><button id="close_modal1" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+<div id="myModal2" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 10px;">
+        <CENTER><H3>FICHA TÉCNICA DEL EPP</H3></CENTER>
+        <div class="col-md-12" style="margin-bottom:5px;">
+            <label id="Nombre_EPP_arch"></label>
+        </div>
+        <center>
+            <label id="Nombre_EPP_arch_name"></label>
+        </center>
+        @*<div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <label for="File2">Cargar Archivo</label>
+                <div class="input-group">
+                    <input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-arch" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-positiva-invert" id="btn-adj-arch" type="submit">ADJUNTAR</button>
+                    </span>
+                </div>
+            </div>
+        </div>*@
+
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <label for="File2">Cargar Archivo</label>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 add-bottom-margin-05em">
+            <div class="form-group">
+                <div class="col-sm-6"><input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-arch" /></div>
+                <div class="col-sm-6"><button class="boton botonactive" id="btn-adj-arch" type="submit">ADJUNTAR</button></div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 add-bottom-margin-05em add-top-margin-05em" >
+            <div class="form-group">
+                <label for="File2">Eliminar Archivo</label>
+                <button id="EliminarArchivo" class="boton botonactive col-margin">ELIMINAR ARCHIVO</button>
+            </div>
+        </div>
+        <span id="val-error-archivo" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;"></span>
+        <input id="IdTabla_arch" type="text" style="display:none" />
+        <center><button id="close_modal2" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>

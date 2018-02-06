@@ -1,0 +1,263 @@
+﻿
+@{
+    ViewBag.Title = "CrearPlanTrabajo";
+}
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+@*@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+}*@
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaInicio');
+        ConstruirDatePickerPorElemento('FechaFinal');
+        ConstruirDatePickerPorElemento('fechaaplicacion');
+    });
+
+    //Guardar plan
+    $(function () {
+        $("#crearPlanTrabajo").bind("click", function () {
+            $("#val-sede").css("display", "none");
+            $("#val-sede").text('');
+            $("#val-fechainicio").css("display", "none");
+            $("#val-fechainicio").text('');
+            $("#val-fechafin").css("display", "none");
+            $("#val-fechafin").text('');
+            $("#val-vigencia").css("display", "none");
+            $("#val-vigencia").text('');
+
+
+            $("#val-tipo").css("display", "none");
+            $("#val-tipo").text('');
+            $("#val-fechaaplicacion").css("display", "none");
+            $("#val-fechaaplicacion").text('');
+
+
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Fk_Id_Sede").val();
+            stringArray[1] = $("#FechaInicio").val();
+            stringArray[2] = $("#FechaFinal").val();
+            stringArray[3] = $("#Vigencia").val();
+            stringArray[4] = $("#ListaTipos").val();
+            stringArray[5] = $("#fechaaplicacion").val();
+            
+            var EDAplicacionPlanTrabajo = {
+                Fk_Id_Sede: stringArray[0],
+                FechaInicio: stringArray[1],
+                FechaFinal: stringArray[2],
+                Vigencia: stringArray[3],
+                Tipo: stringArray[4],
+                FechaAplicacion: stringArray[5]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/CrearPlanTrabajo',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajo: EDAplicacionPlanTrabajo }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-sede").css("display", "block");
+                            $("#val-sede").text(data.Validacion[0]);
+                        }
+                        if (data.boolValidacion[1] == true) {
+                            $("#val-fechainicio").css("display", "block");
+                            $("#val-fechainicio").text(data.Validacion[1]);
+                        }
+                        if (data.boolValidacion[2] == true) {
+                            $("#val-fechafin").css("display", "block");
+                            $("#val-fechafin").text(data.Validacion[2]);
+                        }
+                        if (data.boolValidacion[3] == true) {
+                            $("#val-vigencia").css("display", "block");
+                            $("#val-vigencia").text(data.Validacion[3]);
+                        }
+
+                        if (data.boolValidacion[4] == true) {
+                            $("#val-tipo").css("display", "block");
+                            $("#val-tipo").text(data.Validacion[4]);
+                        }
+                        if (data.boolValidacion[5] == true) {
+                            $("#val-fechaaplicacion").css("display", "block");
+                            $("#val-fechaaplicacion").text(data.Validacion[5]);
+                        }
+
+                        if (data.boolValidacion[6] == true) {
+                            $("#val-vigencia").css("display", "block");
+                            $("#val-vigencia").text(data.Validacion[6]);
+                        }
+
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo="+ data.url +""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+
+    //Buscar clasificacion peligro por TipoPeligro
+    function jsFunction() {
+        var myselect = document.getElementById("ListaTipos");
+        var idselect = myselect.options[myselect.selectedIndex].value;
+
+        if (idselect=="Batería Psicosocial") {
+            $("#mostrar").css("display","");
+        }
+        else {
+            $("#mostrar").css("display","none");
+        }
+    }
+
+</script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Medidas de Prevención y Control</a></li>
+    <li><a href="@Url.Action("GestionarPlanesTrabajo", "PlanTrabajo")">Plan de Trabajo</a></li>
+    <li class="active">Crear Plan de Trabajo</li>
+</ol>
+
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">CREAR PLAN DE TRABAJO</div>
+    <div class="panel-body">
+
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / CREAR PLAN DE TRABAJO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para crear un plan de trabajo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija la <strong>sede</strong> a la que pertenecerá el plan de trabajo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Elija la <strong>fechas de inicio</strong> y la <strong>fechas de finalización</strong> del plan de trabajo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>NOTA: Es importante que el rango de fechas que elige el usuario para la creación del plan de trabajo no coincida con un plan de trabajo que ya este registrado, si no esta seguro que el rango de fechas es válido por favor consulte los planes de trabajo de la sede seleccionada</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3. Elija la <strong>vigencia</strong> del plan de trabajo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">4. Elija el <strong>tipo</strong>, si necesita un plan de trabajo para el plan estratégico de seguridad vial elija <strong>plan estratégico de seguridad vial</strong> y si por el contrario el plan de trabajo es para una batería psicosocial elija <strong>batería psicosocial</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">5. Si eligió <strong>batería psicosocial</strong> en el paso anterior, elija la fecha de aplicación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">6. presione el botón <button type="button" class="boton botonactive" style="cursor:default;">CREAR PLAN</button> para crear el plan de trabajo y terminar la operación</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-10em">
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="col-xs-3">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                                @Html.DropDownList("Fk_Id_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                                <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                            <div class="col-xs-3">
+                                <h5><b>Fecha inicio periodo:</b></h5>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="FechaInicio" id="FechaInicio" readonly />
+                                    <label for="FechaInicio" class="error" style="display:none;"></label>
+                                    <span id="val-fechainicio" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <h5><b>Fecha fin periodo:</b></h5>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" readonly />
+                                    <label for="FechaFinal" class="error" style="display:none;"></label>
+                                    <span id="val-fechafin" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <h5><b>Vigencia:</b></h5>
+                                @Html.DropDownList("Vigencia", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                                <span id="val-vigencia" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="col-xs-6">
+                                <h5><b>Origen:</b></h5>
+                                @Html.DropDownList("ListaTipos", null, htmlAttributes: new { @class = "form-control", onChange = "jsFunction()" }, optionLabel: "-- Seleccionar --")
+                                <span id="val-tipo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                            <div class="col-xs-3" id="mostrar" style="display:none">
+                                <h5><b>Fecha de aplicación:</b></h5>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="fechaaplicacion" id="fechaaplicacion"  />
+                                    <span id="val-fechaaplicacion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer add-top-margin-10em">
+            <div class="row">
+                <div class="col-md-6" style="margin-bottom:5px;">
+                    <button id="crearPlanTrabajo" class="boton botonactive col-margin">CREAR PLAN</button>
+                </div>
+                <div class="col-md-6" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("GestionarPlanesTrabajo", "PlanTrabajo")';return false;" class="boton botoninfo col-margin">REGRESAR</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

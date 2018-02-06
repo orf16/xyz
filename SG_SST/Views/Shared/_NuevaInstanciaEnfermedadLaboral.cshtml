@@ -1,0 +1,100 @@
+﻿@model SG_SST.Models.EnfermedadLaboral.InstanciaRegistrada
+@{
+    Model.EstadosInstancia = new List<SelectListItem>
+                    {
+                        new SelectListItem() { Value = "", Text = "Seleccione una opción" },
+                        new SelectListItem() { Value = "1", Text = "En Estudio" },
+                        new SelectListItem() { Value = "2", Text = "Laboral" },
+                        new SelectListItem() { Value = "3", Text = "Común" }
+                    };
+}
+<table class="table table-bordered">
+    <tr data-idInstancia="@Model.IdInstancia">
+        <td style="width:60%"><label data-infoInstacia="NombreInstancia">@Model.Nombre</label></td>
+        <td style="width:30%"><label data-infoInstacia="EstadoInstancia">Estado de la Instancia registrada: @Model.NombreEstadoInstancia</label></td>
+        <td>
+            <a href="javascript:void(0)" onclick="javascript:CargarDatosInstanciaModificar(@Model.IdInstancia);" class="btn btn-search btn-md" style="font-size: inherit" data-infoInstacia="IdInstancia" data-toggle="modal" data-target="#ModificarInstanciaModal">
+                Modificar@*<i class="glyphicon glyphicon-search"></i>*@
+            </a>
+        </td>
+    </tr>
+</table>
+@*Html del modal*@
+<div class="modal fade" id="ModificarInstanciaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header cabecera">
+                <h3 class="modal-title cabeceratitle" id="exampleModalLabel"><strong>Instancia</strong></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div id="instModificar">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="ModificarBtn" type="button" class="boton botoncancel ModificarBtn" data-idInstancia="@Model.IdInstancia">Modificar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ModificarBtn').on('click', function () {
+            var IdInstanciaModal = $('#IdInstanciaModal').val();
+            var InstanciaModal = $('#InstanciaModal').val();
+            var QuienCalificaModal = $('#QuienCalificaModal').val();
+            var FechaCalificacionModal = $('#FechaCalificacionModal').val();
+            var EstadoModal = $('#EstadoModal').val();
+            var NombreEstadoModal = $('#EstadoModal option:selected').text();
+            if (IdInstanciaModal != "" && EstadoModal != "") {
+                var datos = {
+                    IdInstancia: IdInstanciaModal,
+                    Nombre: InstanciaModal,
+                    EstadoInstancia: EstadoModal,
+                    NombreEstadoInstancia: NombreEstadoModal,
+                    QuienCalifica: QuienCalificaModal,
+                    FechaCalificacion: FechaCalificacionModal
+                };
+                PopupPosition();
+                $.ajax({
+                    url: urlBase + urlEnferLabDiag + '/ModificarInstancia',
+                    type: 'post',
+                    data: { nuevaInstancia: datos }
+                }).done(function (response) {
+                    if (response != '' && response.Estado == 'OK') {
+                        console.log(IdInstanciaModal);
+                        $('tr[data-idinstancia="' + IdInstanciaModal + '"]').find('label[data-infoinstacia="NombreInstancia"]').text(InstanciaModal);
+                        $('tr[data-idinstancia="' + IdInstanciaModal + '"]').find('label[data-infoinstacia="EstadoInstancia"]').text("Estado de la Instancia registrada: " + NombreEstadoModal);
+                        var instanciasGuardadas = sessionStorage.getItem('Instancias');
+                        if (instanciasGuardadas) {
+                            instancias = JSON.parse(instanciasGuardadas);
+                            instancias.find(x => x.IdInstancia == IdInstanciaModal).Nombre = InstanciaModal;
+                            instancias.find(x => x.IdInstancia == IdInstanciaModal).EstadoInstancia = EstadoModal;
+                            instancias.find(x => x.IdInstancia == IdInstanciaModal).NombreEstadoInstancia = NombreEstadoModal;
+                            instancias.find(x => x.IdInstancia == IdInstanciaModal).QuienCalifica = QuienCalificaModal;
+                            sessionStorage.removeItem('Instancias');
+                            sessionStorage.setItem('Instancias', JSON.stringify(instancias));
+                        }
+                        $('#ModificarInstanciaModal').modal('hide');
+                    }
+                    OcultarPopupposition();
+                });
+            } else {
+                swal({
+                    title: 'Atención',
+                    text: 'Debe diligenciar todos los campos.',
+                    html: true,
+                    type: 'warning',
+                    confirmButtonText: "Aceptar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                });
+                return false;
+            }
+        });
+    });
+</script>

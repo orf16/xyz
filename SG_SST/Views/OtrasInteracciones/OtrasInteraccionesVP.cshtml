@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SG_SST.Models.Politica.Mod_OtrasInteracciones>
+
+<div class="table-responsive">
+    <table class="table table-bordered" id="idtblOtrasInteracciones" style="border: 2px solid lightslategray">
+
+        <tr class="titulos_tabla">
+            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase"></td>
+            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase"><b>Nombre de Archivo</b></td>
+            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase"><b>Archivo Adjunto</b></td>
+            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase"><b>Tipo de Documento</b></td>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    <input type="checkbox" class="checkBox" id="checklista" value="@item.ID_OtrasInteraciones" />
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Archivo_OtrasInteracciones)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @*@Html.ActionLink("visualizar", "MostrarMatriz", new { idSede = item.IdSede, idMetodologia = item.IdMetodologia }, htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })*@
+
+                    @*<button type="button" class="btn-search" data-toggle="modal" data-target="#@string.Format("modal{0}", item.ID_OtrasInteraciones)" title="Consulta">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </button>*@
+
+                    <a class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal{0}", item.ID_OtrasInteraciones)" title="Consulta">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </a>
+
+                    <div id="@string.Format("modal{0}", item.ID_OtrasInteraciones)" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">  </h4>
+                                </div>
+                                <div class="modal-body ">
+
+                                    @*<center><img src="@Url.Action("MostrarOtrasInteraccionesPDF", new { item.ID_OtrasInteraciones })"/></center>*@
+                                    <center><object data="@Url.Action("MostrarOtrasInteraccionesPDF", new { item.ID_OtrasInteraciones })" type="application/pdf" width="575" height="500"></object></center>
+
+                                </div>
+                                <div class="modal-footer alert-dismissable">
+                                    @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td id="tdDocumentoPrivado" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.TipoDocumento_Archivo)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/Politica")
+}

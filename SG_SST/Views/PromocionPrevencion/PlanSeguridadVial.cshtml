@@ -1,0 +1,370 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDPlanVial>
+
+ 
+
+    @{
+        ViewBag.Title = "Plan de Seguridad Vial";
+    }
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/miga-de-pan.css" rel="stylesheet">
+    <!-- Referencia a botones -->
+    <link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+    <link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+    <ol class="breadcrumb">
+        <li><a href="javascript:void(0)">Aplicación</a></li>
+        <li><a href="javascript:void(0)">Plan de Seguridad Vial</a></li>
+        <li class="active">Gestionar Plan</li>
+    </ol>
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $("table tbody tr");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+
+    //Guardar Plan
+    $(function () {
+
+        $("#CrearPlanVial").bind("click", function () {
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea crear un plan de seguridad vial?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type:"warning",
+                closeOnConfirm: false
+            },
+            function () {
+                var onEventLaunchGuardar = new postGuardar();
+                onEventLaunchGuardar.launchGuardar();
+            
+            });
+        });
+    });
+
+    function postGuardar() {
+        this.launchGuardar = function () {
+
+            var stringArray = new Array();
+            stringArray[0] = $("#Pk_Id_Sede").val();
+            var EDPlanVial = {
+                Fk_Id_Sede: stringArray[0]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PromocionPrevencion/CrearPlan',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDPlanVial),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                       
+                    });
+                        location.reload(true);
+                    }
+                    
+
+
+                    if (data.Probar == false) {
+                        swal("Advertencia", data.Estado,"warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "El plan de seguridad vial ha sido creado",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location = data.url;
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                    console.log(data.Estado)
+                }
+            });
+
+        }
+    }
+
+    //Redirigir a formulario
+    $(function () {
+
+        $("#ContinuarEval").bind("click", function () {
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+
+
+    function postGuardar1() {
+        this.launchGuardar1 = function () {
+
+            var IdPlanSeg = 0;
+
+            var IdString = $('input:radio[name="SeleccionarRadio"]:checked').val();
+            if (IdString!=null) {
+                if (IdString != "0") {
+                    IdPlanSeg = $('input:radio[name="SeleccionarRadio"]:checked').val();
+                }
+            }
+
+            if (IdPlanSeg != 0) {
+
+                var url = "/PromocionPrevencion/SeguridadVialFormulario?IdSegVial=" + IdPlanSeg;
+                window.location.href = url;
+            }
+        }
+    }
+</script>
+
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default std-panel-body">
+        <div class="panel-heading panel-heading-custom">EVALUACIÓN INICIAL DEL PLAN ESTRATÉGICO DE SEGURIDAD VIAL</div>
+        <div class="panel-body">
+            @*Boton de ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Evaluación Inicial del Plan Estratégico de Seguridad Vial</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+                                    <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Crear plan estratégico de seguridad vial</strong></u></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para crear un plan estratégico de seguridad vial el usuario debe seleccionar una <strong>Sede</strong>, posteriormente debe presionar el botón  <button type="button" class="boton botonactive" style="cursor:default;">CREAR EVALUACIÓN</button>. Es importante que el usuario diligencie en la sección de <strong>VALORES AGREGADOS (OPCIONAL)</strong> los parámetros y variables que harán parte de la evaluación si los necesita inlcuir en la evaluación</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Diligenciar/Consultar plan estratégico de seguridad vial</strong></u></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para diligenciar o consultar el plan estrátegico de seguridad vial, el usuario debe seleccionar una evaluación en la tabla que se ubica en la sección llamada <strong>INFORMACIÓN DE EVALUACIONES</strong>, posteriormente debe presionar el botón  <button type="button" class="boton botonactive" style="cursor:default;">CONTINUAR EVALUACIÓN</button></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Estados de las evaluaciones</strong></u></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> En la sección <strong>INFORMACIÓN DE EVALUACIONES</strong>, se desplegarán todas las evaluaciónes guardadas. Si en la columna llamada <strong>Estado</strong> encuentra la palabra <span style="color:green;">Completa</span> quiere decir que se completó la evaluación y puede consultar los resultados; si por el contrario aparece la palabra <span style="color:orange;">Incompleta</span> quiere decir que falta por diligenciar una o más variables de la evaluación</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar/Consultar parámetros del pilar VALOR AGREGADO</strong></u></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para agregar o consultar los parámetros del pilar VALOR AGREGADO presione <button type="button" class="boton botonactive" style="cursor:default;">PARÁMETROS VALOR AGREGADO</button></p>
+                                    <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Esquema de jerarquía del plan estratégico de seguridad vial es el siguiente: Pilar -> Parámetro -> Variable </strong></u></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*Contenido del Panel*@
+
+            <div class="internal-panel add-bottom-margin-05em add-top-margin-10em">
+                <div class="internal-panel-header panel-heading">
+                    <h4>Crear Evaluación</h4>
+                </div>
+                <div class="internal-panel-body add-top-margin-05em">
+                    <div class="form-group row remove-bottom-margin">
+                        <div class="col-sm-6 add-top-margin-10em">
+                            <label>Razón Social</label>
+                            @Html.TextBox("RazonSocial", (string)ViewBag.RazonSocial, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6 add-top-margin-10em">
+                            <label>NIT</label>
+                            @Html.TextBox("Nit", (string)ViewBag.Nit, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                        </div>
+                        <div class="col-sm-6 add-top-margin-10em">
+                            <label>Sede</label>
+                            @Html.DropDownList("Pk_Id_Sede", (SelectList)ViewBag.Pk_Id_Sede, "-- Seleccione una Sede --", htmlAttributes: new { @class = "form-control" })
+                            <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                        <center>
+                            <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                                <button id="CrearPlanVial" class="boton botonactive col-margin">CREAR EVALUACIÓN</button>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                <div class="internal-panel-header panel-heading">
+                    <h4>Información de evaluaciones</h4>
+                </div>
+                <div class="internal-panel-body add-top-margin-05em">
+                    <div class="form-group row">
+                        
+                        <div class="col-sm-12 add-top-margin-10em">
+                            @{
+                                if (Model.Count() > 0)
+                                {
+                                    <table id="Grid3" class="table table-bordered" style="border: 2px solid lightslategray">
+                                        <thead>
+                                            <tr class="titulos_tabla">
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;">
+
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Evaluación</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Sede</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:80px;">
+                                                    <span>Fecha</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Estado</span>
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center;max-width:50px;">
+                                                            @Html.RadioButton("SeleccionarRadio", item.Pk_Id_SegVial)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                            @{
+                                                                string EvalName = "Evaluación Plan Seguridad Vial " + item.Id_Consecutivo;
+                                                                <span>@EvalName</span>
+
+                                                            }
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                            @Html.DisplayFor(model => item.NombreSede)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center;max-width:80px;">
+                                                            @{
+                                                                string Fecha_str = "";
+                                                                try
+                                                                {
+                                                                    Fecha_str = item.Fecha_Registro.ToString("dd/MM/yyyy");
+                                                                }
+                                                                catch (Exception)
+                                                                {
+
+                                                                }
+                                                                <span>@Fecha_str</span>
+                                                            }
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                            @{
+                                                                if (item.Estado == true)
+                                                                {
+                                                                    <strong><span style="color:green">Completa</span></strong>
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <strong><span style="color:orange">Incompleta</span></strong>
+
+                                                                }
+
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <center><div class="pagination" id="paginador1"></div></center>
+                                                                }
+
+
+                            }
+                        </div>
+                            
+
+                            @{
+                                if (Model.Count() > 0)
+                                {
+                                    <center>
+                                        <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                                            <button id="ContinuarEval" class="boton botonactive col-margin">CONTINUAR EVALUACIÓN</button>
+                                        </div>
+                                    </center>
+
+                                }
+                            }
+
+
+                        </div>
+                </div>
+            </div>
+            <div class="internal-panel add-bottom-margin-05em add-top-margin-5em">
+                <div class="internal-panel-header panel-heading">
+                    <h4>Valores Agregados</h4>
+                </div>
+                <div class="internal-panel-body add-top-margin-05em">
+                    <div class="form-group row remove-bottom-margin">
+                        <center>
+                            <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                                <button id="ValorAgregado" onclick="location.href='@Url.Action("ValoresAgregados", "PromocionPrevencion")';return false;" class="boton botonactive col-margin">PARÁMETROS VALOR AGREGADO</button>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+          
+                
+
+            </div>
+    </div>
+
+
+
+
+
+

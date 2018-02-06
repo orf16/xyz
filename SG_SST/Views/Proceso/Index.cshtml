@@ -1,0 +1,159 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.Proceso>
+
+@{
+    ViewBag.Title = "Listado Procesos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var process = ViewBag.Fk_Id_Proceso;
+}
+
+
+@if (ViewBag.Message1 != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message1',
+
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message',
+
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+@if (ViewBag.Message1e != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message1e',
+
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#7E8A97'
+        });
+        $('.confirm').on('click', function () {
+            window.location.href = "../Index";
+        });
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">  
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li><a href="@Url.Action("MenuProcesos","Proceso")">Gestión Procesos Empresa</a></li>
+    <li class="active">Listado Procesos</li>
+</ol>
+
+<div class="row" style="margin-bottom: 15px">
+    <div class="col-md-4 col-xs-4">
+        <p>
+            @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+        </p>
+    </div>
+    @using (Html.BeginForm()) {
+        <div class="col-md-4 col-xs-4">
+            <input type="hidden" />
+        </div>
+        <div class="col-md-4 col-xs-4">
+            <div class="input-group">
+                <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+                <input type="text" class="form-control" placeholder="Buscar Proceso" onkeyup="BuscarProceso(this)">
+            </div>
+        </div>
+    }
+</div>
+
+<div class="table-responsive" id="tablaPV">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Listado Procesos Empresa</div>
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla">
+                <th width="35%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase">
+                    <label>Proceso Padre</label>
+                </th>
+                <th width="50%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase">
+                    <label>Proceso</label>
+                </th>
+                <th width="15%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase">
+                    Acciones
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                        @Html.DisplayFor(modelItem => item.Procesos.Descripcion_Proceso)
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Descripcion_Proceso)
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                        <a href="@Url.Action("Edit", new { id = item.Pk_Id_Proceso })" class="btn btn-search btn-md" title="Editar">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        |
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Proceso)" class="btn btn-search btn-md" title="Eliminar">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                        <div id="@string.Format("modalEliminar{0}", item.Pk_Id_Proceso)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Eliminar Proceso y Subproceso</h4>
+                                    </div>
+                                    <div class="modal-body " style="text-align:center">
+                                        <p>¿Esta seguro desea eliminar el Proceso?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Pk_Id_Proceso },
+                                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row" align="center">
+    <a href="@Url.Action("CrearProceso", "Proceso") " class="boton botoninfo" style="text-decoration:none">
+        Ver Mapa Procesos
+    </a>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/Empresas")
+}

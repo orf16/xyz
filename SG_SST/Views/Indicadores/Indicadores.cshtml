@@ -1,0 +1,272 @@
+﻿@model SG_SST.Models.Ausentismo.IndicadoresModel
+
+@{
+    ViewBag.Title = "Indicadores";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Planificación</a></li>
+    <li><a href="javascript:void(0)">Ausentismo Laboral</a></li>
+    <li class="active">Indicadores</li>
+</ol>
+
+@if (Model != null)
+{
+    <form id="frmindicadores">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">
+                INDICADORES
+            </div>
+
+            @*Boton ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>                    
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda</h4>
+                                </div>
+                                <div class="modal-body " style="color:black; text-align:justify">
+                                    <p>Esta función le permitirá ver los índices de frecuencia, severidad y de lesión incapacitante para las contingencias de enfermedad laboral, accidente de trabajo y enfermedad general o común.</p>
+                                    <p>                            
+                                        Por favor seleccione la empresa asociada (si le aplica), año de gestión, constante k (la que considere). También escoja una de las contingencias que desee visualizar como: enfermedad general, laboral y accidente de trabajo. También podrá escoger la opción de "comparación de dos años de indicadores” y seguidamente definir los dos años que quiere comparar en función de la contingencia escogida. Finalice con un clic en “consultar”, y se cargara la información de los índices. Recuerde que puede descargar la información en Excel para su gestión.
+                                    </p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-1">
+                        @Html.Label("Empresa:", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @if (Model.EmpresasUsuarias.Count > 0)
+                    {
+                        <div class="col-md-3">
+                            @Html.Label("Empresas Asociadas:", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7" style="margin-left:-75px">
+                            @Html.DropDownListFor(model => model.IdEmpresaUsuaria, Model.EmpresasUsuarias, "--Seleccione--", new { @class = "form-control" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-3">
+                            @Html.Label("Empresas Asociadas:", new { @class = "control-label", @style = "display:none;" })
+                        </div>
+                        <div class="col-md-7" style="margin-left:-75px">
+                            @Html.DropDownListFor(model => model.IdEmpresaUsuaria, Model.EmpresasUsuarias, new { @class = "form-control bloqueado", @style = "display:none;" })
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <div class="col-md-2">
+                        @Html.Label("Año Gestión:", new { @class = "control-label", @id = "agestion" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.DropDownListFor(x => x.AnioSeleccionado, Model.Anios, "--Año--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Constante K:", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.DropDownListFor(x => x.ConstanteSeleccionada, Model.Constante, "--Constante--", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="boton botonactive" id="consultarIndicador">Consultar</button>
+                    </div>
+                </div>
+                <div class="form-group col-sm-12" id="contenContingencias">
+                    <div class="col-sm-1" style="width:3%">
+                        <input type="radio" id="tipoComparacion" value="1" class="ttipoComparacion" name="tipoComparacion" />                        
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.Label("Enfermedad General", new { @class = "control-label", @style = "font-size:smaller" })
+                        <span class="error" id="errorcontigencia" style="display:none;">Debe seleccionar una contingencia</span>
+                    </div>
+                    <div class="col-sm-1" style="width:3%">
+                        <input type="radio" id="tipoComparacion" value="2" class="ttipoComparacion" name="tipoComparacion" />
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.Label("Enfermedad Laboral", new { @class = "control-label", @style = "font-size:smaller" })
+                    </div>
+                    <div class="col-sm-1" style="width:3%">
+                        <input type="radio" id="tipoComparacion" value="3" class="ttipoComparacion" name="tipoComparacion" />
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.Label("Accidente de Trabajo", new { @class = "control-label", @style = "font-size:smaller" })
+                    </div>
+                    <div class="col-sm-1" style="width:3%">
+                        <input type="checkbox" id="4" name="Comparacion" />
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.Label("Comparación de dos años de indicadores", new { @class = "control-label;", @style = "font-size:smaller" })
+                    </div>
+                </div>                
+                <div class="campos-comparacion-indicadores">
+                    <div class="col-sm-12">
+                        <div class="col-sm-2">
+                            @Html.Label("Primer Año:", new { @class = "control-label" })
+                        </div>
+                        <div class="col-sm-2">
+                            @Html.DropDownListFor(x => x.AnioSeleccionado, Model.Anios, "Año", new { @Id = "PrimerAnio", @Name = "PrimerAnio", @class = "form-control" })
+                        </div>
+                        <div class="col-sm-2">
+                            @Html.Label("Segundo Año:", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.DropDownListFor(x => x.AnioSeleccionado, Model.Anios, "Año", new { @Id = "SegundoAnio", @Name = "SegundoAnio", @class = "form-control" })
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="boton botonactive" id="compararIndicadoresAnios">Comparar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="background-color:rgba(253, 245, 154, 0.78); margin:10px; display:none;" id="bannerindicador">
+                <div style="text-align:center;">IF = INDICE DE FRECUENCIA = NUMERO DE EVENTOS / HORAS HOMBRE TRABAJADAS EN EL PERIODO <text style="color:red">X</text> K (200.000)</div>
+                <div style="text-align:center;">IS = INDICE DE SEVERIDAD = NUMERO DE DIAS POR EVENTOS / HORAS HOMBRE TRABAJADAS EN EL PERIODO <text style="color:red">X</text> K (200.000)</div>
+                <div style="text-align:center;">ILI = INDICE DE LESION INCAPACITANTE = IF <text style="color:red">X</text> IS / 1.000</div>
+            </div>
+            <p>
+                <div class="panel panel-default" style="margin:10px; display:none;" id="panelIndicador">
+                    <div class="panel-heading">Indicador</div>
+                    <div class="panel-body form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <button id="descargarExcelComparativo" type="button" class="boton botonactive" style='display:none;'>
+                                    Generar Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <section id="Indicadores"></section>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-md-3">
+                                <button id="descargarTablaExcel" type="button" class="boton botonactive" style='display:none;'>
+                                    Generar Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <p>
+                <div style="background-color:rgba(253, 245, 154, 0.78); margin:10px; display:none;" id="banneracumulado">
+                    <div style="text-align:center;">Las fórmulas para calcular los indicadores utilizan las variables de HHT (Horas Hombre Trabajadas) y el número de trabjadores. si no se configuran estas variables en el menú configurar HHT 
+                    el sistema trae el histórico de empresa, la cantidad de trabajadores del periodo consultado y realiza el cálculo con los valores estandar (Nro. trabajadores x dias_habiles x 8hrs_dia) </div>                    
+                </div>
+            <p>
+                <div class="panel panel-default" style="margin:10px; display:none;" id="panelAcumulado">
+                    <div class="panel-heading">Acumulado Total de Contingencias</div>
+                    <div class="panel-body form-horizontal">
+                        <div class="form-group">
+                            <section id="Acumulado"></section>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <div class="col-md-4">
+                                <button id="descargarTablaExcelacumulado" type="button" class="boton botonactive" style='display:none;'>
+                                    Generar Excel
+                                </button>
+                            </div>
+                            <div class="col-md-4">
+                                @*<button id="GraficaExcelacumulado" type="button" class="boton botonactive" style='display:none;'>
+                                    Ver grafica
+                                </button>*@
+                            </div>
+                            <div class="col-md-4">
+                                <button id="volver" type="button" class="boton botonactive" style='display:none;'>
+                                    Volver
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </form>
+    @Scripts.Render("~/Scripts/Indicadores/Indicadores.js")
+}
+@{
+    if (ViewBag.Mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                title: 'Atención',
+                text: 'Debe estar autenticado para visualizar los Indicadores.',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location.href = '../Home/Login';
+                }
+            });
+        </script>
+    }
+}
+@*<div id="main">
+    <div class="page-header">
+        <form id="frmindicadores"></form>
+        <h2>Indicadores</h2>
+        <div class="container">*@
+@*<div class="row">
+        <div class="col-md-10">
+            <input type="text" id="nombreEmpresa" class="form-control" disabled value="Nombre de la Empresa" />
+        </div>
+    </div>*@
+@*<div class="row">
+        <div class="col-md-2">
+            @Html.Label("Año Gestion:", new { @class = "control-label" })
+        </div>
+        <div class="col-md-3">
+            @Html.DropDownListFor(x => x.AnioSeleccionado, Model.Anios, "--Seleccione año gestion--", new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            @Html.Label("Constante:", new { @class = "control-label" })
+        </div>
+        <div class="col-md-3">
+            @Html.DropDownListFor(x => x.ConstanteSeleccionada, Model.Constante, "--Seleccione constante--", new { @class = "form-control" })
+        </div>
+    </div>*@
+@*<div class="row">
+        <div class="col-md-2">
+            <button type="button" class="boton botonactive" id="consultarIndicador">Consultar</button>
+        </div>
+    </div>*@
+@*<div class="container">
+        <div class="row">
+            <div id="Indicadores"></div>
+        </div>
+    </div>*@
+@*</div>
+        </div>
+    </div>*@

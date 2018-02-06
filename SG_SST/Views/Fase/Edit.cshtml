@@ -1,0 +1,48 @@
+﻿@model SG_SST.Models.Organizacion.Fase
+
+@{
+    ViewBag.Title = "Editar Fase Recurso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Configuración Maestros</a></li>
+    <li><a href="javascript:void(0)">Fase Recurso</a></li>
+    <li class="active">Editar Fase Recurso</li>
+</ol>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Tipo Fase Recurso</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Pk_Id_Fase)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion_Fase, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Descripcion_Fase, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion_Fase, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-12">
+                @*<input type="submit" value="Save" class="btn btn-default" />*@
+                <button type="submit" class="boton botonactive">Guardar</button> 
+                |
+                <a href="@Url.Action("Index")" class="boton botoninfo">
+                    Volver a la Lista
+                </a>
+            </div>
+        </div>
+    </div>
+}

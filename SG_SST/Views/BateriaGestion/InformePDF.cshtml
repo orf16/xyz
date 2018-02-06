@@ -1,0 +1,1652 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaUsuario
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    @*<script src="~/Scripts/Chart.js"></script>
+    <link href="/Content/jquery-ui.css" rel="stylesheet">
+    <script src="/Scripts/jquery-1.11.1.js"></script>
+    <script src="/Scripts/jquery-3.2.1.js"></script>
+    <script src="/Scripts/jquery-ui-1.12.1.min.js"></script>*@
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+        .AccionLeft60 {
+            float: left;
+            width: 59.5%;
+        }
+        .AccionLeft39 {
+            float: left;
+            width: 39%;
+            margin-right:1%;
+        }
+        .AccionLeft10 {
+            float: left;
+            width: 10%;
+            margin-right:0%;
+        }
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+
+        .imagenEHM {
+            page-break-inside: avoid !important;
+        }
+    </style>
+</head>
+
+<body>
+    @*<script>
+        //Graficar dominio
+        $(document).ready(function () {
+
+        var tables1 = document.getElementById("menu4");
+        $(tables1).find('tbody.tbody_dimension1').each(function () {
+        var graficotabla = $(this).attr('name');
+        var NomPilar = $(this).attr('pilar');
+        var ctx1 = document.getElementById(graficotabla);
+        var coloresgen = ['rgba(13,149,188,1)',
+
+        'rgba(92,167,147,1)',
+        'rgba(235,203,56,1)',
+        'rgba(243,111,19,1)',
+        'rgba(193,48,24,1)',
+        'rgba(208, 178, 109,1)',
+        'rgba(109, 208, 189,1)',
+        'rgba(208, 109, 152,1)',
+        'rgba(255, 176, 128,1)',
+        'rgba(151, 165, 158,1)',
+        'rgba(13,149,188,1)',
+        'rgba(6,57,81,1)',
+        'rgba(92,167,147,1)',
+        'rgba(235,203,56,1)',
+        'rgba(243,111,19,1)',
+        'rgba(193,48,24,1)',
+        'rgba(208, 178, 109,1)',
+        'rgba(109, 208, 189,1)',
+        'rgba(208, 109, 152,1)',
+        'rgba(255, 135, 61,1)',
+        'rgba(6,57,81,1)',
+        'rgba(151, 165, 158,1)'];
+        var labsArray = new Array();
+        var datasArray = new Array();
+        var ColorArray = new Array();
+        var sumaResultados = 100;
+        $(this).find('tr').each(function () {
+        var fila = $(this);
+        fila.find('td.graphDesc').each(function () {
+        var Descripcion = this;
+        var descParametro = $(Descripcion).attr('descripcion');
+        labsArray.push(descParametro);
+        });
+        fila.find('td.graphResult').each(function () {
+        var resultado = this;
+        var resultadoParametro = $(resultado).attr('resultado');
+        var decimal = resultadoParametro.replace(",", ".");
+        datasArray.push(decimal);
+        sumaResultados = sumaResultados - decimal;
+        });
+        });
+        var cont = 0;
+        $.each(labsArray, function (key, value) {
+        var color = coloresgen[key];
+        ColorArray.push(color);
+        cont++;
+        });
+
+        var chartOptions = {
+        scales: {
+        xAxes: [{
+        gridLines: {
+        zeroLineColor: "black",
+        zeroLineWidth: 2
+        },
+        ticks: {
+        min: 0,
+        max: 100,
+        stepSize: 10
+        }
+        }]
+        },title: {
+        display: true,
+        text: 'Resultados todos los dominios',
+        fontSize: 20
+        },
+        "animation": {
+            
+        "onComplete": function () {
+        var chartInstance = this.chart,
+        ctx = chartInstance.ctx;
+
+        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillStyle = "#000000";
+
+        this.data.datasets.forEach(function (dataset, i) {
+        var meta = chartInstance.controller.getDatasetMeta(i);
+        meta.data.forEach(function (bar, index) {
+        var data = dataset.data[index];
+        ctx.fillText(data, bar._model.x-15, bar._model.y);
+        });
+        });
+
+        var url = myChart.toBase64Image();
+        document.getElementById("url").src = url;
+            
+
+        }
+
+        },
+        animation : false,
+        legend: {
+        display: false
+        }
+        };
+
+        var myChart = new Chart(ctx1, {
+        type: 'horizontalBar',
+        data: {
+        label: 'Valor Transformado',
+        labels: labsArray,
+        datasets: [{
+        data: datasArray,
+        backgroundColor: ColorArray
+
+        }]
+        }
+        ,
+        options: chartOptions
+        , onAnimationComplete: function () {
+
+
+        }
+
+
+        });
+
+        });
+        })
+        //Graficar dimension
+        $(document).ready(function () {
+        //var ctx = document.getElementById("chart-area");
+        var tables1 = document.getElementById("menu4");
+        $(tables1).find('tbody.tbody_dimension').each(function () {
+        var graficotabla = $(this).attr('name');
+        var NomPilar = $(this).attr('pilar');
+        var ctx1 = document.getElementById(graficotabla);
+        var coloresgen = ['rgba(13,149,188,1)',
+
+        'rgba(92,167,147,1)',
+        'rgba(235,203,56,1)',
+        'rgba(243,111,19,1)',
+        'rgba(193,48,24,1)',
+        'rgba(208, 178, 109,1)',
+        'rgba(109, 208, 189,1)',
+        'rgba(208, 109, 152,1)',
+        'rgba(255, 176, 128,1)',
+        'rgba(151, 165, 158,1)',
+        'rgba(13,149,188,1)',
+        'rgba(6,57,81,1)',
+        'rgba(92,167,147,1)',
+        'rgba(235,203,56,1)',
+        'rgba(243,111,19,1)',
+        'rgba(193,48,24,1)',
+        'rgba(208, 178, 109,1)',
+        'rgba(109, 208, 189,1)',
+        'rgba(208, 109, 152,1)',
+        'rgba(255, 135, 61,1)',
+        'rgba(151, 165, 158,1)'];
+        var labsArray = new Array();
+        var datasArray = new Array();
+        var ColorArray = new Array();
+        var sumaResultados = 100;
+        $(this).find('tr').each(function () {
+        var fila = $(this);
+        fila.find('td.graphDesc').each(function () {
+        var Descripcion = this;
+        var descParametro = $(Descripcion).attr('descripcion');
+        labsArray.push(descParametro);
+        });
+        fila.find('td.graphResult').each(function () {
+        var resultado = this;
+        var resultadoParametro = $(resultado).attr('resultado');
+        var decimal = resultadoParametro.replace(",", ".");
+        datasArray.push(decimal);
+        sumaResultados = sumaResultados - decimal;
+        });
+        });
+        var cont = 0;
+        $.each(labsArray, function (key, value) {
+        var color = coloresgen[key];
+        ColorArray.push(color);
+        cont++;
+        });
+
+        var chartOptions = {
+        scales: {
+        xAxes: [{
+        gridLines: {
+        zeroLineColor: "black",
+        zeroLineWidth: 2
+        },
+        ticks: {
+        min: 0,
+        max: 100,
+        stepSize: 10
+        }
+        }]
+        },title: {
+        display: true,
+        text: 'Resultados del dominio: ' + NomPilar + '',
+        fontSize: 20
+        },
+        "animation": {
+        "duration": 1,
+        "onComplete": function () {
+        var chartInstance = this.chart,
+        ctx = chartInstance.ctx;
+
+        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillStyle = "#000000";
+
+        this.data.datasets.forEach(function (dataset, i) {
+        var meta = chartInstance.controller.getDatasetMeta(i);
+        meta.data.forEach(function (bar, index) {
+        var data = dataset.data[index];
+        ctx.fillText(data, bar._model.x-15, bar._model.y);
+        });
+        });
+        }
+        },
+        legend: {
+        display: false
+        }
+        };
+
+        var myChart = new Chart(ctx1, {
+        type: 'horizontalBar',
+        data: {
+        label: 'Valor Transformado',
+        labels: labsArray,
+        datasets: [{
+        data: datasArray,
+        backgroundColor: ColorArray
+
+        }]
+        }
+        ,
+        options: chartOptions
+        , onAnimationComplete: function () {
+
+
+        }
+
+
+        });
+
+        });
+        })
+
+    </script>*@
+    <div class="Doslinea" style="background-color:#7ca293;border:none">
+        <div class="AccionInline">
+            <div class="AccionLeft100">
+                <div>
+                    
+                    <div style="text-align:center;font-size:22px;padding-left:10px;padding-right:10px;">
+                        <b>@Html.DisplayFor(m => m.NombreEncuestaInforme)</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="background-color:#7ca293;margin-top:35px;border:none">
+        <div class="AccionInline">
+            <div class="AccionLeft100">
+                <div>
+                    <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                        <b>DATOS GENERALES DEL TRABAJADOR</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:15px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Nombre del trabajador:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @Model.Nombre.ToUpper()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Número de identificación (ID):</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @Model.NumeroIdentificacion
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Cargo:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @Model.BateriaInicial.CargoConEmpresa.ToUpper()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Departamento o sección:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @Model.BateriaInicial.LugarTrabajoDep.ToUpper()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Edad:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.Edad != null)
+                            {
+                                @ViewBag.Edad.ToUpper()
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Sexo:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @Model.BateriaInicial.Sexo.ToUpper()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Fecha de aplicación del cuestionario:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @ViewBag.FechaDiligenciamiento
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Nombre de la empresa:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @ViewBag.NombreEmpresa.ToUpper()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="Doslinea" style="background-color:#7ca293;margin-top:35px;border:none">
+        <div class="AccionInline">
+            <div class="AccionLeft100">
+                <div>
+                    <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                        <b>DATOS DEL EVALUADOR</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:15px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Nombre del evaluador:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.NombreEvaluador != null)
+                            {
+                                @Model.NombreEvaluador.ToUpper()
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Número de identificación (c.c.):</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.IdEvaluador != null)
+                            {
+                                <span>@Model.IdEvaluador</span>
+                            }
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Profesión:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.Profesion != null)
+                            {
+                                @Model.Profesion.ToUpper()
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Postgrado:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.Postgrado != null)
+                            {
+                                @Model.Postgrado.ToUpper()
+                            }
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>No Tarjeta profesional*:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.TarjetaProfesional != null)
+                            {
+                                @Model.TarjetaProfesional
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>No. Licencia en salud ocupacional*:</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.Licencia != null)
+                            {
+                                @Model.Licencia
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        <b>Fecha de expedición de la licencia en salud ocupacional*</b>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft60" style="min-height:35px;border:solid 2px black;padding-top:5px;">
+                <div style="height:100%">
+                    <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                        @{
+                            if (Model.FechaExpedicion != null)
+                            {
+                                DateTime fecha = Model.FechaExpedicion ?? DateTime.MinValue;
+                                string fechastr = fecha.ToShortDateString();
+                                @fechastr
+                            }
+                            else
+                            {
+                                
+                            }
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea" style="margin-top:5px;border:none;">
+        <div class="AccionInline" style="">
+            <div class="AccionLeft100">
+                <div >
+                    <h4>* Todo informe que carezca de estos datos no será válido.</h4>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <p class="breakhere"></p>
+
+
+    
+
+
+
+
+
+
+    @{
+        if (Model.NombreEncuesta == "Cuestionario de Factores de Estres")
+        {
+            <table id="Grid4" class="table" style="border:none">
+                <thead>
+                    <tr class="titulos_tabla ">
+                        <th colspan="4" style="background-color:#7ca293;border: 2px solid white; text-align:center;max-width:50px;">
+                            <span>RESULTADOS DEL CUESTIONARIO</span>
+                        </th>
+                    </tr>
+                    <tr class="titulos_tabla">
+                        <th style="border:none; text-align:center;vertical-align:middle;width:60%;">
+
+                        </th>
+                        <th style="border: 1px solid black; text-align:center;vertical-align:middle;width:10%;">
+                            <span>Puntaje (transformado)</span>
+                        </th>
+                        <th style="border: 1px solid black; text-align:center;vertical-align:middle;width:15%;">
+                            <span>Nivel de estrés</span>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tfoot>
+                    <tr>
+                        <td style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;text-align:center;color:black;width:60%;">
+                            <span><strong>@Model.NombreEncuestaTotal</strong></span>
+                        </td>
+                        @{
+                            string decimalstr3 = String.Format("{0:0.0}", Model.PuntajeTrans);
+                            <td style="border: 1px solid black; vertical-align:middle;text-align:center;">
+                                <span>@decimalstr3</span>
+                            </td>
+                        }
+                        <td style="border: 1px solid black; vertical-align:middle;text-align:center;">
+                            <span>@Model.NivelRiesgoDesc</span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+                            }
+                            else
+                            {
+                                <table id="Grid4" class="table" style="border: none">
+                                    <thead>
+                                        <tr class="titulos_tabla ">
+                                            <th colspan="4" style="background-color:#7ca293;border: 2px solid white; text-align:center;max-width:50px;">
+                                                <span>RESULTADOS DEL CUESTIONARIO</span>
+                                            </th>
+                                        </tr>
+                                        <tr class="titulos_tabla">
+
+                                            @{
+                                                var numerodom = Model.Listadominios.Count;
+                                                if (numerodom > 1)
+                                                {
+                                                    <th style="background-color:#7ca293;border: 2px solid white; text-align:center;vertical-align:middle;width:15%;">
+                                                        <span>Dominios</span>
+                                                    </th>
+                                                }
+                                            }
+
+                                            <th style="background-color:#7ca293;border: 2px solid white; text-align:center;vertical-align:middle;width:14%;width:50%;">
+                                                <span>Dimensiones</span>
+                                            </th>
+                                            <th style="background-color:#7ca293;border: 2px solid white; text-align:center;vertical-align:middle;width:10%;">
+                                                <span>Puntaje (transformado)</span>
+                                            </th>
+                                            <th style="background-color:#7ca293;border: 2px solid white; text-align:center;vertical-align:middle;width:15%;">
+                                                <span>Nivel de Riesgo</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var ListaDominios = Model.Listadominios.ToList();
+
+                                            foreach (var item in ListaDominios)
+                                            {
+                                                string decimalstr1 = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                int cont = 0;
+                                                string NombreDom = item.Nombre;
+                                                string numerofilasdom = item.ListaDimensiones.Count().ToString();
+                                                foreach (var item1 in item.ListaDimensiones)
+                                                {
+                                                    string decimalstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                    if (cont == 0)
+                                                    {
+                                                        <tr>
+                                                            @{
+
+                                                                if (numerodom > 1)
+                                                                {
+                                                                    <td rowspan="@numerofilasdom" style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;text-align:center;">
+                                                                        <span>@NombreDom.Trim()</span>
+                                                                    </td>
+                                                                }
+                                                            }
+
+                                                            <td style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;">
+                                                                <span>@item1.Nombre</span>
+                                                            </td>
+                                                            <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                                <span>@decimalstr</span>
+                                                            </td>
+                                                            <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                                <span>@item1.NivelRiesgoDesc</span>
+                                                            </td>
+                                                        </tr>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;">
+                                                                            <span>@item1.Nombre</span>
+                                                                        </td>
+                                                                        <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                                            <span>@decimalstr</span>
+                                                                        </td>
+                                                                        <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                                            <span>@item1.NivelRiesgoDesc</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    }
+                                                                    cont++;
+                                                                }
+
+
+                                                                if (numerodom > 1)
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="2" style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;text-align:center;color:black">
+                                                                            <span><strong>@item.Nombre.ToUpper()</strong></span>
+                                                                        </td>
+                                                                        <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                                            <span>@decimalstr1</span>
+                                                                        </td>
+                                                                        <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                                            <span>@item.NivelRiesgoDesc</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    }
+
+
+
+                                                                }
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            @{
+
+                                                if (numerodom > 1)
+                                                {
+                                                    <td colspan="2" style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;text-align:center;color:black">
+                                                        <span><strong>@Model.NombreEncuestaTotal</strong></span>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="background-color:#7ca293;border: 2px solid white; vertical-align:middle;text-align:center;color:black">
+                                                        <span><strong>@Model.NombreEncuestaTotal</strong></span>
+                                                    </td>
+                                                }
+                                            }
+
+                                            @{
+                                                string decimalstr2 = String.Format("{0:0.0}", Model.PuntajeTrans);
+                                                <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                    <span>@decimalstr2</span>
+                                                </td>
+                                            }
+                                            <td style="border: 1.5px solid black; vertical-align:middle;text-align:center;">
+                                                <span>@Model.NivelRiesgoDesc</span>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                                }
+
+    }
+
+
+
+    @{
+        if (Model.NombreEncuesta == "Cuestionario de Factores de Estres")
+        {
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:35px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>INTERPRETACIÓN GENÉRICA DE LOS NIVELES DE RIESGO</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:20px;border:solid 1px black">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    - Muy bajo: ausencia de síntomas de estrés u ocurrencia muy rara que no amerita desarrollar actividades de
+                                    intervención específicas, salvo acciones o programas de promoción en salud.
+                                </p>
+                                <p>
+                                    - Bajo: es indicativo de baja frecuencia de síntomas de estrés y por tanto escasa afectación del estado general
+                                    de salud. Es pertinente desarrollar acciones o programas de intervención, a fin de mantener la baja frecuencia
+                                    de síntomas.
+                                </p>
+                                <p>
+                                    - Medio: la presentación de síntomas es indicativa de una respuesta de estrés moderada. Los síntomas más
+                                    frecuentes y críticos ameritan observación y acciones sistemáticas de intervención para prevenir efectos
+                                    perjudiciales en la salud. Además, se sugiere identificar los factores de riesgo psicosocial intra y extralaboral
+                                    que pudieran tener alguna relación con los efectos identificados.
+                                </p>
+                                <p>
+                                    - Alto: la cantidad de síntomas y su frecuencia de presentación es indicativa de una respuesta de estrés alto.
+                                    Los síntomas más críticos y frecuentes requieren intervención en el marco de un sistema de vigilancia
+                                    epidemiológica. Además, es muy importante identificar los factores de riesgo psicosocial intra y extralaboral
+                                    que pudieran tener alguna relación con los efectos identificados.
+                                </p>
+                                <p>
+                                    - Muy alto: la cantidad de síntomas y su frecuencia de presentación es indicativa de una respuesta de estrés
+                                    severa y perjudicial para la salud. Los síntomas más críticos y frecuentes requieren intervención inmediata en
+                                    el marco de un sistema de vigilancia epidemiológica. Así mismo, es imperativo identificar los factores de
+                                    riesgo psicosocial intra y extralaboral que pudieran tener alguna relación con los efectos identificados.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:20px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>OBSERVACIONES Y COMENTARIOS DEL EVALUADOR</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:5px;border:solid 1px black;min-height:150px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    @Model.Observaciones
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="breakhere"></p>
+
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:15px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>RECOMENDACIONES PARTICULARES</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:5px;border:solid 1px black;min-height:150px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    @Model.Recomendaciones
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="Doslinea" style="margin-top:25px;border:none;margin-bottom:0px;">
+                <div class="AccionInline" style="margin-bottom:0px;">
+                    <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%;margin-bottom:0px;">
+                                <b>Fecha de elaboración del informe:</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%;margin-bottom:0px;">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;vertical-align:middle;margin-bottom:0px;">
+                                @ViewBag.Dia
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%;margin-bottom:0px;">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%;margin-bottom:0px;">
+                                @ViewBag.Mes
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                @ViewBag.Año
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="margin-top:0px;border:none;">
+                <div class="AccionInline" style="">
+                    <div class="AccionLeft39" style="background-color:none;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;min-width:100%">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div>
+                            <div style="text-align:center;font-size:17px;padding-left:10px;vertical-align:top;color:gray;font-size:14px;">
+                                dd
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div>
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:top;color:gray;font-size:14px">
+                                mm
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div>
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:top;color:gray;font-size:14px">
+                                aaaa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="margin-top:5px;border:none;">
+                <div class="AccionInline" style="">
+                    <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                <b>Firma del evaluador:</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        if (Model.NombreEncuesta == "Cuestionario de Factores de Riesgo Psicosocial Intralaboral FORMA A" || Model.NombreEncuesta == "Cuestionario de Factores de Riesgo Psicosocial Intralaboral FORMA B")
+        {
+            <p class="breakhere"></p>
+            <div class="Doslinea" style="background-color:#7ca293;border:none">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>INTERPRETACIÓN GENÉRICA DE LOS NIVELES DE RIESGO</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:20px;border:solid 1px black">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    - Sin riesgo o riesgo despreciable: ausencia de riesgo o riesgo tan bajo que no amerita desarrollar actividades de
+                                    intervención. Las dimensiones y dominios que se encuentren bajo esta categoría serán objeto de acciones o
+                                    programas de promoción.
+                                </p>
+                                <p>
+                                    - Riesgo bajo: no se espera que los factores psicosociales que obtengan puntuaciones de este nivel estén
+                                    relacionados con síntomas o respuestas de estrés significativas. Las dimensiones y dominios que se encuentren
+                                    bajo esta categoría serán objeto de acciones o programas de intervención, a fin de mantenerlos en los niveles de
+                                    riesgo más bajos posibles.
+                                </p>
+                                <p>
+                                    - Riesgo medio: nivel de riesgo en el que se esperaría una respuesta de estrés moderada. Las dimensiones y
+                                    dominios que se encuentren bajo esta categoría ameritan observación y acciones sistemáticas de intervención
+                                    para prevenir efectos perjudiciales en la salud.
+                                </p>
+                                <p>
+                                    - Riesgo alto: nivel de riesgo que tiene una importante posibilidad de asociación con respuestas de estrés alto y por
+                                    tanto, las dimensiones y dominios que se encuentren bajo esta categoría requieren intervención en el marco de un
+                                    sistema de vigilancia epidemiológica.
+                                </p>
+                                <p>
+                                    - Riesgo muy alto: nivel de riesgo con amplia posibilidad de asociarse a respuestas muy altas de estrés. Por
+                                    consiguiente las dimensiones y dominios que se encuentren bajo esta categoría requieren intervención inmediata
+                                    en el marco de un sistema de vigilancia epidemiológica.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:15px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>OBSERVACIONES Y COMENTARIOS DEL EVALUADOR</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:5px;border:solid 1px black;min-height:150px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    @Model.Observaciones
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:15px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>RECOMENDACIONES PARTICULARES</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:5px;border:solid 1px black;min-height:150px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    @Model.Recomendaciones
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="Doslinea" style="margin-top:25px;border:none;margin-bottom:0px;">
+                <div class="AccionInline" style="margin-bottom:0px;">
+                    <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%;margin-bottom:0px;">
+                                <b>Fecha de elaboración del informe:</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%;margin-bottom:0px;">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;vertical-align:middle;margin-bottom:0px;">
+                                @ViewBag.Dia
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%;margin-bottom:0px;">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%;margin-bottom:0px;">
+                                @ViewBag.Mes
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                @ViewBag.Año
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="margin-top:0px;border:none;">
+                <div class="AccionInline" style="">
+                    <div class="AccionLeft39" style="background-color:none;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;min-width:100%">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div >
+                            <div style="text-align:center;font-size:17px;padding-left:10px;vertical-align:top;color:gray;font-size:14px;">
+                                dd
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div >
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:top;color:gray;font-size:14px">
+                                mm
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div >
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:top;color:gray;font-size:14px">
+                                aaaa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="margin-top:5px;border:none;">
+                <div class="AccionInline" style="">
+                    <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                <b>Firma del evaluador:</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        if (Model.NombreEncuesta == "Cuestionario de Factores de Riesgo Psicosocial Extralaboral")
+        {
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:35px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>INTERPRETACIÓN GENÉRICA DE LOS NIVELES DE RIESGO</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:20px;border:solid 1px black">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    - Sin riesgo o riesgo despreciable: ausencia de riesgo o riesgo tan bajo que no amerita desarrollar actividades
+                                    de intervención. Las dimensiones que se encuentren bajo esta categoría serán objeto de acciones o
+                                    programas de promoción.
+                                </p>
+                                <p>
+                                    - Riesgo bajo : no se espera que los factores psicosociales que obtengan puntuaciones de este nivel estén
+                                    relacionados con síntomas o respuestas de estrés significativas. Las dimensiones que se encuentren bajo
+                                    esta categoría serán objeto de acciones o programas de intervención, a fin de mantenerlos en los niveles de
+                                    riesgo más bajos posibles.
+                                </p>
+                                <p>
+                                    - Riesgo medio: nivel de riesgo en el que se esperaría una respuesta de estrés moderada. Las dimensiones
+                                    que se encuentren bajo esta categoría ameritan observación y acciones sistemáticas de intervención para
+                                    prevenir efectos perjudiciales en la salud.
+                                </p>
+                                <p>
+                                    - Riesgo alto: nivel de riesgo que tiene una importante posibilidad de asociación con respuestas de estrés alto
+                                    y por tanto, las dimensiones que se encuentren bajo esta categoría requieren intervención en el marco de un
+                                    sistema de vigilancia epidemiológica.
+                                </p>
+                                <p>
+                                    - Riesgo muy alto: nivel de riesgo con amplia posibilidad de asociarse a respuestas muy altas de estrés. Por
+                                    consiguiente las dimensiones que se encuentren bajo esta categoría requieren intervención inmediata en el
+                                    marco de un sistema de vigilancia epidemiológica.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="breakhere"></p>
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:0px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>OBSERVACIONES Y COMENTARIOS DEL EVALUADOR</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:5px;border:solid 1px black;min-height:150px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    @Model.Observaciones
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="Doslinea" style="background-color:#7ca293;border:none;margin-top:15px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:center;font-size:18px;padding-left:10px;padding-right:10px;">
+                                <b>RECOMENDACIONES PARTICULARES</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="background-color:none;margin-top:5px;border:solid 1px black;min-height:150px;">
+                <div class="AccionInline">
+                    <div class="AccionLeft100">
+                        <div>
+                            <div style="text-align:justify;font-size:18px;padding-left:10px;padding-right:15px;font-size:15px;">
+                                <p>
+                                    @Model.Recomendaciones
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="Doslinea" style="margin-top:25px;border:none;margin-bottom:0px;">
+                <div class="AccionInline" style="margin-bottom:0px;">
+                    <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%;margin-bottom:0px;">
+                                <b>Fecha de elaboración del informe:</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%;margin-bottom:0px;">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;vertical-align:middle;margin-bottom:0px;">
+                                @ViewBag.Dia
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;margin-bottom:0px;">
+                        <div style="height:100%;margin-bottom:0px;">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%;margin-bottom:0px;">
+                                @ViewBag.Mes
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="min-height:26px;border:solid 1px black;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                @ViewBag.Año
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="margin-top:0px;border:none;">
+                <div class="AccionInline" style="">
+                    <div class="AccionLeft39" style="background-color:none;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;min-width:100%">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div>
+                            <div style="text-align:center;font-size:17px;padding-left:10px;vertical-align:top;color:gray;font-size:14px;">
+                                dd
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div>
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:top;color:gray;font-size:14px">
+                                mm
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft10" style="border:none;">
+                        <div>
+                            <div style="text-align:center;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:top;color:gray;font-size:14px">
+                                aaaa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="Doslinea" style="margin-top:5px;border:none;">
+                <div class="AccionInline" style="">
+                    <div class="AccionLeft39" style="background-color:#7ca293;min-height:30px;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+                                <b>Firma del evaluador:</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AccionLeft60" style="min-height:26px;border:solid 2px black;padding-top:5px;">
+                        <div style="height:100%">
+                            <div style="text-align:left;font-size:17px;padding-left:10px;padding-right:10px;vertical-align:middle;height:100%">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+
+    @*<p class="breakhere"></p>*@
+
+    @*<img id="url"/>
+
+    <div id="menu4" class="col-md-12 col-sm-12 " style="">
+        @{
+            if (Model.Listadominios.Count > 1)
+            {
+                string Idgraph1 = "graph0";
+                <h5>REPRESENTACIÓN GRÁFICA DE DOMINIOS</h5>
+                                            <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray; display:none">
+                                                <thead>
+                                                    <tr class="titulos_tabla">
+                                                        <th>Nombre Dominio</th>
+                                                        <th>Puntaje</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody_dimension1" name="@Idgraph1" pilar="A">
+                                                    @{
+                                                        foreach (var item in Model.Listadominios)
+                                                        {
+                                                            string decimalPTstr = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                            <tr>
+                                                                <td descripcion="@item.Nombre" class="graphDesc">@item.Nombre</td>
+                                                                <td resultado="@decimalPTstr" class="graphResult">@decimalPTstr</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <center>
+                                                <canvas id="graph0" style="display: block; width: 10px; height: 10px;" width="10" height="10" class="chartjs-render-monitor"></canvas>
+                                            </center>
+                                                        }
+                                                        foreach (var item in Model.Listadominios)
+                                                        {
+                                                            string Idgraph = "graph" + item.Pk_Id_BateriaDimension;
+                                                            <h5>REPRESENTACIÓN GRÁFICA DE DIMENSIONES POR DOMINIO: @item.Nombre</h5>
+                                                            <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray; display:none">
+                                                                <thead>
+                                                                    <tr class="titulos_tabla">
+                                                                        <th>Nombre dimension</th>
+                                                                        <th>Puntaje</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="tbody_dimension" name="@Idgraph" pilar="@item.Nombre">
+                                                                    @{
+                                                                        foreach (var item1 in item.ListaDimensiones)
+                                                                        {
+                                                                            string decimalPTstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                                            <tr>
+                                                                                <td descripcion="@item1.Nombre" class="graphDesc"><span>@item1.Nombre</span></td>
+                                                                                <td resultado="@decimalPTstr" class="graphResult"><span>@decimalPTstr</span></td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;color:black;"></td>
+                                                                    </tr>
+
+                                                                </tfoot>
+                                                            </table>
+                                                            <center>
+                                                                <canvas id="@Idgraph" style="display: block; width: 10px; height: 10px;" width="10" height="10" class="chartjs-render-monitor"></canvas>
+                                                            </center>
+                                                                        }
+
+
+        }
+    </div>*@
+
+
+
+
+
+</body>
+</html>
+

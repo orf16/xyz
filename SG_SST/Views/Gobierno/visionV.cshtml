@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "Visión Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+}
+
+@if (ViewBag.Message != null) {
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+        function () { },
+        function (dismiss) {
+            if (dismiss === 'timer') {
+                console.log('Cerrado')
+            }
+        }
+        )
+    </script>
+}
+
+@if (ViewBag.mensaje != null) {
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+        function () { },
+        function (dismiss) {
+            if (dismiss === 'timer') {
+                console.log('Cerrado')
+            }
+        }
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="#">Gobierno Organizacional</a></li>
+    <li class="active">Visión</li>
+</ol>
+
+<body onload="BuscarVision()">
+
+    <form method="post" action="@Url.Action("Vision")" id="formvision">
+        <div id="myModal2" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <h4 class="modal-title title">Registrar Visión</h4>
+                    </div>
+                    <div class="modal-body ">
+                        <div class="row">
+                            @*<div class="col-xs-2">
+                                <label>Descripción:</label>
+                            </div>*@
+                            <div class="col-lg-12">
+                                
+                                <em><textarea class="form-control" rows="6" cols="10" placeholder="Ingresa Visión Empresa" name="vision" id="vision" style="resize:none;background-color:white;color:black"></textarea></em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                       
+                        <button type="submit" class="boton botonactive" onclick="ValidarCrearVision()">GRABAR</button>
+                        
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">    
+        <div class="panel-heading" style="color:white">VISIÓN EMPRESA</div>
+        
+        @*Botón ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                   class="btn btn-ayuda btn-md"
+                   @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                    <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-7">
+                                            <p>Click en el botón Visión para grabarla</p>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <button class="boton botonactive" disabled>Visión</button>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xs-7">
+                                            <p>Click en el botón Eliminar para borrarla</p>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <button class="boton botoncancel" disabled>Eliminar</button>
+                                        </div>
+                                    </div>
+                                    <p><em class="error">* Debe ingresar una Visión y su contenido mínimo de 10 caracteres</em></p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+        <div class="panel-body form-horizontal">
+            <div class="content">
+                <blockquote class="pull-left" style="text-align:justify; font-weight:600">
+                    <div class="col-md-22 col-md-offset-0" id="vision1" name="vision">
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" align="center">
+        @*<div class="col-xs-3">*@
+        <button type="button" class="boton botonactive" data-toggle="modal" data-target="#myModal2">Visión</button>
+        @*</div>*@
+        @*<div class="col-xs-2">*@
+        <button type="button" class="boton botoncancel" data-toggle="modal" data-target="#modalE" style="margin-left:80px">Eliminar</button>
+        @*</div>*@
+    </div>
+
+    <div id="modalE" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Eliminar Visión</h4>
+                </div>
+                <div class="modal-body" style="color:black">
+                    <center><p>¿Está seguro de eliminar la Visión?</p></center>
+                </div>
+                <div class="modal-footer alert-dismissable">
+                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "EliminarVision", new { }, 
+                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })            
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

@@ -1,0 +1,369 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEPP>
+
+
+@{
+    ViewBag.Title = "Matriz de EPP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/Aplicacion/EPPMatriz.js"></script>
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración de Elementos de Protección Personal</a></li>
+    <li class="active">Matriz de EPP</li>
+</ol>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">CONSULTA DE MATRIZ DE EPP</div>
+    <div class="panel-body">
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Matriz de EPP</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Consulta de Matriz:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para consultar la lista de EPP elija dentro de los filtros de busqueda 'Nombre del EPP', 'Riesgo Controlado' o 'Cargo Asociado' y presione  <button type="button" class="boton botonactive" style="cursor:default;">CONSULTAR</button>, Si no selecciona ningún filtro el sistema buscará todos los EPP disponibles</p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Funciones de la Matriz:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Ver Cargos</i> para ver los cargos asociados al elemento de protección personal</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Ver Imagen</i> para ver la imagen del elemento de protección personal</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Descargar Archivo</i> para descargar la ficha técnica disponible para el elemento de protección personal</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar el elemento de protección personal</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Presione <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/simbolopdf.png" style="width:40px;" /></button> para descargar la información del elemento de protección personal en formato PDF</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar el elemento de protección personal; para eliminar un EPP es importante que no se encuentre asignado a una persona</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Exportar Matriz:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para Exportar la lista de EPP elija el formato en el cual desea descargar el archivo, las dos opciones disponibles son: PDF y HOJA DE CÁLCULO, cuando elija una de las dos opciones haga click en <button type="button" class="boton botonactive" style="cursor:default;">DESCARGAR MATRIZ</button> </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+@using (Html.BeginForm())
+{
+        <div class="col-sm-12 form-group">
+            <label class="control-label col-sm-2">Nombre del EPP</label>
+            <div class="col-sm-5">
+                @Html.TextBox("NombreEPP_C", null, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-12 form-group">
+            <label class="control-label col-sm-2">Riesgo Controlado</label>
+            <div class="col-sm-5">
+               @Html.DropDownList("Pk_Id_Clasif_Peligro", null, "-- Seleccione un Riesgo --", htmlAttributes: new { @class = "form-control col-md-10" })
+            </div>
+        </div>
+        <div class="col-sm-12 form-group">
+            <label class="control-label col-sm-2">Cargo Asociado</label>
+            <div class="col-sm-5">
+                @Html.DropDownList("Pk_Id_Cargo", null, "-- Seleccione un Cargo --", htmlAttributes: new { @class = "form-control col-md-10" })
+            </div>
+        </div>
+        <div class="row text-center" style="margin-bottom:0.5em;">
+            <button class="boton botonactive" href="@Url.Action("MatrizEPP", "AdmoEPP")">Consultar</button>
+        </div>
+}
+            @{
+                int NumeroFilas = 0;
+                foreach (var item in Model)
+                {
+                    NumeroFilas = NumeroFilas + 1;
+                }
+                if (NumeroFilas > 0)
+                {
+                    <div class="col-md-12 Epptable" style="overflow-x:scroll;height:auto;max-height:500px;">
+                        <label for="File1">@NumeroFilas EPP</label>
+                        <table class="table table-responsive table-bordered" id="Grid3" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>NOMBRE EPP</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>IMAGEN</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:200px;vertical-align:middle">
+                                        <span>PARTE DEL CUERPO A PROTEGER</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:200px;vertical-align:middle">
+                                        <span>RIESGO CONTROLADO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:250px;vertical-align:middle">
+                                        <span>ESPECIFICACIÓN TÉCNICA</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:250px;vertical-align:middle">
+                                        <span>USO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; min-width:250px;vertical-align:middle">
+                                        <span>MANTENIMIENTO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>VIDA ÚTIL</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>REPOSICIÓN</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>DISPOSICIÓN FINAL</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>CARGOS ASOCIADOS</span>
+                                    </th>
+                                   
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>FICHA TÉCNICA</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle; min-width:180px">
+                                        <span>ACCIONES</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    string IdTr = item.Pk_Id_EPP.ToString();
+                                    string IdTabla = "Tabla_" + item.Pk_Id_EPP;
+                                    string IdTbody = "TbodyCargos_" + item.Pk_Id_EPP;
+                                    string IdSpan = "SpanTabla_" + item.Pk_Id_EPP;
+                                    <tr class="paginacc" name="@IdTr">
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @Html.DisplayFor(model => item.NombreEPP)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @{
+                                                string IdImagen = "Imagen_" + item.Pk_Id_EPP.ToString() + "";
+                                                string IdImagenD = "Imagen_D_" + item.Pk_Id_EPP.ToString();
+                                                string IdImagenC = "Imagen_C_" + item.Pk_Id_EPP.ToString();
+                                                string IdImagenE = item.RutaAbsolutaImagen;
+
+                                                if (IdImagenE != null)
+                                                {
+                                                    <div id="ImagenEPP @item.Pk_Id_EPP">
+                                                        <img id="@IdImagenC" class="firma-EHM-estilo" src="@item.RutaAbsolutaImagen" alt="" style="cursor:pointer; max-width: 100%;max-height: 100%;margin-bottom:5px;" />
+                                                    </div>
+                                                    <a href="#" name="@item.Pk_Id_EPP" nameEPP="@item.NombreEPP" class="btn btn-sm btn-positiva MostrarImagen" title="Ver Imagen" style="height:35px;">
+                                                        Ver Imagen
+                                                    </a>
+                                                    <label style="display:none" id="@IdImagen"></label>
+                                                    <label style="display:none" id="@IdImagenD"></label>
+                                                }
+                                                else
+                                                {
+                                                    <div id="ImagenEPP @item.Pk_Id_EPP">
+                                                        <label class="col-md-12" id="mensajeArchivo">Imagen no disponible</label>
+                                                    </div>
+                                                    <label style="display:none" id="@IdImagen"></label>
+                                                    <label style="display:none" id="@IdImagenD"></label>
+                                                }
+
+                                            }
+
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @Html.DisplayFor(model => item.ParteCuerpo)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                            @Html.DisplayFor(model => item.Clasificacion_De_Peligro)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.EspecificacionTecnica)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.Uso)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.Mantenimiento)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.VidaUtil)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.Reposicion)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:justify">
+                                            @Html.DisplayFor(model => item.DisposicionFinal)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                            <a href="#" name="@item.Pk_Id_EPP" nameEPP="@item.NombreEPP" class="btn btn-sm btn-positiva MostrarCargos" title="Ver Cargos" style="height:35px;">
+                                                Ver Cargo<span id="@IdSpan"> (0)</span>
+                                            </a>
+                                            <div style="display:none;">
+                                                <div id="TablaCargoEPP @item.Pk_Id_EPP">
+
+                                                    @{
+                                                        if (item.Cargos.Count > 0)
+                                                        {
+                                                            var ListaCargos = item.Cargos;
+                                                            <table id="@IdTabla" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                                                <thead>
+                                                                    <tr class="titulos_tabla">
+                                                                        <th class="col-sm-8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                            <p>Cargo</p>
+                                                                        </th>
+                                                                        <th class="col-sm-2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                            <p>Número de Trabajadores</p>
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="@IdTbody">
+
+                                                                    @{
+                                                                        foreach (var item_cargos in ListaCargos)
+                                                                        {
+                                                                            <tr class="paginacc">
+                                                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                                                                    <span>@item_cargos.Nombre</span>
+                                                                                </td>
+
+                                                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center">
+                                                                                    <span>@item_cargos.Cantidad</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                            }
+                                                    }
+
+
+                                                </div>
+                                            </div>
+                                        </td>                                       
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;vertical-align:middle; text-align:center;">
+                                            @{
+                                                string IdArchivoC = item.NombreArchivo_download;
+                                                string IdArchivoD = "DescargarArchivoCon" + item.Pk_Id_EPP;
+                                                if (IdArchivoC != null)
+                                                {
+                                                    if (IdArchivoC.Length > 50)
+                                                    {
+                                                        IdArchivoC = IdArchivoC.Substring(0, 50) + "...";
+                                                    }
+                                                    <div id="ArchivoEPP @item.Pk_Id_EPP">
+                                                        <label class="col-md-12">@IdArchivoC</label>
+                                                    </div>
+                                                    using (Html.BeginForm("DescargarArchivo", "AdmoEPP", new { IdEPP = item.Pk_Id_EPP }, FormMethod.Post, new { enctype = "multipart/form-data", @id = @IdArchivoD }))
+                                                    {
+                                                        <a href="javascript:{}" onclick="document.getElementById('@IdArchivoD').submit();" name="@item.Pk_Id_EPP" nameEPP="@item.NombreEPP" class="btn btn-sm btn-positiva MostrarArchivo" title="Descargar Ficha Técnica" style="height:35px;">
+                                                            Descargar Ficha Técnica
+                                                        </a>
+                                                    }
+                                            }
+                                            else
+                                            {
+                                            <div id="ArchivoEPP @item.Pk_Id_EPP">
+                                                <label class="col-md-12" id="mensajeArchivo">Archivo no disponible</label>
+                                            </div>
+                                            }
+                                            }
+                                        </td>
+
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                            <a id="@item.Pk_Id_EPP.ToString()" href="@Url.Action("EditarEPP", "AdmoEPP", new { IdEPP = item.Pk_Id_EPP })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Editar" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                            <a id="@item.Pk_Id_EPP.ToString()" href="#" name="@item.NombreEPP.ToString()" class="btn btn-sm btn-positiva btnEliminarEPP" title="Eliminar" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+                                            <a id="@item.Pk_Id_EPP.ToString()" href="@Url.Action("EPP_PDF", "AdmoEPP", new { id = item.Pk_Id_EPP })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Descargar PDF" style="height:35px;margin-bottom:5px;">
+                                                <img src="~/Content/Images/simbolopdf.png" style="max-height:100%" />
+                                            </a>
+                                            
+                                        </td>
+                                    </tr>
+                                  }
+                            }
+                        </table>
+                    </div>
+
+
+                    <div class="col-sm-12 form-group add-top-margin-05em">
+                        <label class="control-label col-sm-12 col-md-12">Exportar Matriz</label>
+                        <div class="col-sm-12 col-md-4">
+                            @{
+                                List<SelectListItem> listItems = new List<SelectListItem>();
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "PDF",
+                                    Value = "PDF"
+                                });
+                                listItems.Add(new SelectListItem
+                                {
+                                    Text = "HOJA DE CÁLCULO",
+                                    Value = "EXCEL"
+                                });
+                            }
+                            @Html.DropDownList("Formato", listItems, "-- Seleccione el Formato --", htmlAttributes: new { @class = "form-control col-sm-6 " })
+                        </div>
+                        <div class="col-sm-12 col-md-12">
+                            <button id="DescargarMatriz" class="boton botonactive col-margin add-top-margin-05em">Descargar Matriz</button>
+                        </div>
+                        </div>
+                   }
+                   else
+                   {
+                      string Mensaje = ViewBag.MensajeBusqueda;
+                      <center><h3>@Mensaje</h3></center>
+                   }
+            }
+            <div class="col-sm-12 form-group">
+                <div id="div_novedad_validar">
+                    <span id="msj_glyphicon"></span><span id="msj_novedad_validar"></span>
+                </div>
+            </div>
+        </div>
+</div>
+<div id="myModal" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 10px;">
+        <CENTER><H3>CARGOS ASOCIADOS AL EPP CARGADO</H3></CENTER>
+        <div class="col-md-12" style="margin-bottom:5px;">
+            <label id="Nombre_EPP"></label>
+        </div>
+
+        <span id="val-error" class="text-danger field-validation-error val-message col-sm-12" style="display:none;"></span>
+        <input id="IdTabla" type="text" style="display:none" />
+        <div id="tabla_modal"></div>
+        <center><button id="close_modal" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+<div id="myModal1" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 10px;">
+        <CENTER><H3>IMAGEN DEL EPP</H3></CENTER>
+        <div class="col-md-12" style="margin-bottom:5px;">
+            <label id="Nombre_EPP_img"></label>
+        </div>
+        <center><div id="imagen_modal"></div></center>
+        <input id="IdTabla_img" type="text" style="display:none" />
+        <center><button id="close_modal1" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+

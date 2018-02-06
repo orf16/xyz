@@ -1,0 +1,2105 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDSegVialFormulario
+@{
+    ViewBag.Title = "Formulario Plan Estratégico de Seguridad Vial";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/Chart.js"></script>
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="@Url.Action("PlanSeguridadVial", "PromocionPrevencion")">Plan Estratégico de Seguridad Vial</a></li>
+    <li class="active">Formulario Plan Estratégico</li>
+</ol>
+<script>
+    //Header Fixed
+    $(document).ready(function () {
+
+        var str = $("#HeaderFix").val();
+        var res = str.split(",");
+        $.each(res, function (key, value) {
+            var IdFixA = "#HeadFixedA" + value;
+            var IdFixB = "#HeadFixedB" + value;
+            $(IdFixA).on('scroll', function () {
+                $(IdFixB).scrollLeft($(this).scrollLeft());
+            });
+            $(IdFixB).on('scroll', function () {
+                $(IdFixA).scrollLeft($(this).scrollLeft());
+            });
+        });
+
+        
+    });
+    //Control Calculos
+    $(document).ready(function () {
+        $('input:radio').change(function () {
+            var id = this.id;
+            var Numero = id;
+            Numero = Numero.replace("radioAplica", "");
+            Numero = Numero.replace("radioEvidencia", "");
+            Numero = Numero.replace("radioResponde", "");
+            var radapli = "#radioAplica" + Numero;
+            var radevi = "#radioEvidencia" + Numero;
+            var radres = "#radioResponde" + Numero;
+            var radapli1 = "radioAplica" + Numero;
+            var radevi1 = "radioEvidencia" + Numero;
+            var radres1 = "radioResponde" + Numero;
+            var variableSpan = "#ValorObtenidoSpan" + Numero;
+            var ResultadoSpan = "#ResultadoSpan" + Numero;
+
+            var obapli = $(radapli);
+            var obevi = $(radevi);
+            var obares = $(radres);
+            var obVarSpan = $(variableSpan);
+
+            var selectApli = $('input:radio[name="' + radapli1 + '"]:checked').val();
+            var selectEvi = $('input:radio[name="' + radevi1 + '"]:checked').val();
+            var selectRes = $('input:radio[name="' + radres1 + '"]:checked').val();
+
+            var IdParametro = obapli.attr('param');
+            var IdPilar = obapli.attr('pilar');
+            var ValorParametro = obapli.attr('valorPanam');
+            var ValorVariable = obapli.attr('ValorVar');
+            var IdTotalPilar = obapli.attr('IdTotal');
+            var obTotalPilar = $("#" + IdTotalPilar);
+            var obResSpan = $("#" + IdParametro);
+
+            if (selectApli != null && selectEvi != null && selectRes != null) {
+                var Evaluar = selectApli * selectEvi * selectRes * ValorVariable;
+                var EvaluarDec = Evaluar.toFixed(2);
+                var MostrarEvaluar = EvaluarDec;
+                MostrarEvaluar = MostrarEvaluar.replace(".", ",");
+                obVarSpan.text(MostrarEvaluar);
+            }
+            var stringArray = new Array();
+            var stringArray1 = new Array();
+            $("input:radio").each(function (i,obj) {
+                var id1 = obj.id;
+                var Numero1 = id1;
+                Numero1 = Numero1.replace("radioAplica", "");
+                Numero1 = Numero1.replace("radioEvidencia", "");
+                Numero1 = Numero1.replace("radioResponde", "");
+                if ($(obj).attr('param') == IdParametro) {
+                    stringArray.push(Numero1);
+                }
+                if ($(obj).attr('pilar') == IdPilar) {
+                    stringArray1.push(Numero1);
+                }
+            });
+            stringArray = jQuery.unique(stringArray);
+            stringArray1 = jQuery.unique(stringArray1);
+            var Resultado = 0;
+            var Resultado1 = 0;
+            var cont = 0;
+            var cont1 = 0;
+            $.each(stringArray, function (key, value) {
+                var id2 = value;
+                var radapli2 = "radioAplica" + id2;
+                var radevi2 = "radioEvidencia" + id2;
+                var radres2 = "radioResponde" + id2;
+
+                var radapli1 = "#radioAplica" + id2;
+                var obapli1 = $(radapli1);
+
+                var selectApli1 = $('input:radio[name="' + radapli2 + '"]:checked').val();
+                var selectEvi1 = $('input:radio[name="' + radevi2 + '"]:checked').val();
+                var selectRes1 = $('input:radio[name="' + radres2 + '"]:checked').val();
+
+                var ValorVariable1 = obapli1.attr('ValorVar');
+
+                if (selectApli1 != null && selectEvi1 != null && selectRes1 != null) {
+                    var Evaluar1 = selectApli1 * selectEvi1 * selectRes1 * ValorVariable1;
+                    Resultado = Resultado + Evaluar1;
+                    cont++;
+                }
+                cont1++;
+            });
+            if (cont > 0) {
+                Resultado = Resultado.toFixed(1);
+                var MostrarEvaluar1 = Resultado;
+                MostrarEvaluar1 = MostrarEvaluar1.replace(".", ",");
+                obResSpan.text(MostrarEvaluar1);
+            }
+
+            //calculo pilar
+            $.each(stringArray1, function (key, value) {
+                var id3 = value;
+                var radapli3 = "radioAplica" + id3;
+                var radevi3 = "radioEvidencia" + id3;
+                var radres3 = "radioResponde" + id3;
+
+                var radapli2 = "#radioAplica" + id3;
+                var obapli2 = $(radapli2);
+
+                var selectApli2 = $('input:radio[name="' + radapli3 + '"]:checked').val();
+                var selectEvi2 = $('input:radio[name="' + radevi3 + '"]:checked').val();
+                var selectRes2 = $('input:radio[name="' + radres3 + '"]:checked').val();
+
+                var ValorVariable2 = obapli2.attr('ValorVar');
+
+                if (selectApli2 != null && selectEvi2 != null && selectRes2 != null) {
+                    var Evaluar2 = selectApli2 * selectEvi2 * selectRes2 * ValorVariable2;
+                    Resultado1 = Resultado1 + Evaluar2;
+                    cont1++;
+                }
+            });
+            if (cont1 > 0) {
+                Resultado1 = Resultado1.toFixed(1);
+                var MostrarEvaluar2 = Resultado1;
+                MostrarEvaluar2 = MostrarEvaluar2.replace(".", ",");
+                obTotalPilar.val(MostrarEvaluar2);
+            }
+
+        });
+    });
+    //Guardado parcial
+    $(function () {
+        $("#GuardarParcial").bind("click", function () {
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var EDSegVialResultado = {
+                Aplica: "false",
+                Existencia: "false",
+                Responde: "false",
+                ValorObtenido:"0",
+                Observaciones: "",
+                Fk_Id_PlanVial: "0",
+                Fk_Id_SegVialParametroDetalle: "0"
+            };
+            var ListaEvals = new Array();
+            var stringArray = new Array();
+            $("input:radio").each(function (i, obj) {
+                var id = obj.id;
+                var Numero = id;
+                Numero = Numero.replace("radioAplica", "");
+                Numero = Numero.replace("radioEvidencia", "");
+                Numero = Numero.replace("radioResponde", "");
+                stringArray.push(Numero);
+            });
+            //Lista de Variables
+            stringArray = jQuery.unique(stringArray);
+            $.each(stringArray, function (key, value) {
+                var id2 = value;
+                var radapli2 = "radioAplica" + id2;
+                var radevi2 = "radioEvidencia" + id2;
+                var radres2 = "radioResponde" + id2;
+
+                var radapli1 = "#radioAplica" + id2;
+                var textarea = "#texto" + id2;
+                var obapli1 = $(radapli1);
+
+                var selectApli1 = $('input:radio[name="' + radapli2 + '"]:checked').val();
+                var selectEvi1 = $('input:radio[name="' + radevi2 + '"]:checked').val();
+                var selectRes1 = $('input:radio[name="' + radres2 + '"]:checked').val();
+                var obs = $(textarea).val();
+
+                var ValorVariable1 = obapli1.attr('ValorVar');
+                var Fk_Variable = obapli1.attr('FkVariable');
+                var Pk_Variable = obapli1.attr('PkVariable');
+
+                var ArrayEval = new Array();
+                ArrayEval[0] = Pk_Variable;
+                ArrayEval[1] = Pk_Variable;
+                if (selectApli1 != null) {
+                    ArrayEval[3] = "1";
+                    if (selectApli1=="1") {
+                        ArrayEval[2] = "true";
+                    }
+                    if (selectApli1 == "0") {
+                        ArrayEval[2] = "false";
+                    }
+                }
+                else {
+                    ArrayEval[3] = "0";
+                    ArrayEval[2] = "false";
+                }
+                if (selectEvi1 != null) {
+                    ArrayEval[5] = "1";
+                    if (selectEvi1 == "1") {
+                        ArrayEval[4] = "true";
+                    }
+                    if (selectEvi1 == "0") {
+                        ArrayEval[4] = "false";
+                    }
+                }
+                else {
+                    ArrayEval[5] = "0";
+                    ArrayEval[4] = "false";
+                }
+                if (selectRes1 != null) {
+                    ArrayEval[7] = "1";
+                    if (selectRes1 == "1") {
+                        ArrayEval[6] = "true";
+                    }
+                    if (selectRes1 == "0") {
+                        ArrayEval[6] = "false";
+                    }
+                }
+                else {
+                    ArrayEval[7] = "0";
+                    ArrayEval[6] = "false";
+                }
+                ArrayEval[8] = obs;
+                ArrayEval[9] = $("#IdEvaluacion").val();
+                ArrayEval[10] = Fk_Variable;
+
+                var EDSegVialResultadoPush = {
+                    Pk_Id_SegVialResultado: ArrayEval[1],
+                    Aplica: ArrayEval[2],
+                    Aplica_s: ArrayEval[3],
+                    Existencia: ArrayEval[4],
+                    Existencia_s: ArrayEval[5],
+                    Responde: ArrayEval[6],
+                    Responde_S: ArrayEval[7],
+                    ValorObtenido: "0",
+                    Observaciones: obs,
+                    Fk_Id_PlanVial: ArrayEval[9],
+                    Fk_Id_SegVialParametroDetalle: ArrayEval[10]
+                };
+                ListaEvals.push(EDSegVialResultadoPush);
+            });
+
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PromocionPrevencion/GuardarParcialFormulario',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ Control: EDSegVialResultado, ListaEvaluacion: ListaEvals }),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        
+                    });
+                        location.reload(true);
+                    }
+                    if (data.Probar == false) {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //calculo inicial
+    $(document).ready(function () {
+
+        var stringArray = new Array();
+        var stringArray1 = new Array();
+        $("input:radio").each(function (i, obj) {
+            var id1 = obj.id;
+            var Numero1 = id1;
+            Numero1 = Numero1.replace("radioAplica", "");
+            Numero1 = Numero1.replace("radioEvidencia", "");
+            Numero1 = Numero1.replace("radioResponde", "");
+            stringArray1.push(Numero1);
+        });
+        stringArray1 = jQuery.unique(stringArray1);
+        var cont1 = 0;
+        var IdParametro = "";
+        var ListaIdParametro = new Array();
+        var ListaResultadoParametro = new Array();
+        //uno a uno
+        $.each(stringArray1, function (key, value) {
+
+            var id3 = value;
+            var radapli3 = "radioAplica" + id3;
+            var radevi3 = "radioEvidencia" + id3;
+            var radres3 = "radioResponde" + id3;
+
+            var radapli2 = "#radioAplica" + id3;
+            var obapli2 = $(radapli2);
+
+            var selectApli2 = $('input:radio[name="' + radapli3 + '"]:checked').val();
+            var selectEvi2 = $('input:radio[name="' + radevi3 + '"]:checked').val();
+            var selectRes2 = $('input:radio[name="' + radres3 + '"]:checked').val();
+
+            var ValorVariable2 = obapli2.attr('ValorVar');
+            var variableSpan = "#ValorObtenidoSpan" + id3;
+            var obVarSpan = $(variableSpan);
+
+
+
+            if (selectApli2 != null && selectEvi2 != null && selectRes2 != null) {
+                var Evaluar2 = selectApli2 * selectEvi2 * selectRes2 * ValorVariable2;
+                var EvaluarDec = Evaluar2.toFixed(2);
+                var MostrarEvaluar = EvaluarDec;
+                MostrarEvaluar = MostrarEvaluar.replace(".", ",");
+                obVarSpan.text(MostrarEvaluar);
+                cont1++;
+            }
+        });
+
+    });
+    //Mensaje disabled
+    function FuncionDisabled(valor)
+    {
+        swal({
+            title: "Estimado Usuario",
+            text: "No puede ver esta sección del formulario hasta completar primero el pilar "+valor+"",
+            type: "error",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false
+        });
+
+    };
+    //Guardado Continuar
+    $(function () {
+        $("#GuardarControl").bind("click", function () {
+            var botonGuardar=$(this);
+            var IdPilarActual= botonGuardar.attr('name');
+            $("#msj_glyphicon").removeClass("glyphicon glyphicon-ok glyphicon glyphicon-exclamation-sign");
+            $("#msj_novedad_validar").text('');
+            $("#div_novedad_validar").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            var onEventLaunchGuardar1 = new postGuardar1(IdPilarActual);
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+    function postGuardar1(pilar) {
+
+        this.launchGuardar1 = function () {
+            var EDSegVialResultado = {
+                Pk_Id_SegVialResultado:pilar,
+                Aplica: "false",
+                Existencia: "false",
+                Responde: "false",
+                ValorObtenido:"0",
+                Observaciones: "",
+                Fk_Id_PlanVial: $("#IdEvaluacion").val(),
+                Fk_Id_SegVialParametroDetalle: "0"
+            };
+            var ListaEvals = new Array();
+            var stringArray = new Array();
+            $("input:radio").each(function (i, obj) {
+                var id = obj.id;
+                var Numero = id;
+                Numero = Numero.replace("radioAplica", "");
+                Numero = Numero.replace("radioEvidencia", "");
+                Numero = Numero.replace("radioResponde", "");
+                stringArray.push(Numero);
+            });
+            //Lista de Variables
+            stringArray = jQuery.unique(stringArray);
+            $.each(stringArray, function (key, value) {
+                var id2 = value;
+                var radapli2 = "radioAplica" + id2;
+                var radevi2 = "radioEvidencia" + id2;
+                var radres2 = "radioResponde" + id2;
+                var textarea = "#texto" + id2;
+                var radapli1 = "#radioAplica" + id2;
+                var obapli1 = $(radapli1);
+
+                var selectApli1 = $('input:radio[name="' + radapli2 + '"]:checked').val();
+                var selectEvi1 = $('input:radio[name="' + radevi2 + '"]:checked').val();
+                var selectRes1 = $('input:radio[name="' + radres2 + '"]:checked').val();
+                var obs = $(textarea).val();
+
+                var ValorVariable1 = obapli1.attr('ValorVar');
+                var Fk_Variable = obapli1.attr('FkVariable');
+                var Pk_Variable = obapli1.attr('PkVariable');
+
+                var ArrayEval = new Array();
+                ArrayEval[0] = Pk_Variable;
+                ArrayEval[1] = Pk_Variable;
+                if (selectApli1 != null) {
+                    ArrayEval[3] = "1";
+                    if (selectApli1=="1") {
+                        ArrayEval[2] = "true";
+                    }
+                    if (selectApli1 == "0") {
+                        ArrayEval[2] = "false";
+                    }
+                }
+                else {
+                    ArrayEval[3] = "0";
+                    ArrayEval[2] = "false";
+                }
+                if (selectEvi1 != null) {
+                    ArrayEval[5] = "1";
+                    if (selectEvi1 == "1") {
+                        ArrayEval[4] = "true";
+                    }
+                    if (selectEvi1 == "0") {
+                        ArrayEval[4] = "false";
+                    }
+                }
+                else {
+                    ArrayEval[5] = "0";
+                    ArrayEval[4] = "false";
+                }
+                if (selectRes1 != null) {
+                    ArrayEval[7] = "1";
+                    if (selectRes1 == "1") {
+                        ArrayEval[6] = "true";
+                    }
+                    if (selectRes1 == "0") {
+                        ArrayEval[6] = "false";
+                    }
+                }
+                else {
+                    ArrayEval[7] = "0";
+                    ArrayEval[6] = "false";
+                }
+                ArrayEval[8] = obs;
+                ArrayEval[9] = $("#IdEvaluacion").val();
+                ArrayEval[10] = Fk_Variable;
+
+                var EDSegVialResultadoPush = {
+                    Pk_Id_SegVialResultado: ArrayEval[1],
+                    Aplica: ArrayEval[2],
+                    Aplica_s: ArrayEval[3],
+                    Existencia: ArrayEval[4],
+                    Existencia_s: ArrayEval[5],
+                    Responde: ArrayEval[6],
+                    Responde_S: ArrayEval[7],
+                    ValorObtenido: "0",
+                    Observaciones: obs,
+                    Fk_Id_PlanVial: ArrayEval[9],
+                    Fk_Id_SegVialParametroDetalle: ArrayEval[10]
+                };
+                ListaEvals.push(EDSegVialResultadoPush);
+            });
+
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PromocionPrevencion/GuardarControlFormulario',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ Control: EDSegVialResultado, ListaEvaluacion: ListaEvals }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        
+                    });
+                        location.reload(true);
+                    }
+                    if (data.Probar == false) {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "error",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        });
+                    }
+                    else {
+                        if (data.NumErrores>0) {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.Estado,
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                            var ListaErrores = new Array();
+                            $.each(data.ListaErrores, function (key, value) {
+                                ListaErrores.push(value);
+                            });
+                            ListaErrores = jQuery.unique(ListaErrores);
+
+                            $('table > tbody').find('td.validacion_color').each(function () {
+                                var fila=$(this);
+                                fila.css("background-color", "rgba(255, 0, 0, 0.0)");
+                                fila.css("color", "");
+                                fila.attr("title", "");
+                                var name=fila.attr('name');
+                                $.each(ListaErrores, function (key, value) {
+                                    if (value==name) {
+                                        fila.css("background-color", "#cf382a");
+                                        fila.css("color", "#000000");
+                                        fila.attr("title", "Variable sin diligenciar");
+                                    }
+                                });
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.Estado,
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: true
+                            },
+        function () {
+            
+            window.location.href = "/PromocionPrevencion/SeguridadVialFormulario?IdSegVial="+ data.IdIntSegVial +""
+        });
+                            
+                        }
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Graficar Resultado
+    $(document).ready(function () {
+
+
+
+
+        var ctx = document.getElementById("chart-area");
+        var tables = document.getElementById("GridGrafica");
+        var coloresgen = ['rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(151, 165, 158,1)'];
+        var labsArray = new Array();
+        var datasArray = new Array();
+        var ColorArray = new Array();
+        var sumaResultados = 100;
+
+        $(tables).find('tbody tr').each(function () {
+            var fila = $(this);
+            fila.find('td.graphDesc').each(function () {
+                var Descripcion = this;
+                var descParametro = $(Descripcion).attr('descripcion');
+                labsArray.push(descParametro);
+            });
+            fila.find('td.graphResult').each(function () {
+                var resultado = this;
+                var resultadoParametro = $(resultado).attr('resultado');
+                var decimal = resultadoParametro.replace(",",".");
+                datasArray.push(decimal);
+                sumaResultados = sumaResultados - decimal;
+            });
+         });
+        var cont = 0;
+        $.each(labsArray, function (key, value) {
+            var color = coloresgen[key];
+            ColorArray.push(color);
+            cont++;
+        });
+
+        if (sumaResultados!=null) {
+            if (sumaResultados >=0) {
+                labsArray.push("RESULTADO NO OBTENIDO");
+                sumaResultados = Math.round(sumaResultados*100)/100;
+                datasArray.push(sumaResultados);
+                ColorArray.push('rgba(151, 165, 158,1)');
+            }
+        }
+
+        
+
+        var labs = ["FORTALECIMIENTO EN LA GESTIÓN INSTITUCIONAL", "COMPORTAMIENTO HUMANO", "VEHÍCULOS SEGUROS", "NO LOGRADO"];
+        var datas = [40.13, 34.67, 8.50, 16];
+        var colores = ['rgba(6,57,81, 0.8)', 'rgba(13,149,188,0.8)', 'rgba(162,185,105, 0.8)', 'rgba(235,203,56, 0.8)'];
+
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labsArray,
+                datasets: [{
+                    label: 'Puntos',
+                    data: datasArray,
+                    backgroundColor: ColorArray
+                    
+                }]
+            }
+            ,
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Resultados Plan de Seguridad Vial',
+                    fontSize:20
+                }
+            }
+        });
+
+    });
+    //Graficar Informes
+    $(document).ready(function () {
+        //var ctx = document.getElementById("chart-area");
+        var tables1 = document.getElementById("Reporte");
+
+        $(tables1).find('tbody.tbody_pilares').each(function () {
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+                    labsArray.push(descParametro);
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            if (sumaResultados != null) {
+                if (sumaResultados >= 0) {
+                    labsArray.push("RESULTADO NO OBTENIDO");
+                    sumaResultados = Math.round(sumaResultados * 100) / 100;
+                    datasArray.push(sumaResultados);
+                    ColorArray.push('rgba(151, 165, 158,1)');
+                }
+            }
+
+            var myChart = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: labsArray,
+                    datasets: [{
+                        label: 'Puntos',
+                        data: datasArray,
+                        backgroundColor: ColorArray
+
+                    }]
+                }
+            ,
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Reporte del Pilar ' + NomPilar + '',
+                        fontSize: 20
+                    }
+                }
+            });
+
+        });
+
+
+
+    });
+</script>
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Formulario de Evaluación del Plan Estratégico de Seguridad Vial</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Generalidades</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> El plan estratégico de seguridad vial se compone de varios pilares que están representados como pestañas, en total hay 6 de ellas: <strong>1.FORTALECIMIENTO EN LA GESTIÓN INSTITUCIONAL</strong>, <strong>2.COMPORTAMIENTO HUMANO</strong>, <strong>3.VEHÍCULOS SEGUROS</strong>, <strong>4.INFRAESTRUCTURA SEGURA</strong>, <strong>5.ATENCIÓN A VÍCTIMAS</strong>, <strong>6.VALORES AGREGADOS O INNOVACIONES</strong>; Cada pilar posee a su vez unas <strong>variables</strong> de evaluación agrupadas por <strong>parámetros</strong></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones de Uso</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para completar esta evaluación debe tener en cuenta que solo puede diligenciar los pilares habilitados, comience en el primer pilar <strong>FORTALECIMIENTO EN LA GESTIÓN INSTITUCIONAL</strong>, cuando termine de diligenciar todas las varibales de este pilar presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR Y CONTINUAR</button> el sistema validará las respuestas y si esta diligenciado correctamente le permitirá ir hacia el segundo pilar <strong>COMPORTAMIENTO HUMANO</strong>, repita este paso en todos los pilares presentes en la evaluación hasta que el sistema le muestre los resultados y el reporte</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Primer Paso (Leer la información de la variable evaluada)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> El usuario debe leer y analizar el contenido de la <strong>columna variable</strong> y la <strong>columna critero de aval</strong> para responder tres preguntas principales <strong>aplica?</strong>, <strong>hay evidencia de su existencia?</strong> y <strong>responde a los requerimientos?</strong></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Segundo Paso (marcar las respuestas por cada fila según sea el caso)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> El usuario debe elegir la respuesta (SI o NO) para cada pregunta (<strong>aplica?</strong>, <strong>hay evidencia de su existencia?</strong> y <strong>responde a los requerimientos?</strong>)</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Tercer Paso (guardado Parcial y guardado para continuar)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Existen dos formas de guardar la información consignada, la primera es un <strong>guardado parcial</strong>: Esta función guarda el avance realizado hasta el momento. para realizar esta función presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR PARCIALMENTE</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> la segunda es un <strong>guardado para continuar</strong>: Esta función guarda el avance realizado hasta el momento, valida la información y permite habilitar el siguiente pilar o pestaña. para realizar esta función presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR Y CONTINUAR</button>. Es importante que el usuario diligencie todo el pilar antes de continuar con el siguiente; si existe algúna variable sin diligenciar el sistema le mostrará que variables no han sido contestadas</p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Cuarto Paso (Terminar la evaluación y consultar resultados)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Cuando termine de diligenciar el último pilar el sistema le mostrará dos nuevas pestañas <strong>Resultados</strong> y <strong>Reporte</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Si desea descargar los resultados en una hoja de cálculo presione <button type="button" class="boton botonactive" style="cursor:default;">EXPORTAR HOJA DE CÁLCULO</button></p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Informacion Evaluacion*@
+        @Html.HiddenFor(s => s.IdEvaluacion)
+        @{
+            @Html.Hidden("HeaderFix", (string)ViewBag.HeadFix)
+        }
+        
+        @*Contenido del Panel*@
+        <div class="form-group row internal-panel-body add-side-padding">
+            @*tabs*@
+            <div style="overflow-x:scroll; max-height:100px;" class="add-side-padding">
+                <ul class="nav nav-tabs">
+                    @{
+                        var ListaPilar = Model.ListaPilares;
+                        List<int> ListaPkPilares = new List<int>();
+                        foreach (var item in ListaPilar)
+                        {
+                            ListaPkPilares.Add(item.Pk_Id_SegVialPilar);
+                        }
+                        int cont = 0;
+                        string NombreActual = "";
+                        foreach (var item in Model.ListaPilares)
+                        {
+                            string href = "#EvalSeg" + item.Pk_Id_SegVialPilar.ToString();
+                            if (ListaPkPilares[cont] == Model.PilarActual)
+                            {
+                                NombreActual = Model.ListaPilares.Where(s => s.Pk_Id_SegVialPilar == ListaPkPilares[cont]).FirstOrDefault().Descripcion;
+                                <li class="active"><a data-toggle="tab" class="NavegarTabs navigation-formulario" name="@item.Pk_Id_SegVialPilar" href="@href">@item.Descripcion</a></li>
+                            }
+                            else
+                            {
+                                if (ListaPkPilares[cont] > Model.PilarActual)
+                                {
+                                    <li><a data-toggle="tab" class="NavegarTabs navigation-formulario" name="@item.Pk_Id_SegVialPilar" href="#" disabled="disabled" onclick="FuncionDisabled('@NombreActual'); return false;">@item.Descripcion</a></li>
+                                }
+                                else
+                                {
+                                    <li><a data-toggle="tab" class="NavegarTabs navigation-formulario" name="@item.Pk_Id_SegVialPilar" href="@href">@item.Descripcion</a></li>
+                                }
+
+                            }
+                            cont++;
+                        }
+
+                        bool Finalizado = (bool)ViewBag.finalizado;
+                        if (Finalizado)
+                        {
+                            <li><a data-toggle="tab" class="navigation-formulario" href="#Resultados">RESULTADO</a></li>
+                            <li><a data-toggle="tab" class="navigation-formulario" href="#Reporte">REPORTE</a></li>
+                        }
+                    }
+
+                </ul>
+            </div>
+            @*Contenido tabs*@
+            <div style="min-height:500px;" class="add-side-padding">
+                <div class="tab-content" id="TabsPrevencionPromocion">
+                    @{
+                        int cont1 = 0;
+                        foreach (var item in Model.ListaPilares)
+                        {
+                            string href = "EvalSeg" + item.Pk_Id_SegVialPilar.ToString();
+                            string HeadFixedA = "HeadFixedA" + item.Pk_Id_SegVialPilar.ToString();
+                            string HeadFixedB = "HeadFixedB" + item.Pk_Id_SegVialPilar.ToString();
+                            string TotalObt = "TotalObt" + item.Pk_Id_SegVialPilar.ToString();
+                            if (ListaPkPilares[cont1] == Model.PilarActual)
+                            {
+                                <div id="@href" class="tab-pane fade in active" style="overflow:hidden">
+                                    <h4>@item.Descripcion - @ViewBag.RazonS - @ViewBag.Sede </h4>
+                                    <h4>@ViewBag.FechaRegistro </h4>
+                                    <div id="@HeadFixedA" style="max-height:500px;overflow-x:scroll;">
+                                        <table >
+                                            <thead style="">
+                                                <tr class="titulos_tabla" style="height:100px;border: 2px solid lightslategray">
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                        <span>No.</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:210px;max-width:210px;width:210px;">
+                                                        <span>Parametro Definición</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span> </span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:170px;max-width:170px;width:170px;">
+                                                        <span>Variable</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:170px;max-width:170px;width:170px;">
+                                                        <span>Critero de Aval</span>
+                                                    </th>
+                                                    <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span>APLICA</span>
+                                                    </th>
+                                                    <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span>Evidencia de su Existencia</span>
+                                                    </th>
+                                                    <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:120px;max-width:120px;width:120px;">
+                                                        <span>Responde a los requerimientos</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span>Valor del parametro</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:80px;max-width:80px;width:80px;">
+                                                        <span>Valor de la Variable</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span>Valor obtenido</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:90px;max-width:90px;width:90px;">
+                                                        <span>RESULTADO</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:300px;max-width:300px;width:300px;">
+                                                        <span>OBSERVACIONES</span>
+                                                    </th>
+
+                                                </tr>
+                                                <tr class="titulos_tabla">
+                                                    <th colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:700px;max-width:700px;width:700px;">
+
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                        <span>Si</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                        <span>No</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                        <span>Si</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                        <span>No</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:60px;max-width:60px;width:60px;">
+                                                        <span>Si</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:60px;max-width:60px;width:60px;">
+                                                        <span>No</span>
+                                                    </th>
+                                                    <th colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:670px;max-width:670px;width:670px;">
+
+                                                    </th>
+
+
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div id="@HeadFixedB" style="max-height:500px;height:500px;overflow-y:scroll;">
+                                            <table id="Grid3" class="table table-bordered table-fixed" style="border: 2px solid lightslategray;">
+                                                <tbody style="max-height:300px;height:300px">
+                                                    @{
+                                                        var ListaResultado = Model.ListaResultados.Where(s => s.Pilar.Pk_Id_SegVialPilar == item.Pk_Id_SegVialPilar).ToList();
+                                                        int NumeroParametroPasado = 0;
+                                                        var ListaTextosVariable = (List<string>)ViewBag.ListaVartexto;
+                                                        var ListaListaIdVar = (List<int>)ViewBag.ListaIdVar;
+                                                        var ListaListaContVar = (List<int>)ViewBag.ListaContVar;
+                                                        foreach (var item1 in ListaResultado)
+                                                        {
+                                                            int NumeroParametro = item1.Parametro.Numero;
+
+                                                            if (NumeroParametro != NumeroParametroPasado)
+                                                            {
+                                                                NumeroParametroPasado = NumeroParametro;
+                                                                var ListaParametro = ListaResultado.Where(s => s.Parametro.Numero == NumeroParametro).ToList();
+                                                                int NumeroFilas = ListaParametro.Count();
+                                                <tr style="text-align:center; vertical-align:middle">
+                                                    <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;"><strong>@item1.Parametro.Numeral</strong></td>
+                                                    <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:210px;max-width:210px;width:210px;font-size:12px"><strong>@item1.Parametro.ParametroDef</strong></td>
+                                                    <td class="validacion_color" title="" name="@item1.Pk_Id_SegVialResultado" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">@item1.DetalleParametro.Numeral</td>
+                                                    @{
+                                                        bool combinar = false;
+                                                        int NumComb = 1;
+                                                        int contComb = 0;
+                                                        string TextoComb = "";
+                                                        foreach (var item2 in ListaListaIdVar)
+                                                        {
+                                                            if (item2 == item1.DetalleParametro.Pk_Id_SegVialParametroDetalle)
+                                                            {
+                                                                combinar = true;
+                                                                NumComb = ListaListaContVar[contComb];
+                                                                TextoComb = ListaTextosVariable[contComb];
+                                                            }
+                                                            contComb++;
+                                                        }
+                                                        if (combinar)
+                                                        {
+                                                            <td rowspan="@NumComb" style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@TextoComb</td>
+                                                        }
+
+                                                    }
+                                                    <td style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@item1.DetalleParametro.CriterioAval</td>
+                                                    @{
+                                                                    string idradioAplica = "radioAplica" + item1.Pk_Id_SegVialResultado;
+                                                                    string idradioEvidencia = "radioEvidencia" + item1.Pk_Id_SegVialResultado;
+                                                                    string idradioResponde = "radioResponde" + item1.Pk_Id_SegVialResultado;
+                                                                    string ValorObtenidoId = "ValorObtenido" + item1.Pk_Id_SegVialResultado;
+                                                                    string ValorObtenidospan = "ValorObtenidoSpan" + item1.Pk_Id_SegVialResultado;
+                                                                    string ResultadoSpan = "ResultadoSpan" + item1.Pk_Id_SegVialResultado;
+                                                                    string IdParametro = "IdParametro" + item1.Parametro.Pk_Id_SegVialParametro;
+                                                                    string IdPilar = "IdPilar" + item1.Pilar.Pk_Id_SegVialPilar;
+                                                                    string Idtexto = "texto" + item1.Pk_Id_SegVialResultado;
+                                                                    decimal ValorParam = @item1.Parametro.Valor_Parametro;
+                                                                    decimal ValorVariable = Math.Round((ValorParam / NumeroFilas), 2, MidpointRounding.ToEven);
+                                                                    decimal Valorparmdec = Math.Round(item1.Parametro.Valor_obtenido, 1, MidpointRounding.ToEven);
+                                                                    string valorobtparam = Valorparmdec.ToString();
+                                                                    string valorobtvar = item1.ValorObtenido.ToString();
+                                                                    valorobtparam = string.Format("{0:0.0}", Valorparmdec);
+
+
+
+                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                    @{
+                                                                            if (item1.Aplica == true && item1.Aplica_s == 1)
+                                                                            {
+                                                                        @Html.RadioButton(@idradioAplica, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado,@IdTotal= TotalObt })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                        @Html.RadioButton(@idradioAplica, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                    }
+
+                                                                </td>
+                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                    @{
+                                                                            if (item1.Aplica == false && item1.Aplica_s == 1)
+                                                                            {
+                                                                        @Html.RadioButton(@idradioAplica, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                        @Html.RadioButton(@idradioAplica, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                    }
+
+
+                                                                </td>
+                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                    @{
+                                                                            if (item1.Existencia == true && item1.Existencia_s == 1)
+                                                                            {
+                                                                        @Html.RadioButton(@idradioEvidencia, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                        @Html.RadioButton(@idradioEvidencia, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                    }
+
+                                                                </td>
+                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                    @{
+                                                                            if (item1.Existencia == false && item1.Existencia_s == 1)
+                                                                            {
+                                                                        @Html.RadioButton(@idradioEvidencia, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                        @Html.RadioButton(@idradioEvidencia, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                    }
+                                                                </td>
+                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+
+                                                                    @{
+                                                                            if (item1.Responde == true && item1.Responde_s == 1)
+                                                                            {
+                                                                        @Html.RadioButton(@idradioResponde, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                        @Html.RadioButton(@idradioResponde, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                    }
+                                                                </td>
+                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+                                                                    @{
+                                                                            if (item1.Responde == false && item1.Responde_s == 1)
+                                                                            {
+                                                                        @Html.RadioButton(@idradioResponde, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                        @Html.RadioButton(@idradioResponde, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                            }
+                                                                    }
+                                                                </td>
+                                                    }
+                                                    <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <strong>@item1.Parametro.Valor_Parametro</strong>
+                                                    </td>
+                                                    <td style="text-align:center; vertical-align:middle;vertical-align:middle;min-width:80px;max-width:80px;width:80px;">
+                                                        <span>@ValorVariable</span>
+                                                    </td>
+                                                    <td id="@ValorObtenidoId" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span id="@ValorObtenidospan"></span>
+                                                    </td>
+                                                    <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:90px;max-width:90px;width:90px;">
+                                                        @{
+                                                                        if (item1.Parametro.Mostrar)
+                                                                        {
+                                                                    <span id="@IdParametro">@valorobtparam</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                    <span id="@IdParametro"></span>
+                                                                        }
+
+                                                        }
+
+                                                    </td>
+                                                    <td style="min-width:300px;max-width:300px;width:300px;">
+                                                        @Html.TextArea(@Idtexto, item1.Observaciones, new { @class = "form-control", rows = 2, maxlength = 500, @style = "resize: vertical;" })
+                                                    </td>
+                                                </tr>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            var ListaParametro = ListaResultado.Where(s => s.Parametro.Numero == NumeroParametroPasado).ToList();
+                                                                            int NumeroFilas = ListaParametro.Count();
+                                                <tr>
+
+
+                                                    <td class="validacion_color" title="" name="@item1.Pk_Id_SegVialResultado" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">@item1.DetalleParametro.Numeral</td>
+                                                    @{
+                                                        bool combinar = false;
+                                                        int NumComb = 1;
+                                                        int contComb = 0;
+                                                        string TextoComb = "";
+                                                        foreach (var item2 in ListaListaIdVar)
+                                                        {
+                                                            if (item2 == item1.DetalleParametro.Pk_Id_SegVialParametroDetalle)
+                                                            {
+                                                                combinar = true;
+                                                                NumComb = ListaListaContVar[contComb];
+                                                                TextoComb = ListaTextosVariable[contComb];
+                                                            }
+                                                            contComb++;
+                                                        }
+                                                        if (combinar)
+                                                        {
+                                                            <td rowspan="@NumComb" style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@TextoComb</td>
+                                                        }
+
+                                                    }
+                                                    <td style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@item1.DetalleParametro.CriterioAval</td>
+                                                    @{
+                                                                                    string idradioAplica = "radioAplica" + item1.Pk_Id_SegVialResultado;
+                                                                                    string idradioEvidencia = "radioEvidencia" + item1.Pk_Id_SegVialResultado;
+                                                                                    string idradioResponde = "radioResponde" + item1.Pk_Id_SegVialResultado;
+                                                                                    string ValorObtenidoId = "ValorObtenido" + item1.Pk_Id_SegVialResultado;
+                                                                                    string ValorObtenidospan = "ValorObtenidoSpan" + item1.Pk_Id_SegVialResultado;
+                                                                                    string IdParametro = "IdParametro" + item1.Parametro.Pk_Id_SegVialParametro;
+                                                                                    string IdPilar = "IdPilar" + item1.Pilar.Pk_Id_SegVialPilar;
+                                                                                    string Idtexto = "texto" + item1.Pk_Id_SegVialResultado;
+                                                                                    decimal ValorParam = @item1.Parametro.Valor_Parametro;
+                                                                                    decimal ValorVariable = Math.Round((ValorParam / NumeroFilas), 2, MidpointRounding.ToEven);
+                                                                                    decimal Valorparmdec = Math.Round(item1.Parametro.Valor_obtenido, 2, MidpointRounding.ToEven);
+                                                                                    string valorobtparam = Valorparmdec.ToString();
+                                                                                    string valorobtvar = item1.ValorObtenido.ToString();
+                                                                                    valorobtparam = string.Format("{0:0.0}", Valorparmdec);
+
+                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                    @{
+                                                                                            if (item1.Aplica == true && item1.Aplica_s == 1)
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioAplica, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioAplica, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                    }
+
+                                                                                </td>
+                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                    @{
+                                                                                            if (item1.Aplica == false && item1.Aplica_s == 1)
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioAplica, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioAplica, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                    }
+
+
+                                                                                </td>
+                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                    @{
+                                                                                            if (item1.Existencia == true && item1.Existencia_s == 1)
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioEvidencia, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioEvidencia, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                    }
+
+                                                                                </td>
+                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                    @{
+                                                                                            if (item1.Existencia == false && item1.Existencia_s == 1)
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioEvidencia, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioEvidencia, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                    }
+                                                                                </td>
+                                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+
+                                                                                    @{
+                                                                                            if (item1.Responde == true && item1.Responde_s == 1)
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioResponde, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioResponde, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                    }
+                                                                                </td>
+                                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+                                                                                    @{
+                                                                                            if (item1.Responde == false && item1.Responde_s == 1)
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioResponde, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                        @Html.RadioButton(@idradioResponde, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                            }
+                                                                                    }
+                                                                                </td>
+                                                    }
+                                                    <td style="text-align:center; vertical-align:middle;vertical-align:middle;min-width:80px;max-width:80px;width:80px;">
+                                                        <span>@ValorVariable</span>
+                                                    </td>
+                                                    <td id="@ValorObtenidoId" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                        <span id="@ValorObtenidospan"></span>
+                                                    </td>
+                                                    <td style="min-width:300px;max-width:300px;width:300px;">
+                                                        @Html.TextArea(@Idtexto, item1.Observaciones, new { @class = "form-control", rows = 2, maxlength = 500, @style = "resize: vertical;" })
+                                                    </td>
+                                                </tr>
+                                                                                                }
+
+                                                                                            }
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="11" style="border:none;vertical-align:middle; text-align:right">
+                                                            <span><strong>TOTAL</strong></span>
+                                                        </td>
+                                                        <td style="border:none;vertical-align:middle">
+                                                            @Html.TextBox("Total1", "100,00", new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                        </td>
+                                                        <td style="border:none;vertical-align:middle"></td>
+                                                        <td style="border:none;vertical-align:middle">
+                                                            @{
+                                                            if (item.Mostrar)
+                                                            {
+                                                                if (item.ValorObtenido == 0)
+                                                                {
+                                                        @Html.TextBox(@TotalObt, "0,00", new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                                }
+                                                                else
+                                                                {
+                                                                    string valorobtpil = string.Format("{0:0.0}", item.ValorObtenido);
+                                                        @Html.TextBox(@TotalObt, valorobtpil, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                                }
+
+                                                            }
+                                                            else
+                                                            {
+                                                        @Html.TextBox(@TotalObt, null, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                            }
+
+                                                            }
+
+                                                        </td>
+                                                        <td colspan="2" style="border:none;vertical-align:middle"></td>
+
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div id="@href" class="tab-pane fade in">
+                                                                <h4>@item.Descripcion - @ViewBag.RazonS - @ViewBag.Sede </h4>
+                                                                <h4>@ViewBag.FechaRegistro </h4>
+
+                                                                <div id="@HeadFixedA" style="max-height:500px;overflow-x:scroll;">
+                                                                    <table>
+                                                                        <thead style="">
+                                                                            <tr class="titulos_tabla" style="height:100px;border: 2px solid lightslategray">
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                    <span>No.</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:210px;max-width:210px;width:210px;">
+                                                                                    <span>Parametro Definición</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                    <span> </span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:170px;max-width:170px;width:170px;">
+                                                                                    <span>Variable</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:170px;max-width:170px;width:170px;">
+                                                                                    <span>Critero de Aval</span>
+                                                                                </th>
+                                                                                <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                    <span>APLICA</span>
+                                                                                </th>
+                                                                                <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                    <span>Evidencia de su Existencia</span>
+                                                                                </th>
+                                                                                <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:120px;max-width:120px;width:120px;">
+                                                                                    <span>Responde a los requerimientos</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                    <span>Valor del parametro</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:80px;max-width:80px;width:80px;">
+                                                                                    <span>Valor de la Variable</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                    <span>Valor obtenido</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:90px;max-width:90px;width:90px;">
+                                                                                    <span>RESULTADO</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:300px;max-width:300px;width:300px;">
+                                                                                    <span>OBSERVACIONES</span>
+                                                                                </th>
+
+                                                                            </tr>
+                                                                            <tr class="titulos_tabla">
+                                                                                <th colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:700px;max-width:700px;width:700px;">
+
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                                                    <span>Si</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                                                    <span>No</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                                                    <span>Si</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:50px;max-width:50px;width:50px;">
+                                                                                    <span>No</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:60px;max-width:60px;width:60px;">
+                                                                                    <span>Si</span>
+                                                                                </th>
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:60px;max-width:60px;width:60px;">
+                                                                                    <span>No</span>
+                                                                                </th>
+                                                                                <th colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:670px;max-width:670px;width:670px;">
+
+                                                                                </th>
+
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                                <div id="@HeadFixedB" style="max-height:500px;height:500px;overflow-y:scroll;">
+                                                                    <table id="Grid3" class="table table-bordered table-fixed" style="border: 2px solid lightslategray;">
+                                                                        <tbody style="max-height:300px;height:300px">
+                                                                            @{
+                                                                                            var ListaResultado = Model.ListaResultados.Where(s => s.Pilar.Pk_Id_SegVialPilar == item.Pk_Id_SegVialPilar).ToList();
+                                                                                            int NumeroParametroPasado = 0;
+                                                                                            var ListaTextosVariable = (List<string>)ViewBag.ListaVartexto;
+                                                                                            var ListaListaIdVar = (List<int>)ViewBag.ListaIdVar;
+                                                                                            var ListaListaContVar = (List<int>)ViewBag.ListaContVar;
+                                                                                            foreach (var item1 in ListaResultado)
+                                                                                            {
+                                                                                                int NumeroParametro = item1.Parametro.Numero;
+                                                                                           
+                                                                                                if (NumeroParametro != NumeroParametroPasado)
+                                                                                                {
+                                                                                                    NumeroParametroPasado = NumeroParametro;
+                                                                                                    var ListaParametro = ListaResultado.Where(s => s.Parametro.Numero == NumeroParametro).ToList();
+                                                                                                    int NumeroFilas = ListaParametro.Count();
+
+
+
+
+                                                                                        <tr style="text-align:center; vertical-align:middle">
+                                                                                            <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;"><strong>@item1.Parametro.Numeral</strong></td>
+                                                                                            <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:210px;max-width:210px;width:210px;font-size:12px"><strong>@item1.Parametro.ParametroDef</strong></td>
+                                                                                            <td class="validacion_color" title="" name="@item1.Pk_Id_SegVialResultado" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">@item1.DetalleParametro.Numeral</td>
+                                                                                            @{
+                                                                                                bool combinar = false;
+                                                                                                int NumComb = 1;
+                                                                                                int contComb = 0;
+                                                                                                string TextoComb = "";
+                                                                                                foreach (var item2 in ListaListaIdVar)
+                                                                                                {
+                                                                                                    if (item2 == item1.DetalleParametro.Pk_Id_SegVialParametroDetalle)
+                                                                                                    {
+                                                                                                        combinar = true;
+                                                                                                        NumComb = ListaListaContVar[contComb];
+                                                                                                        TextoComb = ListaTextosVariable[contComb];
+                                                                                                    }
+                                                                                                    contComb++;
+                                                                                                }
+                                                                                                if (combinar)
+                                                                                                {
+                                                                                                    <td rowspan="@NumComb" style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@TextoComb</td>
+                                                                                                }
+
+                                                                                            }
+                                                                                            
+
+                                                                                            <td style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@item1.DetalleParametro.CriterioAval</td>
+                                                                                            @{
+                                                                                                string idradioAplica = "radioAplica" + item1.Pk_Id_SegVialResultado;
+                                                                                        string idradioEvidencia = "radioEvidencia" + item1.Pk_Id_SegVialResultado;
+                                                                                        string idradioResponde = "radioResponde" + item1.Pk_Id_SegVialResultado;
+                                                                                        string ValorObtenidoId = "ValorObtenido" + item1.Pk_Id_SegVialResultado;
+                                                                                        string ValorObtenidospan = "ValorObtenidoSpan" + item1.Pk_Id_SegVialResultado;
+                                                                                        string ResultadoSpan = "ResultadoSpan" + item1.Pk_Id_SegVialResultado;
+                                                                                        string IdParametro = "IdParametro" + item1.Parametro.Pk_Id_SegVialParametro;
+                                                                                        string IdPilar = "IdPilar" + item1.Pilar.Pk_Id_SegVialPilar;
+                                                                                        string Idtexto = "texto" + item1.Pk_Id_SegVialResultado;
+                                                                                        decimal ValorParam = @item1.Parametro.Valor_Parametro;
+                                                                                        decimal ValorVariable = Math.Round((ValorParam / NumeroFilas), 2, MidpointRounding.ToEven);
+                                                                                        decimal Valorparmdec = Math.Round(item1.Parametro.Valor_obtenido, 1, MidpointRounding.ToEven);
+                                                                                        string valorobtparam = Valorparmdec.ToString();
+                                                                                        string valorobtvar = item1.ValorObtenido.ToString();
+                                                                                        valorobtparam = string.Format("{0:0.0}", Valorparmdec);
+
+
+
+                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                    @{
+                                                                                                        if (item1.Aplica == true && item1.Aplica_s == 1)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioAplica, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioAplica, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                    }
+
+                                                                                                </td>
+                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                    @{
+                                                                                                        if (item1.Aplica == false && item1.Aplica_s == 1)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioAplica, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioAplica, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                    }
+
+
+                                                                                                </td>
+                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                    @{
+                                                                                                        if (item1.Existencia == true && item1.Existencia_s == 1)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioEvidencia, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioEvidencia, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                    }
+
+                                                                                                </td>
+                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                    @{
+                                                                                                        if (item1.Existencia == false && item1.Existencia_s == 1)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioEvidencia, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioEvidencia, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+
+                                                                                                    @{
+                                                                                                        if (item1.Responde == true && item1.Responde_s == 1)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioResponde, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioResponde, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+                                                                                                    @{
+                                                                                                        if (item1.Responde == false && item1.Responde_s == 1)
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioResponde, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            @Html.RadioButton(@idradioResponde, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                            }
+                                                                                            <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                                <strong>@item1.Parametro.Valor_Parametro</strong>
+                                                                                            </td>
+                                                                                            <td style="text-align:center; vertical-align:middle;vertical-align:middle;min-width:80px;max-width:80px;width:80px;">
+                                                                                                <span>@ValorVariable</span>
+                                                                                            </td>
+                                                                                            <td id="@ValorObtenidoId" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                                <span id="@ValorObtenidospan"></span>
+                                                                                            </td>
+                                                                                            <td rowspan="@NumeroFilas.ToString()" style="text-align:center; vertical-align:middle;min-width:90px;max-width:90px;width:90px;">
+                                                                                                @{
+                                                                                                    if (item1.Parametro.Mostrar)
+                                                                                                    {
+                                                                                                        <span id="@IdParametro">@valorobtparam</span>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <span id="@IdParametro"></span>
+                                                                                                    }
+
+                                                                                                }
+
+                                                                                            </td>
+                                                                                            <td style="min-width:300px;max-width:300px;width:300px;">
+                                                                                                @Html.TextArea(@Idtexto, item1.Observaciones, new { @class = "form-control", rows = 2, maxlength = 500, @style = "resize: vertical;" })
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        var ListaParametro = ListaResultado.Where(s => s.Parametro.Numero == NumeroParametroPasado).ToList();
+                                                                                                        int NumeroFilas = ListaParametro.Count();
+                                                                                                        <tr>
+
+
+                                                                                                            <td class="validacion_color" title="" name="@item1.Pk_Id_SegVialResultado" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">@item1.DetalleParametro.Numeral</td>
+                                                                                                            @{
+                                                                                                                bool combinar = false;
+                                                                                                                int NumComb = 1;
+                                                                                                                int contComb = 0;
+                                                                                                                string TextoComb = "";
+                                                                                                                foreach (var item2 in ListaListaIdVar)
+                                                                                                                {
+                                                                                                                    if (item2 == item1.DetalleParametro.Pk_Id_SegVialParametroDetalle)
+                                                                                                                    {
+                                                                                                                        combinar = true;
+                                                                                                                        NumComb = ListaListaContVar[contComb];
+                                                                                                                        TextoComb = ListaTextosVariable[contComb];
+                                                                                                                    }
+                                                                                                                    contComb++;
+                                                                                                                }
+                                                                                                                if (combinar)
+                                                                                                                {
+                                                                                                                    <td rowspan="@NumComb" style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@TextoComb</td>
+                                                                                                                }
+
+                                                                                                            }
+                                                                                                            
+                                                                                                            <td style="text-align:center; vertical-align:middle;min-width:170px;max-width:170px;width:170px;font-size:12px;">@item1.DetalleParametro.CriterioAval</td>
+                                                                                                            @{
+                                                                                                                string idradioAplica = "radioAplica" + item1.Pk_Id_SegVialResultado;
+                                                                                string idradioEvidencia = "radioEvidencia" + item1.Pk_Id_SegVialResultado;
+                                                                                string idradioResponde = "radioResponde" + item1.Pk_Id_SegVialResultado;
+                                                                                string ValorObtenidoId = "ValorObtenido" + item1.Pk_Id_SegVialResultado;
+                                                                                string ValorObtenidospan = "ValorObtenidoSpan" + item1.Pk_Id_SegVialResultado;
+                                                                                string IdParametro = "IdParametro" + item1.Parametro.Pk_Id_SegVialParametro;
+                                                                                string IdPilar = "IdPilar" + item1.Pilar.Pk_Id_SegVialPilar;
+                                                                                string Idtexto = "texto" + item1.Pk_Id_SegVialResultado;
+                                                                                decimal ValorParam = @item1.Parametro.Valor_Parametro;
+                                                                                decimal ValorVariable = Math.Round((ValorParam / NumeroFilas), 2, MidpointRounding.ToEven);
+                                                                                decimal Valorparmdec = Math.Round(item1.Parametro.Valor_obtenido, 2, MidpointRounding.ToEven);
+                                                                                string valorobtparam = Valorparmdec.ToString();
+                                                                                string valorobtvar = item1.ValorObtenido.ToString();
+                                                                                valorobtparam = string.Format("{0:0.0}", Valorparmdec);
+
+                                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                                    @{
+                                                                                                                        if (item1.Aplica == true && item1.Aplica_s == 1)
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioAplica, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioAplica, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                                </td>
+                                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                                    @{
+                                                                                                                        if (item1.Aplica == false && item1.Aplica_s == 1)
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioAplica, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioAplica, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                    }
+
+
+                                                                                                                </td>
+                                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                                    @{
+                                                                                                                        if (item1.Existencia == true && item1.Existencia_s == 1)
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioEvidencia, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioEvidencia, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                                </td>
+                                                                                                                <td style="text-align:center; vertical-align:middle;min-width:50px;max-width:50px;width:50px;">
+                                                                                                                    @{
+                                                                                                                        if (item1.Existencia == false && item1.Existencia_s == 1)
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioEvidencia, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioEvidencia, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                </td>
+                                                                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+
+                                                                                                                    @{
+                                                                                                                        if (item1.Responde == true && item1.Responde_s == 1)
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioResponde, "1", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioResponde, "1", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                </td>
+                                                                                                                <td style="text-align:center; vertical-align:middle;min-width:60px;max-width:60px;width:60px;">
+                                                                                                                    @{
+                                                                                                                        if (item1.Responde == false && item1.Responde_s == 1)
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioResponde, "0", true, new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            @Html.RadioButton(@idradioResponde, "0", new { @param = IdParametro, @valorPanam = ValorParam, @ValorVar = ValorVariable, @pilar = IdPilar, @FkVariable = item1.DetalleParametro.Pk_Id_SegVialParametroDetalle, @PkVariable = item1.Pk_Id_SegVialResultado, @IdTotal = TotalObt })
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                </td>
+                                                                                                            }
+                                                                                                            <td style="text-align:center; vertical-align:middle;vertical-align:middle;min-width:80px;max-width:80px;width:80px;">
+                                                                                                                <span>@ValorVariable</span>
+                                                                                                            </td>
+                                                                                                            <td id="@ValorObtenidoId" style="text-align:center; vertical-align:middle;min-width:100px;max-width:100px;width:100px;">
+                                                                                                                <span id="@ValorObtenidospan"></span>
+                                                                                                            </td>
+                                                                                                            <td style="min-width:300px;max-width:300px;width:300px;">
+                                                                                                                @Html.TextArea(@Idtexto, item1.Observaciones, new { @class = "form-control", rows = 2, maxlength = 500, @style = "resize: vertical;" })
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                                            }
+
+                                                                                                                        }
+                                                                            }
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <td colspan="11" style="border:none;vertical-align:middle; text-align:right">
+                                                                                    <span><strong>TOTAL</strong></span>
+                                                                                </td>
+                                                                                <td style="border:none;vertical-align:middle">
+                                                                                    @Html.TextBox("Total1", "100,00", new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                                                </td>
+                                                                                <td style="border:none;vertical-align:middle"></td>
+                                                                                <td style="border:none;vertical-align:middle">
+                                                                                    @{
+                                                                                        if (item.Mostrar)
+                                                                                        {
+                                                                                            if (item.ValorObtenido == 0)
+                                                                                            {
+                                                                                                @Html.TextBox(@TotalObt, "0,00", new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                string valorobtpil = string.Format("{0:0.0}", item.ValorObtenido);
+                                                                                                @Html.TextBox(@TotalObt, valorobtpil, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                                                            }
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            @Html.TextBox(@TotalObt, null, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                                                                                        }
+
+                                                                                    }
+
+                                                                                </td>
+                                                                                <td colspan="2" style="border:none;vertical-align:middle"></td>
+
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                                                        }
+                                                                                        cont1++;
+                                                                                    }
+                    }
+
+                    <div id="Resultados" class="tab-pane fade in">
+                        <h4>RESULTADO - @ViewBag.RazonS - @ViewBag.Sede</h4>
+                        <h4>@ViewBag.FechaRegistro </h4>
+                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th colspan="8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>RESULTADOS</span>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span></span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>PILAR</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>VALOR OBTENIDO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>VALOR PONDERADO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>RESULTADO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;display:none">
+                                        <span>VALOR ESPERADO</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            @{
+                                int cont2 = 1;
+                                decimal total = 0;
+                                decimal total1 = 0;
+                                decimal total2 = 0;
+                                foreach (var item in Model.ListaPilares)
+                                {
+                                    decimal ValPond = item.Valor_Ponderado;
+                                    ValPond = Math.Round((ValPond * 100), 1, MidpointRounding.ToEven);
+                                    total2 = total2 + ValPond;
+
+                                    total = total+ item.ValorObtenido;
+                                    string valortotformat = string.Format("{0:0.0}", total);
+                                    total = Math.Round((total), 1, MidpointRounding.ToEven);
+                                    total1 = total1 + item.ValorResultado;
+                                    total1 = Math.Round((total1), 1, MidpointRounding.ToEven);
+                                    string valortot1format = string.Format("{0:0.0}", total1);
+                                    string valorPondstr = ValPond.ToString() + "%";
+                                    string valorgraph = string.Format("{0:0.0}", item.ValorResultado);
+                                    string valorobt = string.Format("{0:0.0}", item.ValorObtenido);
+
+                                    <tr class="paginver">
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>@cont2</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(model => item.Descripcion)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            
+                                            <span>@valorobt</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>@valorPondstr</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>@valorgraph</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;display:none">
+                                            <span>100</span>
+                                        </td>
+                                    </tr>
+                                    cont2++;
+                                }
+                           
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;background-color:rgb(202, 209, 218);color:black;">
+                                        <span><strong>TOTAL</strong></span>
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>@total</span>
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                        <span>@total2%</span>
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                        <span>@total1</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            }
+                        </table>
+                        <table id="GridGrafica" class="table table-responsive table-bordered" style="border: 2px solid lightslategray;display:none">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th colspan="8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>RESULTADOS</span>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span></span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>PILAR</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>VALOR OBTENIDO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>VALOR PONDERADO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                        <span>RESULTADO</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;display:none">
+                                        <span>VALOR ESPERADO</span>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            @{
+                                int none_cont2 = 1;
+                                decimal none_total = 0;
+                                decimal none_total1 = 0;
+                                decimal none_total2 = 0;
+                                foreach (var item in Model.ListaPilares)
+                                {
+                                    decimal ValPond = item.Valor_Ponderado;
+                                    ValPond = Math.Round((ValPond * 100), 1, MidpointRounding.ToEven);
+                                    none_total2 = none_total2 + ValPond;
+
+                                    none_total = none_total + item.ValorObtenido;
+                                    string valortotformat = string.Format("{0:0.0}", none_total);
+                                    none_total = Math.Round((none_total), 1, MidpointRounding.ToEven);
+                                    none_total1 = none_total1 + item.ValorResultado;
+                                    none_total1 = Math.Round((none_total1), 1, MidpointRounding.ToEven);
+                                    string valortot1format = string.Format("{0:0.0}", none_total1);
+                                    string valorPondstr = ValPond.ToString() + "%";
+                                    string valorgraph = string.Format("{0:0.0}", item.ValorResultado);
+
+
+                                    <tr class="paginver">
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>@cont2</span>
+                                        </td>
+                                        <td descripcion="@item.Descripcion" class="graphDesc" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(model => item.Descripcion)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                                            <span>@total</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                                            <span>@valorPondstr</span>
+                                        </td>
+                                        <td  resultado="@valorgraph" class="graphResult" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(model => item.ValorResultado)
+                                        </td>
+                                        <td  style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;display:none">
+                                            <span>100</span>
+                                        </td>
+                                    </tr>
+                                    none_cont2++;
+                                }
+
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;background-color:rgb(202, 209, 218);color:black;">
+                                            <span><strong>TOTAL</strong></span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>@total</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                            <span>@total2%</span>
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                            <span>@total1</span>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            }
+                        </table>
+
+                        <div class="col-sm-12 add-top-margin-10em add-bottom-margin-10em">
+                            <canvas id="chart-area" style="display: block; width: 296px; height: 148px;" width="296" height="148" class="chartjs-render-monitor"></canvas>
+                        </div>
+
+
+                        <div class="col-sm-12 add-top-margin-10em add-bottom-margin-10em">
+                            <center>
+                                @using (Html.BeginForm("AsignacionExcelEPPplus", "PromocionPrevencion", new { @IdSegVial = Model.IdEvaluacion.ToString() }, FormMethod.Post))
+                                {
+                                    <button id="Exportar" class="boton botonactive col-margin">EXPORTAR HOJA DE CÁLCULO</button>
+                                }
+                            </center>
+                        </div>
+
+                    </div>
+                    <div id="Reporte" class="tab-pane fade in">
+
+                        <h4>REPORTES POR PILAR - @ViewBag.RazonS - @ViewBag.Sede</h4>
+                        <h4>@ViewBag.FechaRegistro </h4>
+                        @{
+                            int cont4 = 1;
+
+                            foreach (var item in Model.ListaPilares)
+                            {
+                                string Idgraph = "graph" + item.Pk_Id_SegVialPilar;
+                                        int Idpil = item.Pk_Id_SegVialPilar;
+                                        var ListaResultados = Model.ListaResultados.Where(s => s.Pilar.Pk_Id_SegVialPilar == Idpil).ToList();
+                                        List<int> ListaParametrosId = new List<int>();
+                                foreach (var item1 in ListaResultados)
+                                {
+                                    ListaParametrosId.Add(item1.Parametro.Pk_Id_SegVialParametro);
+                                }
+                                    var ListaParametrosId1 = ListaParametrosId.Distinct();
+                                <table id="tables_pilares" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+                                            <th colspan="8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                                <span>@cont4. @item.Descripcion</span>
+                                            </th>
+                                        </tr>
+                                        <tr class="titulos_tabla">
+
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;vertical-align:middle">
+                                                <span></span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle">
+                                                <span>FACTOR DE EVALUACIÓN</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;vertical-align:middle">
+                                                <span>RESULTADO OBTENIDO</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;vertical-align:middle">
+                                                <span>RESULTADO ESPERADO</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody_pilares" name="@Idgraph" pilar="@item.Descripcion">
+                                        @{
+                                            decimal total4 = 0;
+                                    decimal total5 = 0;
+                                            if (ListaParametrosId1 != null)
+                                            {
+                                                int cont3 = 1;
+                                                foreach (var item2 in ListaParametrosId1)
+                                                {
+                                                    var Parametros = Model.ListaResultados.Where(s => s.Parametro.Pk_Id_SegVialParametro == item2).FirstOrDefault().Parametro;
+                                    decimal ValObt = Parametros.Valor_obtenido;
+                                    ValObt = Math.Round((ValObt), 1, MidpointRounding.ToEven);
+                                                    total4 = total4 + ValObt;
+                                                    decimal ValEsp = Parametros.Valor_Parametro;
+                                    ValEsp = Math.Round((ValEsp), 1, MidpointRounding.ToEven);
+                                                    total5 = total5 + ValEsp;
+                                                    
+                                                    <tr>
+                                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px">
+                                                            <span>@cont3</span>
+                                                        </td>
+                                                        <td descripcion="@Parametros.ParametroDef" class="graphDesc" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                            <span>@Parametros.ParametroDef</span>
+                                                        </td>
+                                                        <td resultado="@ValObt" class="graphResult" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                                            <span>@ValObt</span>
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                                            <span>@ValEsp</span>
+                                                        </td>
+                                                    </tr>
+                                                    cont3++;
+                                }
+                            }
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        @{
+                                            string valorobt1 = string.Format("{0:0.0}", item.ValorObtenido);
+                                            <tr>
+                                                <td colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;background-color:rgb(202, 209, 218);color:black;">
+                                                    <span><strong>TOTAL</strong></span>
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>@valorobt1</span>
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:120px;width:120px;">
+                                                    <span>@total5</span>
+                                                </td>
+
+                                            </tr>
+                                        }
+                                        
+                                        <tr>
+                                            <td colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;color:black;">
+                                                <center>
+                                                    <canvas id="@Idgraph" style="display: block; width: 296px; height: 148px;" width="296" height="148" class="chartjs-render-monitor"></canvas>
+                                                </center>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tfoot>
+
+
+                                </table>
+                                                cont4++;
+                                            }
+                        }
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        @*Footer*@
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="GuardarParcial" class="boton botonactive col-margin">GUARDAR PARCIALMENTE</button>
+                </div>
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="GuardarControl" class="boton botonactive col-margin" name="@Model.PilarActual">GUARDAR Y CONTINUAR</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="boton botoncancel" onclick="location.href='@Url.Action("PlanSeguridadVial", "PromocionPrevencion")';return false;">REGRESAR</button>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+</div>

@@ -1,0 +1,544 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaInforme
+@{
+    ViewBag.Title = "Informe de Auditoria";
+}
+<script src="~/Scripts/MedicionyEvaluacion/AuditoriaInforme.js"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li><a href="@Url.Action("Programa", "Auditoria")">Programas</a></li>
+    <li><a href="@Url.Action("Auditoria", "Auditoria",new { IdPrograma = ViewBag.IdPrograma })">Auditorias</a></li>
+    <li class="active">Informe de Auditoria</li>
+</ol>
+    <div class="panel panel-default std-panel-body">
+        <div class="panel-heading panel-heading-custom">VER INFORME DE AUDITORÍA</div>
+        <div class="panel-body">
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Informe de auditoría</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">ACTUALIZAR INFORME</button> Para actualizar las conlusiones y las firmas</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR PLAN DE ACCIÓN</button> Para agregar un nuevo plan de acción</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">GENERAR PDF</button> Para exportar el informe de auditoría en formato PDF</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">FINALIZAR EDICIÓN PLAN</button> Para actualizar un registro del plan de acción</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">FINALIZAR EDICIÓN COMPROMISO</button> Para actualizar un registro de los compromisos</p>
+
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">ADJUNTAR FIRMA</button> Para adjuntar una firma. Solo se aceptan imagenes</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">QUITAR FIRMA</button> Para quitar la firma cargada</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">REGRESAR</button> Para regresar a la lista de auditorias para el programa actual</p>
+
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR EDICION PLAN</button> Para cancelar la edición del registro del plan de acción</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR EDICION COMPROMISO</button> Para cancelar la edición del registro de los compromisos</p>
+
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar el elemento</p>
+                                    
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @Html.Hidden("EdicionPrograma", (object)ViewBag.IdPrograma)
+            @Html.Hidden("EdicionAuditoria", (object)ViewBag.IdAuditoria)
+
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-4">
+                        <label>Proceso:</label>
+                        <div>
+                            <label>@ViewBag.Proceso</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Fecha de Realización:</label>
+                        <div>
+                            <label>@ViewBag.FechaPlaneada</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Período:</label>
+                        <div>
+                            <label>@ViewBag.Periodo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label>Objetivo del Plan de Auditoría</label>
+                    @Html.TextAreaFor(m => m.Informe_EDAuditoriaPrograma.Objetivo, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, @disabled = true, @resize = false })
+                </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label>Alcance</label>
+                    @Html.TextAreaFor(m => m.Informe_EDAuditoriaPrograma.Alcance, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, @disabled = true })
+                </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-6">
+                    <label>Sede</label>
+                    @Html.TextBoxFor(m => m.Informe_EDAuditoriaPrograma.SedeAuditoria, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, @disabled = true })
+                </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label>Criterios de la Auditoría</label>
+                    @Html.TextAreaFor(m => m.Informe_EDAuditoria.Criterios, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, @disabled = true })
+                </div>
+            </div>
+            <br />
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label style="text-decoration:underline" title="Por favor digite la(s) conclusion(es) para este informe de auditoría">Conclusiones</label>
+                    @Html.TextAreaFor(m => m.Conclusiones, htmlAttributes: new { @class = "form-control form-width-100", rows = 4, maxlength = 1000 })
+                    <span id="val-conclu" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                 </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-md-6">
+                    <div class="height-38px">
+                        <b>Firma del responsable del proceso</b>
+                    </div>
+                    <div class="col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                        <b>Nombre:</b>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditado)
+                    </div>
+                    <div class="text-left">
+
+                        <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                            @{
+                                var srcRes = (object)@ViewBag.SrcRes;
+                                string varstrRes = srcRes.ToString();
+                                <img id="ImagenFirmaResId" src="@varstrRes" alt="" class="ImagenFirmaRes" />
+                            }
+                        </div>
+                        <div class="col-md-12 add-bottom-margin-05em">
+                            <input type="file" id="UploadPhotoRes" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                        </div>
+                        <div class="row text-center ">
+                            <a href="#" id="AgregarFirmaRes" class="boton botoninfo" style="margin-bottom:5px;">
+                                Adjuntar Firma
+                            </a>
+                            <a href="#" class="boton botoninfo" id="QuitarFirmaRes">
+                                Quitar Firma
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                    <div class="col-md-6">
+                        <div class="height-38px">
+                            <b>Firma del Auditor</b>
+                        </div>
+                        <div class="col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                            <b>Nombre:</b>
+                            @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditador)
+                        </div>
+                        <div class="text-left">
+                            <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                                @{
+                                    var srcAud = (object)@ViewBag.SrcAud;
+                                    string varstrAud = srcAud.ToString();
+                                <img id="ImagenFirmaAudId" src="@varstrAud" alt="" class="ImagenFirmaAud" />
+                                }
+                            </div>
+                            <div class="col-md-12 add-bottom-margin-05em">
+                                <input type="file" id="UploadPhotoAud" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                            </div>
+                            <div class="row text-center ">
+                                <a href="#" id="AgregarFirmaAud" class="boton botoninfo" style="margin-bottom:5px;">
+                                    Adjuntar Firma
+                                </a>
+                                <a href="#" class="boton botoninfo" id="QuitarFirmaAud">
+                                    Quitar Firma
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-md-12">
+                    <div id="div_novedad_conclu">
+                        <span id="msj_novedad_conclu"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12 col-md-offset-4">
+                    <button class="boton botonactive" id="Actualizar-conclusiones" type="submit" value="EditarAct">ACTUALIZAR INFORME</button>
+                </div>
+            </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                <div class="internal-panel-header panel-heading">
+                    <h4>Lista de Verificación</h4>
+                </div>
+                <div class="internal-panel-body">
+                    <br />
+                    <div class="Tabla-Programa table-responsive">
+                        @{
+                            if (Model.ListaVerficiacionInforme.Count > 0)
+                            {
+                                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Pregunta</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Requisito</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Descripción del Hallazgo</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Tipo de Hallazgo</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in Model.ListaVerficiacionInforme)
+                                            {
+                                                int NumeroFila = item.Pk_Id_Lista_Verificacion;
+
+                                                <tr class="paginver">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @Html.DisplayFor(modelItem => item.Pregunta)
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @Html.DisplayFor(modelItem => item.Requisito)
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @Html.DisplayFor(modelItem => item.Hallazgo)
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @Html.DisplayFor(modelItem => item.Tipo_Hallazgo)
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="pagination" id="paginador1"></div>
+                           }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                <div class="internal-panel-header panel-heading">
+                    <h4>Generar Plan de Acción (Para eliminar un elemento de esta lista eliminelo en el módulo 'Planes de Acción')</h4>
+                </div>
+                <div class="internal-panel-body">
+                    <br />
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Actividad</label>
+                            <div>
+                                @Html.TextArea("ActividadNuevo", null, new { @class = "form-control form-width-100", maxlength = 1000 })
+                                <span id="val-actividad" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Responsable</label>
+                            <div>
+                                @Html.TextBox("ResponsableNuevo", null, new { @class = "form-control form-width-100", maxlength = 500 })
+                                <span id="val-responsableplan" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-6">
+                            <label>Fecha</label>
+                            @Html.TextBox("FechaPlanNuevo", null, new { @class = "form-control form-width-100" })
+                            <span id="val-fechaplan" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                         </div>
+                    </div>
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-5 col-sm-offset-5">
+                            <button class="boton botonactive" id="AgregarPlan" type="submit" value="EditarAct">GUARDAR PLAN DE ACCIÓN</button>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12">
+                        <div class="Tabla-Programa table-responsive">
+                            @{
+                                if (Model.ListaActividadesInforme.Count > 0)
+                                {
+                                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                        <tr class="titulos_tabla">
+
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Actividad</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Responsable</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <span>Fecha Finalización</span>
+                                            </th>
+
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                        </tr>
+                                        @{
+                                            foreach (var item in Model.ListaActividadesInforme)
+                                            {
+
+                                                int NumeroFila = item.Pk_Id_Actividad;
+
+                                                <tr class="paginact">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @Html.DisplayFor(modelItem => item.Actividad)
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @Html.DisplayFor(modelItem => item.Responsable)
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @{
+                                                            string Fecha_str_compromiso = "";
+                                                            try
+                                                            {
+                                                                Fecha_str_compromiso = item.FechaFinalizacion.ToString("dd/MM/yyyy");
+                                                            }
+                                                            catch (Exception)
+                                                            {
+
+                                                            }
+                                                            <span>@Fecha_str_compromiso</span>
+                                                        }
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <a id="@NumeroFila.ToString()" class="btn btn-search btn-md btnEditarPlan" title="Editar">
+                                                            <span class="glyphicon glyphicon-pencil"></span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+
+                                                            }
+                                        }
+                                    </table>
+                                    <center><div class="pagination2" id="paginador1"></div></center>
+                                                            }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="EdicionListaDivPlan" style="display:none;">
+
+                    @Html.Hidden("PK_Lista_Ed_Plan")
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Actividad</label>
+                            @Html.TextArea("ActividadPlanEd", null, new { @class = "form-control form-width-100", maxlength = 1000 })
+                            <span id="val-actividadEd" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Responsable</label>
+                            @Html.TextBox("ResponsablePlanEd", null, new { @class = "form-control form-width-100", maxlength = 500 })
+                            <span id="val-responsableplanEd" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-5">
+                            <label>Fecha Cierre</label>
+                            @Html.TextBox("FechaPlanEd", null, new { @class = "form-control form-width-100" })
+                            <span id="val-fechaplanEd" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                         </div>
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-5">
+                            <button class="boton botonactive" id="EditarListaPlan" type="submit" value="EditarPlan">FINALIZAR EDICIÓN PLAN</button>
+                        </div>
+                        <div class="col-sm-5">
+                            <button class="boton botoncancel" id="EditarCancelarPlan" type="submit" value="EditarPlan">CANCELAR EDICIÓN PLAN</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row internal-panel-body">
+                    <div class="col-md-12">
+                        <div id="div_novedad_Plan">
+                            <span id="msj_novedad_Plan"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                <div class="internal-panel-header panel-heading">
+                    <h4>Cuadro de Compromiso de No Conformidades (Para eliminar un elemento de esta lista cambie el tipo de hallazgo en la lista de verificación)</h4>
+                </div>
+                <div class="internal-panel-body">
+                    <br />
+                    <div class="Tabla-Programa table-responsive">
+                        @{
+                            if (Model.ListaCuadroCompromiso.Count > 0)
+                            {
+                                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                    <tr class="titulos_tabla">
+
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>Descripción del Hallazgo</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>Compromiso</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>Responsable</span>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            <span>Fecha Cierre</span>
+                                        </th>
+
+
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                    </tr>
+                                    @{
+                                        foreach (var item in Model.ListaCuadroCompromiso)
+                                        {
+
+                                            int NumeroFila = item.Pk_Id_Lista_Verificacion;
+
+                                            <tr class="pagincom">
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Hallazgo)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Compromiso)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Responsable)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @{
+                                                        string Fecha_str_compromiso = "";
+                                                        try
+                                                        {
+                                                            Fecha_str_compromiso = item.FechaCierre.ToString("dd/MM/yyyy");
+                                                        }
+                                                        catch (Exception)
+                                                        {
+
+                                                        }
+                                                        <span>@Fecha_str_compromiso</span>
+                                                    }
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <a id="@NumeroFila.ToString()" class="btn btn-search btn-md btnEditarCompromiso" title="Editar">
+                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                                        }
+                                    }
+                                </table>
+                                <center><div class="pagination1" id="paginador1"></div></center>
+                                                        }
+                        }
+                    </div>
+                   
+                    <div id="EdicionListaDivCompromiso" style="display:none;">
+
+                        @Html.Hidden("PK_Lista_Ed_Compromiso")
+
+                        <div class="form-group row internal-panel-body">
+                            <div class="col-sm-12">
+                                <label>Compromiso</label>
+                                @Html.TextArea("CompromisoEd", null, new { @class = "form-control form-width-100", maxlength = 3000 })
+                                <span id="val-compromiso" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row internal-panel-body">
+                            <div class="col-sm-12">
+                                <label>Responsable</label>
+                                @Html.TextBox("ResponsableEd", null, new { @class = "form-control form-width-100", maxlength = 1000 })
+                                <span id="val-responsableComp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row internal-panel-body">
+                            <div class="col-sm-5">
+                                <label>Fecha Cierre</label>
+                                @Html.TextBox("FechaCierreEd", null, new { @class = "form-control form-width-100" })
+                                <span id="val-fechacierre" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row internal-panel-body">
+                            <div class="col-sm-5">
+                                <button class="boton botonactive" id="EditarListaCompromiso" type="submit" value="EditarCompromiso">FINALIZAR EDICIÓN COMPROMISO</button>
+                            </div>
+                            <div class="col-sm-5">
+                                <button class="boton botoncancel" id="EditarCancelarCompromiso" type="submit" value="EditarCompromiso">CANCELAR EDICIÓN COMPROMISO</button>
+                            </div>
+                        </div>
+                        <div class="form-group row internal-panel-body">
+                            <div class="col-md-12">
+                                <div id="div_novedad_compromiso">
+                                    <span id="msj_novedad_compromiso"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-6" style="margin-bottom:5px;">
+                            <button class="boton botonactive" id="pdf-btn" type="submit" value="GenerarPDF" onclick="location.href='@Url.Action("ReporteInforme","Auditoria",new { IdAuditoria = (object)ViewBag.IdAuditoria })';return false;">GENERAR PDF</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="boton botoninfo" id="cancel-btn" type="submit" value="Cancelar" onclick="location.href='@Url.Action("Auditoria","Auditoria",new { IdPrograma = (object)ViewBag.IdPrograma })';return false;">REGRESAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+

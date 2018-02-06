@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Consulta SST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Consulta SST</a></li>
+    <li class="active">Consulta en Seguridad y Salud en el Trabajo</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Consulta en Seguridad y Salud en el Trabajo</div>
+    
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Consulta SST</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+                            <p align="justify">Primero seleccione que tipo de Consulta SST desea enviar (Felicitación, Petición, Reclamo, Queja u Otro tipo de Solicitud).</p>
+                            <p style="margin-bottom:2%;line-height:200%;">Presione <button type="button" class="boton botonactive" disabled>ENVIAR</button> para enviar la Consulta en Seguridad y Salud en el Trabajo</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="consulta">
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <span><i class="glyphicon glyphicon-comment"></i>  Cuéntenos que Desea Hacer</span>
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="border: 1px solid transparent" id="consulta">
+                        <tr style="border-right: 1px solid transparent; vertical-align:middle; text-align:center;background-color: #7E8A97;color:white">
+                            <td style="border-right: 1px solid transparent; vertical-align:middle; text-align:center; color:black">
+                                <input type="radio" name="consulta" id="rbfelicitacion" value="Felicitación" checked> Enviar una Felicitación
+                            </td>
+                            <td style="border-right: 1px solid transparent; vertical-align:middle; text-align:center; color:black">
+                                <input type="radio" name="consulta" id="rbpeticion" value="Petición"> Realizar una Petición
+                            </td>
+                            <td style="border-right: 1px solid transparent; vertical-align:middle; text-align:center; color:black">
+                                <input type="radio" name="consulta" id="rbreclamo" value="Reclamo"> Enviar un Reclamo
+                            </td>
+                            <td style="border-right: 1px solid transparent; vertical-align:middle; text-align:center; color:black">
+                                <input type="radio" name="consulta" id="rbqueja" value="Queja"> Enviar una Queja
+                            </td>
+                            <td style="border-left: 1px solid transparent; vertical-align:middle; text-align:center; color:black">
+                                <input type="radio" name="consulta" id="rbotro" value="Otra Solicitud"> Otra Solicitud
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                @*<div class="row" id="inputOtro" hidden="hidden">
+                    <div class="col-md-2 col-md-offset-5" style="text-align:center">
+                        <label style="color:orange">¿Cuál Solicitud?</label>
+                    </div>
+                    <div class="col-md-12">
+                        <input name="Otro" id="Otro" type="text" class="form-control" placeholder="Describa la Solicitud" />
+                    </div>
+                </div>*@
+
+                <label for="Otro" class="error" style="display:none;"></label>
+
+                <br />
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" rows="7" id="descconsulta" name="desconsulta" placeholder="Describa la Consulta" style="resize:none"></textarea>
+                    </div>
+                </div>
+
+                <label for="descconsulta" class="error" style="display:none;"></label>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4" style="margin-left:40%">
+                    <button type="button" class="boton botonactive" id="btngrabarsolicitud" onclick="GrabarSolicitud()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

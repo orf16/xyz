@@ -1,0 +1,162 @@
+﻿@model SG_SST.Models.MedicionEvaluacion.Hallazgo
+
+@{
+    ViewBag.Title = "Nuevo Hallazgo";
+}
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+   @{
+       string Ruta = ViewBag.EdicionKey;
+       if (Ruta == null)
+       {
+        <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+       }
+       else
+       {
+           if (Ruta != "")
+           {
+               if (Ruta != "NuevaAccion")
+               {
+                   string numeroRuta = Ruta.Replace("EditarAccion", "");
+                   string valorRuta = Ruta.Replace(numeroRuta, "");
+                <li><a href="@Url.Action(valorRuta, "Acciones",new { id = numeroRuta })">Editar Acción</a></li>
+               }
+               else
+               {
+                <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+               }
+           }
+           else
+           {
+            <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+           }
+       }
+}
+    <li class="active">Nuevo Hallazgo</li>
+</ol>
+
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">HALLAZGO</div>
+    <div class="panel-body">
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / HALLAZGO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><strong>*</strong> Indica que el campo es obligatorio</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR</button> Para guardar el registro del hallazgo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para cancelar el registro del hallazgo y regresar al registro de la acción</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.Hidden("EdicionKey", (object)ViewBag.EdicionKey)
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal  add-side-padding">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Halla_Proceso, "*Proceso", htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.DropDownList("Pk_Id_Proceso", null, htmlAttributes: new { @class = "form-control form-width-100" })
+                        @Html.ValidationMessageFor(model => model.Halla_Proceso, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Halla_Norma, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Halla_Norma, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        @Html.ValidationMessageFor(model => model.Halla_Norma, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Halla_Numeral, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Halla_Numeral, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        @Html.ValidationMessageFor(model => model.Halla_Numeral, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Halla_Descripcion, "*Descripción del Hallazgo", htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Halla_Descripcion, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        @Html.ValidationMessageFor(model => model.Halla_Descripcion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="panel-footer">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <button class="boton botonactive col-margin" type="submit" value="Agregar">Agregar</button>
+
+                    </div>
+                    <div class="col-md-6">
+                        @{
+                            string ModoEdicion = ViewBag.EdicionKey;
+                            if (ModoEdicion != null)
+                            {
+                                if (ModoEdicion != "")
+                                {
+                                    ModoEdicion = ModoEdicion.Replace("EditarAccion", "");
+                                    <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("EditarAccion","Acciones",new { id = ModoEdicion })';return false;">Cancelar</button>
+                                }
+                                else
+                                {
+                                    <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("NuevaAccion","Acciones")';return false;">Cancelar</button>
+                                }
+                            }
+                            else
+                            {
+                                <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("NuevaAccion","Acciones")';return false;">Cancelar</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+                            }
+
+
+
+    </div>
+</div>

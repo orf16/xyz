@@ -1,0 +1,284 @@
+﻿@model SG_SST.Models.Empresas.Empresa
+
+@{
+    ViewBag.Title = "Editar Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas");
+
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="@Url.Action("Create","Empresas")">Datos generales de la empresa</a></li>
+    <li class="active">Modificar Empresas</li>
+</ol>
+
+<form method="post" action="@Url.Action("Editar")" id="grabarempresa">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:black">DATOS EMPRESA</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+                   style="border: 1px solid lightslategray; border-radius:0px">
+                    <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p>Información para el módulo</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+            <div class="container-fluid">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Pk_Id_Empresa)
+                <div class="row center-block">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <label>NIT</label>
+                                <input type="text" value="@Model.Nit_Empresa" class="form-control input-sm" name="Nit_Empresa" id="nit" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-md-14">
+                                <label>Razón Social:</label>
+                                <input type="text" value="@Model.Razon_Social" class="form-control input-sm" name="Razon_Social" id="razonsocial" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row center-block">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-3">Zona:</label>
+                            <div class="col-md-1">
+                                @if (ViewBag.Urbano != null)
+                                {
+                                    <div class="radio">
+                                        <label><input type="radio" value="Urbana" id="Tipo_De_Calificacion" name="Zona" onchange="ConsultarNivlesDeDeficiencia(this)" checked><b>Urbana</b></label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" value="Rural" id="Tipo_De_Calificacion" name="Zona" onchange="ConsultarNivlesDeDeficiencia(this)"><b>Rural</b></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="radio">
+                                        <label><input type="radio" value="Urbana" id="Tipo_De_Calificacion" name="Zona" onchange="ConsultarNivlesDeDeficiencia(this)"><b>Urbana</b></label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" value="Rural" id="Tipo_De_Calificacion" name="Zona" onchange="ConsultarNivlesDeDeficiencia(this)" checked><b>Rural</b></label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-4">Telefono:</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" value="@Model.Telefono" name="Telefono" id="telefono" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-3">Fax:</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control input-sm" value="@Model.Fax" name="Fax" id="fax" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="col-md-4">Estado:</label>
+                        <div class="col-md-1">
+
+                            @if (ViewBag.Activo)
+                            {
+                                <div class="radio">
+                                    <label><input type="radio" value="Activa" id="Flg_Estado" name="Flg_Estado" checked><b>Activa</b></label>
+                                </div>
+                                <div class="radio">
+                                    <label><input type="radio" value="Inactiva" id="Flg_Estado" name="Flg_Estado"><b>Inactiva</b></label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="radio">
+                                    <label><input type="radio" value="Activa" id="Flg_Estado" name="Flg_Estado"><b>Activa</b></label>
+                                </div>
+                                <div class="radio">
+                                    <label><input type="radio" value="Inactiva" id="Flg_Estado" name="Flg_Estado" checked><b>Inactiva</b></label>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row center-block">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-3">Email:</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-4">URL:</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Sitio_Web, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                                @Html.ValidationMessageFor(model => model.Sitio_Web, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-5">Vigencia:</label>
+                            <div class="col-md-12">
+                                <input type="date" value="@Model.Fecha_Vigencia_Actual" name="Fecha_Vigencia_Actual" class="form-control input-sm" style="background-color:whitesmoke" />
+
+                                @Html.ValidationMessageFor(model => model.Fecha_Vigencia_Actual, "", new { @class = "text-danger " })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row center-block">
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="col-md-10">Riesgo:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm" value="@Model.Riesgo" name="Riesgo" id="riesgo" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-10">ID Representante:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm" value="@Model.Identificacion_Representante" name="Identificacion_Representante" id="doctorep" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-10">Total Empleados:</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control input-sm" value="@Model.Total_Empleados" name="Total_Empleados" id="totemp" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-10">Dirección:</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control input-sm" value="@Model.Direccion" name="Direccion" id="direccion" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row center-block">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-10">Código Actividad:</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control input-sm" value="@Model.Codigo_Actividad" name="Codigo_Actividad" id="codigoactividad" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="col-md-10">Descripción Actividad:</label>
+                            <div class="col-md-12">
+                                <input type="text" value="@Model.Descripcion_Actividad" class="form-control input-sm" name="Descripcion_Actividad" id="descripcion" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-10 ti">Tipo Documento:</label>
+                            <div class="col-md-12">
+                                <input type="text" value="@Model.Tipo_Documento" class="form-control input-sm" name="Tipo_Documento" id="tipodocto" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <input type="Hidden" value="@Model.ID_Seccional" class="form-control input-sm" name="ID_Seccional" id="seccional" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <input type="Hidden" value="@Model.ID_Sector_Economico" class="form-control input-sm" name="ID_Sector_Economico" id="sectoreconomico" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom:20px" align="center">
+        <div class="col-md-6 col-xs-12">
+            <button type="submit" class="boton botonactive" id="btnEnviar" onclick="ValidacionCrearEmpresa()" style="margin-right:100px">
+                Guardar Actualización
+            </button>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @*<a href="@Url.Action("index","Empresas")" class="boton botoninfo" style="text-decoration:none">*@
+
+        </div>
+    </div>
+</form>

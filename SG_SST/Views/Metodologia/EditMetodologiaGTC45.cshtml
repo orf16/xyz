@@ -1,0 +1,610 @@
+﻿@model SG_SST.Dtos.Planificacion.MatrizEditGTC45
+
+@{
+    ViewBag.Title = "Editar Metodología GTC45/2012";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .navigation-metodologia {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(202,209,218);
+    }
+
+    .navigation-metodologia:hover {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(175,184,196);
+    }
+</style>
+
+@*<div class="container" style="width:1105px">
+    <div class="row">*@
+
+<div class="panel panel-default" style="border:transparent;background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        Editar Metodología GTC45/2012
+    </div>
+    <br />
+</div>
+
+@*</div>
+    </div>*@
+
+@*<h2>Editar Metodología GTC45/2012</h2>*@
+
+<form method="post" action="@Url.Action("GrabarMetodologiaGTC45", "Metodologia")" id="metodologia">
+    @*div para poner los input tipo hiden que contendran los id de peligro gtc45 y consecuencias por peligro *@
+    <div>
+        <input type="hidden" name="PK_Peligro" value="@Model.Id_Peligro" />
+        <input type="hidden" name="PK_GTC45" value="@Model.idGTC45" />
+        <input type="hidden" name="FK_Peligro" value="@Model.Id_Peligro" />
+        <input type="hidden" name="PK_Consecuencia_Por_Peligro" value="@Model.idConsecuenciaPorPeligro" />
+
+    </div>
+    @*<div class="container" style="width:1120px">
+        <div class="col-md-11 col-md-offset-0">*@
+    <div id="rootwizard">
+        <ul class="nav nav-tabs " role="tablist">
+            <li class="active"><a id="tab1" href="#step1" data-toggle="tab" class="navigation-metodologia">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_datos_generales</a></li>
+            <li><a id="tab2" class="navigation-metodologia">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_identificacion</a></li>
+            <li><a id="tab3" class="navigation-metodologia">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_evaluacion_valoracion</a></li>
+            <li><a id="tab4" class="navigation-metodologia">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_determinacion_controles</a></li>
+        </ul>
+        <hr />
+        <div class="tab-content">
+            @*panel para mostrar los campos de  datos generales *@
+            <div class="tab-pane active" id="step1">
+                <div class="row">
+                    <div class="col-md-11 col-md-offset-0">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_razon_social:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="@ViewBag.sede.Empresa.Razon_Social" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_identificacion_empleador:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="@ViewBag.sede.Empresa.Nit_Empresa" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="hidden" name="FK_Sede" value="@ViewBag.sede.Pk_Id_Sede" />
+                                <input type="text" class="form-control" value="@ViewBag.sede.Nombre_Sede" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_direccion_sede:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="@ViewBag.sede.Direccion_Sede" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_numero_trabajadores:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" value="@ViewBag.sede.Empresa.Total_Empleados" disabled />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nombre_profesional:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Nombre_Del_Profesional" class="form-control" value="@Model.Nombre_Del_Profesional" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_numero_documento:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Numero_De_Documento" class="form-control" value="@Model.Numero_De_Documento" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_numero_licencia:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Numero_De_Licencia_SST" class="form-control" value="@Model.Numero_De_Licencia_SST" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_fecha_evaluacion:</b></h5>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="hidden">
+                                    <input type="date" name="Fecha_De_Evaluacion" class="form-control" value="@Model.Fecha_De_Evaluacion.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <input type="date" class="form-control" value="@Model.Fecha_De_Evaluacion.ToString("yyyy-MM-dd")" disabled />
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5 style="text-align:justify">
+                                    La gestión de riesgos en seguridad y salud en el trabajo, está basada en  la GTC 45 2012-06-20.
+                                    Guía para la identificación de los peligros y valoración de los riesgos en seguridad y salud ocupacional,
+                                    ICONTEC. Esta metodología utiliza los numerales descritos en el Artículo 2.2.4.6.24.
+                                    Medidas de prevención y control del Decreto 1072 del 2015.
+                                </h5>
+                            </div>
+                        </div>
+                        <br />
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-11 col-md-offset-1" style="margin-bottom:20px">
+                                <button type="button" class="boton botoninfo pull-right" onclick="validarCamposInformacioGeneral(2,true)">
+                                    @SG_SST.Recursos.GeneralApp.General.btn_siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                                </button>
+                                @*<a onclick="validarCamposInformacioGeneral(2, true)" value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente" class=" btn btn-siguiente btn-md pull-right">
+                                        Siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*panel para mostrar los campos de identificacion *@
+            <div class="tab-pane" id="step2">
+                <div class="row">
+                    <div class="col-md-11 col-md-offset-0">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_proceso:</b></h5>
+                            </div>
+                            <div class="col-md-5">
+                                @Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control", @onchange = "consultarSubProcesos()" }, optionLabel: "Seleccionar")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>Subprocesos:</b></h5>
+                            </div>
+                            <div class="col-md-5">
+                                @Html.DropDownList("FK_Proceso", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_zona_lugar:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Lugar" class="form-control" value="@Model.Zona_lugar" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_actividad:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Actividad" class="form-control" value="@Model.Actividad" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_tarea:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Tarea" class="form-control" value="@Model.Tarea" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_rutina:</b></h5>
+                            </div>
+                            <div class="col-md-5">
+                                <select name="FLG_Rutinaria" class="form-control">
+                                    <option value="true">Si</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr style="border-top-color:lightslategray" />
+                        <div class="row">
+                            <h3 style="margin-left:15px"><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_peligro</b></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_fuente_peligro:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Fuente_Generadora_De_Peligro" class="form-control" style="resize:none" rows="3" cols="7">@Model.Fuente_Generadora_De_Peligro</textarea>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_clasificacion:</b></h5>
+                            </div>
+                            <div class="col-md-10">
+                                @Html.DropDownList("FK_Tipo_De_Peligro", null, htmlAttributes: new { @class = "form-control", @onchange = "ConsultarClasesPeligros()" }, optionLabel: "Seleccionar")
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row" id="inputOtro" hidden="hidden">
+                            <div class="col-md-2">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cual:</b></h5>
+                            </div>
+                            <div class="col-md-10">
+                                <input name="Otro" type="text" class="form-control" value="@Model.Otro" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" id="inputClasificacion">
+                            <div class="col-md-2">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_descripcion:</b></h5>
+                            </div>
+                            <div class="col-md-10">
+                                @Html.DropDownList("FK_Clasificacion_De_Peligro", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                                <input type="hidden" id="clasificacionPeligros" value="@Model.idDescripcion" />
+                                @*<select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>*@
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            @if (Model.FLG_Higienico)
+                            {
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="true" id="FLG_Higienico" name="FLG_Higienico" onchange="MostrarTipoCalificacion(this)" checked><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_calificar_como_higienico</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" id="RadioBtnTipoCalificacion">
+                                    @if (Model.FLG_Tipo_De_Calificacion)
+                                    {
+                                        @*<fieldset class="radiogroup">*@
+                                            <div class="radio">
+                                                <div>
+                                                    <label><input type="radio"  name="FLG_Tipo_De_Calificacion" value="false" onchange="ConsultarNivlesDeDeficiencia(this)"><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cualitativo</b></label>
+                                                </div>
+                                                <div>
+                                                    <label><input type="radio" id="flg_tipo_de_calificacion2"  name="FLG_Tipo_De_Calificacion" value="true" onchange="ConsultarNivlesDeDeficiencia(this)" checked><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cuantitativo</b></label>
+                                                </div>
+                                            </div>
+                                        @*</fieldset>*@
+                                    }
+                                    else
+                                    {
+                                        <fieldset class="radiogroup">
+                                            <div class="radio">
+                                                <div>
+                                                    <label><input type="radio" name="FLG_Tipo_De_Calificacion" value="false" onchange="ConsultarNivlesDeDeficiencia(this)" checked><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cualitativo</b></label>
+                                                </div>
+                                                <div>
+                                                    <label><input type="radio" id="flg_tipo_de_calificacion2"  name="FLG_Tipo_De_Calificacion" value="true" onchange="ConsultarNivlesDeDeficiencia(this)"><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cuantitativo</b></label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    }
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-5">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="true" id="FLG_Higienico" name="FLG_Higienico" onchange="MostrarTipoCalificacion(this)" checked><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_calificar_como_higienico</b></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" hidden="hidden" id="RadioBtnTipoCalificacion">
+                                    <fieldset class="radiogroup">
+                                        <div class="radio">
+                                            @if (Model.FLG_Tipo_De_Calificacion) { }
+                                            <div>
+                                                <label><input type="radio" name="FLG_Tipo_De_Calificacion" value="false" onchange="ConsultarNivlesDeDeficiencia(this)" /><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cualitativo</b></label>
+                                            </div>
+                                            <div>
+                                                <label><input type="radio" id="flg_tipo_de_calificacion2" name=" flg_tipo_de_calificacion" value="true" onchange="ConsultarNivlesDeDeficiencia(this)" /><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cuantitativo</b></label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            }
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_efectos_posibles:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Efectos_Posibles" class="form-control" style="resize:none" rows="3" cols="7">@Model.Efectos_Posibles</textarea>
+                            </div>
+                        </div>
+                        <hr style="border-top-color:lightslategray" />
+                        <div class="row">
+                            <h3 style="margin-left:15px"><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_controles_existentes</b></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_fuentes:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Fuente" class="form-control" style="resize:none" rows="3" cols="7">@Model.Fuente</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_medio:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Medio" class="form-control" style="resize:none" rows="3" cols="7"> @Model.Medio</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_step_trabajador:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea id="Trabajador" name="Accion_De_Prevencion" class="form-control" style="resize:none" rows="3" cols="7">@Model.Trabajador</textarea>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-md-2">
+                                <button type="button" class="boton botoninfo pull-left" onclick="AnteriorPanel(1)">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                </button>
+                                @*<a onclick="AnteriorPanel(1)" class=" btn btn-siguiente btn-md tbr pull-left">
+                                        <span class="glyphicon glyphicon-chevron-left"> Anterior</span>
+                                    </a>*@
+                            </div>
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="boton botoninfo pull-right" onclick="validarCamposInformacioGeneral(3, true)">
+                                    @SG_SST.Recursos.GeneralApp.General.btn_siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                                </button>
+                                @*<a onclick="validarCamposInformacioGeneral(3, true)" value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente" class=" btn btn-siguiente btn-md tbr pull-right">
+                                        Siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*panel para mostrar los campos de Evaluacion *@
+            <div class="tab-pane" id="step3">
+                <div class="row">
+                    <div class="col-md-11 col-md-offset-0">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_deficiencia:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                @*<select id="FK_Nivel_De_Deficiencia" name="FK_Nivel_De_Deficiencia" class="form-control" onchange="CargarNivelProbalidad()"></select>*@
+                                @Html.DropDownList("FK_Nivel_De_Deficiencia", null, htmlAttributes: new { @class = "form-control test", @onchange = "CargarNivelProbalidad()" }, optionLabel: "Seleccionar")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_exposicion:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownList("FK_Nivel_De_Exposicion", null, htmlAttributes: new { @class = "form-control test", @onchange = "CargarNivelProbalidad()" }, optionLabel: "Seleccionar")
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_probabilidad:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                <input name="Nivel_De_Probablidad" id="Nivel_De_Probablidad" type="hidden" class="form-control" value="@Model.Nivel_De_Probablidad" />
+                                <input id="Visualizador_Nivel_De_Probablidad" type="text" class="form-control" value="@Model.Nivel_De_Probablidad" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_interpretacion_probabilidad:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                <input id="InterpretacionProbalidad" type="text" class="form-control test" value="@Model.Interpretacion_Nivel_Probabilidad" readonly/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_consecuencia:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                @Html.DropDownList("FK_Consecuencia", null, htmlAttributes: new { @class = "form-control test", @onchange = "CargarNivelDeRiesgo() " }, optionLabel: "Seleccionar")
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_nivel_riesgo:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                <input id="Nivel_De_Riesgo" name="Nivel_De_Riesgo" type="hidden" class="form-control" value="@Model.Nivel_De_Riesgo" />
+                                <input id="visualizador_Nivel_De_Riesgo" type="text" class="form-control" value="@Model.Nivel_De_Riesgo" readonly />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_interpretacion_riesgo:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                <input id="ResultadoIntepretacionRiesgo" type="text" class="form-control test" value="@Model.Aceptabilidad_Del_Riesgo" readonly/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_aceptabilidad_riesgo:</b></h5>
+                            </div>
+                            <div class="col-md-7">
+                                <input id="interpretacionDeRiesgo" type="text" class="form-control test" value="@Model.Interpretacion_Nivel_Riesgo" readonly/>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-md-2">
+                                <button type="button" class="boton botoninfo pull-left" onclick="AnteriorPanel(2)">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                </button>
+                                @*<a onclick="AnteriorPanel(2)" class=" btn btn-siguiente btn-md tbr pull-left">
+                                        <span class="glyphicon glyphicon-chevron-left"> Anterior</span>
+                                    </a>*@
+                            </div>
+                            <div class="col-md-8">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="boton botoninfo pull-right" onclick="validarCamposInformacioGeneral(4, true)">
+                                    @SG_SST.Recursos.GeneralApp.General.btn_siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                                </button>
+                                @*<a onclick="validarCamposInformacioGeneral(4, true)" value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente" class=" btn btn-siguiente btn-md tbr pull-right">
+                                        Siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*panel para mostrar los campos de Determinacion*@
+            <div class="tab-pane" id="step4">
+                <div class="row">
+                    <div class="col-md-11 col-md-offset-0">
+                        <div class="row">
+                            <h3 style="margin-left: 15px"><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_criterios_controles</b></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_numero_expuestos:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Numero_De_Expuestos" class="form-control" value="@Model.Numero_De_Expuestos" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_peor_consecuencia:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Peor_Consecuencia" class="form-control" value="@Model.Peor_Consecuencia" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_existencia_legal:</b></h5>
+                            </div>
+                            <div class="col-md-5">
+                                <select name="FLG_Requisito_Legal" class="form-control">
+                                    <option value="true">Si</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr style="border-top-color:lightslategray" />
+                        <div class="row">
+                            <h3 style="margin-left: 15px"><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_lbl_step_medidas_intervencion</b></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_eliminacion:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Eliminacion" class="form-control" style="resize:none" rows="3" cols="7">@Model.Eliminacion</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_sustitucion:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Sustitucion" class="form-control" style="resize:none" rows="3" cols="7">@Model.Sustitucion</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_controles_ingenieria:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Controles_De_Ingenieria" class="form-control" style="resize:none" rows="3" cols="7">@Model.Controles_De_Ingenieria</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_controles_administrativos:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Controles_Administrativos" class="form-control" style="resize:none" rows="3" cols="7">@Model.Controles_Administrativos</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_elementos_proteccion:</b></h5>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea name="Elementos_De_Proteccion" class="form-control" style="resize:none" rows="3" cols="7">@Model.Elementos_De_Proteccion</textarea>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" style="margin-bottom:20px">
+                            <div class="col-md-2">
+                                <button type="button" class="boton botoninfo pull-left" onclick="AnteriorPanel(3)">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> Anterior
+                                </button>
+                                @*<a onclick="AnteriorPanel(3)" class=" btn btn-siguiente btn-md tbr pull-left">
+                                        <span class="glyphicon glyphicon-chevron-left"> Anterior</span>
+                                    </a>*@
+                            </div>
+                            <div class="col-md-7">
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="boton botonactive" onclick="validarCamposInformacioGeneral(4, true)">
+                                    @SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_guardar_peligro
+                                </button>
+                                @*<a onclick="validarCamposInformacioGeneral(4, true)" value="@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_guardar_peligro" class="btn btn-guardar btn-md tbr pull-right">
+                                        <span class="glyphicon glyphicon-floppy-disk"> Guardar</span>
+                                    </a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*</div>
+        </div>*@
+</form>
+
+@Html.Partial("AyudasPlanificacion")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+    <script>
+        $(document).ready(function () {
+            inicializarAyudas();
+            ConsultarClasesPeligros($("#clasificacionPeligros").val());
+            //var idClasePeligros = $("#clasificacionPeligros").val();
+            // $("#FK_Clasificacion_De_Peligro").val($("#clasificacionPeligros").val())
+        });
+
+    </script>
+}

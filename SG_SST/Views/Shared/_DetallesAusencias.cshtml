@@ -1,0 +1,344 @@
+﻿@model List<SG_SST.Models.Ausentismo.AusenciaModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row form-group listado-ausencias" style="overflow-x:scroll">
+        <h2>Ausentismos</h2>
+        <table class="table table-bordered" id="tblausentismos" style="font-size:x-small; border: 2px solid lightslategray">
+            <thead>
+                <tr class="titulos_tabla">
+                    <th>Tipo</th>
+                    <th>Fecha Registro</th>
+                    <th>Nombre Persona</th>
+                    <th>Documento Persona</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    <th>Sede</th>
+                    <th>Contingencia</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Finalización</th>
+                    <th>Dias Ausencia</th>
+                    <th>Diagnóstico</th>
+                    <th>Costo</th>
+                    <th>Observacion</th>
+                    <th></th>
+                    <th style="display:none" id="accion">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var a in Model)
+                {
+                    <tr id="content_@a.IdAusencia">
+                        @Html.HiddenFor(x => a.FactorPrestacional, new { @id = "factor_" + @a.IdAusencia })
+                        <td hidden>@Html.DisplayName(a.IdAusencia.ToString())</td>
+                        <td id="fregistro_@a.IdAusencia">@string.Format("{0}", a.Tipo)</td>
+                        <td id="fregistro_@a.IdAusencia">@string.Format("{0}", a.FechaRegistro)</td>
+                        <td id="depto_@a.IdAusencia">@string.Format("{0}", a.NombrePersona)</td>
+                        <td id="depto_@a.IdAusencia">@string.Format("{0}", a.Documento)</td>
+                        <td id="depto_@a.IdAusencia">@string.Format("{0}", a.Departamento)</td>
+                        <td id="munici_@a.IdAusencia">@string.Format("{0}", a.Municipio)</td>
+                        <td id="sede_@a.IdAusencia">@string.Format("{0}", a.Sede)</td>
+                        <td id="conting_@a.IdAusencia">@string.Format("{0}", a.Contingencia.TipoContingencia)</td>
+                        <td id="fechaIni_@a.IdAusencia">@string.Format("{0}", a.FechaInicio)</td>
+                        <td id="fechaF_@a.IdAusencia">@string.Format("{0}", a.FechaFin)</td>
+                        <td id="diasAusent_@a.IdAusencia" class="dias-ausecta">@string.Format("{0}", a.DiasAusencia)</td>
+                        <td id="tipoDiag_@a.IdAusencia">@string.Format("{0}", a.Diagnostico.TipoDiagnostico)</td>
+                        <td id="costo_@a.IdAusencia" class="costo-ausconsulta">@string.Format("{0}", a.Costo)</td>
+                        <td id="costo_@a.IdAusencia" class="costo-ausconsulta">@string.Format("{0}", a.Observaciones)</td>                        
+                        <td id="@a.IdAusencia">
+                            <a href="javascript:void(0)" class="btn btn-search btn-md ProrrogarBtn" style="font-size: inherit" data-toggle="modal" data-target="#ProrrogaModal">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </a>
+                            @*
+                                Modificación de código INICIO - Título: Botón Eliminar Ausencia o Prórroga - Creado: 2/02/2018 - Autor: Javier García <javier.garcia@kerocorp.com> - Kerocorp - Descripción: Se agrega el botón para eliminar en la vista
+                            *@
+                            <span>|</span>
+                            <a href="javascript:void(0)" class="btn btn-search btn-md EliminarBtn" style="font-size: inherit" name="@a.IdAusencia" >
+                                <i class="glyphicon glyphicon-erase"></i>
+                            </a>
+                            @*
+                                Modificación de código FIN
+                            *@
+
+
+                            @*<input type="button" class="btn btn-info ProrrogarBtn" style="font-size: inherit" data-toggle="modal" data-target="#ProrrogaModal" value="Ver" />*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <div class="modal fade" id="ProrrogaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header cabecera">
+                    <h3 class="modal-title cabeceratitle" id="exampleModalLabel"><strong>Ausencia</strong></h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="hidden" name="IdAusenciaModal" id="IdAusenciaModal" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Contingencia", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text" id="ContingenciaModal" class="form-control bloqueado" disabled />
+                            </div>
+                        </div>                       
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Diagnostico", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-5">
+                                <textarea id="DiagnosticoModal" class="form-control bloqueado" disabled />
+                                @*<input type="text" id="DiagnosticoModal" class="form-control bloqueado" disabled />*@
+                            </div>
+                        </div>                        
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Fecha Inicio:", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" id="FechaInicialModal" class="form-control bloqueado" disabled />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Fecha Final:", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" id="FechaFinalModal" class="form-control bloqueado" disabled />
+                            </div>
+                        </div>                        
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Dias Ausencia:", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" id="DiasAusenciaModal" class="form-control bloqueado" disabled />
+                            </div>
+                        </div>                        
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Factor Prestacional:", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" id="FactorModal" class="form-control bloqueado" disabled />
+                            </div>
+                         </div>                        
+                        <div class="row form-group">
+                            <div class="col-xs-3">
+                                @Html.Label("Costo:", new { @class = "control-label" })
+                            </div>
+                            <div class="col-xs-3">
+                                <input type="text" id="CostoModal" class="form-control bloqueado" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+    @{
+        <script>
+            var idTipoConting = 0;
+            $(document).ready(function () {
+                $('#accion').hide();
+                $('#btn').hide();
+                $("#FechaInicialModal").datepicker({ dateFormat: "dd/mm/yyyy" });
+                $("#FechaFinalModal").datepicker({ dateFormat: "dd/mm/yyyy" });
+
+
+                $(".ProrrogarBtn").click(function () {
+                    var id = $(this).parent().attr('id');                    
+                    var conting = $(this).parents("tr").find("#conting_"+id).html();                   
+                    var tipoDiag = $(this).parents("tr").find("#tipoDiag_"+id).html();
+                    var fechaIni = $(this).parents("tr").find("#fechaIni_"+id).html();
+                    var fechaF = $(this).parents("tr").find("#fechaF_"+id).html();
+                    var diasAusent = $(this).parents("tr").find("#diasAusent_"+id).html();
+                    var costo = $(this).parents("tr").find("#costo_" + id).html();
+                    var factor = $(this).parents("tr").find("#factor_" + id).attr("value");
+                    
+                    
+                    $("#IdAusenciaModal").val(id);
+                    $("#ContingenciaModal").val(conting);
+                    $("#DiagnosticoModal").val(tipoDiag);
+                    $("#FechaInicialModal").val(fechaIni);
+                    $("#FechaFinalModal").val(fechaF);
+                    $("#DiasAusenciaModal").val(diasAusent);
+                    $("#CostoModal").val(costo);
+                    $("#FactorModal").val(factor);                    
+                }); 
+                $('.costo-ausconsulta').each(function () {
+                    var idElemento = $(this).attr('id');
+                    EtiquetarValoresAPrecio(idElemento);                  
+                });                
+                $('#FechaInicialModal').on('focus', function () {
+                    $(this).siblings('label').hide();
+                });
+                $('#FechaFinalModal').on('focus', function () {
+                    $(this).siblings('label').hide();
+                });
+                $("#guardarProrroga").click(function () {
+                    var validacion = true;
+                    if ($("#FechaInicialModal").val() == "") {
+                        var elmError = $("#FechaInicialModal").siblings('label[class="error"]');
+                        if (elmError.length == 0) {
+                            var msgError = '<label for="FechaInicialModal" class="error">Debe ingresar una fecha</label>';
+                            $('#FechaInicialModal').after(msgError);
+                        }
+                        $('label[for="FechaInicialModal"]').show();
+                        validacion = false;
+                    }
+                    if ($("#FechaFinalModal").val() == "") {
+                        var elmError = $("#FechaFinalModal").siblings('label[class="error"]');
+                        if (elmError.length == 0) {
+                            var msgError = '<label for="FechaFinalModal" class="error">Debe ingresar una fecha</label>';
+                            $('#FechaFinalModal').after(msgError);
+                        }
+                        $('label[for="FechaFinalModal"]').show();
+                        validacion = false;
+                    }
+                    if (validacion)
+                        guardaProrroga();
+                    else
+                        return false;
+                });
+
+                $('#FechaFinalModal').on("change", function () {
+                    var f1 = document.getElementById("FechaInicialModal").value;
+                    var f2 = document.getElementById("FechaFinalModal").value;
+                    restaFechas(f1, f2)
+                    var salario = $("#a_Salario").val();
+                    var facPres = $("#FactorModal").val();
+                    var diasa = $('#DiasAusenciaModal').val();
+
+                    costo(salario, facPres, diasa);
+                });
+                function costo(salario, facPres, diasa) {
+                    if (facPres == '' || facPres == undefined) {
+                        facPres = parseFloat(1.00);
+                        var fin = Math.floor(((salario / 30) * diasa) * facPres)
+                        var total = parseFloat(fin)
+                        $('#CostoModal').val(total);
+                    } else {
+                        var facPres = parseFloat($("#FactorModal").val());
+                        var fin = Math.floor(((salario / 30) * diasa) * facPres)
+                        var total = parseFloat(fin)
+                        $('#CostoModal').val(total);
+                    }
+                }
+
+                function guardaProrroga() {
+                    var objprorroga = {
+                        "IdAusencia": $("#IdAusenciaModal").val(),
+                        "FechaInicio": $('#FechaInicialModal').val(),
+                        "FechaFin": $('#FechaFinalModal').val(),
+                        "DiasAusencia": $('#DiasAusenciaModal').val(),
+                        "Costo": $('#CostoModal').val(),
+                        "FactorPrestacional": $('#FactorPrestacionalModal').val(),
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: '/Ausencias/Prorrogar',
+                        data: objprorroga
+                    }).done(function (response) {
+                        if (response != undefined && response != '' && response.status == 'Success') {
+                            $('#popupMsg').find('label').text(response.Message);
+                            $('#popupMsg').find('a').attr('href', '../Afiliado/Afiliado');
+                            $.fancybox($('#popupMsg').html());
+                        }
+                    }).fail(function (response) {
+                        console.log("Error en la peticion: " + response.Data);
+                    });
+                }
+
+                
+                //Modificación de código INICIO
+                //Título: Función eliminar ausencia o prórroga
+                //Creado: 2/02/2018
+                //Autor: Javier García <javier.garcia@kerocorp.com> - Kerocorp
+                //Descripción: Se agrega el botón para eliminar en la vista
+                $(".EliminarBtn").click(function () {
+                    var id = $(this).attr('name');
+
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "Esta seguro(a) que desea eliminar este registro de ausentismo?",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Si",
+                        cancelButtonText: "No",
+                        type: "warning",
+                        closeOnConfirm: false
+                    },
+        function () {
+            $.ajax({
+                type: "POST",
+                url: "/Ausencias/EliminarAusencia",
+                data: '{IdAus: "' + id + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.probar == false) {
+                        if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            confirmButtonColor: "#DD6B55",
+                            type: "warning",
+                            closeOnConfirm: false
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            type: "success",
+                            closeOnConfirm: false
+                        },
+                        function () {
+                            location.reload(true);
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    //$("#msj_novedad").text('No se ha podido eliminar el EPP');
+                    //$("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                }
+            });
+            
+
+        });
+
+
+
+                });
+                //Modificación de código FIN
+
+            });           
+            
+        </script>
+    }

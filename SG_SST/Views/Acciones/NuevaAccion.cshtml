@@ -1,0 +1,864 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAccion
+
+@{
+    ViewBag.Title = "Nueva Acción";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/NuevaAccion.js"></script>
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+    <li class="active">Nueva Acción</li>
+</ol>
+
+
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading panel-heading-custom" style="color:black">ACCIÓN CORRECTIVA/PREVENTIVA</div>
+    <div class="panel-body">
+
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / ACCIÓN CORRECTIVA O PREVENTIVA</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><strong>*</strong> Indica que el campo es obligatorio, adicionalmente debe registrar la descripción del hallazgo en <button type="button" class="boton botoninfo" style="cursor:default;">AGREGAR HALLAZGO</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Para desarrollar el <strong>ANÁLISIS DE CAUSAS</strong> elija una de las cuatro opciones:Árbol de causas, diagrama causa-efecto, CincoPorqués o Lluvia de ideas. En caso de agregar otro analisis de causas el sistema eliminará el anterior y guardará el nuevo análisis de causas</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">En el punto <strong>3. CAMBIOS DOCUMENTALES</strong> se genera un requerimiento que depende de la respuesta del punto 3.1, tenga en cuenta que si elige la respuesta 'SÍ' debe registrar la descripción</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">AGREGAR PLAN DE ACCIÓN</button> Para agregar un nuevo plan de acción</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">AGREGAR SEGUIMIENTO</button> Para agregar un nuevo seguimiento</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Adjuntar Evidencia de las acciones</i> para adjuntar archivos de evidencia</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">ADJUNTAR FIRMA</button> Para adjuntar una firma. Solo se aceptan imagenes</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">QUITAR FIRMA</button> Para quitar la firma cargada</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR</button> Para guardar la acción correctiva o preventiva</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para cancelar el registro de la acción y regresar a la consulta de acciones</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar el elemento de la lista</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar el elemento de la lista</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Este ícono  <i class="glyphicon glyphicon-ok" style="color: #FF7500; border: 1px solid #40c952; padding: 8px 8px; width: auto"></i> inidica que se realizó el análisis en el botón marcado</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;">Si desea <strong>CERRAR LA ACCIÓN</strong> las actividades del plan de acción deben estar cerradas y la opción <strong>Implementada y eficaz</strong> que se encuentra en el punto <strong>6</strong> debe estar seleccionada</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        @using (Html.BeginForm())
+            {
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-8">
+                    <label class="radio-inline remove-left-padding">
+                        <b>*Tipo de Acción</b>
+                    </label>
+
+                    <label class="radio-inline">
+                        @Html.RadioButtonFor(m => m.Tipo, "null", new { id = "Tipo", type = "hidden" })
+                        @Html.RadioButtonFor(m => m.Tipo, "Acción correctiva", new { id = "Tipo" })
+                        Acción correctiva
+                    </label>
+                    <label class="radio-inline">
+                        @Html.RadioButtonFor(m => m.Tipo, "Acción preventiva", new { id = "Tipo" })
+                        Acción Preventiva
+                    </label>
+                    <span id="val-tipo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">*ID</label>
+                            <div class="col-md-9">
+                                @Html.TextBox("IdAccion", null, new { disabled = "true", @class = "form-control form-width-100" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                        <div class="internal-panel-header panel-heading">
+                            <h4>1. Datos del Hallazgo</h4>
+                        </div>
+                        <div class="internal-panel-body">
+                            <div class="form-group row remove-bottom-margin">
+                                <div class="col-sm-12 col-md-3">
+                                    <label for="">*Fecha de Diligenciamiento</label>
+                                    @{
+                                        string hoy = DateTime.Today.ToString("dd/MM/yyyy");
+                                        if (Model.Fecha_dil != DateTime.MinValue)
+                                        {
+
+                                            @Html.TextBoxFor(m => m.Fecha_dil, hoy, new { @class = "form-control form-width-100", @Value = hoy, @disabled= "disabled" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.Fecha_dil, hoy, new { @class = "form-control form-width-100", @Value = hoy, @disabled = "disabled" })
+                                        }
+                                    }
+
+                                    <span id="val-fechadil" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div class="col-sm-12 col-md-5">
+                                    <label>*Clasificación de Hallazgo</label>
+                                    <div class="radio">
+                                        <label>
+                                            @Html.RadioButtonFor(m => m.Clase, "null", new { id = "Clase", type = "hidden" })
+                                            @Html.RadioButtonFor(m => m.Clase, "No Conformidad", new { id = "Clase" })
+                                            No Conformidad
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            @Html.RadioButtonFor(m => m.Clase, "Oportunidad de Mejora", new { id = "Clase" })
+                                            Oportunidad de Mejora
+                                        </label>
+                                    </div>
+                                    <span id="val-clase" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <label>*Fecha de Hallazgo</label>
+
+                                    @{
+                                        if (Model.Fecha_hall != null)
+                                        {
+                                            DateTime dt = Model.Fecha_hall ?? DateTime.Today;
+                                            string dateStrHall = dt.ToShortDateString();
+                                            @Html.TextBoxFor(m => m.Fecha_hall, new { @class = "form-control form-width-100", @Value = dateStrHall })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.Fecha_hall, new { @class = "form-control form-width-100" })
+                                        }
+                                    }
+                                    <span id="val-fechahall" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div class="col-md-5 col-lg-5">
+                                    <label>*Sede Hallazgo</label>
+                                    @Html.DropDownList("Pk_Id_Sede1", (SelectList)ViewBag.Pk_Id_Sede, "-- Seleccione una Sede --", htmlAttributes: new { @class = "form-control" })
+                                    <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>*Origen del Hallazgo</label>
+                                    @Html.DropDownList("ListaOrigen", null, "-- Seleccione el Origen --", htmlAttributes: new { @class = "form-control form-width-100", onChange = "jsFunction_122()" })
+                                    <span id="val-origen" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div id="otros_origen_id" class="col-md-11" style="display:none">
+                                    <label>En caso de seleccionar OTRO ORIGEN, indique cuál</label>
+                                    @Html.TextBoxFor(m => m.Otro_Origen, htmlAttributes: new { @class = "form-control form-width-100", maxlength = 250, @disabled = "disabled" })
+                                    <span id="val-otroorigen" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>*ID del que identificó el hallazgo</label>
+
+                                        @Html.TextBoxFor(m => m.Halla_Num_Doc, htmlAttributes: new { @class = "form-control form-width-100", maxlength = 100, @placeholder = "Esciba el número del documento a buscar..." })
+                                        <div id="result">@Html.Hidden("busqueda", null, new { @class = "form-control", maxlength = 300 })</div>
+                                    <span id="val-numdoc" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div class="col-md-5 col-lg-5">
+                                    <label>*Tipo de documento</label>
+                                    @Html.TextBoxFor(m => m.Halla_TipoDoc, htmlAttributes: new { @class = "form-control", maxlength = 300 })
+                                    <span id="val-tipodoc" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>*Nombre de quien identificó el hallazgo</label>
+                                    @Html.TextBoxFor(m => m.Halla_Nombre, htmlAttributes: new { @class = "form-control", maxlength = 300 })
+                                    <span id="val-nombre" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <div class="col-md-11">
+                                    <label>*Cargo</label>
+                                    @Html.TextBoxFor(m => m.Halla_Cargo, htmlAttributes: new { @class = "form-control", maxlength = 300 })                            
+                                    <span id="val-cargo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <br />
+                                <div class="col-sm-12">
+                                    <hr />
+                                    <div id="div_novedad_documentacion1">
+                                        <span id="msj_novedad_documentacion1"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    @{
+                                        if (Model.HallazgoLista.Count == 0)
+                                        {
+                                            <a href="@Url.Action("NuevoHallazgo", "Acciones")" class="boton botoninfo" id="NuevoHall">
+                                                Agregar Hallazgo
+                                            </a>
+                                        }
+                                    }
+                                    <span id="val-deschall" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                </div>
+                                <br />
+                                @for (int i = 0; i < Model.HallazgoLista.Count; i++)
+                                {
+                                    int numeroHallazgo = i + 1;
+                                    int IdHallazgo = Model.HallazgoLista[i].Clave;
+                                    <div class="table-responsive col-md-12">
+                                        <table class="table table-bordered table-positiva">
+                                            <thead>
+                                                <tr>
+                                                    <th class="cell-head-table-positiva">Información del Hallazgo</th>
+                                                    <th class="cell-head-table-positiva" style="text-align:right">
+                                                        <a href="@Url.Action("EditarHallazgo", "Acciones", new { id = IdHallazgo })" class="btn btn-sm btn-positiva-accion-invert editar-hallazgo" id="@IdHallazgo">Editar</a>
+                                                        <a href="#" class="btn btn-sm btn-positiva-accion-invert btnEliminarHall" id="@IdHallazgo">Eliminar</a>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <th scope="row" class="col-md-1" style="background-color:darkorange;color:white;">Proceso del Hallazgo</th>
+                                                    <td class="col-md-12">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Proceso)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="col-md-1" style="background-color:darkorange;color:white;">Norma Aplicable</th>
+                                                    <td class="col-md-12">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Norma)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="col-md-1" style="background-color:darkorange;color:white">Numeral de la norma que incumple</th>
+                                                    <td class="col-md-12">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Numeral)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="col-md-1" style="background-color:darkorange;color:white">Descripción del Hallazgo</th>
+                                                    <td class="col-md-12">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Descripcion)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+            <div class="internal-panel">
+                
+                        <div class="internal-panel-header panel-heading">
+                            <h4>2. Análisis del Hallazgo </h4>
+                        </div>
+
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" id="MostrarAyudaAnalisis"
+                           title="Ayuda Análisis de Causas" class="btn btn-ayuda btn-md MostrarAyudaAnalisis">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                        <div class="internal-panel-body">
+                            
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>2.1 Corrección propuesta (Si aplica)</label>
+                                    @Html.TextAreaFor(s => s.Correccion, new { @class = "form-control form-width-100", rows = "3", maxlength = 2000 })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>2.2 Desarrollo del análisis de causas (Solo se permite el uso de una metodología de ánalisis de hallazgo por acción correctiva o preventiva)</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-3 text-center col-margin">
+                                    <a id="btnArbol" href="@Url.Action("AnalisisArbol", "Acciones")" class="btn btn-sm btn-positiva btn-width-170" style="border-radius:0px">
+                                        @{
+                                            if (Model.AnalisisLista.Where(s => s.Tipo == 1).ToList().Count > 0)
+                                            {
+                                                <span style="color:#40c952" class="glyphicon glyphicon-ok"></span>
+                                            }
+                                        }
+                                        <i class="fa fa-tree" aria-hidden="true"></i> Árbol de causas
+                                    </a>
+                                </div>
+                                <div class="col-md-6 col-lg-3 text-center col-margin">
+                                    <a id="btnCausa" href="@Url.Action("AnalisisCausa", "Acciones")" class="btn btn-sm btn-positiva btn-width-170" style="border-radius:0px">
+                                        @{
+                                            if (Model.AnalisisLista.Where(s => s.Tipo == 2).ToList().Count > 0)
+                                            {
+                                                <span style="color:#40c952" class="glyphicon glyphicon-ok"></span>
+                                            }
+                                        }
+                                        <i class="fa fa-exchange" aria-hidden="true"></i> Diagrama causa-efecto
+                                    </a>
+                                </div>
+                                <div class="col-md-6 col-lg-3 text-center col-margin">
+                                    <a id="btnCinco" href="@Url.Action("Analisis5Porque", "Acciones")" class="btn btn-sm btn-positiva btn-width-170" style="border-radius:0px">
+                                        @{
+                                            if (Model.AnalisisLista.Where(s => s.Tipo == 3).ToList().Count > 0)
+                                            {
+                                                <span style="color:#40c952" class="glyphicon glyphicon-ok"></span>
+                                            }
+                                        }
+                                        <i class="fa fa-question-circle" aria-hidden="true"></i> CincoPorqués
+                                    </a>
+                                </div>
+                                <div class="col-md-6 col-lg-3 text-center col-margin">
+                                    <a id="btnLluvias" href="@Url.Action("AnalisisLluvia", "Acciones")" class="btn btn-sm btn-positiva btn-width-170" style="border-radius:0px">
+                                        @{
+                                            if (Model.AnalisisLista.Where(s => s.Tipo == 4).ToList().Count > 0)
+                                            {
+                                                <span style="color:#40c952" class="glyphicon glyphicon-ok"></span>
+                                            }
+                                        }
+                                        <i class="fa fa-bolt" aria-hidden="true"></i> Lluvia de ideas
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label>2.3 Causa raíz identificada del análisis</label>
+                                    @Html.TextAreaFor(s => s.Causa_Raiz, new { @class = "form-control form-width-100", rows = "3", maxlength = 2000 })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            <div class="internal-panel">
+                        <div class="internal-panel-header panel-heading">
+                            <h4>3. Cambios Documentales</h4>
+                        </div>
+                        <div class="internal-panel-body">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <label class="radio-inline remove-left-padding">
+                                        <b>3.1 ¿Requiere cambios en la documentación del SIG?</b>
+                                    </label>
+
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Cambio_Doc, "null", new { id = "Cambio_Doc", name = "cam_doc", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.Cambio_Doc, "Si", new { id = "Cambio_Doc", name = "cam_doc", @class = "RadioSi" })
+                                        Sí
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Cambio_Doc, "No", new { id = "Cambio_Doc", name = "cam_doc", @class = "RadioNo" })
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <p>Si requiere cambios en la documentación del SIG descíbalos brevemente y gestione el cambio con el profesional de mejoramiento continuo en la Oficina Asesora de Planeación</p>
+
+                                    <div class="col-md-6">
+                                        <div id="div_novedad_documentacion">
+                                            <span id="msj_novedad_documentacion"></span>
+                                        </div>
+                                    </div>
+                                    @Html.TextAreaFor(s => s.Des_Cambio_Doc, new { @class = "form-control form-width-100", rows = "3", disabled = "disabled", maxlength = 2000 })
+                                    <span id="val-cambiodoc" class="text-danger field-validation-error val-message" style="display:none;"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                        <div class="internal-panel-header panel-heading">
+                            <h4>4. Plan de acción que eliminará la(s) causa(s) raíz identificada(s) para que el hallazgo no vuelva a ocurrir. Nota: Si requiere, anexe un cronograma en la sección ADJUNTAR EVIDENCIA</h4>
+                        </div>
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" id="MostrarAyudaPlanAccion"
+                           title="Ayuda Plan de Acción" class="btn btn-ayuda btn-md MostrarAyudaPlanAccion">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                    </div>
+                </div>
+                        <div class="internal-panel-body">
+                            <br />
+
+                            @{
+                                if (Model.ActividadLista.Count > 0)
+                                {
+
+                                    <div class="table-responsive">
+                                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                            <thead>
+                                                <tr class="titulos_tabla">
+
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <p>
+                                                            <span class="set-transparent-text">--------------------</span>
+                                                            Actividad
+                                                            <span class="set-transparent-text">--------------------</span>
+                                                        </p>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <p>Responsable y Cargo</p>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <p>Fecha de finalización</p>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <p>Firma del responsable</p>
+                                                    </th>
+
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="">
+                                                @{
+                                                    foreach (var item in Model.ActividadLista)
+                                                    {
+                                                        int NumeroFila = item.Clave;
+                                                        int NumeroEstado = 0;
+                                                        try
+                                                        {
+                                                            NumeroEstado = item.Estado;
+                                                        }
+                                                        catch (Exception)
+                                                        {
+
+                                                        }
+                                                        <tr class="paginver">
+                                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                                @Html.DisplayFor(modelItem => item.Actividad)
+                                                            </td>
+                                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                @Html.DisplayFor(modelItem => item.Responsable)
+                                                            </td>
+                                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                @{
+                                                                    string Fecha_str_Finalizacion = "";
+                                                                    try
+                                                                    {
+                                                                        Fecha_str_Finalizacion = item.FechaFinalizacion.ToString("dd/MM/yyyy");
+                                                                    }
+                                                                    catch (Exception)
+                                                                    {
+
+                                                                    }
+                                                                    <span>@Fecha_str_Finalizacion</span>
+                                                                }
+                                                            </td>
+                                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                                <img src="@Html.DisplayFor(modelItem => item.FirmaScrImage)" alt="" style="max-height:50px;" />
+                                                            </td>
+                                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; ">
+                                                                <a id="@NumeroFila.ToString()" href="@Url.Action("EditarActividad", "Acciones", new { id = item.Clave })" class="btn btn-sm btn-positiva btnEditarActividad" title="Editar Actividad" style="height:35px;margin-bottom:5px;">
+                                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                                </a>
+                                                                <a id="@NumeroFila.ToString()" href="#" class="btn btn-sm btn-positiva btnEliminarAct" title="Eliminar Actividad" style="height:35px;margin-bottom:5px;">
+                                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                                </a>
+                                                                
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <center><div class="pagination paginationver" id="paginador1"></div></center>
+                                    </div>
+                                 }
+                            }
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <center>
+                                        <a id="btnPlan" href="@Url.Action("NuevaActividad", "Acciones")" class="boton botoninfo">
+                                            Agregar Plan de Acción
+                                        </a>
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+            <div class="internal-panel add-bottom-margin-05em">
+                        <div class="internal-panel-header panel-heading">
+                            <h4>5. Seguimiento de las acciones propuestas (Requiere un análisis de causas ya desarrollado y guardado)</h4>
+                        </div>
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" id="MostrarAyudaSeguimiento"
+                           title="Ayuda Seguimiento de las acciones propuestas" class="btn btn-ayuda btn-md MostrarAyudaSeguimiento">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                    </div>
+                </div>
+                        <div class="internal-panel-body">
+                            <br />
+                            @{
+                                if (Model.SeguimientoLista.Count > 0)
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                            <thead>
+                                                <tr class="titulos_tabla">
+
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <span>Fecha de Seguimiento</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <span>Observaciones del responsable del proceso</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                        <span>Firma del responsable</span>
+                                                    </th>
+
+
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                                </tr>
+                                            </thead>
+                                            @{
+                                                foreach (var item in Model.SeguimientoLista)
+                                                {
+                                                    int NumeroFila = item.Clave;
+                                                    int NumeroEstado = 0;
+
+                                                    try
+                                                    {
+                                                        NumeroEstado = item.Estado;
+                                                    }
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                    <tr class="pagincom">
+                                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                            @{
+                                                                string Fecha_str_seg = "";
+                                                                try
+                                                                {
+                                                                    Fecha_str_seg = item.Fecha_Seg.ToString("dd/MM/yyyy");
+                                                                }
+                                                                catch (Exception)
+                                                                {
+
+                                                                }
+                                                                <span>@Fecha_str_seg</span>
+                                                            }
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                            @Html.DisplayFor(modelItem => item.Observaciones)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                            <img src="@Html.DisplayFor(modelItem => item.FirmaScrImage)" alt="" style="max-height:50px;" />
+                                                        </td>
+
+                                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:100px;">
+                                                            <a id="@NumeroFila.ToString()" href="@Url.Action("EditarSeguimiento", "Acciones", new { id = item.Clave })" class="btn btn-sm btn-positiva btnEditarSeg" title="Editar Seguimiento" style="height:35px;margin-bottom:5px;">
+                                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                            </a>
+                                                            <a id="@NumeroFila.ToString()" href="#" class="btn btn-sm btn-positiva btnEliminarSeg" title="Eliminar Seguimiento" style="height:35px;margin-bottom:5px;">
+                                                                <span class="glyphicon glyphicon-erase"></span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                                }
+                                            }
+                                        </table>
+                                        <center><div class="pagination paginationcom" id="paginador1"></div></center>
+                                    </div>
+                                }
+                            }
+
+                            <div class="row">
+                                <div class="col-sm-12 add-bottom-margin-05em add-top-margin-05em">
+
+                                    @{
+                                        if (Model.AnalisisLista.Where(s => s.Tipo == 1).ToList().Count > 0 || Model.AnalisisLista.Where(s => s.Tipo == 2).ToList().Count > 0 || Model.AnalisisLista.Where(s => s.Tipo == 3).ToList().Count > 0 || Model.AnalisisLista.Where(s => s.Tipo == 4).ToList().Count > 0)
+                                        {
+                                            <center>
+                                                <a id="btnSeg" href="@Url.Action("NuevoSeguimiento", "Acciones")" class="boton botoninfo">
+                                                    Agregar Seguimiento
+                                                </a>
+                                            </center>
+                                        }
+                                        else
+                                        {
+                                            <center>
+                                                <span>El usuario debe desarrollar un análisis de causas</span>
+                                            </center>
+                                        }
+                                    }
+                                    
+
+                                </div>
+                            </div>
+                            <div class="row" style="display:none">
+                                <br />
+                                <div class="col-sm-12 add-bottom-margin-05em add-top-margin-05em">
+                                    <label class="radio-inline remove-left-padding">
+                                        5.2 Estado de la Acción
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estado, "null", new { id = "Estado", type = "hidden", disabled = "disabled" })
+                                        @Html.RadioButtonFor(m => m.Estado, "Abierta", new { id = "Estado", disabled = "disabled" })
+                                        Abierta
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estado, "Cerrada", new { id = "Estado", disabled = "disabled" })
+                                        Cerrada
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 add-bottom-margin-05em add-top-margin-05em">
+                                    <center>
+                                        <a id="btnAdj" href="@Url.Action("Archivos", "Acciones")" class="btn btn-sm btn-positiva btn-wrapper" style="border-radius:0px">
+                                            Adjuntar Evidencia de las acciones tomadas y sus resultados finales
+                                        </a>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            <div class="internal-panel">
+                        <div class="internal-panel-header panel-heading">
+                            <h4>6. Verificación de la eficacia de la acción tomada por parte del auditor o profesional de mejoramiento continuo</h4>
+                        </div>
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" id="MostrarAyudacerrar"
+                           title="Ayuda Cerrar una Acción" class="btn btn-ayuda btn-md MostrarAyudacerrar">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                    </div>
+                </div>
+                        <div class="internal-panel-body add-top-margin-05em">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    @Html.TextAreaFor(s => s.Verificacion, new { @class = "form-control form-width-100", rows = "3", maxlength = 1000 })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <div class="radio">
+                                        @Html.RadioButtonFor(m => m.Eficacia, "null", new { id = "Efectividad", type = "hidden" })
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            @Html.RadioButtonFor(m => m.Eficacia, "No Implementada", new { id = "Efectividad" })
+                                            No Implementada
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            @Html.RadioButtonFor(m => m.Eficacia, "Implementada pero no eficaz", new { id = "Efectividad" })
+                                            Implementada pero no eficaz
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            @Html.RadioButtonFor(m => m.Eficacia, "Implementada y eficaz", new { id = "Efectividad" })
+                                            Implementada y eficaz
+                                        </label>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-6 text-center padding-top-1em remove-top-padding-sm-responsive">
+                                    <a id="btnAdj" href="@Url.Action("Archivos", "Acciones")" class="btn btn-sm btn-positiva btn-wrapper" style="border-radius:0px">
+                                        Adjuntar Evidencia de las acciones tomadas y sus resultados finales
+                                    </a>
+                                </div>*@
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="height-38px">
+                                        <b>Firma del profesional de mejoramiento continuo o auditor</b>
+                                    </div>
+
+                                    <div class="text-left">
+                                        <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                                            <img id="ImagenFirmaAudId" src="@ViewBag.SrcImgAud" alt="" class="ImagenFirmaAud" />
+                                        </div>
+                                        <div class="col-md-12 add-bottom-margin-05em">
+                                            <input type="file" id="UploadPhotoAud" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                                        </div>
+                                        <div class="row text-center ">
+
+                                            <a href="#" class="boton botoninfo" id="AgregarFirmaAud">
+                                                Adjuntar Firma
+                                            </a>
+                                            <a href="#" class="boton botoninfo" id="QuitarFirmaAud">
+                                                Quitar Firma
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2">Nombre:</label>
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(s => s.Nombre_Auditor, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 250 } })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2">Cargo:</label>
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(s => s.Cargo_Auditor, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 250 } })
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+
+                                            <div class="form-group">
+                                                <label>Número de Documento</label>
+                                                <input type="text" class="form-control form-width-100" id="Accion_aud_Num_Doc" placeholder="Esciba el número del documento a buscar...">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="height-38px">
+                                        <b>Firma del responsable del proceso</b>
+                                    </div>
+
+                                    <div class="text-left">
+                                        <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                                            <img id="ImagenFirmaResId" src="@ViewBag.SrcImgRes" alt="" class="ImagenFirmaRes" />
+                                        </div>
+                                        <div class="col-md-12 add-bottom-margin-05em">
+                                            <input type="file" id="UploadPhotoRes" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                                        </div>
+                                        <br />
+                                        <div class="row text-center">
+
+                                            <a href="#" id="AgregarFirmaRes" class="boton botoninfo">
+                                                Adjuntar Firma
+                                            </a>
+                                            <a href="#" class="boton botoninfo" id="QuitarFirmaRes">
+                                                Quitar Firma
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2">Nombre:</label>
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(s => s.Nombre_Responsable, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 250 } })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-2">Cargo:</label>
+                                            <div class="col-sm-10">
+                                                @Html.EditorFor(s => s.Cargo_Responsable, new { htmlAttributes = new { @class = "form-control form-width-100", maxlength = 250 } })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+
+                                            <div class="form-group">
+                                                <label>Número de Documento</label>
+                                                <input type="text" class="form-control form-width-100" id="Accion_Res_Num_Doc" placeholder="Esciba el número del documento a buscar...">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+            }
+        <div class="divMensajes" id="div_novedad_ult">
+            <span id="msj_novedad_ult"></span>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="GuardarAccion" class="boton botonactive col-margin">Guardar</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="boton botoncancel" id="CancelarAccion">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+
+<div id="myModal" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 5px;">
+        <center><h4>ANÁLISIS DEL HALLAZGO</h4></center>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>2.1 Corrección propuesta si aplica:</strong> Campo que describe la acción inmediata que subsana el hallazgo </p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>2.2 Desarrollo del análisis de causas:</strong> En esta sección el usuario puede elegir una de las cuatro (4) metodologías disponibles, estas son: <strong>Árbol de causas</strong>, <strong>Diagrama Causa Efecto</strong>, <strong>Cinco Porqués</strong> o <strong>Lluvia de ideas</strong>, la idea es que el usuario desarrolle una metodología e identifique la <strong>Causa raíz</strong></p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>2.3 Causa raíz identificada del análisis:</strong> Una vez que el usuario identifique la causa raíz, debe consignar en este campo los resultados</p>        
+        <p style="margin-bottom:20px;line-height: 200%;"><i class="glyphicon glyphicon-ok" style="color: #40c952; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> Indica que se desarrolló y guardó la metodología con este ícono</p>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <center><button id="close_modal" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+<div id="myModal1" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 5px;">
+        <center><h4>PLANES DE ACCIÓN</h4></center>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Crear plan de acción:</strong> Para crear un plan de acción presione <button type="button" class="boton botoninfo" style="cursor:default;">AGREGAR PLAN DE ACCIÓN</button></p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Editar plan de acción para nueva acción:</strong> Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> sobre un elemento de la lista de planes de acción. ADVERTENCIA: Es importante que una vez guardada la acción preventiva o correctiva no se pueden eliminar o editar los planes ya creadas en esta sección, en ese caso el usuario debe dirigirse al módulo PLANES DE ACCIÓN que hace parte de la aplicación</p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Eliminar plan de acción para nueva acción:</strong> Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> sobre un elemento de la lista de planes de acción. ADVERTENCIA: Es importante que una vez guardada la acción preventiva o correctiva no se pueden eliminar o editar los planes ya creadas en esta sección, en ese caso el usuario debe dirigirse al módulo PLANES DE ACCIÓN que hace parte de la aplicación</p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Anexar Cronograma:</strong> Para anexar el cronograma Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Adjuntar Evidencia de las acciones</i> para adjuntar archivos de evidencia </p>       
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <center><button id="close_modal1" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+<div id="myModal2" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 5px;">
+        <center><h4>SEGUIMIENTOS</h4></center>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Crear seguimiento:</strong> Para crear un seguimiento el usuario debe terminar de desarrollar una metodologia en la sección <strong>2.2 Desarrollo del análisis de causas</strong> luego de esto presione <button type="button" class="boton botoninfo" style="cursor:default;">AGREGAR SEGUIMIENTO</button></p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Editar seguimiento para nueva acción:</strong> Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> sobre un elemento de la lista de seguimientos.</p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Eliminar seguimiento para nueva acción:</strong> Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> sobre un elemento de la lista de seguimientos. ADVERTENCIA: Es importante que una vez guardada la acción preventiva o correctiva no se pueden eliminar los seguimientos ya creados en esta sección solo se pueden editar</p>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <center><button id="close_modal2" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+<div id="myModal3" class="modalAnalisis">
+
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 5px;">
+        <center><h4>INSTRUCCIONES PARA CERRAR UNA ACCIÓN</h4></center>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Primera condición:</strong> Todos los planes de acción deben estar cerrados, para ello el usuario debe ir a <strong>MÓDULO PLANES DE ACCIÓN</strong> para realizar el proceso de cierre</p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>Segunda condición:</strong> La opción <input  type="radio" value="Implementada y eficaz"> <strong>Implementada y eficaz</strong> debe estar seleccionada</p>
+        <p style="margin-bottom:20px;line-height: 200%;"><strong>ADVERTENCIA</strong> Si y solo si las dos condiciones se cumplen la acción correctiva o preventiva establecerá su estado como <strong>CERRADA</strong> en caso contrario su estado será <strong>ABIERTA</strong></p>
+        <center><hr style="color:gray; border: solid 0.5px gray; background-color:gray" /></center>
+        <center><button id="close_modal3" class="boton botoncancel col-margin">CERRAR</button></center>
+    </div>
+</div>
+
+

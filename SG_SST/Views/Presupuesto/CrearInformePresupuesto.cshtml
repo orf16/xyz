@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Crear Informe Presupuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Presupuesto</a></li>
+    <li class="active">Crear Informe Presupuesto</li>
+</ol>
+
+<form method="post" id="Presupuesto">
+    <input type="hidden" id="IDPresupuestoAnio" name="IDPresupuestoAnio" value="@ViewBag.IdPresupuesto" />
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">INFORME DE PRESUPUESTO DISPONIBLE</div>
+        
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="col-md-1">
+                        <h5><b>FECHA:</b></h5>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="fecha" name="fecha" onchange="consultarIntervaloDeTiempo()">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="1">Mensual</option>
+                            <option value="2">Trimestral</option>
+                            <option value="3">Semestral</option>
+                            <option value="4">Anual</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <h5><b>INTERVALO DE TIEMPO:</b></h5>
+                    </div>
+                    <div class="col-md-4" id="interTiempo" name="interTiempo">
+                        <select class="form-control" name="intervaloDeTiempo" id="intervaloDeTiempo"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    @*<input type="button" class="form-control btn btn-warning btn-md tbr"
+                    value="@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar" onclick="CargarInformePresupuesto()" />*@
+                    <button type="button" class="boton botoninfo" onclick="CargarInformePresupuesto()">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="TablaPresupuesto">
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+    @Scripts.Render("~/bundles/ChartEstadisticos")   
+}

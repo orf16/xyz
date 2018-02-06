@@ -1,0 +1,184 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.ElementoMatriz>
+
+@{
+    ViewBag.Title = "Consultar DOFA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="FileSaver.js"></script>
+<script src="jquery.wordexport.js"></script>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Consideraciones internas y externas</a></li>
+    <li class="active">Consultar DOFA</li>
+</ol>
+
+<div class="tab-pane active" id="step1" name="step1">   
+  
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:white">ANÁLISIS DOFA</div>
+
+                @*Boton ayuda*@
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                            title="Ayuda" class="btn btn-ayuda btn-md">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                        <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Ayuda / Análisis DOFA</h4>
+                                    </div>
+                                    <div class="modal-body" style="color:black">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-xs-9">
+                                                    <p>Click en Descargar para obtener la matriz DOFA en PDF</p>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    @*@Html.ActionLink("Crear", "", "", null, new { @class = "boton botoninfo" })*@
+
+                                                    <img src="~/Content/Images/simbolopdf.png" title="Descargar PDF" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*/////////////*@
+
+                <div id="export-content" class="panel-body form-horizontal">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-primary" style="border-radius:0px; border:1px solid black">
+                                <div style="border-radius:0px; background-color: #b3e2dd; border: 1px solid black">
+                                    <p class="text-center" style="font-size:large; color: black; line-height:2">Oportunidades</p>
+                                </div>
+                                <div class="panel-body" id="opotunidades">
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.FK_TipoElementoAnalisis == 4)// el 4 es el id o pk del tipo de elemento en la base de datos
+                                        {
+                                            <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+                                                <div style="margin-left:-10px; text-align:justify">
+                                                    <b>• @item.Descripcion_Elemento</b>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-success" style="border-radius:0px; border:1px solid black">
+                                <div style="border-radius:0px; background-color: #cfeccf; border: 1px solid black">
+                                    <p class="text-center" style="font-size:large; color: black; line-height:2">Amenazas</p>
+                                </div>
+                                <div class="panel-body" id="amenazas">
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.FK_TipoElementoAnalisis == 1)// el 1 es el id o pk del tipo de elemento en la base de datos
+                                        {
+                                            <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+                                                <div style="margin-left:-10px; text-align:justify">
+                                                    <b>• @item.Descripcion_Elemento</b>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-yellow" style="border-radius:0px; border:1px solid black">
+                                <div style="border-radius:0px; background-color: #fdcaa2; border: 1px solid black">
+                                    <p class="text-center" style="font-size:large; color: black; line-height:2">Fortalezas</p>
+                                </div>
+                                <div class="panel-body" id="fortalezas">
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.FK_TipoElementoAnalisis == 3)// el 2 es el id o pk del tipo de elemento en la base de datos
+                                        {
+                                            <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                                <div style="margin-left:-10px; text-align:justify">
+                                                    <b>• @item.Descripcion_Elemento</b>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="panel panel-danger" style="border-radius:0px; border:1px solid black">
+                                <div style="border-radius:0px; background-color: #c1b3d7; border: 1px solid black">
+                                    <p class="text-center" style="font-size:large; color: black; line-height:2">Debilidades</p>
+                                </div>
+                                <div class="panel-body" id="debilidades">
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.FK_TipoElementoAnalisis == 2)// el 2 es el id o pk del tipo de elemento en la base de datos
+                                        {
+                                            <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+                                                <div style="margin-left:-10px; text-align:justify">
+                                                    <b>• @item.Descripcion_Elemento</b>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Iconos de descarga en Word o PDF*@
+                    <div class="panel-footer" style="border: 0.5px solid lightslategray; border-radius:0px">
+                        <div class="row" align="center">
+                            <a href="@Url.Action("ReporteDOFA_PDF", new { })">
+                                <img src="~/Content/Images/simbolopdf.png" title="Descargar PDF" />
+                            </a>                         
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $("#p").click(function () {
+
+            var elHtml = document.getElementById("step1").outerHTML;
+            var link = document.createElement('a');
+            link.setAttribute('download', 'documento.doc');
+            link.setAttribute('href', 'data:text/doc;charset=utf-8,' + encodeURIComponent(elHtml));
+            link.click();
+        });
+    });
+</script>

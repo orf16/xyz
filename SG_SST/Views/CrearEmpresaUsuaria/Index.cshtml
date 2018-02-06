@@ -1,0 +1,757 @@
+﻿@model SG_SST.Models.Empresa.EmpresaUsuariaModel
+
+<style type="text/css">
+    div#tooltip a span {
+        display: none;
+    }
+
+    div#tooltip a:hover span {
+        display: block;
+        position: relative;
+        width: 425px;
+        padding: 5px;
+        margin: 10px;
+        z-index: 100;
+        color: black;
+        background-color: #FFFFCC;
+        border: 1px solid #ccc;
+        font: 10px Verdana, sans-serif;
+        text-align: center;
+    }
+
+    div#tooltip a {
+        position: relative;
+    }
+
+        div#tooltip a span {
+            display: none;
+        }
+
+        div#tooltip a:hover span {
+            display: block;
+            position: absolute;
+            width: 400px;
+            color: black;
+            background-color: #FFFFCC;
+            border: 1px solid #ccc;
+            font: 10px Verdana, sans-serif;
+            text-align: justify;
+        }
+
+        div#tooltip a:hover {
+            text-indent: 0;
+        }
+
+    #tooltip button {
+        /*border-radius: 50%;*/
+        border: 1px solid black;
+        padding-top: 3px;
+    }
+</style>
+
+
+@{
+    ViewBag.Title = "Creación Empresas Asociada";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Messages != null)
+{
+    if (ViewBag.Messages != "")
+    {
+        <script type="text/javascript">
+    //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.Messages',
+                type: 'success',
+                //confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });
+        </script>
+    }
+}
+
+@if (ViewBag.MessagesERR != null)
+{
+    if (ViewBag.MessagesERR != "")
+    {
+        <script type="text/javascript">
+    //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.MessagesERR',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });
+        </script>
+    }
+}
+
+@if (ViewBag.MessagesOK != null)
+{
+    if (ViewBag.MessagesOK != "")
+    {
+        <script type="text/javascript">
+    //SCRIPT DE EJEMPLO
+            swal({
+                title: 'Estimado Usuario',
+                text: '@ViewBag.MessagesOK',
+                type: 'success',
+                //confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            });
+        </script>
+    }
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@*<p><em>Empresa / <b>GESTION DE EMRESAS USUARIAS</b></em></p>
+    <hr />*@
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Empresa</a></li>
+    <li><a href="javascript:void(0)">Relaciones Laborales</a></li>
+    <li class="active">GESTIÓN DE EMPRESAS ASOCIADAS</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:black">
+        GESTIÓN DE EMPRESAS ASOCIADAS
+    </div>
+    <div class="row" align="center">
+        <div class="col-md-10">
+            <h4>Razón Social Empresa: @ViewBag.Nombre_Empresa - NIT: @ViewBag.Documento_Empresa</h4>
+        </div>
+    </div>
+    <!-- AYUDA-->
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            @*<a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+               style="border: 1px solid lightslategray; border-radius:0px">
+                <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+            </a>*@
+            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black; text-align:justify">
+                            <p>Alissta, le permite gestionar las ausencias laborales de sus trabajadores en las empresas asociadas. Para lo cual debe registrar inicialmente los datos del empleador/contratante y posteriormente ingresar al menú: PLANIFICACIÓN/AUSENTISMO LABORAL</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN AYUDA-->
+
+    <div class="panel-body form-horizontal">
+        <table class="table table-condensed table-responsive table-bordered table-striped">
+            <tr>
+                <td colspan="2">
+                    <CENTER>
+                        <b>Razón Social - Tipo de documento - Identificación empleador / Contratante</b>
+                    </CENTER>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <CENTER>
+                        <b>¿Desea incluir empresas asociadas a su organización?, recuerde que esto le permitirá gestionar e identificar las ausencias de sus empresas asociadas</b>
+                    </CENTER>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <CENTER>
+
+                        <label>
+                            <input type="radio" name="color" id="rbSI"> SI      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </label>
+
+                        <label>
+                            <input type="radio" name="color" id="rbNO"> NO
+                        </label>
+                    </CENTER>
+                </td>
+            </tr>
+            <div class="panel panel-default" id="idDivCargarBoton">
+                <tr>
+                    <td></td>
+                </tr>
+            </div>
+            <tr>
+                <td>
+
+                    @*<div class="container">
+
+                        <div class="row">
+                            <div class="col-md-10">*@
+                    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1) ; display:none;" id="idDivCargarPlantilla">
+                        <div class="panel-heading" style="color:black">
+                            GESTIÓN DE EMPRESAS ASOCIADAS
+                        </div>
+
+
+                        <div class="panel-body form-horizontal">
+                            <div class="row">
+                                <div class="form-group" style="margin-left: 5px">
+
+                                    @using (Html.BeginForm("ObtenerEmpresaUsuaria", "CrearEmpresaUsuaria", FormMethod.Post, new { id = "idObtenerEmpresaUsuaria" }))
+                                    {
+
+                                        <table style="border-style: hidden;" align="center">
+                                            <tr>
+                                                <td style="border-style: hidden;">
+                                                    <label class="col-md-12">Identificación empleador / Contratante:</label>
+                                                </td>
+                                                <td style="border-style: hidden;">
+                                                    <input type="text" name="nitempresa" id="nitempresa" placeholder="Ingresar NIT empleador" class="form-control" />
+                                                </td>
+                                                <td style="border-style: hidden;">
+                                                    <div id="tooltip">
+                                                        <a href="#">
+                                                            <button type="button" class="boton botoninfo" id="btnObtenerEmpresaUsuarias" onclick="BuscarEmpresa()" style="margin-left:10px">Buscar</button>
+                                                            <span><b>Empresa Temporal:</b>Son empresas clientes de Positiva que tiene trabajadores en misión en empresas usuarias de la temporal (Cliente). <br /><b>Asociada:</b>Son las empresas clientes de la empresa temporal asegurada por Positiva.</span>
+                                                        </a>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    }
+
+                                    <div class="panel-heading" style="color:black">
+                                        <span class="label label-warning" id="idMensaje">@ViewBag.Messages</span>
+                                    </div>
+                                </div>                                
+
+                            </div>
+                            <!-- empresas temporal busqueda-->
+                            <div>
+
+                                <table class="table table-responsive table-condensed table-bordered" style="border: 2px solid lightslategray">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Razón Social </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Tipo de documento </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Identificación</th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Dirección</th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Departamento</th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Municipio</th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Edición</th>
+                                        </tr>
+
+                                        @if (ViewBag.creacion)
+                                        {
+                                            using (Html.BeginForm("AdicionarEmpresaUsuaria", "CrearEmpresaUsuaria", FormMethod.Post, new { id = "idAdicionarEmpresaUsuaria" }))
+                                            {
+                                                <tr class="titulos_filas">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @if (ViewBag.TipoDocumentoDisabled)
+                                                        {
+                                                            <input type="text" value="@Model.RazonSocial" size="15" readonly="readonly" class="input-sm" name="RazonSocial_crea" id="RazonSocial_crea" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" value="@Model.RazonSocial" size="15" class="input-sm" name="RazonSocial_crea" id="RazonSocial_crea" />
+                                                        }
+
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @if (ViewBag.TipoDocumentoDisabled)
+                                                        {
+                                                            @Html.DropDownList("dd_Documentos", new SelectList(Model.lstDocumentos, "Value", "Text", ViewBag.TipoDocumento), "Seleccione...", new { @class = "dropdown1", @id = "dd_Documentos", disabled = "true" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DropDownList("dd_Documentos", new SelectList(Model.lstDocumentos, "Value", "Text", ViewBag.TipoDocumento), "Seleccione...", new { @class = "dropdown1", @id = "dd_Documentos" })
+                                                        }
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        <input type="text" value="@Model.DocumentoEmpresa" size="15" readonly="readonly" class="input-sm" name="DocumentoEmpresa_crea" id="DocumentoEmpresa_crea" />
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @if (ViewBag.TipoDocumentoDisabled)
+                                                        {
+                                                            <input type="text" value="@Model.Direccion" size="15" readonly="readonly" class="input-sm" name="Direccion_crea" id="Direccion_crea" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" value="@Model.Direccion" size="15" class="input-sm" name="Direccion_crea" id="Direccion_crea" />
+                                                        }
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @if (ViewBag.TipoDocumentoDisabled)
+                                                        {
+                                                            @Html.DropDownList("dd_Departamentos", Model.lstDepartamentos, null, new { @class = "dropdown1", @onchange = "BuscarMunicipios()", disabled = "true" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DropDownList("dd_Departamentos", Model.lstDepartamentos, "Seleccione...", new { @class = "dropdown1", @onchange = "BuscarMunicipios()" })
+                                                        }
+
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @if (ViewBag.TipoDocumentoDisabled)
+                                                        {
+                                                            @Html.DropDownList("dd_Municipios", Model.lstMunicipios, null, new { @class = "dropdown1", disabled = "true" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DropDownList("dd_Municipios", Model.lstMunicipios, "Seleccione...", new { @class = "dropdown1" })
+                                                        }
+
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <button type="button" class="boton botonactive" id="btnAdicionarEmpresa" onclick="AdicionarEmpresa()">Adicionar</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        @if (Model != null && Model.listEmpresasUsuaria != null)
+                                        {
+                                            using (Html.BeginForm("EliminarEmpresaUsuaria", "CrearEmpresaUsuaria", FormMethod.Post, new { id = "idEliminarEmpresaUsuaria" }))
+                                            {
+                                                foreach (var item in Model.listEmpresasUsuaria)
+                                                {
+                                                    <tr class="titulos_filas">
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(m => item.RazonSocial)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(m => item.TipoDocumento)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(m => item.DocumentoEmpresaUsuaria, null, "DocumentoEmpresaUsuaria")
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(m => item.Direccion)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(m => item.Departamento)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(m => item.Municipio)
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                            <button type="button" class="boton botonactive" id="btnEliminarEmpresa" onclick="EliminarEmpresa(@item.DocumentoEmpresaUsuaria)">Eliminar</button>
+                                                            <input type="hidden" name="idNitParaEli" id="idNitParaEli" />
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                        @using (Html.BeginForm("GuardarEmpresasUsuarias", "CrearEmpresaUsuaria", FormMethod.Post, new { id = "idGuardarEmpresasUsuarias" }))
+                                        {
+                                            <tr class="titulos_filas">
+                                                <td colspan="7" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <button type="button" class="boton botonactive" id="btnGuardarEmpresas" onclick="GuardarEmpresas()">Guardar</button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </thead>
+                                </table>
+                            </div>
+
+
+                        </div>
+                        <div id="divMensaje">   </div>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+</div>
+
+<div id="dialog_eliminar" style="display: none" align="center">
+    ¿Está seguro de eliminar la empresa de la lista?
+</div>
+
+<div id="dialog_no_empr_usuaria" style="display: none" align="center">
+    ¿Está seguro de no administrar su empresa como asociada?
+</div>
+
+<div id="ayuda_tipo_empresas" style="display: none" data-theme="d" aria-disabled="false" data-disabled="false" data-shadow="true" data-corners="true" data-transition="none" data-position-to="origin" data-dismissible="true">
+
+</div>
+
+
+
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+
+@if (ViewBag.ErrorProcesaArchivo != null)
+{
+
+    if (ViewBag.ErrorProcesaArchivo)
+    {
+        <script type="text/javascript">
+                    $('#idDivCargarPlantilla').show(); //muestro mediante id
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+                    $('#idDivCargarPlantilla').hide(); //muestro mediante id
+        </script>
+    }
+}
+
+@if (ViewBag.ResultadosCargados != null)
+{
+
+    if (ViewBag.ResultadosCargados)
+    {
+        <script type="text/javascript">
+            $('#idDivCargarPlantilla').show(); //muestro mediante id
+            $('#rbSI').prop('checked', true);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+                    $('#idDivCargarPlantilla').hide(); //muestro mediante id
+                    $('#rbSI').prop('checked', false);
+        </script>
+    }
+}
+
+<script type="text/javascript">
+
+    var urlBase = ""
+    try {
+        urlBase = utils.getBaseUrl();
+    } catch (e) {
+        console.error(e.message);
+        throw new Error("Revisa tienes errores");
+    };
+    var empresa_usuaria = "";
+    $("#dialog_eliminar").dialog({
+        modal: true,
+        autoOpen: false,
+        title: "Confirmación",
+        width: 350,
+        height: 160,
+        buttons: [
+        {
+            id: "Yes",
+            text: "Aceptar",
+            click: function () {
+                var $NitEliminar = $("#idNitParaEli");
+                $("#idNitParaEli").val(empresa_usuaria);
+                $("#idEliminarEmpresaUsuaria" ).submit();
+            }
+        },
+        {
+            id: "No",
+            text: "Cancelar",
+            click: function () {
+                $(this).dialog('close');
+            }
+        }
+        ]
+    });
+
+    $("#dialog_no_empr_usuaria").dialog({
+        modal: true,
+        autoOpen: false,
+        title: "Confirmación",
+        width: 350,
+        height: 160,
+        buttons: [
+        {
+            id: "Yes",
+            text: "Aceptar",
+            click: function () {
+                $('#rbNO').prop('checked', true);
+                $(this).dialog('close');
+                RedireccionaALogin();
+            }
+        },
+        {
+            id: "No",
+            text: "Cancelar",
+            click: function () {
+                $('#rbNO').prop('checked', false);
+                $(this).dialog('close');
+            }
+        }
+        ]
+    });
+
+    $(document).ready(function () {
+        $("#rbSI").on("click", function () {
+            if ($('#rbSI').is(':checked')) {
+                $('#idDivCargarPlantilla').show(); //muestro mediante id
+            }
+            else {
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "¿Está seguro de no administrar su empresa como asociada?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Aceptar",
+                        cancelButtonText: "Cancelar",
+                        closeOnConfirm: false
+                    },
+                    function () {
+                        RedireccionaALogin();
+                }
+            );
+            }
+        });
+        $("#rbNO").on("click", function () {
+            if ($('#rbNO').is(':checked')) {
+                $('#idDivCargarPlantilla').hide(); //muestro mediante id
+                swal({
+                    title: "Estimado Usuario",
+                    text: "¿Está seguro de no administrar su empresa como asociada?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false
+                                },
+                function () {
+                    RedireccionaALogin();
+                }
+                );
+            }
+            else {
+                $('#idDivCargarPlantilla').show(); //muestro mediante id
+            }
+        });
+
+        $(document).on("input", "#RazonSocial_crea", function () {
+            var limite = 150;
+            var textreal = $(this).val();
+            var text;
+
+            if ($(this).val().length > limite) {
+                text = textreal.substr(0, limite);
+                $(this).val(text);
+            }
+        });
+
+        $(document).on("input", "#nitempresa", function () {
+            var limite = 15;
+            var textreal = $(this).val();
+            var text;
+
+            if ($(this).val().length > limite) {
+                text = textreal.substr(0, limite);
+                $(this).val(text);
+            }
+        });
+
+        $('#nitempresa').keypress(function (tecla) {
+            if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+        });        
+    });
+
+
+    function BuscarMunicipios() {
+        var $idMunicipio = $("#dd_Municipios");
+        var $idDepartamento = $("#dd_Departamentos");
+        $.ajax({
+            url: urlBase + '/General/ObtenerMunicipios',//primero el modulo/controlador/metodo que esta en el controlador
+            data: {// se colocan los parametros a enviar... en este caso no porque los voy es a obtener.
+                PK_Departamento: $idDepartamento.val()
+            },
+            type: 'POST',
+            success: function (result) {
+                if (result) {
+                    $idMunicipio.find("option").remove();//Removemos las opciones anteriores
+                    $idMunicipio.append(new Option("Seleccionar", ""));// agregamos la opcion de seleccionar
+                    $.each(result, function (ind, element) {
+                        $idMunicipio.append(new Option(element.NombreMunicipio, element.PK_Municipio));//agregamos las opciones consultadas
+                    })
+                }
+            }
+        });
+    }
+
+    function RedireccionaALogin() {
+        window.location.href = urlBase + '/Home/Index';
+    }
+    function EliminarEmpresa( id_empresa_usuaria) {
+                swal({
+                    title: "Estimado Usuario",
+                    text: "¿Está seguro de eliminar la empresa de la lista?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false
+                },
+        function () {
+            var $NitEliminar = $("#idNitParaEli");
+            $("#idNitParaEli").val(empresa_usuaria);
+            $("#idEliminarEmpresaUsuaria").submit();
+        }
+        );
+        empresa_usuaria = id_empresa_usuaria;
+    }
+
+    function BuscarEmpresa() {
+
+        var $idnitempresa = $("#nitempresa");
+        var valida_numero
+
+        var value_de = $('#nitempresa').val()
+        var regex_de = new RegExp(/^\+?[0-9(),.-]+$/);
+        if (value_de.match(regex_de)) { valida_numero = true; }
+        else { valida_numero = false; }
+
+
+        if ($idnitempresa.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Identificación del empleador es obligatorio', 'warning');
+            $idnitempresa.css('border-color', 'red');
+        }
+        else if (!valida_numero)
+            swal("Estimado Usuario", 'El campo Identificación del empleador debe ser numérico', 'warning');
+        else if ($idnitempresa.val().length > 15)
+            swal("Estimado Usuario", 'El campo Identificación del empleador debe tener hasta 15 dígitos', 'warning');
+        else {
+            utils.showLoading();
+            $("#idObtenerEmpresaUsuaria").submit();
+            utils.closeLoading();
+        }
+    }
+
+
+    function GuardarEmpresas() {
+        $("#idGuardarEmpresasUsuarias").submit();
+    }
+
+    function AdicionarEmpresa() {
+        var $idDocumentos = $("#dd_Documentos");
+        var $RazonSocial_crea = $("#RazonSocial_crea");
+        var $DocumentoEmpresa_crea = $("#DocumentoEmpresa_crea");
+        var $Direccion_crea = $("#Direccion_crea");
+        var $idMunicipio = $("#dd_Municipios");
+        var $idDepartamento = $("#dd_Departamentos");
+        var valida_numero
+
+        var value_de = $('#DocumentoEmpresa_crea').val()
+        var regex_de = new RegExp(/^\+?[0-9(),.-]+$/);
+        if (value_de.match(regex_de)) { valida_numero = true; }
+        else { valida_numero = false; }
+
+        if ($RazonSocial_crea.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Razón Social es obligatorio', 'warning');
+            $RazonSocial_crea.css('border-color', 'red');
+        }
+        else if ($RazonSocial_crea.val().length > 150) {
+            swal("Estimado Usuario", 'El campo Razón Social permite solo 150 caracteres', 'warning');
+            $RazonSocial_crea.css('border-color', 'red');
+        }
+        else if ($idDocumentos.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Tipo de Documento es obligatorio','warning');
+            $RazonSocial_crea.css('border-color', 'initial');
+            $idDocumentos.css('border-color', 'red');
+        }
+        else if ($DocumentoEmpresa_crea.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Identificación Empresa es obligatorio', 'warning');
+            $DocumentoEmpresa_crea.css('border-color', 'red');
+            $idDocumentos.css('border-color', 'initial');
+        }
+        else if (!valida_numero) {
+            swal("Estimado Usuario", 'El campo Identificación debe ser numérico', 'warning');
+            $DocumentoEmpresa_crea.css('border-color', 'red');
+        }
+        else if ($DocumentoEmpresa_crea.val().length > 15) {
+            swal("Estimado Usuario", 'El campo Identificación Empresa permite solo hasta 15 digitos', 'warning');
+            $DocumentoEmpresa_crea.css('border-color', 'red');
+        }
+        else if ($Direccion_crea.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Dirección es obligatorio', 'warning');
+            $Direccion_crea.css('border-color', 'red');
+            $idDocumentos.css('border-color', 'initial');
+        }
+        else if ($Direccion_crea.val().length > 50) {
+            swal("Estimado Usuario", 'El campo Dirección solo permite hasta 50 caracteres', 'warning');
+            $DocumentoEmpresa_crea.css('border-color', 'red');
+        }
+        else if ($idDepartamento.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Departamento es obligatorio', 'warning');
+            $idDepartamento.css('border-color', 'red');
+            $Direccion_crea.css('border-color', 'initial');
+        }
+        else if ($idMunicipio.val().length == 0) {
+            swal("Estimado Usuario", 'El campo Municipio es obligatorio', 'warning');
+            $idMunicipio.css('border-color', 'red');
+            $idDepartamento.css('border-color', 'initial');
+        }
+        else {
+            $RazonSocial_crea.css('border-color', 'initial');
+            $idDocumentos.css('border-color', 'initial');
+            $DocumentoEmpresa_crea.css('border-color', 'initial');
+            $Direccion_crea.css('border-color', 'initial');
+            $idDepartamento.css('border-color', 'initial');
+            $idMunicipio.css('border-color', 'initial');
+
+            $("#idAdicionarEmpresaUsuaria").submit();
+        }
+ }
+
+function ObtenerEmpresaUsuarias() {
+    utils.showLoading();
+    PopupPosition();
+        $.ajax({
+            url: urlBase + '/CrearEmpresaUsuaria/ObtenerEmpresaUsuaria',  //controlador/metodo que esta en el controlador
+            data: {                                           // se colocan los parametros a enviar... en este caso no porque los voy es a obtener.
+                nitempresa: $("#nitempresa").val()
+            },
+            type: 'POST',
+            success: function (result) {
+                OcultarPopupposition();
+                utils.closeLoading();
+            }
+            ,
+            error: OnErrorCall
+        });
+        function OnErrorCall(response) { console.log(error); }
+    }
+
+</script>

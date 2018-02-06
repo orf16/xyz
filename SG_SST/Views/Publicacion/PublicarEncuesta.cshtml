@@ -1,0 +1,53 @@
+﻿@model SG_SST.Models.Comunicaciones.ComunicacionesPublicas
+
+@{
+    ViewBag.Title = "Publicar Encuesta";
+    Layout = "~/Views/Shared/_LayoutEncuesta.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+</style>
+
+<table width="50%" class="noborder" align="center">
+    <tr class="noborder">
+        <td class="noborder">
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <h4 class="modal-title title"><b>Comunicaciones ALISSTA Encuesta</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align:justify">
+                        <fieldset>
+                            <legend>Registrar Encuesta</legend>
+                            <div class="col-md-12">
+                                <form id="frmencuesta">
+                                    @Html.HiddenFor(x => x.fk_pk_id_encuesta)
+                                    @Html.Raw(Model.contenido)
+                                </form>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="boton botonactive" onclick="GuardarEncuestas()" style="float:left;">Guardar Encuesta</button>
+                        @*<a href="@Url.Action("Index", "ComunicacionesInternas")" data-dismiss="modal" style="float:right; text-align:center" class="boton botoninfo">Atras</a>*@
+                    </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+
+@Scripts.Render("~/Scripts/Comunicaciones/ComunicacionesInternas.js")
+                                           

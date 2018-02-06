@@ -1,0 +1,286 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEPP>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+        .titulo_epp {
+            font-size: 25px;
+        }
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+
+        .imagenEHM {
+            page-break-inside: avoid !important;
+        }
+    </style>
+</head>
+
+<body>
+ 
+        
+
+
+    @{
+     <div class="Doslinea">
+                <div class="SubTitulo">
+                    <b>MATRIZ DE ELEMENTOS DE PROTECCIÓN PERSONAL</b>
+                </div>
+
+                <div>
+                    @{
+                        <div class="datagrid">
+                            <table>
+                                <thead style="font-size:14px;">
+                                    <tr>
+                                        <th >
+                                            <p>Nombre Elemento</p>
+                                        </th>
+                                        <th style="min-width:100px;max-width:150px">
+                                            <p>Imagen</p>
+                                        </th>
+                                        <th >
+                                            <p>Parte del Cuerpo</p>
+                                        </th>
+                                        <th>
+                                            <p>Riesgo Controlado</p>
+                                        </th>
+                                        <th >
+                                            <p>Especificación Técnica</p>
+                                        </th>
+                                        <th >
+                                            <p>Uso</p>
+                                        </th>
+                                        <th >
+                                            <p>Mantenimiento</p>
+                                        </th>
+                                        <th>
+                                            <p>Vida Útil</p>
+                                        </th>
+                                        <th>
+                                            <p>Reposición</p>
+                                        </th>
+                                        <th>
+                                            <p>Disposición Final</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size:13px;">
+                                    @{
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    
+                                                    <span><b>@item.NombreEPP</b></span>
+                                                </td>
+                                                <td style="min-width:100px;max-width:150px;text-align:center">
+                                                    <div >
+                                                        <img id="@item.Pk_Id_EPP" src="@item.RutaAbsolutaImagen" alt="" style="cursor:pointer; max-width: 100%;max-height: 100px;margin-bottom:5px;" />
+                                                    </div>
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.ParteCuerpo)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.Clasificacion_De_Peligro)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.EspecificacionTecnica)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.Uso)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.Mantenimiento)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.VidaUtil)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.Reposicion)
+                                                </td>
+                                                <td class="TdJustificar">
+                                                    @Html.DisplayFor(modelItem => item.DisposicionFinal)
+                                                </td>
+                                                
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    }
+                </div>
+            </div>                                     
+    }
+
+</body>
+</html>
+
+
+
+
+
+

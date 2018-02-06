@@ -1,0 +1,52 @@
+﻿@model List<SG_SST.Models.Ausentismo.AcumuladoTotalContingenciasModel>
+@if (Model != null && Model.Count() > 0)
+{
+    var totalAcumulado = Model.Where(r => r.TotalPeriodo != null).Select(t => t.TotalPeriodo).FirstOrDefault();
+    <div class="datos-acumuladoTotal">
+        <div class="indicadores-acumuladoTotal">
+            <div class="indicadores-content">
+                <table class="table table-bordered" style="font-size:x-small; border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th class="text-left col-sm-2">Meses</th>
+                            <th class="text-center col-sm-1">IF</th>
+                            <th class="text-center col-sm-1">IS</th>
+                            <th class="text-center col-sm-1">ILI</th>
+                            <th class="text-center col-sm-1">Tasa/100</th>
+                            <th class="text-center col-sm-1">Horas Trabajadas</th>
+                            <th class="text-center col-sm-1">Nro. Trabajadores</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var datos in Model)
+                        {
+                            <tr>
+                                <td class="text-left col-sm-2">@Html.DisplayName(datos.Mes.ToString())</td>
+                                <td>@Html.DisplayName(datos.VariableIF.ToString())</td>
+                                <td>@Html.DisplayName(datos.VariableIS.ToString())</td>
+                                <td>@Html.DisplayName(datos.VariableILI.ToString())</td>
+                                <td>@Html.DisplayName(datos.Tasa.ToString())</td>
+                                <td>@Html.DisplayName(datos.HorasTrabajadas.ToString())</td>
+                                <td>@Html.DisplayName(datos.NumeroTrabajadores.ToString())</td>
+                            </tr>
+                        }
+                        @if (totalAcumulado != null)
+                        {
+                        <tr class="total-indicadores">
+                            <td class="text-left col-sm-2">@Html.DisplayName("Anual")</td>
+                            <td>@Html.DisplayName(totalAcumulado.TotalVariableIF.ToString())</td>
+                            <td>@Html.DisplayName(totalAcumulado.TotalVariableIS.ToString())</td>
+                            <td>@Html.DisplayName(totalAcumulado.TotalVariableILI.ToString())</td>
+                            <td>@Html.DisplayName(totalAcumulado.TotalTasa.ToString())</td>
+                            <td>@Html.DisplayName(totalAcumulado.TotalHorasTrabajadas.ToString())</td>
+                            <td>@Html.DisplayName(totalAcumulado.TotalNumeroTrabajadores.ToString())</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+

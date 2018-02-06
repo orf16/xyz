@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.Rol>
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+@*<div style="overflow-y:scroll;height:auto">*@
+<div class="table-responsive">
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @*@Html.Label("Rol")*@Rol
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @*@Html.Label("Cargos")*@Cargo
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @*@Html.Label("Competencia")*@Competencia
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                @*@Html.Label("Acción")*@Acción
+            </th>
+        </tr>
+        @{
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                        @foreach (var cargxRol in item.CargoPorRol)
+                        {
+                            @Html.DisplayFor(modelItem => cargxRol.Cargo.Nombre_Cargo)
+                            <br />
+                        }
+                    </td>
+                    <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                        @foreach (var temaxRol in item.RolPorTematica)
+                        {
+                            @Html.DisplayFor(modelItem => temaxRol.Tematica.Tematicas)
+                            <br />
+                        }
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a  href="@Url.Action("EditTematica", "Competencia", new { id = item.Pk_Id_Rol }) "
+                           title=" Editar Competencia" id="agregarRend" name="agregarRend"
+                           class="btn btn-link-1-google-plus btn-circle btn-md btn-search">
+                            <span class="glyphicon glyphicon-pencil" name="iconoRend"></span>
+                        </a>
+                        |
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Rol)"
+                           title=" Eliminar Competencia" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar"
+                           class="btn btn-link-1-google-plus btn-circle btn-md btn-search">
+                            <i class="glyphicon glyphicon-erase" name="iconoRend"></i>
+                        </a>
+                        <div id="@string.Format("modalEliminar{0}", item.Pk_Id_Rol)" class=" modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Eliminar Rol</h4>
+                                    </div>
+                                    <div class="modal-body " style="text-align:center; color:black">
+                                        <center><p>¿Esta seguro que desea eliminar la competencia seleccionada?</p></center>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Pk_Id_Rol },
+                                        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

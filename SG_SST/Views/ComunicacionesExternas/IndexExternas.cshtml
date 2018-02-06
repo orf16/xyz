@@ -1,0 +1,159 @@
+﻿@model SG_SST.Models.Comunicaciones.ComunicadosAdjuntosModel
+
+@{
+    ViewBag.Title = "Comunicaciones Externas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js">
+    @section Scripts {
+        @Scripts.Render("~/bundles/simplePagination")
+    }
+</script>
+
+<style>
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+
+    /*input[type=file] {
+        color: transparent;
+        width: 77%;
+        height: 8%;
+    }*/
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Comunicación</a></li>
+    <li class="active">Comunicaciones Externas</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        COMUNICACIONES EXTERNAS
+    </div>
+
+    @*Boton Ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Comunicaciones Externas</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+
+                            <div style="text-align:justify">
+                                Alissta permite a través de un repositorio, ordenar sus comunicaciones externas salientes y entrantes, usar como listado maestro de comunicaciones externas y adjuntar los soportes de dichas comunicaciones para su trazabilidad.
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//////*@
+
+    <div class="panel-body form-horizontal">
+        <center>
+            <br />
+            <button type="button" class="boton botonactive" onclick="CrearExterna()">Agregar Comunicación</button>
+            <br /><br />
+            <h4>COMUNICACIONES ENVIADAS</h4>
+            <div class="table-responsive">
+                <table id="gridenviadas" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+
+            <br />
+            <h4>COMUNICACIONES RECIBIDAS</h4>
+            <div class="table-responsive">
+                <table id="gridrecibidas" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+        </center>
+    </div>
+</div>
+
+<div id="myModal1" class="modal fade" role="dialog">
+    <form id="frmcomunicacionesadjuntos">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <h4 class="modal-title title">Crear Comunicado</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(x => x.pk_id_comadjunto)
+                    <input type="hidden" id="adjunto_temp">
+                    <table border="0">
+                        <tr class="noborder">
+                            <td class="noborder">Nombre Comunicado</td>
+                            <td class="noborder">Entidad</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">@Html.TextBoxFor(x => x.nombre, new { @class = "form-control" })</td>
+                            <td class="noborder">@Html.TextBoxFor(x => x.entidad, new { @class = "form-control" })</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">Descripción</td>
+                            <td class="noborder">Fecha</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">@Html.TextBoxFor(x => x.descripcion, new { @class = "form-control" })</td>
+                            <td class="noborder">@Html.TextBoxFor(x => x.fecha, new { @readonly = "readonly", @class = "form-control" })</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">Requiere Respuesta</td>
+                            <td class="noborder">Respuesta</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">@Html.DropDownListFor(x => x.requiere, new System.Web.Mvc.SelectList(ViewBag.requiere, "Text", "Value"), new { @class = "form-control" })</td>
+                            <td class="noborder">@Html.TextBoxFor(x => x.respuesta, new { @class = "form-control" })</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">Tipo Comunicado</td>
+                            <td class="noborder">Adjunto</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder" valign="top">@Html.DropDownListFor(x => x.tipo, new System.Web.Mvc.SelectList(ViewBag.tipo, "Text", "Value"), new { @class = "form-control" })</td>
+                            <td class="noborder">
+                                <table width="100%" class="noborder">
+                                    <tr class="noborder">
+                                        <td class="noborder">@Html.TextBoxFor(x => x.adjunto, new { id = "upload", type = "file", @class = "form-control" })</td>
+                                        <td class="noborder"><a href="#" id="hl-start-upload" class="btn btn-search btn-md" title="Cargar Archivo"><span class="glyphicon glyphicon-file"></span></a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <div class="modal-footer">
+                        <button class="boton botonactive" onclick="Guardar();">Guardar</button>
+                        &nbsp;
+                        <a href="#" onclick="CerrarModal();" style="float:right; text-align:center" class="boton botoninfo">Atras</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@Scripts.Render("~/Scripts/Comunicaciones/ComunicacionesAdjuntas.js")

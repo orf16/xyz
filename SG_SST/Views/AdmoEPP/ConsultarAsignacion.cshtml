@@ -1,0 +1,301 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEPPSuministro>
+
+@{
+    ViewBag.Title = "Consulta de Asignaciones EPP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración de Elementos de Protección Personal</a></li>
+    <li class="active">Consulta Control de Suministros</li>
+</ol>
+<script>
+    //Cargar datepicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaAntes');
+        ConstruirDatePickerPorElemento('FechaDespues');
+    });
+    //Eliminar Asignación EPP
+    $(document).ready(function () {
+        $('.btnEliminarAsig').click(function () {
+            var Id_Elm = $(this).attr('id');
+            var Id_Elm1 = $(this).attr('name');
+            var Id_Elm1_d = $(this).attr('date');
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea eliminar la asignación a: " + Id_Elm1 + " con fecha de registro: " + Id_Elm1_d + " ?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/AdmoEPP/EliminarAsignacionEPP",
+                    data: '{IdAsigEPP: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.probar == false) {
+                            if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                                location.reload(true);
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                type: "warning",
+                                closeOnConfirm: false
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                type: "success",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                location.reload(true);
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#msj_novedad").text('No se ha podido eliminar la asignación del EPP');
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                    }
+                });
+
+            });
+        });
+    });
+    //Paginador
+    jQuery(function ($) {
+        var items = $("table tbody tr");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+<div class="panel panel-default std-panel-body max-width-700-responsive">
+    <div class="panel-heading panel-heading-custom">CONSULTAR CONTROL DE SUMINISTROS</div>
+    
+
+
+
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Consulta de Asignaciones EPP</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botoninfo" style="cursor:default;">CONSULTAR</button> Para consultar las asignaciones que cumplan con las condiciones del filtro de busqueda</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar la asignación seleccionada</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/simbolopdf.png" style="width:40px;" /></button> para exportar un <b>CERTIFICADO DE ENTREGA DE ELEMENTOS DE PROTECCIÓN PERSONAL</b> en formato PDF</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/iconExcelp.png" style="width:40px;" /></button> para exportar un <b>CERTIFICADO DE ENTREGA DE ELEMENTOS DE PROTECCIÓN PERSONAL</b> en una hoja de cálculo</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+            {
+            <div class="col-sm-12 col-md-6 form-group">
+                <label class="control-label col-sm-12">Cargo</label>
+                <div class="col-sm-12">
+                    @Html.DropDownList("Pk_Cargos", (SelectList)ViewBag.Pk_Id_Sede, "-- Seleccione un Cargo --", htmlAttributes: new { @class = "form-control col-md-10" })
+                </div>
+            </div>
+            <div class="col-sm-12  col-md-3 form-group">
+                <label class="control-label col-sm-12">Fecha Inicio</label>
+                <div class="col-sm-12">
+                    @Html.TextBox("FechaAntes", (string)ViewBag.val_fecha1, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 form-group">
+                <label class="control-label col-sm-12">Fecha Fin</label>
+                <div class="col-sm-12">
+                    @Html.TextBox("FechaDespues", (string)ViewBag.val_fecha2, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-9 form-group">
+                <label class="control-label col-sm-12">Riesgo Controlado</label>
+                <div class="col-sm-12">
+                    @Html.DropDownList("RiesgoBusqueda", null, "-- Seleccione la Clasificación del Peligro --", htmlAttributes: new { @class = "form-control col-md-10" })
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3 form-group">
+                <label class="control-label col-sm-12">Número de Documento</label>
+                <div class="col-sm-12">
+                    @Html.TextBox("DocumentoBusqueda", (string)ViewBag.Cedula, new { @class = "form-control" })
+                </div>
+            </div>
+            
+            <div class="col-sm-8 form-group">
+                <label class="control-label col-sm-12">Sede</label>
+                <div class="col-sm-6">
+                    @Html.DropDownList("Pk_Sede", (SelectList)ViewBag.Pk_Id_Sede, "-- Seleccione una Sede --", htmlAttributes: new { @class = "form-control col-md-10" })
+                </div>
+            </div>
+            <div class="col-sm-12 form-group">
+
+                <div class="col-sm-12">
+                    <center><button class="boton botoninfo" href="@Url.Action("ConsultaAsignacion", "AdmoEPP")">Consultar</button></center>
+                    
+                </div>
+            </div>
+
+            <div class="table-responsive col-sm-12 form-group" style="margin:auto;">
+
+                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Nombre</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Fecha Registro</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Proceso</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Sede</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Cargo</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    @{
+
+
+
+                        foreach (var item in Model)
+                        {
+                            string IdAccion = item.Pk_Id_SuministroEPP.ToString();
+                            <tr class="paginacc">
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayFor(model => item.NombreTrabajador)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @{
+                                        string Fecha_str = "";
+                                        try
+                                        {
+                                            Fecha_str = item.Fecha.ToString("dd/MM/yyyy");
+                                        }
+                                        catch (Exception)
+                                        {
+
+                                        }
+                                        <span>@Fecha_str</span>
+                                    }
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayFor(model => item.ProcesoNombre)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayFor(model => item.SedeNombre)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayFor(model => item.CargoNombre)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <a id="@item.Pk_Id_SuministroEPP.ToString()" href="#" name="@item.NombreTrabajador" date="@Fecha_str" class="btn btn-sm btn-positiva btnEliminarAsig" title="Eliminar" style="height:35px;margin-bottom:5px;">
+                                        <span class="glyphicon glyphicon-erase"></span>
+                                    </a>
+                                    <a id="@item.Pk_Id_SuministroEPP.ToString()" href="@Url.Action("AsignacionPDF", "AdmoEPP", new { id = item.Pk_Id_SuministroEPP })" class="btn btn-sm btn-positiva btnEliminarArchivo " title="Exportar en PDF" style="height:35px;margin-bottom:5px;border:none;">
+                                        <img src="~/Content/Images/simbolopdf.png" style="max-height:100%" />
+                                    </a>
+                                    <a id="@item.Pk_Id_SuministroEPP.ToString()" href="@Url.Action("AsignacionExcel", "AdmoEPP", new { id = item.Pk_Id_SuministroEPP })" class="btn btn-sm btn-positiva btnEliminarArchivo " title="Exportar en Hoja de Cálculo" style="height:35px;margin-bottom:5px;border:none;">
+                                        <img src="~/Content/Images/iconExcelp.png" style="max-height:100%" />
+                                    </a>
+                                </td>
+                            </tr>
+                                        }
+                    }
+
+                </table>
+                <center><div class="pagination" id="paginador1"></div></center>
+            </div>
+            <div class="form-horizontal add-side-padding">
+
+
+                @*<div class="row text-center" style="margin-bottom:0.5em;">
+                    <button class="boton botoninfo" href="@Url.Action("ConsultaAsignacion", "AdmoEPP")">Consultar</button>
+                </div>*@
+
+                
+                <div class="row">
+
+
+
+
+
+                </div>
+            </div>
+                                            }
+    </div>
+</div>
+
+

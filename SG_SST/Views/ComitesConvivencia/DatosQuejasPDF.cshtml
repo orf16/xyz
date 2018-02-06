@@ -1,0 +1,108 @@
+﻿@{@model SG_SST.Models.Participacion.ActaConvivenciaQuejasVM
+
+    ViewBag.Title = "Seguimiento Quejas";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ACTA COMITE CONVIVENCIA</title>
+    <style>
+        .table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel panel-default" style="background-color:white" id="InformacionGeneralInspeccion">
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent">
+                    <div class="panel-heading" style="color:white">SEGUIMIENTO QUEJAS RELACIONADAS CON SITUACIONES DE CONFLICTO</div>
+                    <center>
+                        <label>SEGUIMIENTO No: @Model.PK_Id_Queja.ToString().PadLeft(3, '0')</label>
+                    </center>
+
+                    <h4>1. FECHA:</h4>
+                    @Html.TextBoxFor(model => Model.Fecha, new { @class = "form-control", Value = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @placeHolder = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @id = "Fecha", @name = "Fecha" })
+                    <h4>No./Cod. Caso: @Model.Consecutivo_Caso.ToString().PadLeft(3, '0')</h4>
+                    <h4>2. NOMBRE DE QUIEN REFIERE LA SITUACION:</h4>
+                    @Html.TextAreaFor(model => Model.NombreRefiereSituacion, new { @class = "form-control", @id = "NombreRefiereSituacion", @name = "NombreRefiereSituacion", @cols = "200", @rows = "1" })
+                    <hr />
+                    <h4>3. ACCIONES REALIZADAS:</h4>
+                    <center>
+                        <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                            <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                                <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    No.
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Acciones
+                                </th>
+                            </tr>
+                            @{
+                                if (Model.AccionesActaQuejas != null)
+                                {
+                                    int fila = 1;
+                                    foreach (var item in Model.AccionesActaQuejas)
+                                    {
+
+                                        <tr class="trAcciones" id="trAcciones">
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @fila
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;">
+                                                @Html.DisplayFor(modelItem => item.AccionARealizar)
+                                            </td>
+                                        </tr>
+                                        fila++;
+                                    }
+                                }
+                            }
+                            <tbody id="tbAccion"></tbody>
+                        </table>
+                    </center>
+                    <hr />
+            </div>
+            <h4>4. RESPONSABLES DEL SEGUIMIENTO:</h4>
+            <center>
+                <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                    <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                        <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Documento Responsable
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Nombre
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.ResponsablesQuejas != null)
+                        {
+                            foreach (var item in Model.ResponsablesQuejas)
+                            {
+                                <tr class="trResponsable" id="trResponsable">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Numero_Documento)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    <tbody id="tbResponsables"></tbody>
+                </table>
+            </center>
+            <hr />
+        </div>
+        <h4>5. ASPECTOS NO RESUELTOS:</h4>
+        @Html.TextAreaFor(model => Model.AspectosNoResueltos, new { @class = "form-control", @rows = "7", @cols="200", @id = "AspectosNoResueltos", @name = "AspectosNoResueltos", @maxlength = "300" })
+        <hr />
+        <h4>6. COMPROMISOS ADQUIRIDOS PARA EL POSTERIOR SEGUIMIENTO:</h4>
+        @Html.TextAreaFor(model => Model.Compromisos, new { @class = "form-control", @rows = "7", @cols = "200", @id = "Compromisos", @name = "Compromisos", @maxlength = "300" })
+        <hr />
+</div>
+</body>
+</html>

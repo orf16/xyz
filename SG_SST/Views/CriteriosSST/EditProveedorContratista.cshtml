@@ -1,0 +1,158 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDProveedorContratista
+
+@{
+    ViewBag.Title = "Editar Proveedores y Contratistas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        darFormatoSoloNumeros('CalificacionHistorico');
+    });
+</script>
+@section Scripts {
+
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: blue;
+        }
+    </style>
+
+    @Scripts.Render("~/bundles/Aplicacion")
+}
+
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Create", "CriteriosSST")">Criterios</a></li>
+    <li><a href="@Url.Action("Calificar", "CriteriosSST")">Selección y Evaluación</a></li>
+    <li><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")">Visualizar Calificaciones de Proveedores</a></li>
+    <li class="active"><a href="@Url.Action("MostrarProveedores", "CriteriosSST")">Listado de Proveedores y Contratistas</a></li>
+</ol>
+<hr />
+
+<form method="post" id="EditarProveedores" enctype="multipart/form-data">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Editar Proveedores y Contratistas
+        </div>
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Editar Proveedor Contratista</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:2%;line-height:200%;">Por Favor ingrese los campos habilitados.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">
+                                    Seleccione
+                                    <select class="form-control" style="width:90%; margin-left:10%" disabled>
+                                        <option value="Inicial" selected='selected'>Inicial</option>
+                                        <option value="Mensual">Mensual</option>
+                                        <option value="Bimensual">Bimensual</option>
+                                        <option value="Semestral">Semestral</option>
+                                        <option value="Anual">Anual</option>
+                                    </select>
+                                    para elegir la frecuencia de la evaluación deseada, Inicial, Mensual, Bimensual, Semestral ó Anual.
+                                </p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <button type="button" class="boton botonactive" disabled>GUARDAR</button> para guardar la edición del Proveedor Contratista.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <button class="boton botoncancel" disabled>CANCELAR</button> para cancelar la edición del Proveedor Contratista.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="TablaProveedores">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Proveedor Contratista")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Nit")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Vigencia de Contrato u orden de ser")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Frecuencia Evaluación")
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            @Html.Label("Calificación")
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => Model.Nombre_ProveedorContratista)
+                            <input name="Nombre_ProveedorContratista" id="Nombre_ProveedorContratista" class="form-control" type="hidden" value="@Model.Nombre_ProveedorContratista" />
+                            <input name="PK_ProveedorContratista" id="PK_ProveedorContratista" class="form-control" type="hidden" value="@Model.PK_ProveedorContratista" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => Model.Nit_ProveedorContratista)
+                            <input name="Nit_ProveedorContratista" id="Nit_ProveedorContratista" class="form-control" type="hidden" value="@Model.Nit_ProveedorContratista" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @if (Model.fechapi.ToString("dd/MM/yyyy") != "01/01/1900")
+                            {
+                                <input type="text" class="form-control" name="fechapi" id="fechapi" readonly value="@Model.fechapi.ToString("dd/MM/yyyy")" />
+                                <label for="fechapi" class="error" style="display:none;"></label>
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control" name="fechapi" id="fechapi" readonly />
+                                <label for="fechapi" class="error" style="display:none;"></label>
+                            }
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <select id="frecuenciaEvaluacion" name="frecuenciaEvaluacion" class="form-control" style="width:90%; margin-left:10%">
+                                <option value="Inicial" selected='selected'>Inicial</option>
+                                <option value="Mensual">Mensual</option>
+                                <option value="Bimensual">Bimensual</option>
+                                <option value="Semestral">Semestral</option>
+                                <option value="Anual">Anual</option>
+                            </select>
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input class="form-control" type="number" id="CalificacionHistorico" name="CalificacionHistorico" value="@Model.CalificacionHistorico" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row" align="center">
+                <div class="col-md-6" text-center">
+                    <button type="submit" class="boton botonactive" onclick="ValidarGuardarProveedor()">Guardar</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="boton botoncancel" onclick="location.href='@Url.Action("MostrarProveedores", "CriteriosSST")';return false;">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,52 @@
+﻿@model SG_SST.Models.Ausentismo.AlertasModel
+@{
+    ViewBag.Title = "Alertas Ausentismo";
+}
+<div id="main">
+    <div class="page-header">
+        <form id="frmAlertas">
+            <h2>Alertas Ausentismo</h2>
+            <div class="row form-group">
+                <div class="col-md-1">
+                    @Html.Label("Empresa:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-8">
+                    @string.Format("{0}", Model.RazonSocial)
+                </div>
+            </div>
+            <div class="row form-group">
+                @if (Model.EmpresasUsuarias.Count > 0)
+                {
+                    <div class="col-xs-2" style="width:16%">
+                        @Html.Label("Empresa Asociadas:", new { @class = "control-label" })
+                    </div>
+                    <div class="col-xs-5">
+                        @Html.DropDownListFor(x => x.IdEmpresaUsuaria, Model.EmpresasUsuarias, "--Seleccione--", new { @class = "form-control" })
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-3" >
+                        @Html.Label("Empresa Asociadas:", new { @class = "control-label", @disabled = "disabled" })
+                    </div>
+                    <div class="col-xs-5">
+                        @Html.DropDownListFor(x => x.IdEmpresaUsuaria, Model.EmpresasUsuarias, "--Seleccione--", new { @class = "form-control bloqueado", @disabled = "disabled" })
+                    </div>
+                }
+                <div class="col-md-2">
+                    @Html.Label("Año Gestion:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-2">
+                    @Html.DropDownListFor(x => x.AnioSeleccionado, Model.Anios, "--Seleccione un año--", new { @class = "form-control" })
+                </div>                
+                <div class="row form-group">
+                    <div class="col-md-12" style="text-align:left">
+                        <button id="ConsultarAlerta" class="boton botonactive" type="button">Consultar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="Alertas"></div>
+        </form>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/Alertas/ConsultarAlertas.js")

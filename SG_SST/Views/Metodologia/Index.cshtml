@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+
+@*<p>Planificacion / Identificacion de Peligros</p>*@
+<!-- Miga de pan para los usuarios saber en que parte de la aplicación están-->
+<div class="container" style="padding-top: 0em;">
+    <ul class="breadcrumb">
+        <li><a href="#">Planificación</a></li>
+        <li class="active">Identificación de Peligros</li>
+    </ul>
+</div>
+<hr />
+
+<!-- Panel principal para seleccionar el tipo de operacion, seleccionar,consultar, editar y eliminar -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">@SG_SST.Recursos.Planificacion.PlanificacionMod.titulo_panel_identificacion_peligros</div>
+                <div class="panel-body">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="row">
+                            @Html.ActionLink(SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_panel_peligros_seleccionar, "GenerarMetodologia", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr"})
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @Html.ActionLink(SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_panel_peligros_consultar, "VisualizarPeligrosSede", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                        <hr />
+                        @*<div class="row">
+                    @Html.ActionLink(SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_panel_peligros_editar, "Details", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                </div>
+                <hr />
+                <div class="row">
+                    @Html.ActionLink(SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_panel_peligros_eliminar, "Details", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

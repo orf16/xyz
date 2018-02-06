@@ -1,0 +1,154 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoria>
+@{
+    ViewBag.Title = "Auditorias";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/MedicionyEvaluacion/Auditoria.js")"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li><a href="@Url.Action("Programa", "Auditoria")">Programas</a></li>
+    <li class="active">Auditorias</li>
+</ol>
+
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">AUDITORIAS QUE HACEN PARTE DEL PROGRAMA</div>
+    <div class="panel-body">
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Auditorias</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR PLAN DE AUDITORÍA</button> Para agregar un nueva auditoría</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar una auditoría</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">PLAN</i> para editar un plan de auditoría</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">LISTA VERIFICACIÓN</i> para actualizar la lista de verificación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">INFORME</i> para agregar conclusiones, el plan de acción y los compromisos</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">REGRESAR</button> Para regresar al listado de programas de auditoría</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <br />
+        @Html.Hidden("EdicionPrograma", (object)ViewBag.IdPrograma)
+
+        <div class="form-horizontal add-side-padding">
+
+            <div class="row text-center">
+                <button class="boton botonactive" id="Agregar-plan-btn" type="submit" value="Cancelar" onclick="location.href='@Url.Action("PlanAuditoria", "Auditoria", new { IdPrograma = ViewBag.IdPrograma })';return false;">AGREGAR PLAN DE AUDITORÍA</button>
+            </div>
+
+            <br />
+            @using (Html.BeginForm())
+            {
+                <div class="TableAuditorias Tabla-Programa table-responsive">
+
+                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                        <thead>
+                            <tr class="titulos_tabla">
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Proceso</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Período</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Fecha Realización</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Secuencia</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(model => item.NombreProceso1)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(model => item.Periodo)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+
+                                            @{
+                                                string Fecha_str = "";
+                                                try
+                                                {
+                                                    Fecha_str = item.FechaRealizacion.ToString("dd/MM/yyyy");
+                                                }
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                                <span>@Fecha_str</span>
+                                            }
+
+
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <a id="@item.Pk_Id_Auditoria.ToString()" href="@Url.Action("EditarPlanAuditoria", "Auditoria", new { IdAuditoria = item.Pk_Id_Auditoria })" class="btn btn-search btn-md" title="Editar Plan de Auditorias">
+                                                <span>PLAN</span>
+                                            </a>
+                                            |
+                                            <a id="@item.Pk_Id_Auditoria.ToString()" href="@Url.Action("ListaVerificacion", "Auditoria", new { IdAuditoria = item.Pk_Id_Auditoria })" class="btn btn-search btn-md" title="Lista de Verificación">
+                                                <span>LISTA VERIFICACIÓN</span>
+                                            </a>
+                                            |
+                                            <a id="@item.Pk_Id_Auditoria.ToString()" href="@Url.Action("InformeAuditoria", "Auditoria", new { IdAuditoria = item.Pk_Id_Auditoria })" class="btn btn-search btn-md" title="Informe de Auditoria">
+                                                <span>INFORME</span>
+                                            </a>
+                                            |
+                                            <a id="@item.Pk_Id_Auditoria.ToString()" class="btn btn-search btn-md Eliminar-Plan" title="Eliminar">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                                }
+                            }
+                        </tbody>
+</table>
+                    <center><div class="pagination" id="paginador1"></div></center>
+                </div>
+            }
+
+            
+                <button class="boton botoninfo" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("Programa","Auditoria")';return false;">REGRESAR</button>
+            
+            <div class="row text-center">
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

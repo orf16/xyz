@@ -1,0 +1,167 @@
+﻿@model SG_SST.Models.AdminUsuarios.CambiarClaveModel
+@*@{ Layout = null;}*@
+
+@{
+    ViewBag.Title = "Cambiar Clave";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet" />
+<link href="~/Content/css/sweetalert.css" rel="stylesheet" />
+<link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<script src="~/js/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.fancybox.pack.js"></script>
+<script src="~/Scripts/utils.js"></script>
+
+
+
+
+@*<div class="container container-index header-alissta" style="height:1px;">
+    <div class="col-md-2 logo-empresa col-xs-6">
+        <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block" style="height:54px;">
+    </div>
+    <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+        <img src="~/Images/alissta-logo.png" alt="logo alissta">
+    </div>
+</div>*@
+<div class="panel panel-default" id="contenido" style="margin:100px">
+    <div class="panel-heading" style="color:black">
+        Cambiar clave de Acceso
+    </div>
+    @using (Html.BeginForm("CambiarClave", "AdminUsuarios", FormMethod.Post, new { @id = "formCambiarClave", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel-body form-horizontal">
+            @Html.HiddenFor(x => x.IdUsuarioSession)
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-6">
+                                @Html.Label("Ingrese su nueva contraseña:", new { @class = "control-label" })
+                                @Html.PasswordFor(x => x.Clave, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.Clave, string.Empty, new { @class = "error" })
+                                @Html.Label("Confirme su nueva contraseña:", new { @class = "" })
+                                @Html.PasswordFor(x => x.ConfirmarClave, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(x => x.ConfirmarClave, string.Empty, new { @class = "error" })
+                            </div>
+                        </div>
+                         <div class="form-group">
+                             <div class="col-md-1"></div>
+                             <div class="col-md-11">
+                                 <a id="TerminosCodiciones" href="javascript:void(0);">Ver Términos y Condiciones</a>
+                                 @Html.HiddenFor(x => x.AceptaTerminosCondiciones, new { @Value = false, @class = "" })
+                             </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-11">
+                                <button type="submit" class="boton botonactive">Cambiar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-11">
+                                <h3>La contraseña debe cumplir las siguientes condiciones:</h3>
+                                <p>1. Una longitud entre 6 y 15 caracteres.</p>
+                                <p>2. Al menos un caracter especial (,*+-;()[]@@#$).</p>
+                                <p>3. AL menos una letra minúscula.</p>
+                                <p>4. Al menos una letra mayúscula.</p>
+                                <p>5. Al menos un número.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@{
+    if (ViewBag.Mensaje != null)
+    {
+        <script type="text/javascript">
+                swal({
+                    title: 'Atención',
+                    text: '@ViewBag.Mensaje',
+                    type: 'warning',
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Aceptar",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                });//,
+                //function (isConfirm) {
+                //    if (isConfirm) {
+                //        window.location.href = '../Home/Index';
+                //    }
+                //});
+        </script>
+    }
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#formCambiarClave input[type="password"]').on('focus', function () {
+            $(this).siblings('span').hide();
+        });
+        //carga el archivo de términos y condiciones en un fancybox
+        $('#TerminosCodiciones').on('click', function () {
+            var urlBase = utils.getBaseUrl();
+            $.ajax({
+                url: 'CargarTerminosCondiciones',
+                type: 'post'
+                //data: { identificador: nid, tipoSoporte: tipoSop }
+            }).done(function (response) {
+                if (response) {
+                    $.fancybox({
+                        type: 'html',
+                        autoSize: false,
+                        content: '<embed src="' + urlBase + response.url + '#nameddest=self&page=1&view=FitH,0&zoom=80,0,0" type="text/html" height="99%" width="100%" />',
+                        //content: '<embed src="' + response.url + '#nameddest=self&page=1&view=FitH,0&zoom=80,0,0" type="application/pdf" height="99%" width="100%" />',
+                        beforeClose: function () {
+                            $(".fancybox-inner").unwrap();
+                        }
+                    }); //fancybox
+                }
+            }).error(function (response) {
+
+            });
+        });
+        $('#formCambiarClave').on('submit', function () {
+            if ($('#AceptaTerminosCondiciones').val() == '' || $('#AceptaTerminosCondiciones').val() == 'False') {
+                swal({
+                    title: "Atención",
+                    text: "Señor Usuario; no ha aceptado los términos y condiciones de Alissta Gestión a Tu Alcance. Sin su aceptación no es posible autenticarse en el sistema.",
+                    type: "warning",
+                    //showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    //confirmButtonText: "Aceptar",
+                    closeOnConfirm: false
+                });
+                return false;
+            }
+        });
+    });
+    function AceptarTerminos() {
+        $('#AceptaTerminosCondiciones').val(true);
+        $.fancybox.close();
+    }
+    function NoAceptarTerminos() {
+        var urlBase = utils.getBaseUrl();
+        $('#AceptaTerminosCondiciones').val(false);
+        $.fancybox.close();
+        window.location.href = urlBase + '/Home/CerrarSesion';
+    }
+</script>
+
+
+
+
+
+

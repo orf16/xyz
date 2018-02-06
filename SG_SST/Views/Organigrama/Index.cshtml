@@ -1,0 +1,287 @@
+﻿@{
+    ViewBag.Title = "Organigrama Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+}
+
+@if (ViewBag.mensaje != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+@if (ViewBag.mensaje1 != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje1',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .navigation-metodologia {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(202,209,218);
+    }
+
+    .navigation-metodologia:hover {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(175,184,196);
+    }
+
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li class="active">Gestión Organigrama Empresa</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a id="tab1" href="#step1" data-toggle="tab" class="navigation-metodologia">Crear Organigrama</a></li>
+    <li><a id="tab2" class="navigation-metodologia" href="#step2" data-toggle="tab">Cargar Organigrama</a></li>
+</ul>
+
+<hr />
+
+<div class="tab-content">
+    <div class="tab-pane active" id="step1">
+
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white">CREAR ORGANIGRAMA</div>
+
+            @*Boton ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                       class="btn btn-ayuda btn-md"
+                       @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                        <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Crear Organigrama</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <p>Click en Crear para registrar cargos</p>
+                                            </div>
+                                            <div class="col-xs-5">
+                                               <button class="boton botonactive" disabled>Crear</button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xs-7">
+                                                <p>Click en Ver Organigrama para Visualizar</p>
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <button class="boton botoninfo" disabled>Ver Organigrama</button>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*/////////////*@
+           
+            <div class="panel-body form-horizontal">
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-6" align="center">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Crear Organigrama</h4>
+                            <hr />
+                            @*@Html.ActionLink("Crear", "create", "EmpleadoOrg", null, new { @class = "boton botoninfo" })*@
+                            <a href="@Url.Action("create", "EmpleadoOrg") " class="boton botonactive" style="text-decoration:none">
+                                Crear
+                            </a>
+                        </div>
+                        <div class="col-md-6" align="center">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Visualizar</h4>
+                            <hr />
+                            <a href="@Url.Action("organigrama", "Empleado") " class="boton botoninfo" style="text-decoration:none">
+                                Ver Organigrama
+                            </a>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane" id="step2">
+
+        @*///Modal que muestra la imagen cargada del Organigrama.*@
+        <div id="imagen" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            @*<span aria-hidden="true">&times;</span>*@
+                        </button>
+                        <h4 class="modal-title title">Archivo Organigrama Cargado</h4>
+                    </div>
+                    <div class="modal-body">
+                        @if (ViewBag.espdf)
+                        {
+                            <div class="pdf-modales">
+                                @*<object data="@Url.Action("OrganigramaPdf")" type="application/pdf" width="575" height="500"></object>*@
+                                <iframe src="@Url.Action("OrganigramaPdf")" type="application/pdf" width="575" height="500"></iframe>
+                            </div>
+                        }
+                        else
+                        {
+                            <center><img src="@Url.Action("GetImagen", "Organigrama", new { Pk_Id_Organigrama = ViewBag.pkorganigrama })" class="img-responsive img-rounded" /></center>
+                        }
+
+                    </div>
+                    <div class="modal-footer alert-dismissable">
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                           
+                    </div>
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm("CreateO", "Organigrama", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:black">CARGAR ARCHIVO ORGANIGRAMA</div>
+
+                @*Boton ayuda*@
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda1")"
+                           title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                           class="btn btn-ayuda btn-md"
+                           @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                            <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                        </a>
+                        <div id="@string.Format("modalAyuda1")" class=" modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Ayuda / Cargar Organigrama</h4>
+                                    </div>
+                                    <div class="modal-body" style="color:black">
+                                        <ul>
+                                            <li><p style="text-align:justify"> Click en Seleccionar archivo para cargar el archivo.<input type="file" class="form-control" disabled /></p></li>
+                                            <li><p style="text-align:justify"> <button class="btn btn-default" disabled>Cargar Archivo</button> Click Para almacenar en el sistema el archivo cargado. </p></li>
+                                            <li><p style="text-align:justify"> <button class="boton botoninfo" disabled>Ver Archivo</button> Click Para visualizar el archivo que se encuentra cargado.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body form-horizontal">
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-md-6" align="center">
+                                <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Cargar Organigrama</h4>
+                                <hr />
+                                <div class="input-group" id="">
+                                    <input type="file" name="CargarImagen" class="form-control" style="color:orange" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-positiva-invert" id="btn-add-file-edit" type="submit">Cargar Organigrama</button>
+                                    </span>
+                                </div>
+                            </div>
+                              
+                                <div class="col-md-6" align="center">
+                                    <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Visualizar Archivo</h4>
+                                    <hr />
+                                   
+                                    <button type="button" class="boton botoninfo" data-toggle="modal" data-target="#imagen">Ver Archivo</button>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

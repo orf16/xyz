@@ -1,0 +1,347 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDAplicacionPlanTrabajo>
+
+@{
+    ViewBag.Title = "Gestionar Planes Trabajo";
+}
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaAntes');
+    });
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaDespues');
+    });
+    //$(document).ready(function () {
+    //    paginador("#planTrabajo", "tr[name = plant]", "#paginador1");
+    //});
+
+
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".paginver");
+        var numItems = items.length;
+        var perPage = 4;
+        items.slice(perPage).hide();
+        $(".paginationver").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    function eliminarPlanTrabajo(elemeneto, idPlanTrabajo) {    
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar el plan de trabajo ?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/EliminarPlanDeTrabajo",
+                data: '{Pk_Id_PlanTrabajo: "' + idPlanTrabajo + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.probar == false) {
+                        if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                        function () {
+                            location.reload(true);
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+        });
+    };
+
+</script>
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Medidas de Prevención y Control</a></li>
+    <li class="active">Plan de Trabajo</li>
+</ol>
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">PLAN DE TRABAJO</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / PLAN DE TRABAJO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Crear Plan de Trabajo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botonactive" style="cursor:default;">CREAR PLAN</button> para ir a la página que le permitirá completar la operación de creación del plan</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Filtrar los planes de trabajo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">El usuario puede filtrar los planes de trabajo mediante tres parámetros: <strong>rango de fechas</strong>, <strong>vigencia</strong>, <strong>origen</strong> o la <strong>sede</strong>, luego seleccionar los filtros deseados haga click en  <button type="button" class="boton botonactive" style="cursor:default;">BUSCAR</button> para realizar la busqueda y mostrar los resultados. Si no existen filtros diligenciados el sistema mostrará todos los registros</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Acciones por cada plan de trabajo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Eliminar el plan de trabajo</strong>: Si presiona este botón <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede eliminar un plan de trabajo, si el plan de trabajo posee objetivos diligenciados no se permite la eliminación hasta que el usuario elimine cada uno de los objetivos del plan</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Editar el plan de trabajo</strong>: Si presiona este botón <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> el usuario puede entrar a la página de edición del plan de trabajo esto es agregar objetivos y actividades</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Exportar en una hoja de cálculo</strong>: Si presiona este botón <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/iconExcelp.png" style="width:40px;" /></button> el usuario puede exportar el contenido del plan de trabajo en una hoja de cálculo</p>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>CREAR PLAN DE TRABAJO</h4>
+            </div>
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+
+                    <center>
+                        <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                            <button id="CrearPlanVial" class="boton botonactive col-margin" onclick="location.href='@Url.Action("CrearPlanTrabajo", "PlanTrabajo")';return false;">Crear Plan</button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Consultar Planes de Trabajo</h4>
+            </div>
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+                    @using (Html.BeginForm("GestionarPlanesTrabajo", "PlanTrabajo", FormMethod.Post))
+                    {
+
+
+                        <div class="col-sm-12 col-md-3">
+                            <label>Fecha Período Inicio</label>
+                            @Html.TextBox("FechaAntes", (string)ViewBag.val_fecha1, new { @class = "form-control form-width-100" })
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label>Fecha Período Fin</label>
+                            @Html.TextBox("FechaDespues", (string)ViewBag.val_fecha2, new { @class = "form-control form-width-100" })
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label>Vigencia</label>
+                            @Html.DropDownList("ListaPeriodo", null, "-- Seleccione Vigencia --", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-12 col-md-5">
+                            <label>Sede</label>
+                            @Html.DropDownList("Fk_Id_Sede", (SelectList)ViewBag.Fk_Id_Sede, "-- Seleccione una Sede --", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-12 col-md-5">
+                            <label>Origen</label>
+                            @Html.DropDownList("ListaTipos", null, "-- Seleccione un Origen --", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <center>
+                            <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                                <button id="Buscar" class="boton botonactive col-margin" type="submit">BUSCAR</button>
+                            </div>
+                        </center>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive add-side-padding">
+
+
+
+            <table id="planTrabajo" class="table table-bordered" style="border: 2px solid lightslategray">
+                <tr class="titulos_tabla">
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                        Sede
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                        Período desde
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                        Período hasta
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                        Vigencia
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                        Origen
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                        Acciones
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    if (Model.Count() > 0)
+                    {
+                        <tr name="plant" id="plant" class="paginver">
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.NombreSede)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @item.FechaInicio.ToString(" yyyy/MM/dd")
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @item.FechaFinal.ToString(" yyyy/MM/dd")
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Vigencia)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @Html.DisplayFor(modelItem => item.Tipo)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a href="@Url.Action("EditarPlanTrabajo", new { Pk_Id_PlanTrabajo = item.Pk_Id_PlanTrabajo })" class="btn btn-search btn-md" title="Modificar">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+
+                                @*<a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_PlanTrabajo)" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar" class="btn btn-search" title="Eliminar">
+                                    <span class="glyphicon glyphicon-erase"></span>
+                                </a>*@
+                                <a @*data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_PlanTrabajo)"*@ onclick="eliminarPlanTrabajo(this,@item.Pk_Id_PlanTrabajo)" class="btn btn-search" title="Eliminar">
+                                    <span class="glyphicon glyphicon-erase"></span>
+                                </a>
+
+    <a id="botonexcel" href="@Url.Action("ExportarExcel", "PlanTrabajo", new { id = item.Pk_Id_PlanTrabajo.ToString() })" class="btn btn-sm btn-positiva" title="Exportar en Hoja de Cálculo" style="height:35px;margin-bottom:5px;border:none;">
+        <img src="~/Content/Images/iconExcelp.png" style="max-height:100%" />
+    </a>
+
+                                
+
+                                <div id="@string.Format("modalEliminar{0}", item.Pk_Id_PlanTrabajo)" class=" modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    @*<span aria-hidden="true">&times;</span>*@
+                                                </button>
+                                                <h4 class="modal-title title">Eliminar Plan de Trabajo</h4>
+                                            </div>
+                                            <div class="modal-body" style="color:black">
+                                                <center><p>¿Seguro desea eliminar el plan de trabajo seleccionado?</p></center>
+                                            </div>
+                                            <div class="modal-footer">
+                                                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "EliminarPresupuesto", new { Pk_Id_PlanTrabajo = item.Pk_Id_PlanTrabajo },
+                                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+               }
+
+                @{
+                    if (Model.Count() == 0)
+                    {
+                        <tr name="plant" id="plant" class="paginver">
+                            <td colspan="6" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <span>No existen registros</span>
+                            </td>
+                        </tr>
+                    }
+                }
+
+</table>
+            @{
+                if (Model.Count() > 0)
+                {
+                    <center><div class="pagination paginationver" id="paginador1"></div></center>
+                }
+            }
+
+        </div>
+
+        @*<div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                @Html.ActionLink("Crear Plan", "CrearPlanTrabajo", null, htmlAttributes: new { @type = "button", @class = "boton botonactive", @name = "crearPlan" })
+            </div>
+        </div>*@
+
+    </div>
+</div>
+
+
+
+        

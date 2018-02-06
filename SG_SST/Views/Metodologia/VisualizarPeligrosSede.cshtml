@@ -1,0 +1,129 @@
+﻿@model IEnumerable<SG_SST.Dtos.Planificacion.PeligrosPorSede>
+
+@{
+    ViewBag.Title = "Consultar Metología";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Identificación de peligros, evaluación y valoración riesgos</a></li>
+    <li class="active">Consultar Metología</li>
+</ol>
+
+@*@if (ViewBag.respuesta == true)
+{
+    <div class="content">
+        <div class="alert alert-info role=" alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong> @ViewBag.mensaje</strong>
+        </div>
+    </div>
+}*@
+
+@if (ViewBag.respuesta == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.mensaje',
+        'success'
+        )
+    </script>
+}
+
+<div class="panel panel-default" style="border: transparent;background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        @*@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_panel_peligros_consultar*@
+        CONSULTAR METODOLOGÍA
+    </div>
+            
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <tr class="titulos_tabla">
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Nombre de la Sede
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Nombre de la Metodología Utilizada
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Visualizar
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Descargar
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        Eliminar
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr class="titulos_filas">
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input name="IdSede" type="hidden" value="@item.IdSede" />
+                            @Html.DisplayFor(modelItem => item.NombreSede)
+                        </td>
+
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input name="IdMetodologia" type="hidden" value="@item.IdMetodologia" />
+                            @Html.DisplayFor(modelItem => item.NombreMetodologia)
+                        </td>
+
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            @*@Html.ActionLink("visualizar", "MostrarMatriz", new { idSede = item.IdSede, idMetodologia = item.IdMetodologia }, htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })*@
+                            <a href="@Url.Action("MostrarMatriz", null, new { idSede = item.IdSede, idMetodologia = item.IdMetodologia })" class="btn btn-search btn-md" title="Visualizar">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a href="@Url.Action("ExcelMatriz", null, new { idSede = item.IdSede, idMetodologia = item.IdMetodologia })" title="Descargar">
+                                <img src="~/Images/iconExcelp.png" />
+                            </a>
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            @*<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.IdSede + item.IdMetodologia)">
+                                @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                            </button>*@
+                            <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.IdSede + item.IdMetodologia)" class="btn btn-search btn-md" title="Eliminar">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </a>
+
+                            <div id="@string.Format("modalEliminar{0}", item.IdSede + item.IdMetodologia)" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                @*<span aria-hidden="true">&times;</span>
+                                            </button>*@
+                                            <h4 class="modal-title title">Eliminar Matriz</h4>
+                                        </div>
+                                        <div class="modal-body" style="text-align:center">
+                                            <p>¿Esta seguro que desea eliminar la matriz seleccionada?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "EliminarMatriz", new { idSede = item.IdSede, idMetodologia = item.IdMetodologia },
+                                            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </table>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@model SG_SST.Models.Planificacion.NivelDeExposicion
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>NivelDeExposicion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor_Exposicion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor_Exposicion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Exposicion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Exposicion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Nivel_De_Exposicion }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

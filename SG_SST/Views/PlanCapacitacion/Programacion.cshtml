@@ -1,0 +1,337 @@
+﻿@model SG_SST.Models.PlanCapacitacion.PlanCapacitacionModel
+
+@{
+    ViewBag.Title = "Programación Plan de Capacitación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string class_css_header = "style='border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase'";
+    //string class_css = "style='border-right: 2px solid lightslategray; vertical-align:middle'";
+    //string class_css_btxt = "style='border-right: 2px solid lightslategray; vertical-align:middle; text-align:center'";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+<style>
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+
+    input[type=file] {
+        color: transparent;
+        width: 77%;
+        height: 8%;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Plan de Capacitación</a></li>
+    <li class="active">Programación</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        PROGRAMACIÓN PLAN DE CAPACITACIÓN
+    </div>
+
+    @*<table border="0" align="right">
+        <tr class="noborder">
+            <td class="noborder">*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Actividades Programadas</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+                            @*<div style="text-align:justify">
+                                Funcionalidad que permite definir y administrar las capacitaciones necesarias para que las personas sean competentes en SST.
+                            </div>*@
+                            <div style="text-align:justify">
+                                Esta función permitirá registrar la programación del plan de capacitación en SST para sus colaboradores y partes interesadas. Por favor siga los siguientes pasos:
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                Siempre que ingrese a esta función la primera pantalla le presentara la programación de actividades de capacitación y su estado planeado, reprogramado y ejecutado. En el campo de acciones podrá usar sus controles de edición y eliminación para gestionar cada registro.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                1. Dar clic en la opción <button class="boton botonactive" disabled>Agregar</button>, diligencie la información solicitada como:
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                <b>a. Tipo de actividad:</b> podrá elegir entre tres opciones (capacitación, entrenamiento, inducción/reinducción).
+                            </div>
+                            <div style="text-align:justify">
+                                <b>b. Tema:</b> escriba el nombre del tema de la actividad.
+                            </div>
+                            <div style="text-align:justify">
+                                <b>c. Rol:</b> seleccione el rol de las opciones precargadas o de las que haya creado usted en el módulo de roles y responsabilidades del menú Liderazgo Gerencial.
+                            </div>
+                            <div style="text-align:justify">
+                                <b>d. Competencia:</b> seleccione la competencia asociada a la actividad. Recuerde que estas deben haberse asignado al rol previamente, en el módulo de Competencias del menú Organización para que sean visibles en este menú.
+                            </div>
+                            <div style="text-align:justify">
+                                <b>e. Fecha de programación:</b> seleccione la fecha de programación inicial de la actividad.
+                            </div>
+                            <div style="text-align:justify">
+                                <b>f. Hora Inicial y Hora Final:</b> defina las horas de inicio y fin de la actividad.
+                            </div>
+                            <br />
+                            <div style="text-align:justify; line-height:2.5">
+                                Finalice dando clic en <button class="boton botonactive" disabled>Guardar</button> para crear la actividad en el plan y cronograma, o clic en <button class="boton botoncancel" disabled>Cancelar</button> para anular la acción.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                La actividad se reflejará en el cuadro de programación. Sr. Usuario usted podrá editarle dando clic sobre la actividad y repitiendo los pasos anteriores; así mismo los botones de <i class="glyphicon glyphicon-user" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> y <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i>, podrán ayudarle a completar las tareas de: selección del personal para envió de invitación a la actividad, confirmación de participantes, confirmación asistentes y adjuntar el soporte de la actividad que estime conveniente.
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            @*</td>
+        </tr>
+    </table>*@
+
+    <div class="panel-body form-horizontal">
+
+        <div class="table-responsive">
+            <table id="planactividadxempresa" class="table table-bordered" style="border: 2px solid lightslategray">
+                <thead>
+                    <tr class="titulos_tabla">
+                        <th colspan="13" style="background-color: #7E8A97;text-transform:uppercase" align="center">
+                            <center>
+                                <font color="white">PROGRAMACIÓN</font>
+                            </center>
+                        </th>
+                    </tr>
+                    <tr class="titulos_tabla">
+                        <th @class_css_header>Enero</th>
+                        <th @class_css_header>Febrero</th>
+                        <th @class_css_header>Marzo</th>
+                        <th @class_css_header>Abril</th>
+                        <th @class_css_header>Mayo</th>
+                        <th @class_css_header>Junio</th>
+                        <th @class_css_header>Julio</th>
+                        <th @class_css_header>Agosto</th>
+                        <th @class_css_header>Septiembre</th>
+                        <th @class_css_header>Octubre</th>
+                        <th @class_css_header>Noviembre</th>
+                        <th @class_css_header>Diciembre</th>
+                        <th width="150%" @class_css_header>Acciones</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <br />
+
+        <center><button type="button" class="boton botonactive" onclick="CrearPlanCapacitacion();">Agregar</button></center>
+
+        <div id="myModal1" class="modal fade" role="dialog">
+            <form id="frmActividades">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <h4 class="modal-title title">Programar Capacitación</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                @Html.HiddenFor(x => x.pk_id_plan_capacitacion)
+                                <div class="row">
+                                    <fieldset>
+                                        <legend style="text-align:justify">Objetivos</legend>
+                                        <div class="col-md-6">
+                                            @Html.Label("Tipo de Actividad", new { @class = "control-label" })
+                                            @Html.DropDownListFor(x => x.fk_id_tipo_actividad, new System.Web.Mvc.SelectList(ViewBag.tipoactividad, "Text", "Value"), new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.Label("Tema", new { @class = "control-label" })
+                                            @Html.TextBoxFor(x => x.tema, new { @class = "form-control" })
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        @Html.Label("Rol", new { @class = "control-label" })
+                                        @Html.DropDownListFor(x => x.fk_id_rol, new System.Web.Mvc.SelectList(ViewBag.roles, "Text", "Value"), new { @class = "form-control", @onchange = "CargarCompetencia(this.value);" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        @Html.Label("Competencia", new { @class = "control-label" })
+                                        @Html.DropDownListFor(x => x.fk_id_competencia, new System.Web.Mvc.SelectList(ViewBag.competencia, "Text", "Value"), new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.Label("Fecha Programación", new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.fecha_programada, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @Html.Label("Hora Inicial", new { @class = "control-label" })<br />
+                                        @Html.TextBoxFor(x => x.hora_inicio, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        @Html.Label("Hora Final", new { @class = "control-label" })<br />
+                                        @Html.TextBoxFor(x => x.hora_fin, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botonactive" onclick="GuardarActividad()">GUARDAR</button>
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="myModal2" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <h4 class="modal-title title">Agregar Invitados / Trabajadores Confirmados / Asistentes / Soporte</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="pk_id_plan_capacitacion_temp">
+
+                            <div id="tabs">
+                                <ul>
+                                    <li><a href="#tabs-1">Invitar</a></li>
+                                    <li><a href="#tabs-2">Trabajadores Confirmados</a></li>
+                                    <li><a href="#tabs-3">Asistentes</a></li>
+                                    <li><a href="#tabs-4">Soporte</a></li>
+                                </ul>
+                                <div class="table-responsive" id="tabs-1" style="background-color: #F9FAF9;">
+                                        <table id="gridinvitados" class="table table-bordered" style="border: 2px solid lightslategray">
+                                            <tr class="titulos_tabla">
+                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Número de Documento</td>
+                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Nombre</td>
+                                            </tr>
+                                        </table>
+                                        <div class="pagination-page _paginador" id="_paginador" style="margin-left:45%"></div>
+                                    <script>
+                                        //$("document").ready(function () {
+                                        //    paginador("#idIndex", "tr[name = _pges]", "#paginador");
+                                        //});
+                                        ////Paginador
+                                        //jQuery(function ($) {
+                                        //    var items = $("._pges");
+                                        //    var numItems = items.length;
+                                        //    var perPage = 10;
+                                        //    items.slice(perPage).hide();
+                                        //    $("._paginador").pagination({
+                                        //        items: numItems,
+                                        //        itemsOnPage: perPage,
+                                        //        cssStyle: "compact-theme",
+                                        //        invertPageOrder: false,
+                                        //        currentPage: 1,
+                                        //        nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+                                        //        prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+                                        //        onPageClick: function (pageNumber) {
+                                        //            var showFrom = perPage * (pageNumber - 1);
+                                        //            var showTo = showFrom + perPage;
+                                        //            items.hide()
+                                        //                 .slice(showFrom, showTo).show();
+                                        //        }
+                                        //    });
+                                        //    function checkFragment() {
+                                        //        var hash = window.location.hash || "#page1-1";
+                                        //        hash = hash.match(/^#page1-(\d+)$/);
+                                        //        if (hash) {
+                                        //            $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+                                        //        }
+                                        //    };
+                                        //    $(window).bind("popstate", checkFragment);
+                                        //    checkFragment();
+                                        //});
+                                    </script>
+                                    <br />
+                                    <center>
+                                        <button type="button" class="boton botonactive" onclick="EnviarInvitaciones();">Enviar Invitacion</button>
+                                    </center>
+                                </div>
+                                <div class="table-responsive" id="tabs-2" style="background-color: #F9FAF9;">
+                                    <table id="gridconfirmados" class="table table-bordered" style="border: 2px solid lightslategray">
+                                        <tr class="titulos_tabla">
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Número de Documento</td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Nombre</td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <center>
+                                        <button type="button" class="boton botonactive" onclick="ConfirmarAsistencia();">Guardar</button>
+                                    </center>
+                                </div>
+                                <div class="table-responsive" id="tabs-3" style="background-color: #F9FAF9;">
+                                    <table id="gridasistentes" class="table table-bordered" style="border: 2px solid lightslategray">
+                                        <tr class="titulos_tabla">
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Número de Documento</td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Nombre</td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                </div>
+                                <div id="tabs-4" style="background-color: #F9FAF9;">
+                                    @Html.HiddenFor(x => x.pk_id_soporte)
+                                    <table width="50%" border="0">
+                                        <tr class="noborder">
+                                            <td class="noborder"><b>Adjuntar Archivos</b></td>
+                                            <td class="noborder">&nbsp;</td>
+                                        </tr>
+                                        <tr class="noborder">
+                                            <td class="noborder">@Html.TextBoxFor(x => x.adjunto, new { id = "upload", type = "file" })</td>
+                                            <td class="noborder"><input id="adjunto_tmp" type="hidden" /></td>
+                                        </tr>
+                                        <tr class="noborder">
+                                            <td class="noborder">
+                                                <a href="#" id="hl-start-upload" class="boton botonactive">Cargar Archivo</a>
+                                            </td>
+                                            <td class="noborder">
+                                                <a href="#" class="btn btn-search btn-md" title="Descargar" onclick="DescargarArchivo();"><span class="glyphicon glyphicon-download-alt"></span></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/simplePagination")
+@Scripts.Render("~/Scripts/PlanCapacitacion/PlanCapacitacion.js")

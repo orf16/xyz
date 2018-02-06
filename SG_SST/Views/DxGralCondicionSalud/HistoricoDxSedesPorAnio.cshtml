@@ -1,0 +1,159 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Planificacion.EDDxSalud>
+
+@{
+    ViewBag.Title = "HistoricoDxSedesPorAnio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Planificación</a></li>
+    <li><a href="javascript:void(0)">Dx. Gral. condiciones de salud</a></li>
+    <li><a href="javascript:void(0)">Historico Diagnostico</a></li>
+    <li class="active">Diagnostico de la sede por año</li>
+</ol>
+
+<div class="table-responsive" @*style="overflow-x:scroll;height:auto"*@>
+    <table name="tableDx" id="tableDx" class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Id Diagnostico
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Fecha Creación
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Sede
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Municipio
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Departamento
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Zona o Lugar
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Clasificación de Peligros
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Descripción
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Total de Trabajadores de la zona o lugar
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Sintomatología
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Nº Trabajadores con la sintomatología
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                % Anormalidad
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Prueba Clínica
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Nº Trabajadores con prueba clínica anormal
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                % Anormalidad
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Prueba P_Clínica
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Nº Trabajadores con prueba P_clínica anormal
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                % Anormalidad
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Diagnóstico CIE10
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                Nº de Trabajadores con el diagnóstico
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                %  de trabajadores con el diagnostico
+            </th>
+
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.IdDxCondicionesDeSalud)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @item.FechaCreacionDiagnostico.ToString("dd-MM-yyyy")
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NombreSede)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NombreMunicipio)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NombreDepartamento)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.ZonaLugar)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NombreClasificacion)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NombreDscripcion)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NumeroTrabajadoresLugar)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Sintomatologia)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NumeroTrabajadoresSintomatologia)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.porcentajeSintomatologia)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.PruebaClinica)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NumeroTrabajadoresConPrueba)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.porcentajePrueba)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.PruebaPClinica)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NumeroTrabajadoresConPruebaP)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.porcentajePruebaP)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NombreDiagnosticoCIE10)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.NumeroTrabajadoresConDiagnostico)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.porcentajeDiagnostico)
+                </td>
+            </tr>
+        }
+    </table>
+
+</div>

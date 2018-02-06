@@ -1,0 +1,2656 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{293B0511-FB48-464C-A870-660EB0B9AD60}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SG_SST</RootNamespace>
+    <AssemblyName>SG_SST</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML, Version=0.87.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.87.1\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.6.17\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.6.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.6.17\lib\net45\Hangfire.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqToExcel">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\LinqToExcel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.11.0.0\lib\net20\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorPDF">
+      <HintPath>..\packages\RazorPDF.1.0.0\lib\net45\RazorPDF.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Interfaces">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.1-beta\lib\net40\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccidenteTrabajo\AccidenteTrabajoController.cs" />
+    <Compile Include="Controllers\AdminUsuarios\AdminUsuariosController.cs" />
+    <Compile Include="Controllers\Aplicacion\AdmoEMHController.cs" />
+    <Compile Include="Controllers\Aplicacion\AdmoEPPController.cs" />
+    <Compile Include="Controllers\Aplicacion\BateriaGestionController.cs" />
+    <Compile Include="Controllers\Aplicacion\GestionDelCambioController.cs" />
+    <Compile Include="Controllers\Aplicacion\AdquisicionBienesController.cs" />
+    <Compile Include="Controllers\Aplicacion\CriteriosSSTController.cs" />
+    <Compile Include="Controllers\Aplicacion\MaestroConfiguracionPrioridadesController.cs" />
+    <Compile Include="Controllers\Aplicacion\MaestroCriterioSSTsController.cs" />
+    <Compile Include="Controllers\Aplicacion\MaestroTipoInspeccionsController.cs" />
+    <Compile Include="Controllers\Aplicacion\PlandeInspeccionController.cs" />
+    <Compile Include="Controllers\Aplicacion\PlanTrabajoController.cs" />
+    <Compile Include="Controllers\Aplicacion\PromocionPrevencionController.cs" />
+    <Compile Include="Controllers\Ausentismo\AfiliadoController.cs" />
+    <Compile Include="Controllers\Ausentismo\AlertasController.cs" />
+    <Compile Include="Controllers\Ausentismo\AusenciasController.cs" />
+    <Compile Include="Controllers\Base\BaseController.cs" />
+    <Compile Include="Controllers\Ausentismo\Configuracion_HHTController.cs" />
+    <Compile Include="Controllers\Ausentismo\IndicadoresController.cs" />
+    <Compile Include="Controllers\Ausentismo\MasivoController.cs" />
+    <Compile Include="Controllers\Ausentismo\ReportesController.cs" />
+    <Compile Include="Controllers\Comunicaciones\ComunicacionesExternasController.cs" />
+    <Compile Include="Controllers\Comunicaciones\ComunicacionesInternasController.cs" />
+    <Compile Include="Controllers\Comunicaciones\ComunicadosAPPController.cs" />
+    <Compile Include="Controllers\Comunicaciones\PublicacionController.cs" />
+    <Compile Include="Controllers\Cuestionario\BateriaController.cs" />
+    <Compile Include="Controllers\Emergencias\PlanEmergenciasController.cs" />
+    <Compile Include="Controllers\Empleado\EmpleadoController.cs" />
+    <Compile Include="Controllers\Empleado\EmpleadoOrgController.cs" />
+    <Compile Include="Controllers\Empleado\InconsistenciaLaboralController.cs" />
+    <Compile Include="Controllers\Empleado\TipoDocumentosController.cs" />
+    <Compile Include="Controllers\Empresas\CentroTrabajoController.cs" />
+    <Compile Include="Controllers\Empresas\CIUController.cs" />
+    <Compile Include="Controllers\Empresas\ConsideracionesController.cs" />
+    <Compile Include="Controllers\Empresas\ConsultaRelLaboralesController.cs" />
+    <Compile Include="Controllers\Empresas\CrearEmpresaUsuariaController.cs" />
+    <Compile Include="Controllers\Empresas\EmpresasController.cs" />
+    <Compile Include="Controllers\Empresas\EnfermedadLaboralDiagnosticadaController.cs" />
+    <Compile Include="Controllers\Empresas\GobiernoController.cs" />
+    <Compile Include="Controllers\Empresas\IncidenteController.cs" />
+    <Compile Include="Controllers\Empresas\NotificarInconsistenciasController.cs" />
+    <Compile Include="Controllers\Empresas\OrganigramaController.cs" />
+    <Compile Include="Controllers\Empresas\ProcesoController.cs" />
+    <Compile Include="Controllers\Empresas\RelacionesController.cs" />
+    <Compile Include="Controllers\Empresas\RelacionesLaboralesController.cs" />
+    <Compile Include="Controllers\Empresas\SedeController.cs" />
+    <Compile Include="Controllers\Empresas\TipoAnalisisController.cs" />
+    <Compile Include="Controllers\Empresas\TipoElementoAnalisisController.cs" />
+    <Compile Include="Controllers\Empresas\UsuariosController.cs" />
+    <Compile Include="Controllers\EstudioPuestoTrabajo\EstudioPuestoTrabajoController.cs" />
+    <Compile Include="Controllers\General\GeneralController.cs" />
+    <Compile Include="Controllers\IncidentesConsulta\IncidentesConsultaController.cs" />
+    <Compile Include="Controllers\Incidentes\IncidentesATController.cs" />
+    <Compile Include="Controllers\Incidentes\IncidentesConsultaController.cs" />
+    <Compile Include="Controllers\Incidentes\IncidentesELController.cs" />
+    <Compile Include="Controllers\LiderazgoGerencial\ObligacionesArlsController.cs" />
+    <Compile Include="Controllers\LiderazgoGerencial\ObligacionesEmpleadoresController.cs" />
+    <Compile Include="Controllers\LiderazgoGerencial\PresupuestoController.cs" />
+    <Compile Include="Controllers\LiderazgoGerencial\RolController.cs" />
+    <Compile Include="Controllers\Login\HomeController.cs" />
+    <Compile Include="Controllers\MedicionEvaluacion\AccionesController.cs" />
+    <Compile Include="Controllers\MedicionEvaluacion\AuditoriaController.cs" />
+    <Compile Include="Controllers\MedicionEvaluacion\PlanesDeAccionController.cs" />
+    <Compile Include="Controllers\Organizacion\CargoController.cs" />
+    <Compile Include="Controllers\Organizacion\CompetenciaController.cs" />
+    <Compile Include="Controllers\Organizacion\FaseController.cs" />
+    <Compile Include="Controllers\Organizacion\OrganizacionController.cs" />
+    <Compile Include="Controllers\Participacion\ComitesController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\Participacion\ComitesConvivenciaController.cs" />
+    <Compile Include="Controllers\Participacion\ConsultaController.cs" />
+    <Compile Include="Controllers\Participacion\ReporteController.cs" />
+    <Compile Include="Controllers\Participacion\TipoPrincipalActaController.cs" />
+    <Compile Include="Controllers\Participacion\TipoPrioridadMiembroController.cs" />
+    <Compile Include="Controllers\PlanCapacitacion\PlanCapacitacionController.cs" />
+    <Compile Include="Controllers\Planificacion\ClasificacionDePeligrosController.cs" />
+    <Compile Include="Controllers\Planificacion\ConsecuenciasController.cs" />
+    <Compile Include="Controllers\Planificacion\DxGralCondicionSaludController.cs" />
+    <Compile Include="Controllers\Planificacion\EstimacionDeRiesgosController.cs" />
+    <Compile Include="Controllers\Planificacion\EvaluacionController.cs" />
+    <Compile Include="Controllers\Planificacion\EvaluacionEstandarMinimoController.cs" />
+    <Compile Include="Controllers\Planificacion\EvaluacionPdfController.cs" />
+    <Compile Include="Controllers\Planificacion\FileController.cs" />
+    <Compile Include="Controllers\Planificacion\GruposController.cs" />
+    <Compile Include="Controllers\Planificacion\GTC45Controller.cs" />
+    <Compile Include="Controllers\Planificacion\INSHTController.cs" />
+    <Compile Include="Controllers\Planificacion\InterpretacionDeProbabilidadesController.cs" />
+    <Compile Include="Controllers\Planificacion\InterpretacionNivelDeRiesgosController.cs" />
+    <Compile Include="Controllers\Planificacion\MetodologiaController.cs" />
+    <Compile Include="Controllers\Planificacion\NivelDeDeficienciasController.cs" />
+    <Compile Include="Controllers\Planificacion\NivelesDeExposicionController.cs" />
+    <Compile Include="Controllers\Planificacion\ObetivoSSTController.cs" />
+    <Compile Include="Controllers\Planificacion\PerfilSocioDemoGraficoController.cs" />
+    <Compile Include="Controllers\Planificacion\PlanTrabajoAnualController.cs" />
+    <Compile Include="Controllers\Planificacion\ProbabilidadesController.cs" />
+    <Compile Include="Controllers\Planificacion\RAMController.cs" />
+    <Compile Include="Controllers\Planificacion\RequisitosLegalesOtrosController.cs" />
+    <Compile Include="Controllers\Planificacion\TipoDePeligrosController.cs" />
+    <Compile Include="Controllers\Planificacion\TipoMetodologiasController.cs" />
+    <Compile Include="Controllers\Politica\OtrasInteraccionesController.cs" />
+    <Compile Include="Controllers\Politica\PoliticasstController.cs" />
+    <Compile Include="Controllers\Organizacion\RecursosController.cs" />
+    <Compile Include="Controllers\Organizacion\TipoRecursoController.cs" />
+    <Compile Include="Controllers\ReportesAplicacion\ReportesAplicacionController.cs" />
+    <Compile Include="Controllers\Revision\RevisionController.cs" />
+    <Compile Include="Dtos\Empresas\CargosDTO.cs" />
+    <Compile Include="Dtos\Empresas\EmpresaSiarpDTO.cs" />
+    <Compile Include="Dtos\Empresas\EstadoTipoAfiliadoDTO.cs" />
+    <Compile Include="Dtos\Empresas\SiarpCentrosdeCostoDTO.cs" />
+    <Compile Include="Dtos\LiderazgoGerencial\ActaRoles.cs" />
+    <Compile Include="Dtos\LiderazgoGerencial\RolResponsabilidad.cs" />
+    <Compile Include="Dtos\LiderazgoGerencial\InformePresupuestoDTO.cs" />
+    <Compile Include="Dtos\Organizacion\EmpleadosWSDTO.cs" />
+    <Compile Include="Dtos\Organizacion\RecursosDTO.cs" />
+    <Compile Include="Dtos\Participacion\ReporteCondicionesInsegurasDTO.cs" />
+    <Compile Include="Dtos\Planificacion\MatrizEditGTC45.cs" />
+    <Compile Include="Dtos\Planificacion\MatrizEditINSTH.cs" />
+    <Compile Include="Dtos\Planificacion\MatrizEditRAM.cs" />
+    <Compile Include="Dtos\Planificacion\MatrizGTC45.cs" />
+    <Compile Include="Dtos\Planificacion\MatrizINSTH.cs" />
+    <Compile Include="Dtos\Planificacion\MatrizRAM.cs" />
+    <Compile Include="Dtos\Planificacion\PeligrosPorSede.cs" />
+    <Compile Include="Dtos\Planificacion\PerfilSocioDemograficoDTO.cs" />
+    <Compile Include="Dtos\Planificacion\RequisitosLegalesOtrosDTO.cs" />
+    <Compile Include="Dtos\Planificacion\UsuarioCreacionPeligros.cs" />
+    <Compile Include="Dtos\Politica\PoliticaDTO.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ConsultaSIARP.cs" />
+    <Compile Include="Helpers\ValidaArchivos.cs" />
+    <Compile Include="Models\AdminUsuarios\AdministrarUsuariosModel.cs" />
+    <Compile Include="Models\AdminUsuarios\EmpresaAfiliadoModel.cs" />
+    <Compile Include="Models\AdminUsuarios\UsuarioArlPositivaModel.cs" />
+    <Compile Include="Models\Aplicacion\AccionCorrectivaVM.cs" />
+    <Compile Include="Models\Aplicacion\BusquedaInspeccionVModel.cs" />
+    <Compile Include="Models\Aplicacion\CondicionesVModel.cs" />
+    <Compile Include="Models\Aplicacion\CondicionInseguraModel.cs" />
+    <Compile Include="Models\Aplicacion\ContinuarPlaneacionVM.cs" />
+    <Compile Include="Models\Aplicacion\CrearInspeccionModel.cs" />
+    <Compile Include="Models\Aplicacion\ObtenerCondicionVM.cs" />
+    <Compile Include="Models\Aplicacion\PlanAccionVM.cs" />
+    <Compile Include="Models\Aplicacion\PlanCorrectivaVM.cs" />
+    <Compile Include="Models\Aplicacion\PlanInspeccionModel.cs" />
+    <Compile Include="Models\Aplicacion\VerificarInspeccionVModel.cs" />
+    <Compile Include="Models\Ausentismo\AfiliadoModel.cs" />
+    <Compile Include="Models\Ausentismo\AlertasModel.cs" />
+    <Compile Include="Models\Ausentismo\AusenciaModel.cs" />
+    <Compile Include="Models\Ausentismo\ConfiguracionModel.cs" />
+    <Compile Include="Models\Ausentismo\IncidenteModel.cs" />
+    <Compile Include="Models\Ausentismo\IndicadoresModel.cs" />
+    <Compile Include="Models\Ausentismo\ReportesModel.cs" />
+    <Compile Include="Models\Aplicacion\InspeccionModel.cs" />
+    <Compile Include="Models\Comunicaciones\ComunicacionesExternasModel.cs" />
+    <Compile Include="Models\Comunicaciones\ComunicacionesInternasModel.cs" />
+    <Compile Include="Models\Comunicaciones\ComunicadosAdjuntosModel.cs" />
+    <Compile Include="Models\Comunicaciones\ComunicadosAPPModel.cs" />
+    <Compile Include="Models\DxCondicionesSalud\DxSaludModel.cs" />
+    <Compile Include="Models\Emergencias\EmeCargasMasicasModel.cs" />
+    <Compile Include="Models\Emergencias\EmergenciasModel.cs" />
+    <Compile Include="Models\Empresa\EmpleadoRelLabModel.cs" />
+    <Compile Include="Models\Empresa\EmpleadoTerceroModel.cs" />
+    <Compile Include="Models\Empresa\EmpresaUsuariaModel.cs" />
+    <Compile Include="Models\Empresa\NotificarInconsistenciasModels.cs" />
+    <Compile Include="Models\Empresa\UsuarioModel.cs" />
+    <Compile Include="Models\EnfermedadLaboralDiagnosticada\EnfermedadLaboralModel.cs" />
+    <Compile Include="Models\EstudioPuestoTrabajo\EstudioPuestoTrabajoModel.cs" />
+    <Compile Include="Models\EstudioPuestoTrabajo\SeguimientoEstudioPTModel.cs" />
+    <Compile Include="Models\Incidentes\IncidentesATModel.cs" />
+    <Compile Include="Models\Incidentes\IncidentesELModel.cs" />
+    <Compile Include="Models\Login\UsuarioSessionModel.cs" />
+    <Compile Include="Models\DxCondicionesSalud\DocDxSaludModel.cs" />
+    <Compile Include="Models\Empresa\BuscarEmpresaModel.cs" />
+    <Compile Include="Models\Empresa\GrabarEmpresaModel.cs" />
+    <Compile Include="Models\Metodologia\GenerarPeligroModel.cs" />
+    <Compile Include="Models\Metodologia\SedeModel.cs" />
+    <Compile Include="Models\Metodologia\TipoMetodologiaModel.cs" />
+    <Compile Include="Models\Organizacion\RecursosVM.cs" />
+    <Compile Include="Models\Participacion\ActaConvivenciaQuejasVM.cs" />
+    <Compile Include="Models\Participacion\ConsultaVM.cs" />
+    <Compile Include="Models\Participacion\ConvivenciaVM.cs" />
+    <Compile Include="Models\Participacion\CopasstVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Participacion\CrearActaConvivenciaVM.cs" />
+    <Compile Include="Models\Participacion\CrearActaCopasstVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Participacion\ReporteModel.cs" />
+    <Compile Include="Models\Participacion\SeguimientoActaConvivenciaVM.cs" />
+    <Compile Include="Models\PlanCapacitacion\PlanCapacitacionModel.cs" />
+    <Compile Include="Models\Planificacion\CalificacionCriterioModel.cs" />
+    <Compile Include="Models\Planificacion\EvaluacionEstandarMinimoModel.cs" />
+    <Compile Include="Models\Planificacion\EvaluacionModel.cs" />
+    <Compile Include="Models\Planificacion\GrabarPerfilsocioDemograficoModel.cs" />
+    <Compile Include="Models\Planificacion\ObjetivoSSTModel.cs" />
+    <Compile Include="Models\PlanTrabajoAnual\FechaProgModel.cs" />
+    <Compile Include="Models\PlanTrabajoAnual\PlanEmpresaModel.cs" />
+    <Compile Include="Models\Politica\PoliticaModel.cs" />
+    <Compile Include="Models\ReporteIncidente\IncidenteModel.cs" />
+    <Compile Include="Models\Revision\RevisionVM.cs" />
+    <Compile Include="Models\Usuarios\UsuarioModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Planificacion\IServices\IgestionDelCambioServicios.cs" />
+    <Compile Include="Views\ReportesAplicacion\SGSSTDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGSSTDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\Empresas\IRepositories\IEmpresaRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\IRepositories\IGobiernoRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\IRepositories\IMatrizRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\IRepositories\IProcesoRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\IRepositories\ISedeRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\Repositories\EmpresaRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\Repositories\GobiernoRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\Repositories\MatrizRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\Repositories\ProcesoRepositorio.cs" />
+    <Compile Include="Repositories\Empresas\Repositories\SedeRepositorio.cs" />
+    <Compile Include="Repositories\General\IRepositories\IRecursosRepositorio.cs" />
+    <Compile Include="Repositories\General\Repositories\RecursosRepositorio.cs" />
+    <Compile Include="Repositories\LiderazgoGerencial\IRepositories\IRolPorResponsabilidadRepositorio.cs" />
+    <Compile Include="Repositories\LiderazgoGerencial\IRepositories\IPresupuestoRepositorio.cs" />
+    <Compile Include="Repositories\LiderazgoGerencial\Repositories\PresupuestoRepositorio.cs" />
+    <Compile Include="Repositories\LiderazgoGerencial\Repositories\RolPorResponsabilidadRepositorio.cs" />
+    <Compile Include="Repositories\MedicionEvaluacion\IRepositories\IAccionesRepositorio.cs" />
+    <Compile Include="Repositories\MedicionEvaluacion\IRepositories\IAuditoriaRepositorio.cs" />
+    <Compile Include="Repositories\MedicionEvaluacion\Repositories\AccionesRepositorio.cs" />
+    <Compile Include="Repositories\MedicionEvaluacion\Repositories\AuditoriaRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\IRepositories\ICompetenciaRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\IRepositories\IFaseRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\IRepositories\IRecursosSedesRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\IRepositories\ITiporecursoRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\Repositories\CompetenciaRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\Repositories\FaseRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\Repositories\RecursosSedesRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\Repositories\TiporecursoRepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\IRepositories\IDocumentacionrepositorio.cs" />
+    <Compile Include="Repositories\Organizacion\Repositories\DocumentacionRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IClasificacionDePeligrosRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IConsecuenciasRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IConsultarZonasRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IEstimacionDeRiesgosRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IInterpretacionDeProbabilidadRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IInterpretacionDeRiesgoRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\INivelDeDeficienciaRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\INivelesDeExposicionRespositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IPeligroRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IPerfilSocioDemograficoRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IProbabilidadesRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\IRepositories\IRequisitosLegalesOtrosRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\ClasificacionDePeligrosRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\ConsecuenciasRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\EstimacionDeRiesgosRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\InterpretacionDeProbabilidadRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\InterpretacionDeRiesgoRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\NivelDeDeficienciaRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\NivelesDeExposicionRespositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\PeligroRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\PerfilSocioDemograficoRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\ProbabilidadesRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\RequisitosLegalesOtrosRepositorio.cs" />
+    <Compile Include="Repositories\Planificacion\Repositories\ZonaLugarRepositorio.cs" />
+    <Compile Include="Repositories\Politica\IRepositories\IPoliticaRepositorio.cs" />
+    <Compile Include="Repositories\Politica\Repositories\PoliticaRepositorio.cs" />
+    <Compile Include="Service References\GestposService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceRequest\ServiceClient.cs" />
+    <Compile Include="Services\Aplicaccion\GestionDelCambioServicios.cs" />
+    <Compile Include="Services\Empresas\IServices\IEmpresaServicios.cs" />
+    <Compile Include="Services\Empresas\IServices\IGobiernoServicios.cs" />
+    <Compile Include="Services\Empresas\IServices\IMatrizServicios.cs" />
+    <Compile Include="Services\Empresas\IServices\IProcesoServicios.cs" />
+    <Compile Include="Services\Empresas\IServices\ISedeServicios.cs" />
+    <Content Include="Scripts\AdminUsuarios\usuarioArlPositiva.js" />
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial110.dll" />
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial110.dll" />
+    <Content Include="Views\Shared\_AgregarDocumentoEnfermedadLaboral.cshtml" />
+    <Compile Include="Services\Empresas\Services\EmpresaServicios.cs" />
+    <Compile Include="Services\Empresas\Services\GobiernoServicios.cs" />
+    <Compile Include="Services\Empresas\Services\MatrizServicios.cs" />
+    <Compile Include="Services\Empresas\Services\ProcesoServicios.cs" />
+    <Compile Include="Services\Empresas\Services\SedeServicios.cs" />
+    <Compile Include="Services\General\IServices\IRecursosServicios.cs" />
+    <Compile Include="Services\General\Services\RecursosServicios.cs" />
+    <Compile Include="Services\LiderazgoGerencial\Iservices\IPresupuestoServicios.cs" />
+    <Compile Include="Services\LiderazgoGerencial\Iservices\IRolPorResponsabilidadServicio.cs" />
+    <Compile Include="Services\LiderazgoGerencial\Services\PresupuestoServicios.cs" />
+    <Compile Include="Services\LiderazgoGerencial\Services\RolPorResponsabilidadServicio.cs" />
+    <Compile Include="Services\Organizacion\Iservices\IFaseServices.cs" />
+    <Compile Include="Services\Organizacion\Iservices\IRecursosSedesServices.cs" />
+    <Compile Include="Services\Organizacion\Iservices\ITiporecursoServices.cs" />
+    <Compile Include="Services\Organizacion\Services\FaseServices.cs" />
+    <Compile Include="Services\Organizacion\Services\RecursoSedesServices.cs" />
+    <Compile Include="Services\Organizacion\Services\TipoRecursoServices.cs" />
+    <Compile Include="Services\Organizacion\IServices\IDocumentacionServicios.cs" />
+    <Compile Include="Services\Organizacion\Services\DocumentacionServicios.cs" />
+    <Compile Include="Services\Participacion\IServices\IReporteCondicionesActosInsegurosServicios.cs" />
+    <Compile Include="Services\Participacion\Services\ReporteCondicionesActosInsegurosServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IClasificacionDePeligrosServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IConsecuenciasServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IGTC45Servicio.cs" />
+    <Compile Include="Services\Planificacion\IServices\IINSHTServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IMetodologiaServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\INivelDeDeficienciaServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IPerfilSocioDemograficoServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IProbabilidadesServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IRequisitosLegalesOtrosServicios.cs" />
+    <Compile Include="Services\Planificacion\IServices\IZonaLugar.cs" />
+    <Compile Include="Services\Planificacion\Services\ClasificacionDePeligrosServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\ConsecuenciasServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\GTC45Servicio.cs" />
+    <Compile Include="Services\Planificacion\Services\INSHTServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\MetodologiaServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\NivelDeDeficienciaServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\PerfilSocioDemograficoServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\ProbabilidadesServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\RequisitosLegalesOtrosServicios.cs" />
+    <Compile Include="Services\Planificacion\Services\ZonaLugarServicio.cs" />
+    <Compile Include="Services\Politica\IServices\IpoliticaServicios.cs" />
+    <Compile Include="Services\Politica\Services\PoliticaServicios.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="Views\ReportesAplicacion\SGSSTDataSetAuns.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGSSTDataSetAuns.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\SGSSTDataSetInd.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGSSTDataSetInd.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\SGSSTDataSetIndData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGSSTDataSetIndData.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportes.aspx.cs">
+      <DependentUpon>VisorDeReportes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportes.aspx.designer.cs">
+      <DependentUpon>VisorDeReportes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesAus.aspx.cs">
+      <DependentUpon>VisorDeReportesAus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesAus.aspx.designer.cs">
+      <DependentUpon>VisorDeReportesAus.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesInd.aspx.cs">
+      <DependentUpon>VisorDeReportesInd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesInd.aspx.designer.cs">
+      <DependentUpon>VisorDeReportesInd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesIndDatos.aspx.cs">
+      <DependentUpon>VisorDeReportesIndDatos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesIndDatos.aspx.designer.cs">
+      <DependentUpon>VisorDeReportesIndDatos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesIndicadoresAusentismo.aspx.cs">
+      <DependentUpon>VisorDeReportesIndicadoresAusentismo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ReportesAplicacion\VisorDeReportesIndicadoresAusentismo.aspx.designer.cs">
+      <DependentUpon>VisorDeReportesIndicadoresAusentismo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reportes\RecursoParametros.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\SG_SST.dll" />
+    <Content Include="bin\SG_SST.pdb" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\1A.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\1B.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\1C.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\1D.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\1E.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\2B.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\2C.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\2D.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\2E.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\2F.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3A.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3B.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3C.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3D.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3E.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3F.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\3G.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\4B.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\4C.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\4D.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\4E.png" />
+    <Content Include="Content\Acciones\ImagenesAnalisis\4F.png" />
+    <Content Include="Content\Acciones\ListaPDF.css" />
+    <Content Include="Content\Bateria\Imagenes\batg1.png" />
+    <Content Include="Content\Bateria\Imagenes\batg10.png" />
+    <Content Include="Content\Bateria\Imagenes\batg11.png" />
+    <Content Include="Content\Bateria\Imagenes\batg12.png" />
+    <Content Include="Content\Bateria\Imagenes\batg13.png" />
+    <Content Include="Content\Bateria\Imagenes\batg2.png" />
+    <Content Include="Content\Bateria\Imagenes\batg4.png" />
+    <Content Include="Content\Bateria\Imagenes\batg5.png" />
+    <Content Include="Content\Bateria\Imagenes\batg6.png" />
+    <Content Include="Content\Bateria\Imagenes\batg7.png" />
+    <Content Include="Content\Bateria\Imagenes\batg8.png" />
+    <Content Include="Content\Bateria\Imagenes\batg9.png" />
+    <Content Include="Content\Bateria\Imagenes\bath1.png" />
+    <Content Include="Content\Bateria\Imagenes\bath2.png" />
+    <Content Include="Content\Bateria\Imagenes\bath3.png" />
+    <Content Include="Content\Bateria\Imagenes\bath4.png" />
+    <Content Include="Content\Bateria\Imagenes\bath5.png" />
+    <Content Include="Content\Bateria\Imagenes\bath6.png" />
+    <Content Include="Content\Bateria\Imagenes\bath7.png" />
+    <Content Include="Content\Bateria\Imagenes\bath8.png" />
+    <Content Include="Content\Bateria\Imagenes\PESV1.png" />
+    <Content Include="Content\Bateria\Imagenes\PESV2.png" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\ErrorPageServer.html" />
+    <Content Include="Content\fullcalendar.css" />
+    <Content Include="Content\Acciones\Acciones.css" />
+    <Content Include="Content\Acciones\AccionPDF.css" />
+    <Content Include="Content\Acciones\AuditoriaPDF.css" />
+    <Content Include="Content\Acciones\Auditorias.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\animate.min.css" />
+    <Content Include="Content\css\bootstrap-datepicker3.css" />
+    <Content Include="Content\css\bootstrap-iso.css" />
+    <Content Include="Content\css\bootstrap-theme.css" />
+    <Content Include="Content\css\bootstrap-theme.min.css" />
+    <Content Include="Content\css\estilos_positiva.css" />
+    <Content Include="Content\css\formatoaccidente.css" />
+    <Content Include="Content\css\formularios.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\css\specialbuttons.css" />
+    <Content Include="Content\css\stylesindex.css" />
+    <Content Include="Content\css\styleslogin.css" />
+    <Content Include="Content\css\submenus.css" />
+    <Content Include="Content\css\sweetalert.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\autoFill.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.dataTables.css" />
+    <Content Include="Content\DataTables\css\autoFill.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.foundation.css" />
+    <Content Include="Content\DataTables\css\autoFill.foundation.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.jqueryui.css" />
+    <Content Include="Content\DataTables\css\autoFill.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\autoFill.semanticui.css" />
+    <Content Include="Content\DataTables\css\autoFill.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\buttons.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\buttons.dataTables.css" />
+    <Content Include="Content\DataTables\css\buttons.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\buttons.foundation.css" />
+    <Content Include="Content\DataTables\css\buttons.foundation.min.css" />
+    <Content Include="Content\DataTables\css\buttons.jqueryui.css" />
+    <Content Include="Content\DataTables\css\buttons.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\buttons.semanticui.css" />
+    <Content Include="Content\DataTables\css\buttons.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\colReorder.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.dataTables.css" />
+    <Content Include="Content\DataTables\css\colReorder.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.foundation.css" />
+    <Content Include="Content\DataTables\css\colReorder.foundation.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.jqueryui.css" />
+    <Content Include="Content\DataTables\css\colReorder.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\colReorder.semanticui.css" />
+    <Content Include="Content\DataTables\css\colReorder.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.foundation.css" />
+    <Content Include="Content\DataTables\css\dataTables.foundation.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.jqueryui.css" />
+    <Content Include="Content\DataTables\css\dataTables.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.material.css" />
+    <Content Include="Content\DataTables\css\dataTables.material.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.semanticui.css" />
+    <Content Include="Content\DataTables\css\dataTables.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\dataTables.uikit.css" />
+    <Content Include="Content\DataTables\css\dataTables.uikit.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.dataTables.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.foundation.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.foundation.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.jqueryui.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.semanticui.css" />
+    <Content Include="Content\DataTables\css\fixedColumns.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.dataTables.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.foundation.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.foundation.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.jqueryui.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.semanticui.css" />
+    <Content Include="Content\DataTables\css\fixedHeader.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\jquery.dataTables.css" />
+    <Content Include="Content\DataTables\css\jquery.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\jquery.dataTables_themeroller.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\keyTable.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.dataTables.css" />
+    <Content Include="Content\DataTables\css\keyTable.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.foundation.css" />
+    <Content Include="Content\DataTables\css\keyTable.foundation.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.jqueryui.css" />
+    <Content Include="Content\DataTables\css\keyTable.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\keyTable.semanticui.css" />
+    <Content Include="Content\DataTables\css\keyTable.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\responsive.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\responsive.dataTables.css" />
+    <Content Include="Content\DataTables\css\responsive.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\responsive.foundation.css" />
+    <Content Include="Content\DataTables\css\responsive.foundation.min.css" />
+    <Content Include="Content\DataTables\css\responsive.jqueryui.css" />
+    <Content Include="Content\DataTables\css\responsive.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\responsive.semanticui.css" />
+    <Content Include="Content\DataTables\css\responsive.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\rowGroup.bootstrap.css" />
+    <Content Include="Content\DataTables\css\rowGroup.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\rowGroup.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\rowGroup.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\rowGroup.dataTables.css" />
+    <Content Include="Content\DataTables\css\rowGroup.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\rowGroup.foundation.css" />
+    <Content Include="Content\DataTables\css\rowGroup.foundation.min.css" />
+    <Content Include="Content\DataTables\css\rowGroup.jqueryui.css" />
+    <Content Include="Content\DataTables\css\rowGroup.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\rowGroup.semanticui.css" />
+    <Content Include="Content\DataTables\css\rowGroup.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\rowReorder.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.dataTables.css" />
+    <Content Include="Content\DataTables\css\rowReorder.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.foundation.css" />
+    <Content Include="Content\DataTables\css\rowReorder.foundation.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.jqueryui.css" />
+    <Content Include="Content\DataTables\css\rowReorder.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\rowReorder.semanticui.css" />
+    <Content Include="Content\DataTables\css\rowReorder.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\scroller.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\scroller.dataTables.css" />
+    <Content Include="Content\DataTables\css\scroller.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\scroller.foundation.css" />
+    <Content Include="Content\DataTables\css\scroller.foundation.min.css" />
+    <Content Include="Content\DataTables\css\scroller.jqueryui.css" />
+    <Content Include="Content\DataTables\css\scroller.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\scroller.semanticui.css" />
+    <Content Include="Content\DataTables\css\scroller.semanticui.min.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap.min.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap4.css" />
+    <Content Include="Content\DataTables\css\select.bootstrap4.min.css" />
+    <Content Include="Content\DataTables\css\select.dataTables.css" />
+    <Content Include="Content\DataTables\css\select.dataTables.min.css" />
+    <Content Include="Content\DataTables\css\select.foundation.css" />
+    <Content Include="Content\DataTables\css\select.foundation.min.css" />
+    <Content Include="Content\DataTables\css\select.jqueryui.css" />
+    <Content Include="Content\DataTables\css\select.jqueryui.min.css" />
+    <Content Include="Content\DataTables\css\select.semanticui.css" />
+    <Content Include="Content\DataTables\css\select.semanticui.min.css" />
+    <Content Include="Content\DataTables\images\details_close.png" />
+    <Content Include="Content\DataTables\images\details_open.png" />
+    <Content Include="Content\DataTables\images\sort_asc.png" />
+    <Content Include="Content\DataTables\images\sort_asc_disabled.png" />
+    <Content Include="Content\DataTables\images\sort_both.png" />
+    <Content Include="Content\DataTables\images\sort_desc.png" />
+    <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
+    <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\datepicker.css" />
+    <Content Include="Content\ErrorPage.html" />
+    <Content Include="Content\Images\actualizacion.jpg" />
+    <Content Include="Content\Images\iconExcelp.png" />
+    <Content Include="Content\Images\positivalogo.png" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Content\jquery.fileupload.css" />
+    <Content Include="Content\jquery.timepicker.css" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab1.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab10.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab11.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab12.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab2.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab3.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab4.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab5.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab6.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab7.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab8.png" />
+    <Content Include="Content\Plantrabajo\Imagenes\plantrab9.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="Images\alissta-logo-login.png" />
+    <Content Include="Images\alissta-logo.png" />
+    <Content Include="Images\alissta_bn.png" />
+    <Content Include="Images\alissta_bn_small.png" />
+    <Content Include="Images\background-login.png" />
+    <Content Include="Images\banercorreo.jpg" />
+    <Content Include="Images\bg-login.jpg" />
+    <Content Include="Images\candado-login.png" />
+    <Content Include="Images\chrome-icon.png" />
+    <Content Include="Images\cuadrado.jpg" />
+    <Content Include="Images\DigDocumento.PNG" />
+    <Content Include="Images\estadisticas-de-empresa-en-grafico.png" />
+    <Content Include="Images\Excel-icon.png" />
+    <Content Include="Images\fancyBox\blank.gif" />
+    <Content Include="Images\fancyBox\btn_rigth.gif" />
+    <Content Include="Images\fancyBox\fancybox_loading%402x.gif" />
+    <Content Include="Images\fancyBox\fancybox_loading.gif" />
+    <Content Include="Images\fancyBox\fancybox_overlay.png" />
+    <Content Include="Images\fancyBox\fancybox_sprite%402x.png" />
+    <Content Include="Images\fancyBox\fancybox_sprite.png" />
+    <Content Include="Images\IcoAlissta.ico" />
+    <Content Include="Images\iconExcelp.png" />
+    <Content Include="Images\iconos\add-icon.png" />
+    <Content Include="Images\iconos\headers\aplicacion.png" />
+    <Content Include="Images\iconos\headers\aplicacion_icon.png" />
+    <Content Include="Images\iconos\headers\empresa.png" />
+    <Content Include="Images\iconos\headers\empresa_icon.png" />
+    <Content Include="Images\iconos\headers\franja.png" />
+    <Content Include="Images\iconos\headers\headers2-02.png" />
+    <Content Include="Images\iconos\headers\liderazgo.png" />
+    <Content Include="Images\iconos\headers\liderazgo_icon.png" />
+    <Content Include="Images\iconos\headers\maestros.png" />
+    <Content Include="Images\iconos\headers\medicion.png" />
+    <Content Include="Images\iconos\headers\medicion_icon.png" />
+    <Content Include="Images\iconos\headers\organizacion.png" />
+    <Content Include="Images\iconos\headers\organizacion_icon.png" />
+    <Content Include="Images\iconos\headers\participacion.png" />
+    <Content Include="Images\iconos\headers\participacion_icon.png" />
+    <Content Include="Images\iconos\headers\planificacion.png" />
+    <Content Include="Images\iconos\headers\planificacion_icon.png" />
+    <Content Include="Images\iconos\headers\politica.png" />
+    <Content Include="Images\iconos\headers\politica_icon.png" />
+    <Content Include="Images\iconos\headers\reporte.png" />
+    <Content Include="Images\iconos\headers\reporte_icon.png" />
+    <Content Include="Images\iconos\headers\revision.png" />
+    <Content Include="Images\iconos\headers\revision_icon.png" />
+    <Content Include="Images\iconos\para-script\aplicacion-administracion.png" />
+    <Content Include="Images\iconos\para-script\aplicacion-administracion2.png" />
+    <Content Include="Images\iconos\para-script\aplicacion-adquisiciones.png" />
+    <Content Include="Images\iconos\para-script\aplicacion-gestion.png" />
+    <Content Include="Images\iconos\para-script\aplicacion-inspecciones.png" />
+    <Content Include="Images\iconos\para-script\aplicacion-medidas.png" />
+    <Content Include="Images\iconos\para-script\empresa-consideraciones.png" />
+    <Content Include="Images\iconos\para-script\empresa-datos.png" />
+    <Content Include="Images\iconos\para-script\empresa-gobierno.png" />
+    <Content Include="Images\iconos\para-script\empresa-relaciones.png" />
+    <Content Include="Images\iconos\para-script\liderazgo-presupuesto.png" />
+    <Content Include="Images\iconos\para-script\liderazgo-roles.png" />
+    <Content Include="Images\iconos\para-script\medicionsst-acciones.png" />
+    <Content Include="Images\iconos\para-script\medicionsst-auditorias.png" />
+    <Content Include="Images\iconos\para-script\medicionsst-indicadores.png" />
+    <Content Include="Images\iconos\para-script\medicionsst-planes.png" />
+    <Content Include="Images\iconos\para-script\medicionsst-reportes.png" />
+    <Content Include="Images\iconos\para-script\organizacion-competenciassst.png" />
+    <Content Include="Images\iconos\para-script\organizacion-comunicacion.png" />
+    <Content Include="Images\iconos\para-script\organizacion-documentacion.png" />
+    <Content Include="Images\iconos\para-script\organizacion-plan.png" />
+    <Content Include="Images\iconos\para-script\organizacion-recursos.png" />
+    <Content Include="Images\iconos\para-script\participacion-comites.png" />
+    <Content Include="Images\iconos\para-script\participacion-consultasst.png" />
+    <Content Include="Images\iconos\para-script\participacion-reportes.png" />
+    <Content Include="Images\iconos\para-script\planificacion-ausentismo.png" />
+    <Content Include="Images\iconos\para-script\planificacion-dx.png" />
+    <Content Include="Images\iconos\para-script\planificacion-evaluacionsg-sst.png" />
+    <Content Include="Images\iconos\para-script\planificacion-identificacion.png" />
+    <Content Include="Images\iconos\para-script\planificacion-objetivossg-sst.png" />
+    <Content Include="Images\iconos\para-script\planificacion-perfil.png" />
+    <Content Include="Images\iconos\para-script\planificacion-plan.png" />
+    <Content Include="Images\iconos\para-script\planificacion-prevencion.png" />
+    <Content Include="Images\iconos\para-script\planificacion-requisitos.png" />
+    <Content Include="Images\iconos\para-script\politica-otras.png" />
+    <Content Include="Images\iconos\para-script\politica-politicadelsg-sst.png" />
+    <Content Include="Images\iconos\para-script\reporte-estudio.png" />
+    <Content Include="Images\iconos\para-script\reporte-investigacion.png" />
+    <Content Include="Images\iconos\para-script\reporte-reporte.png" />
+    <Content Include="Images\iconos\para-script\reporte-reportedeincidentes.png" />
+    <Content Include="Images\iconos\para-script\reporte-reporteenfermedad.png" />
+    <Content Include="Images\iconos\para-script\revision-revisiondelsg-sst.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-administracion-h.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-administracion.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-administracion2-h.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-administracion2.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-adquisiciones-h.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-adquisiciones.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-gestion-h.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-gestion.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-inspecciones-h.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-inspecciones.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-medidas-h.png" />
+    <Content Include="Images\iconos\submenus\aplicacion-medidas.png" />
+    <Content Include="Images\iconos\submenus\empresa-consideraciones-h.png" />
+    <Content Include="Images\iconos\submenus\empresa-consideraciones.png" />
+    <Content Include="Images\iconos\submenus\empresa-datos-h.png" />
+    <Content Include="Images\iconos\submenus\empresa-datos.png" />
+    <Content Include="Images\iconos\submenus\empresa-estandares-hover.png" />
+    <Content Include="Images\iconos\submenus\empresa-estandares.png" />
+    <Content Include="Images\iconos\submenus\empresa-gobierno-h.png" />
+    <Content Include="Images\iconos\submenus\empresa-gobierno.png" />
+    <Content Include="Images\iconos\submenus\empresa-relaciones-h.png" />
+    <Content Include="Images\iconos\submenus\empresa-relaciones.png" />
+    <Content Include="Images\iconos\submenus\empresa-sedes-hover.png" />
+    <Content Include="Images\iconos\submenus\empresa-sedes.png" />
+    <Content Include="Images\iconos\submenus\empresa-usuarios-hover.png" />
+    <Content Include="Images\iconos\submenus\empresa-usuarios.png" />
+    <Content Include="Images\iconos\submenus\liderazgo-presupuesto-h.png" />
+    <Content Include="Images\iconos\submenus\liderazgo-presupuesto.png" />
+    <Content Include="Images\iconos\submenus\liderazgo-roles-h.png" />
+    <Content Include="Images\iconos\submenus\liderazgo-roles.png" />
+    <Content Include="Images\iconos\submenus\liderazgogerencial-redencioncuentas-hover.png" />
+    <Content Include="Images\iconos\submenus\liderazgogerencial-redencioncuentas.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-acciones-h.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-acciones.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-auditorias-h.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-auditorias.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-indicadores-h.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-indicadores.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-planes-h.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-planes.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-reportes-h.png" />
+    <Content Include="Images\iconos\submenus\medicionsst-reportes.png" />
+    <Content Include="Images\iconos\submenus\organizacion-competenciassst-h.png" />
+    <Content Include="Images\iconos\submenus\organizacion-competenciassst.png" />
+    <Content Include="Images\iconos\submenus\organizacion-comunicacion-h.png" />
+    <Content Include="Images\iconos\submenus\organizacion-comunicacion.png" />
+    <Content Include="Images\iconos\submenus\organizacion-documentacion-h.png" />
+    <Content Include="Images\iconos\submenus\organizacion-documentacion.png" />
+    <Content Include="Images\iconos\submenus\organizacion-plan-h.png" />
+    <Content Include="Images\iconos\submenus\organizacion-plan.png" />
+    <Content Include="Images\iconos\submenus\organizacion-recursos-h.png" />
+    <Content Include="Images\iconos\submenus\organizacion-recursos.png" />
+    <Content Include="Images\iconos\submenus\participacion-comites-h.png" />
+    <Content Include="Images\iconos\submenus\participacion-comites.png" />
+    <Content Include="Images\iconos\submenus\participacion-consultasst-h.png" />
+    <Content Include="Images\iconos\submenus\participacion-consultasst.png" />
+    <Content Include="Images\iconos\submenus\participacion-reportes-h.png" />
+    <Content Include="Images\iconos\submenus\participacion-reportes.png" />
+    <Content Include="Images\iconos\submenus\planificacion-ausentismo-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-ausentismo.png" />
+    <Content Include="Images\iconos\submenus\planificacion-dx-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-dx.png" />
+    <Content Include="Images\iconos\submenus\planificacion-evaluacionsg-sst-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-evaluacionsg-sst.png" />
+    <Content Include="Images\iconos\submenus\planificacion-identificacion-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-identificacion.png" />
+    <Content Include="Images\iconos\submenus\planificacion-objetivossg-sst-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-objetivossg-sst.png" />
+    <Content Include="Images\iconos\submenus\planificacion-perfil-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-perfil.png" />
+    <Content Include="Images\iconos\submenus\planificacion-plan-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-plan.png" />
+    <Content Include="Images\iconos\submenus\planificacion-prevencion-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-prevencion.png" />
+    <Content Include="Images\iconos\submenus\planificacion-requisitos-h.png" />
+    <Content Include="Images\iconos\submenus\planificacion-requisitos.png" />
+    <Content Include="Images\iconos\submenus\politica-otras-h.png" />
+    <Content Include="Images\iconos\submenus\politica-otras.png" />
+    <Content Include="Images\iconos\submenus\politica-politica-h.png" />
+    <Content Include="Images\iconos\submenus\politica-politica.png" />
+    <Content Include="Images\iconos\submenus\reporte-estudio-h.png" />
+    <Content Include="Images\iconos\submenus\reporte-estudio.png" />
+    <Content Include="Images\iconos\submenus\reporte-investigacion-h.png" />
+    <Content Include="Images\iconos\submenus\reporte-investigacion.png" />
+    <Content Include="Images\iconos\submenus\reporte-reporte-h.png" />
+    <Content Include="Images\iconos\submenus\reporte-reporte.png" />
+    <Content Include="Images\iconos\submenus\reporte-reportedeincidentes-h.png" />
+    <Content Include="Images\iconos\submenus\reporte-reportedeincidentes.png" />
+    <Content Include="Images\iconos\submenus\reporte-reporteenfermedad-h.png" />
+    <Content Include="Images\iconos\submenus\reporte-reporteenfermedad.png" />
+    <Content Include="Images\iconos\submenus\revision-revisiondelsg-sst-h.png" />
+    <Content Include="Images\iconos\submenus\revision-revisiondelsg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-administracioneep-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-administracioneep.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-administracionequipomaquinariayherramientas-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-administracionequipomaquinariayherramientas.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-adquisicionesbienesocontratacion-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-adquisicionesbienesocontratacion.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-gestiondelcambio-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-gestiondelcambio.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-inspeccionesdeseguridad-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-inspeccionesdeseguridad.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-medidasdeprevencionycontrol-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\aplicacion-medidasdeprevencionycontrol.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-consideracionesinternasyexternas-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-consideracionesinternasyexternas.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-datosgeneralesdelaempresa-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-datosgeneralesdelaempresa.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-estandares-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-estandares.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-gobiernoorganizacional-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-gobiernoorganizacional.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-relacioneslaborales-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-relacioneslaborales.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-sedes-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-sedes.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-usuarios-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\empresa-usuarios.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-presupuesto-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-presupuesto.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-redencioncuentas-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-redencioncuentas.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-rolesresponsabilidades-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-rolesresponsabilidades.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-rolesyresponsabilidadessst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\liderazgogerencial-rolesyresponsabilidadessst.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaciong-sst-auditoriassg-sst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaciong-sst-auditoriassg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-accionespreventivasyocorrectivas-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-accionespreventivasyocorrectivas.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-indicadores-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-indicadores.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-planesdeaccion-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-planesdeaccion.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-reportesyestadisticas-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\medicionyevaluaiciong-sst-reportesyestadisticas.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-competenciassst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-competenciassst.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-comunicacion-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-comunicacion.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-documentaciondelsg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-documentaciondelsg-sst_hover.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-plandecapacitacion-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-plandecapacitacion.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-recursosensst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\organizacion-recursosensst.png" />
+    <Content Include="Images\iconos\submenus_antes\participaciontrabajadores-comitesensst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\participaciontrabajadores-comitesensst.png" />
+    <Content Include="Images\iconos\submenus_antes\participaciontrabajadores-consultasst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\participaciontrabajadores-consultasst.png" />
+    <Content Include="Images\iconos\submenus_antes\participaciontrabajadores-reportesdeactosycondicionesinseguras-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\participaciontrabajadores-reportesdeactosycondicionesinseguras.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-ausentismolaboral-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-ausentismolaboral.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-dxgralcondicionesdesalud-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-dxgralcondicionesdesalud.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-evaluacionsg-sst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-evaluacionsg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-identificaciondepeligrosevaluacionyvaloracionriesgos-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-identificaciondepeligrosevaluacionyvaloracionriesgos.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-objetivossg-sst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-objetivossg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-perfilsociodemografico-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\Planificacion-perfilsociodemografico.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-plandetrabajoanualsg-sst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-plandetrabajoanualsg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-prevencionpreparacionyrespuestaanteemergencias-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-prevencionpreparacionyrespuestaanteemergencias.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-requisitoslegalesyotros-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\planificacion-requisitoslegalesyotros.png" />
+    <Content Include="Images\iconos\submenus_antes\politica-otrasdireccionesydirectrices-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\politica-otrasdireccionesydirectrices.png" />
+    <Content Include="Images\iconos\submenus_antes\politica-politicadelsg-sst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\politica-politicadelsg-sst.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-estudiodepuestosdetrabajo-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-estudiodepuestosdetrabajo.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-investigacionincidentesaccidentesyel-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-investigacionincidentesaccidentesyel.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-reporteatapositiva-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-reporteatapositiva.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-reportedeincidentes-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-reportedeincidentes.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-reporteenfermedadlaboral-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\reporteeinvestigacion-reporteenfermedadlaboral.png" />
+    <Content Include="Images\iconos\submenus_antes\revisionporladireccion-revisiondelsg-sst-hover.png" />
+    <Content Include="Images\iconos\submenus_antes\revisionporladireccion-revisiondelsg-sst.png" />
+    <Content Include="Images\logo_alissta_138x55px.jpg" />
+    <Content Include="Images\mozilla-icon.png" />
+    <Content Include="Images\pdf %281%29.png" />
+    <Content Include="Images\pdf-icon.png" />
+    <Content Include="Images\pdf.png" />
+    <Content Include="Content\jquery.datetimepicker.css" />
+    <Content Include="Content\miga-de-pan.css" />
+    <Content Include="Content\sb-admin-rtl.css" />
+    <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\simple-sidebar.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\font-awesome.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\positiva-logo.png" />
+    <Content Include="Images\water-mark-no-logo.png" />
+    <Content Include="Images\word-icon.png" />
+    <Content Include="js\bootstrap.js" />
+    <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\jquery.js" />
+    <Content Include="js\jquery.min.js" />
+    <Content Include="js\menumobile.js" />
+    <Content Include="js\npm.js" />
+    <Content Include="js\scripts.js" />
+    <Content Include="js\sweetalert.min.js" />
+    <Content Include="Links\foto fondo.jpg" />
+    <Content Include="MvcReportViewer.aspx" />
+    <Content Include="MvcReportViewerErrorPage.html" />
+    <Content Include="Plantillas\TerminosYCondiciones.html" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\Acciones\Acciones.js" />
+    <Content Include="Scripts\AdminUsuarios\AdminUsuarios.js" />
+    <Content Include="Scripts\Alertas\ConsultarAlertas.js" />
+    <Content Include="Scripts\Aplicacion\Aplicacion.js" />
+    <Content Include="Scripts\Aplicacion\EPPCargueMasivo.js" />
+    <Content Include="Scripts\Aplicacion\EPPMatriz.js" />
+    <Content Include="Scripts\Aplicacion\GrabarCondicion.js" />
+    <Content Include="Scripts\Aplicacion\GrabarPlan.js" />
+    <Content Include="Scripts\Aplicacion\ValidarCargarManual.js" />
+    <Content Include="Scripts\Ausencias\CargueMasivo.js" />
+    <Content Include="Scripts\Aplicacion\ValidarCrearMaestro.js" />
+    <Content Include="Scripts\Aplicacion\ValidarCrearPlaneacion.js" />
+    <Content Include="Scripts\Ausencias\AlertarAusencia.js" />
+    <Content Include="Scripts\Ausencias\DatosAusencias.js" />
+    <Content Include="Scripts\Ausencias\GetDatosAfiliado.js" />
+    <Content Include="Scripts\Ausencias\NuevaAusencia.js" />
+    <Content Include="Scripts\Ausencias\Prorroga.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\ckeditor\adapters\jquery.js" />
+    <Content Include="Scripts\ckeditor\build-config.js" />
+    <Content Include="Scripts\ckeditor\ckeditor.js" />
+    <Content Include="Scripts\ckeditor\contents.css" />
+    <Content Include="Scripts\ckeditor\lang\en.js" />
+    <Content Include="Scripts\ckeditor\lang\es.js" />
+    <Content Include="Scripts\ckeditor\plugins\icons.png" />
+    <Content Include="Scripts\ckeditor\plugins\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\samples\css\samples.css" />
+    <Content Include="Scripts\ckeditor\samples\img\github-top.png" />
+    <Content Include="Scripts\ckeditor\samples\img\header-bg.png" />
+    <Content Include="Scripts\ckeditor\samples\img\header-separator.png" />
+    <Content Include="Scripts\ckeditor\samples\img\logo.png" />
+    <Content Include="Scripts\ckeditor\samples\img\navigation-tip.png" />
+    <Content Include="Scripts\ckeditor\samples\index.html" />
+    <Content Include="Scripts\ckeditor\samples\js\sample.js" />
+    <Content Include="Scripts\ckeditor\samples\js\sf.js" />
+    <Content Include="Scripts\ckeditor\samples\old\ajax.html" />
+    <Content Include="Scripts\ckeditor\samples\old\api.html" />
+    <Content Include="Scripts\ckeditor\samples\old\appendto.html" />
+    <Content Include="Scripts\ckeditor\samples\old\assets\inlineall\logo.png" />
+    <Content Include="Scripts\ckeditor\samples\old\assets\outputxhtml\outputxhtml.css" />
+    <Content Include="Scripts\ckeditor\samples\old\assets\sample.jpg" />
+    <Content Include="Scripts\ckeditor\samples\old\assets\uilanguages\languages.js" />
+    <Content Include="Scripts\ckeditor\samples\old\datafiltering.html" />
+    <Content Include="Scripts\ckeditor\samples\old\divreplace.html" />
+    <Content Include="Scripts\ckeditor\samples\old\index.html" />
+    <Content Include="Scripts\ckeditor\samples\old\inlineall.html" />
+    <Content Include="Scripts\ckeditor\samples\old\inlinebycode.html" />
+    <Content Include="Scripts\ckeditor\samples\old\inlinetextarea.html" />
+    <Content Include="Scripts\ckeditor\samples\old\jquery.html" />
+    <Content Include="Scripts\ckeditor\samples\old\readonly.html" />
+    <Content Include="Scripts\ckeditor\samples\old\replacebyclass.html" />
+    <Content Include="Scripts\ckeditor\samples\old\replacebycode.html" />
+    <Content Include="Scripts\ckeditor\samples\old\sample.css" />
+    <Content Include="Scripts\ckeditor\samples\old\sample.js" />
+    <Content Include="Scripts\ckeditor\samples\old\tabindex.html" />
+    <Content Include="Scripts\ckeditor\samples\old\toolbar\toolbar.html" />
+    <Content Include="Scripts\ckeditor\samples\old\uicolor.html" />
+    <Content Include="Scripts\ckeditor\samples\old\uilanguages.html" />
+    <Content Include="Scripts\ckeditor\samples\old\wysiwygarea\fullpage.html" />
+    <Content Include="Scripts\ckeditor\samples\old\xhtmlstyle.html" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\css\fontello.css" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\LICENSE.txt" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\index.html" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\js\abstracttoolbarmodifier.js" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\js\fulltoolbareditor.js" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\js\toolbarmodifier.js" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\js\toolbartextmodifier.js" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.css" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\codemirror.js" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\javascript.js" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\neo.css" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.css" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\show-hint.js" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\dialog.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\dialog_ie.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\dialog_ie7.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\dialog_ie8.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\dialog_iequirks.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\editor.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\editor_gecko.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\editor_ie.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\editor_ie7.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\editor_ie8.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\editor_iequirks.css" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\icons.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\icons_hidpi.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\arrow.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\close.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\hidpi\close.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\hidpi\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\hidpi\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\hidpi\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\lock-open.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\lock.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\refresh.png" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\images\spinner.gif" />
+    <Content Include="Scripts\ckeditor\styles.js" />
+    <Content Include="Scripts\Comunicaciones\ComunicacionesAdjuntas.js" />
+    <Content Include="Scripts\Comunicaciones\ComunicacionesExternas.js" />
+    <Content Include="Scripts\Comunicaciones\ComunicacionesInternas.js" />
+    <Content Include="Scripts\Comunicaciones\ComunicadosAPP.js" />
+    <Content Include="Scripts\Configuracion\ConfiguracionHHT.js" />
+    <Content Include="Scripts\d3\d3.js" />
+    <Content Include="Scripts\d3\d3.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\autoFill.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.foundation.js" />
+    <Content Include="Scripts\DataTables\autoFill.foundation.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.jqueryui.js" />
+    <Content Include="Scripts\DataTables\autoFill.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\autoFill.semanticui.js" />
+    <Content Include="Scripts\DataTables\autoFill.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\buttons.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\buttons.colVis.js" />
+    <Content Include="Scripts\DataTables\buttons.colVis.min.js" />
+    <Content Include="Scripts\DataTables\buttons.flash.js" />
+    <Content Include="Scripts\DataTables\buttons.flash.min.js" />
+    <Content Include="Scripts\DataTables\buttons.foundation.js" />
+    <Content Include="Scripts\DataTables\buttons.foundation.min.js" />
+    <Content Include="Scripts\DataTables\buttons.html5.js" />
+    <Content Include="Scripts\DataTables\buttons.html5.min.js" />
+    <Content Include="Scripts\DataTables\buttons.jqueryui.js" />
+    <Content Include="Scripts\DataTables\buttons.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\buttons.print.js" />
+    <Content Include="Scripts\DataTables\buttons.print.min.js" />
+    <Content Include="Scripts\DataTables\buttons.semanticui.js" />
+    <Content Include="Scripts\DataTables\buttons.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.autoFill.js" />
+    <Content Include="Scripts\DataTables\dataTables.autoFill.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.buttons.js" />
+    <Content Include="Scripts\DataTables\dataTables.buttons.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.colReorder.js" />
+    <Content Include="Scripts\DataTables\dataTables.colReorder.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedColumns.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedColumns.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedHeader.js" />
+    <Content Include="Scripts\DataTables\dataTables.fixedHeader.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.foundation.js" />
+    <Content Include="Scripts\DataTables\dataTables.foundation.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.jqueryui.js" />
+    <Content Include="Scripts\DataTables\dataTables.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.keyTable.js" />
+    <Content Include="Scripts\DataTables\dataTables.keyTable.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.material.js" />
+    <Content Include="Scripts\DataTables\dataTables.material.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.responsive.js" />
+    <Content Include="Scripts\DataTables\dataTables.responsive.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowGroup.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowGroup.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowReorder.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowReorder.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.scroller.js" />
+    <Content Include="Scripts\DataTables\dataTables.scroller.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.select.js" />
+    <Content Include="Scripts\DataTables\dataTables.select.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.semanticui.js" />
+    <Content Include="Scripts\DataTables\dataTables.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.uikit.js" />
+    <Content Include="Scripts\DataTables\dataTables.uikit.min.js" />
+    <Content Include="Scripts\DataTables\jquery.dataTables.js" />
+    <Content Include="Scripts\DataTables\jquery.dataTables.min.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\responsive.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\responsive.foundation.js" />
+    <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
+    <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
+    <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\responsive.semanticui.js" />
+    <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\Emergencias\Emergencias.js" />
+    <Content Include="Scripts\Empresas\ValidarConsultaSiarp.js" />
+    <Content Include="Scripts\Empresas\ValidarCrearMision.js" />
+    <Content Include="Scripts\Empresas\ValidarCrearVision.js" />
+    <Content Include="Scripts\EstudioPuestoTrabajo\EstudioPuesto.js" />
+    <Content Include="Scripts\EstudioPuestoTrabajo\NuevoSeguimiento.js" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\jquery.simplePagination.js" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\LICENSE.txt" />
+    <Content Include="Content\css\simplePagination.css" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\lib\jasmine-1.3.1\jasmine-html.js" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\lib\jasmine-1.3.1\jasmine.css" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\lib\jasmine-1.3.1\jasmine.js" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\lib\jquery.min.js" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\SpecRunner.html" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\spec\SimplePaginationSpec.js" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\spec\SpecHelper.js" />
+    <Content Include="Scripts\EvaluacionEstandarMinimo\evaluacion-estandar-minimo.js" />
+    <Content Include="Scripts\EvaluacionEstandarMinimo\paginador.js" />
+    <Content Include="Scripts\EvaluacionEstandarMinimo\reportes-estandar-minimos.js" />
+    <Content Include="Scripts\Evaluacion\evaluacion.js" />
+    <Content Include="Scripts\Empresas\ValidacionCrearSede.js" />
+    <Content Include="Scripts\Empresas\ValidarCrearUsuario.js" />
+    <Content Include="Scripts\fullcalendar.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\img\loading-ajax.gif" />
+    <Content Include="Scripts\Incidentes\IncidentesAT.js" />
+    <Content Include="Scripts\Incidentes\IncidentesEL.js" />
+    <Content Include="Scripts\Incidente\ConsultarIncidente.js" />
+    <Content Include="Scripts\Incidente\ReporteIncidente.js" />
+    <Content Include="Scripts\Indicadores\Indicadores.js" />
+    <Content Include="Scripts\bootstrap-theme.css.map" />
+    <Content Include="Scripts\bootstrap.css.map" />
+    <Content Include="Scripts\d3\README.md" />
+    <Content Include="Scripts\d3\LICENSE" />
+    <Content Include="Scripts\d3\CHANGES.md" />
+    <Content Include="Scripts\d3\API.md" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Plantillas\PlantillaPerfilSocioDemográfico.xlsx" />
+    <Content Include="Content\Bateria\Plantilla\AlisstaPlantillaConvocados.xlsx" />
+    <Content Include="Plantillas\Plantilla de Cargue DxSalud.xlsx" />
+    <Content Include="Content\PlanEmergenciaMasivos\bd_externa.xlsx" />
+    <Content Include="Content\PlanEmergenciaMasivos\bd_interna.xlsx" />
+    <Content Include="Content\PlanEmergenciaMasivos\bd_planayuda.xlsx" />
+    <Content Include="Plantillas\PlantillaRelacionesLaborales.xls" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.base64.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
+    <Content Include="Scripts\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\jquery.fileinput.js" />
+    <Content Include="Scripts\jquery.fileupload-ui.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
+    <Content Include="Scripts\jquery.iframe-transport.js" />
+    <Content Include="Scripts\jquery.numeric.js" />
+    <Content Include="Scripts\jquery.timepicker.js" />
+    <Content Include="Scripts\jquery.twbsPagination-1.3.1.js" />
+    <Content Include="Scripts\jquery.twbsPagination-1.3.1.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="config.json" />
+    <Content Include="Content\EPPArchivos\Plantilla\instrucciones_uso_EPP.pdf" />
+    <Content Include="Content\EPPArchivos\Plantilla\PlantillaEPP.xlsx" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\LiderazgoGerencial\liderazgoGerencial.js" />
+    <Content Include="Scripts\LiderazgoGerencial\ValidacionesCrearRol.js" />
+    <Content Include="Scripts\LiderazgoGerencial\ValidacionesLiderazgoGerencial.js" />
+    <Content Include="Scripts\locale-all.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\Analisis5Porque.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AnalisisArbol.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AnalisisCausa.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AnalisisLluvia.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\Archivos.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\ArchivosEd.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\Auditoria.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AuditoriaEditarPlan.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AuditoriaEditarPrograma.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AuditoriaInforme.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AuditoriaPlan.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AuditoriaPrograma.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\AuditoriaVerificacion.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\ConsultaACAP.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\EditarAccion.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\EditarActividad.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\EditarHallazgo.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\EditarSeguimiento.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\NuevaAccion.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\NuevaActividad.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\NuevoHallazgo.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\NuevoSeguimiento.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\PlanDeAccion.js" />
+    <Content Include="Scripts\MedicionyEvaluacion\Programa.js" />
+    <Content Include="Scripts\MindFusion.Diagramming.js" />
+    <Content Include="Scripts\ajax-loading.js" />
+    <Content Include="Scripts\Base\Messages\notify.min.js" />
+    <Content Include="Scripts\bootstrap-filestyle.js" />
+    <Content Include="Scripts\bootstrap-filestyle.min.js" />
+    <Content Include="Scripts\bootstrap-theme.css" />
+    <Content Include="Scripts\bootstrap-theme.min.css" />
+    <Content Include="Scripts\bootstrap.css" />
+    <Content Include="Scripts\bootstrap.min.css" />
+    <Content Include="fonts\font-awesome.min.css" />
+    <Content Include="DiagramaProyecto.cd" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\Raleway-Regular.ttf" />
+    <Content Include="Content\ArchivosDocumentacion\Datos.xlsx" />
+    <Content Include="Plantillas\Datos.xls" />
+    <Content Include="Content\DataTables\css\semanticui.scss" />
+    <Content Include="Content\DataTables\css\mixins.scss" />
+    <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="App_Code\Treeview.cshtml" />
+    <None Include="Properties\PublishProfiles\pos.pubxml" />
+    <Content Include="Scripts\ckeditor\config.js" />
+    <Content Include="Scripts\Empresas\Diagrama.js" />
+    <Content Include="Scripts\Empresas\empresa.js" />
+    <Content Include="Scripts\Empresas\Proceso.js" />
+    <Content Include="Scripts\form-elements.css" />
+    <Content Include="Scripts\go.js" />
+    <Content Include="Scripts\animated.less" />
+    <Content Include="Scripts\bordered-pulled.less" />
+    <Content Include="Scripts\core.less" />
+    <Content Include="Scripts\fixed-width.less" />
+    <Content Include="Scripts\font-awesome.less" />
+    <Content Include="Scripts\icons.less" />
+    <Content Include="Scripts\font-awesome.scss" />
+    <Content Include="Scripts\img\ajax-loading.gif" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\ckeditor\samples\old\assets\posteddata.php" />
+    <Content Include="Scripts\ckeditor\samples\old\sample_posteddata.php" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\config.json" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\fontello.eot" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\fontello.svg" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\fontello.ttf" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
+    <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
+    <Content Include="Scripts\ckeditor\skins\moonocolor\readme.md" />
+    <Content Include="Scripts\ckeditor\CHANGES.md" />
+    <Content Include="Scripts\ckeditor\LICENSE.md" />
+    <Content Include="Scripts\ckeditor\README.md" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\.gitignore" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\bower.json" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\README.md" />
+    <Content Include="Scripts\flaviusmatis-simplePagination.js-e32c66e\tests\lib\jasmine-1.3.1\MIT.LICENSE" />
+    <Content Include="Scripts\jquery.backstretch.js" />
+    <Content Include="Scripts\jquery.backstretch.min.js" />
+    <Content Include="Scripts\jquery.js" />
+    <Content Include="Scripts\jsplug.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\MvcReportViewer.js" />
+    <Content Include="Scripts\Organizacion\BuscarRecursosPorSede.js" />
+    <Content Include="Scripts\Organizacion\Competencia.js" />
+    <Content Include="Scripts\Organizacion\Documentacion.js" />
+    <Content Include="Scripts\Organizacion\ValidacionBuscar.js" />
+    <Content Include="Scripts\Organizacion\ValidacionCompetencia.js" />
+    <Content Include="Scripts\Organizacion\ValidacionCrearRecursos.js" />
+    <Content Include="Scripts\Organizacion\ValidarBuscarRecursos.js" />
+    <Content Include="Scripts\Organizacion\ValidarCrearFaseRecurso.js" />
+    <Content Include="Scripts\Organizacion\ValidarCrearTipoRecurso.js" />
+    <Content Include="Scripts\Participacion\Comites.js" />
+    <Content Include="Scripts\Participacion\Consulta.js" />
+    <Content Include="Scripts\Participacion\ReporteCondicionesInseguras.js" />
+    <Content Include="Scripts\placeholder.js" />
+    <Content Include="Scripts\PlanCapacitacion\Calendario.js" />
+    <Content Include="Scripts\PlanCapacitacion\PlanCapacitacion.js" />
+    <Content Include="Scripts\PlanEmpresa\Calendario.js" />
+    <Content Include="Scripts\PlanEmpresa\PlanEmpresa.js" />
+    <Content Include="Scripts\Planificacion\DxSaludGeneral.js" />
+    <Content Include="Scripts\Planificacion\evaluacion-estandar-minimo.js" />
+    <Content Include="Scripts\Planificacion\ObjetivoSST.js" />
+    <Content Include="Scripts\Planificacion\planificacion.js" />
+    <Content Include="Scripts\Planificacion\ValidacionesPlanificacion.js" />
+    <Content Include="Scripts\Politica\Politica.js" />
+    <Content Include="Scripts\Reportes\Reportes.js" />
+    <Content Include="Scripts\Reportes\ReportesGraficas.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Revision\Revision.js" />
+    <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
+    <Content Include="Scripts\tinymce\langs\es.js" />
+    <Content Include="Scripts\tinymce\license.txt" />
+    <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\advlist\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\anchor\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\anchor\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\autolink\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\autosave\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\autosave\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\charmap\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\charmap\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\codesample\css\prism.css" />
+    <Content Include="Scripts\tinymce\plugins\codesample\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\codesample\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\code\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\code\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\css\dialog.css" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\buttons.png" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\icons.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\items.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\menu_arrow.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\menu_check.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\progress.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\img\tabs.gif" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\tiny_mce_popup.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\editable_selects.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\form_utils.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\mctabs.js" />
+    <Content Include="Scripts\tinymce\plugins\compat3x\utils\validate.js" />
+    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\directionality\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\directionality\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-cool.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-cry.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-embarassed.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-foot-in-mouth.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-frown.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-innocent.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-kiss.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-laughing.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-money-mouth.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-sealed.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-smile.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-surprised.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-tongue-out.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-undecided.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-wink.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\img\smiley-yell.gif" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\help\img\logo.png" />
+    <Content Include="Scripts\tinymce\plugins\help\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\help\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\hr\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\hr\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\image\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\image\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\importcss\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\importcss\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\link\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\link\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\lists\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\lists\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\media\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\media\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\preview\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\print\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\print\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\save\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\save\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\table\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\table\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\template\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\template\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\toc\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\toc\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\css\visualblocks.css" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.min.js" />
+    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.js" />
+    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.min.js" />
+    <Content Include="Scripts\tinymce\skins\lightgray\content.inline.min.css" />
+    <Content Include="Scripts\tinymce\skins\lightgray\content.min.css" />
+    <Content Include="Scripts\tinymce\skins\lightgray\content.mobile.min.css" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.svg" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.svg" />
+    <Content Include="Scripts\tinymce\skins\lightgray\img\anchor.gif" />
+    <Content Include="Scripts\tinymce\skins\lightgray\img\loader.gif" />
+    <Content Include="Scripts\tinymce\skins\lightgray\img\object.gif" />
+    <Content Include="Scripts\tinymce\skins\lightgray\img\trans.gif" />
+    <Content Include="Scripts\tinymce\skins\lightgray\skin.min.css" />
+    <Content Include="Scripts\tinymce\skins\lightgray\skin.mobile.min.css" />
+    <Content Include="Scripts\tinymce\themes\inlite\theme.js" />
+    <Content Include="Scripts\tinymce\themes\inlite\theme.min.js" />
+    <Content Include="Scripts\tinymce\themes\mobile\theme.js" />
+    <Content Include="Scripts\tinymce\themes\mobile\theme.min.js" />
+    <Content Include="Scripts\tinymce\themes\modern\theme.js" />
+    <Content Include="Scripts\tinymce\themes\modern\theme.min.js" />
+    <Content Include="Scripts\tinymce\tinymce.js" />
+    <Content Include="Scripts\tinymce\tinymce.min.js" />
+    <Content Include="Scripts\Transversal\dpto-mcpio.js" />
+    <Content Include="Scripts\Transversal\datepicker-es.js" />
+    <Content Include="Scripts\Transversal\datepicker.js" />
+    <Content Include="Scripts\Transversal\generales.js" />
+    <Content Include="Scripts\jquery.multiselect.min.js" />
+    <Content Include="Scripts\ui.dropdownchecklist.js" />
+    <Content Include="Scripts\url.js" />
+    <Content Include="Scripts\utils.js" />
+    <Content Include="Scripts\scripts.js" />
+    <Content Include="Scripts\style.css" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Service References\GestposService\SG_SST.GestposService.obtenerLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\GestposService\SG_SST.GestposService.rtaObtenerLink.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\GestposService\SG_SST.GestposService.rtaValidarLink.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\GestposService\SG_SST.GestposService.validarLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-mobile.woff" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
+    <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.eot" />
+    <Content Include="Scripts\tinymce\langs\readme.md" />
+    <None Include="Service References\GestposService\ws_login.disco" />
+    <None Include="Service References\GestposService\configuration91.svcinfo" />
+    <None Include="Service References\GestposService\configuration.svcinfo" />
+    <None Include="Service References\GestposService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\ComitesConvivencia\DatosQuejas.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\ComitesConvivencia\DatosSeguimiento.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Comites\ActaCopasstPDF.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Comites\CrearActaCopasst.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Comites\DatosActaCopasst.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Comites\HistoricoActaCopasst.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Comites\MiembroActaCopasstGuardados.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Empresas\Create.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\imagenes\empresa.jpg" />
+    <Content Include="Views\PromocionPrevencion\PlanSeguridadVial.cshtml" />
+    <Content Include="Views\PromocionPrevencion\SeguridadVialFormulario.cshtml" />
+    <Content Include="Views\ReportesAplicacion\VisorDeReportes.aspx" />
+    <Content Include="Views\ReportesAplicacion\VisorDeReportesAus.aspx" />
+    <Content Include="Views\ReportesAplicacion\VisorDeReportesInd.aspx" />
+    <Content Include="Views\ReportesAplicacion\VisorDeReportesIndDatos.aspx" />
+    <Content Include="Views\ReportesAplicacion\VisorDeReportesIndicadoresAusentismo.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Metodologia\Index.cshtml" />
+    <Content Include="Views\Gobierno\Index.cshtml" />
+    <Content Include="Views\Consideraciones\Index.cshtml" />
+    <Content Include="Views\Metodologia\MetodologiaGTC45.cshtml" />
+    <Content Include="Views\TipoDePeligros\Create.cshtml" />
+    <Content Include="Views\TipoDePeligros\Delete.cshtml" />
+    <Content Include="Views\TipoDePeligros\Details.cshtml" />
+    <Content Include="Views\TipoDePeligros\Edit.cshtml" />
+    <Content Include="Views\TipoDePeligros\Index.cshtml" />
+    <Content Include="Views\ClasificacionDePeligros\Create.cshtml" />
+    <Content Include="Views\ClasificacionDePeligros\Delete.cshtml" />
+    <Content Include="Views\ClasificacionDePeligros\Details.cshtml" />
+    <Content Include="Views\ClasificacionDePeligros\Edit.cshtml" />
+    <Content Include="Views\ClasificacionDePeligros\Index.cshtml" />
+    <Content Include="Views\RelacionesLaborales\Index.cshtml" />
+    <Content Include="Views\NotificarInconsistencias\Index.cshtml" />
+    <Content Include="Views\CargarPolitica\Index.cshtml" />
+    <Content Include="Views\NivelDeDeficiencias\Create.cshtml" />
+    <Content Include="Views\NivelDeDeficiencias\Delete.cshtml" />
+    <Content Include="Views\NivelDeDeficiencias\Details.cshtml" />
+    <Content Include="Views\NivelDeDeficiencias\Edit.cshtml" />
+    <Content Include="Views\NivelDeDeficiencias\Index.cshtml" />
+    <Content Include="Views\NivelesDeExposicion\Create.cshtml" />
+    <Content Include="Views\NivelesDeExposicion\Delete.cshtml" />
+    <Content Include="Views\NivelesDeExposicion\Details.cshtml" />
+    <Content Include="Views\NivelesDeExposicion\Edit.cshtml" />
+    <Content Include="Views\NivelesDeExposicion\Index.cshtml" />
+    <Content Include="Views\TipoMetodologias\Create.cshtml" />
+    <Content Include="Views\TipoMetodologias\Delete.cshtml" />
+    <Content Include="Views\TipoMetodologias\Details.cshtml" />
+    <Content Include="Views\TipoMetodologias\Edit.cshtml" />
+    <Content Include="Views\TipoMetodologias\Index.cshtml" />
+    <Content Include="Views\Grupos\Create.cshtml" />
+    <Content Include="Views\Grupos\Delete.cshtml" />
+    <Content Include="Views\Grupos\Details.cshtml" />
+    <Content Include="Views\Grupos\Edit.cshtml" />
+    <Content Include="Views\Grupos\Index.cshtml" />
+    <Content Include="Views\Consecuencias\Create.cshtml" />
+    <Content Include="Views\Consecuencias\Delete.cshtml" />
+    <Content Include="Views\Consecuencias\Details.cshtml" />
+    <Content Include="Views\Consecuencias\Edit.cshtml" />
+    <Content Include="Views\Consecuencias\Index.cshtml" />
+    <Content Include="Views\Metodologia\GenerarPeligro.cshtml" />
+    <Content Include="Views\InterpretacionDeProbabilidades\Create.cshtml" />
+    <Content Include="Views\InterpretacionDeProbabilidades\Delete.cshtml" />
+    <Content Include="Views\InterpretacionDeProbabilidades\Details.cshtml" />
+    <Content Include="Views\InterpretacionDeProbabilidades\Edit.cshtml" />
+    <Content Include="Views\InterpretacionDeProbabilidades\Index.cshtml" />
+    <Content Include="Views\InterpretacionNivelDeRiesgos\Create.cshtml" />
+    <Content Include="Views\InterpretacionNivelDeRiesgos\Delete.cshtml" />
+    <Content Include="Views\InterpretacionNivelDeRiesgos\Details.cshtml" />
+    <Content Include="Views\InterpretacionNivelDeRiesgos\Edit.cshtml" />
+    <Content Include="Views\InterpretacionNivelDeRiesgos\Index.cshtml" />
+    <Content Include="Views\Metodologia\MetodologiaINSHT.cshtml" />
+    <Content Include="Views\Metodologia\MetodologiaRAM.cshtml" />
+    <Content Include="Views\Empleado\Create.cshtml" />
+    <Content Include="Views\Empleado\Delete.cshtml" />
+    <Content Include="Views\Empleado\Details.cshtml" />
+    <Content Include="Views\Empleado\Edit.cshtml" />
+    <Content Include="Views\Empleado\Index.cshtml" />
+    <Content Include="Views\Inconsistencialaboral\Create.cshtml" />
+    <Content Include="Views\Inconsistencialaboral\Delete.cshtml" />
+    <Content Include="Views\Inconsistencialaboral\Details.cshtml" />
+    <Content Include="Views\Inconsistencialaboral\Edit.cshtml" />
+    <Content Include="Views\Inconsistencialaboral\Index.cshtml" />
+    <Content Include="Views\Relaciones\Index.cshtml" />
+    <Content Include="Views\Probabilidades\Create.cshtml" />
+    <Content Include="Views\Probabilidades\Delete.cshtml" />
+    <Content Include="Views\Probabilidades\Details.cshtml" />
+    <Content Include="Views\Probabilidades\Edit.cshtml" />
+    <Content Include="Views\Probabilidades\Index.cshtml" />
+    <Content Include="Views\Sede\Create.cshtml" />
+    <Content Include="Views\Sede\Delete.cshtml" />
+    <Content Include="Views\Sede\Details.cshtml" />
+    <Content Include="Views\Sede\Edit.cshtml" />
+    <Content Include="Views\Sede\Index.cshtml" />
+    <Content Include="Views\CentroTrabajo\Create.cshtml" />
+    <Content Include="Views\CentroTrabajo\Delete.cshtml" />
+    <Content Include="Views\CentroTrabajo\Details.cshtml" />
+    <Content Include="Views\CentroTrabajo\Edit.cshtml" />
+    <Content Include="Views\CentroTrabajo\Index.cshtml" />
+    <Content Include="Views\TipoDocumentos\Create.cshtml" />
+    <Content Include="Views\TipoDocumentos\Delete.cshtml" />
+    <Content Include="Views\TipoDocumentos\Details.cshtml" />
+    <Content Include="Views\TipoDocumentos\Edit.cshtml" />
+    <Content Include="Views\TipoDocumentos\Index.cshtml" />
+    <Content Include="Views\Sede\SedesPorMunicipios.cshtml" />
+    <Content Include="Views\Metodologia\VisualizarPeligrosSede.cshtml" />
+    <Content Include="Views\Metodologia\MatrizGTC45.cshtml" />
+    <Content Include="Views\Metodologia\MatrizINSTH.cshtml" />
+    <Content Include="Views\Empresas\Delete.cshtml" />
+    <Content Include="Views\Empresas\Details.cshtml" />
+    <Content Include="Views\Empresas\Edit.cshtml" />
+    <Content Include="Views\Empresas\Index.cshtml" />
+    <Content Include="Views\Usuarios\Create.cshtml" />
+    <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
+    <Content Include="Views\Usuarios\Edit.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Politicasst\MenuPolitica.cshtml" />
+    <Content Include="Views\Politicasst\GetReporte.cshtml" />
+    <Content Include="Views\Politicasst\CargarPolitica.cshtml" />
+    <Content Include="Views\Politicasst\MostrarPoliticaPDF.cshtml" />
+    <Content Include="Views\Politicasst\OtrasInteraccionesDirectrices.cshtml" />
+    <Content Include="Views\Politicasst\Index.cshtml" />
+    <Content Include="Views\Consideraciones\MenuAnalisis.cshtml" />
+    <Content Include="Views\Consideraciones\DOFA.cshtml" />
+    <Content Include="Views\Consideraciones\PEST.cshtml" />
+    <Content Include="Views\TipoAnalisis\Create.cshtml" />
+    <Content Include="Views\TipoAnalisis\Delete.cshtml" />
+    <Content Include="Views\TipoAnalisis\Details.cshtml" />
+    <Content Include="Views\TipoAnalisis\Edit.cshtml" />
+    <Content Include="Views\TipoAnalisis\Index.cshtml" />
+    <Content Include="Views\TipoElementoAnalisis\Create.cshtml" />
+    <Content Include="Views\TipoElementoAnalisis\Delete.cshtml" />
+    <Content Include="Views\TipoElementoAnalisis\Details.cshtml" />
+    <Content Include="Views\TipoElementoAnalisis\Edit.cshtml" />
+    <Content Include="Views\TipoElementoAnalisis\Index.cshtml" />
+    <Content Include="Views\Empleado\organigrama.cshtml" />
+    <Content Include="Views\Consideraciones\MostrarDOFA.cshtml" />
+    <Content Include="Views\Consideraciones\MostrarPEST.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Create.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Delete.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Details.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Edit.cshtml" />
+    <Content Include="Views\EmpleadoOrg\Create.cshtml" />
+    <Content Include="Views\EmpleadoOrg\Delete.cshtml" />
+    <Content Include="Views\EmpleadoOrg\Details.cshtml" />
+    <Content Include="Views\EmpleadoOrg\Edit.cshtml" />
+    <Content Include="Views\EmpleadoOrg\Index.cshtml" />
+    <Content Include="Views\OtrasInteracciones\Index.cshtml" />
+    <Content Include="Views\Metodologia\MatrizRAM.cshtml" />
+    <Content Include="Views\Create.cshtml" />
+    <Content Include="Views\Delete.cshtml" />
+    <Content Include="Views\Details.cshtml" />
+    <Content Include="Views\Edit.cshtml" />
+    <Content Include="Views\Index.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Create.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\EstimacionDeRiesgos\Delete.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\EstimacionDeRiesgos\Details.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Edit.cshtml" />
+    <Content Include="Views\OtrasInteracciones\OtrasInteraccionesVP.cshtml" />
+    <Content Include="Scripts\larger.less" />
+    <Content Include="Scripts\list.less" />
+    <Content Include="Scripts\mixins.less" />
+    <Content Include="Scripts\path.less" />
+    <Content Include="Scripts\rotated-flipped.less" />
+    <Content Include="Scripts\stacked.less" />
+    <Content Include="Scripts\variables.less" />
+    <Content Include="Scripts\_animated.scss" />
+    <Content Include="Scripts\_bordered-pulled.scss" />
+    <Content Include="Scripts\_core.scss" />
+    <Content Include="Scripts\_fixed-width.scss" />
+    <Content Include="Scripts\_icons.scss" />
+    <Content Include="Scripts\_larger.scss" />
+    <Content Include="Scripts\_list.scss" />
+    <Content Include="Scripts\_mixins.scss" />
+    <Content Include="Scripts\_path.scss" />
+    <Content Include="Scripts\_rotated-flipped.scss" />
+    <Content Include="Scripts\_stacked.scss" />
+    <Content Include="Scripts\_variables.scss" />
+    <Content Include="Views\OtrasInteracciones\MostrarOtrasInteraccionesPDF.cshtml" />
+    <Content Include="Views\Organigrama\Index.cshtml" />
+    <Content Include="Views\Gobierno\misionM.cshtml" />
+    <Content Include="Views\Gobierno\visionV.cshtml" />
+    <Content Include="Views\Metodologia\EditMetodologiaGTC45.cshtml" />
+    <Content Include="Views\Metodologia\EditMetodologiaINSHT.cshtml" />
+    <Content Include="Views\Metodologia\EditMetodologiaRAM.cshtml" />
+    <Content Include="Views\Proceso\MenuProcesos.cshtml" />
+    <Content Include="Views\Metodologia\prueba.cshtml" />
+    <Content Include="Views\Proceso\CrearProceso.cshtml" />
+    <Content Include="Views\EstimacionDeRiesgos\Index.cshtml" />
+    <Content Include="Views\Proceso\Create.cshtml" />
+    <Content Include="Views\Politicasst\ReportePolitica_Aplicativo.cshtml" />
+    <Content Include="Views\Proceso\Delete.cshtml" />
+    <Content Include="Views\Proceso\Details.cshtml" />
+    <Content Include="Views\Proceso\Edit.cshtml" />
+    <Content Include="Views\Proceso\Index.cshtml" />
+    <Content Include="Views\Empresas\Estandares.cshtml" />
+    <Content Include="Views\Shared\AyudasPlanificacion.cshtml" />
+    <Content Include="Views\Proceso\ProcesosBusqueda.cshtml" />
+    <Content Include="Views\Politicasst\ReportePolitica_Aplicativo2.cshtml" />
+    <Content Include="Views\Recursos\Index.cshtml" />
+    <Content Include="Views\Fase\Create.cshtml" />
+    <Content Include="Views\Fase\Delete.cshtml" />
+    <Content Include="Views\Fase\Details.cshtml" />
+    <Content Include="Views\Fase\Edit.cshtml" />
+    <Content Include="Views\Fase\Index.cshtml" />
+    <Content Include="Views\TipoRecurso\Create.cshtml" />
+    <Content Include="Views\TipoRecurso\Delete.cshtml" />
+    <Content Include="Views\TipoRecurso\Details.cshtml" />
+    <Content Include="Views\TipoRecurso\Edit.cshtml" />
+    <Content Include="Views\TipoRecurso\Index.cshtml" />
+    <Content Include="Views\Recursos\CrearRecurso.cshtml" />
+    <Content Include="Views\Organizacion\Index.cshtml" />
+    <Content Include="Views\RelacionesLaborales\RelacionesLaboralesVP.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\RelacionesLaborales\Relaciones_LaboralesV.cshtml" />
+    <Content Include="Views\RelacionesLaborales\Relaciones_Laborales.cshtml" />
+    <Content Include="Views\Recursos\ListadoRecursos.cshtml" />
+    <Content Include="Views\Recursos\RecursosPorSedeVP.cshtml" />
+    <Content Include="Views\Presupuesto\CrearPresupuesto.cshtml" />
+    <Content Include="Views\Organizacion\AplicacionVP.cshtml" />
+    <Content Include="Views\Organizacion\EmpresaVP.cshtml" />
+    <Content Include="Views\Organizacion\LiderazgoGerencialVP.cshtml" />
+    <Content Include="Views\Organizacion\Medicion_Y_EvaluacionVP.cshtml" />
+    <Content Include="Views\Organizacion\MostrarOrganizacion_Documentacion.cshtml" />
+    <Content Include="Views\Organizacion\OrganizacionVP.cshtml" />
+    <Content Include="Views\Organizacion\Participacion_ColaboradoresVP.cshtml" />
+    <Content Include="Views\Organizacion\PlanificacionVP.cshtml" />
+    <Content Include="Views\Organizacion\PoliticaVP.cshtml" />
+    <Content Include="Views\Organizacion\Reporte_E_InvestigacionVP.cshtml" />
+    <Content Include="Views\Presupuesto\GenerarPresupuestoVP.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\Index.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\AgregarRequisitosLegalesOtros.cshtml" />
+    <Content Include="Views\Presupuesto\MenuPresupuesto.cshtml" />
+    <Content Include="Views\Presupuesto\BuscarPresupuestos.cshtml" />
+    <Content Include="Views\Presupuesto\PresupuestoSedePorPeriodoVP.cshtml" />
+    <Content Include="Views\Presupuesto\EliminarPresupuestoVP.cshtml" />
+    <Content Include="Views\Presupuesto\EditarPresupuesto.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\EditarRequisitosLegalesOtros.cshtml" />
+    <Content Include="Views\Rol\RolPorResponsabilidadesVP.cshtml" />
+    <Content Include="Views\Recursos\EditarRecursos.cshtml" />
+    <Content Include="Views\ObligacionesEmpleadores\Create.cshtml" />
+    <Content Include="Views\ObligacionesEmpleadores\Delete.cshtml" />
+    <Content Include="Views\ObligacionesEmpleadores\Details.cshtml" />
+    <Content Include="Views\ObligacionesEmpleadores\Edit.cshtml" />
+    <Content Include="Views\ObligacionesEmpleadores\Index.cshtml" />
+    <Content Include="Views\ObligacionesArls\Create.cshtml" />
+    <Content Include="Views\ObligacionesArls\Delete.cshtml" />
+    <Content Include="Views\ObligacionesArls\Details.cshtml" />
+    <Content Include="Views\ObligacionesArls\Edit.cshtml" />
+    <Content Include="Views\ObligacionesArls\Index.cshtml" />
+    <Content Include="Views\Presupuesto\CrearInformePresupuesto.cshtml" />
+    <Content Include="Views\Presupuesto\EjecutarPresupuesto.cshtml" />
+    <Content Include="Views\Presupuesto\BuscarPresupuestoInforme.cshtml" />
+    <Content Include="Views\Presupuesto\PresupuestoSedePorPeriodoInformeVP.cshtml" />
+    <Content Include="Views\Presupuesto\InformePresupuestoVP.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Recursos\RecursosPorSedePDF.cshtml" />
+    <Content Include="Views\Rol\RolResponabilidadesPDF.cshtml" />
+    <Content Include="Views\Rol\CrearRol.cshtml" />
+    <Content Include="Views\Rol\EditRolVP.cshtml" />
+    <Content Include="Views\Rol\ActaNombramientoRepresentantePDF.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\RequisitosLegalesBusquedaVP.cshtml" />
+    <Content Include="Views\Evaluacion\Index.cshtml" />
+    <Content Include="Views\EvaluacionEstandarMinimo\Index.cshtml" />
+    <Content Include="Views\EvaluacionPdf\GeneradorPdf.cshtml" />
+    <Content Include="Views\Shared\_CalificacionActual.cshtml" />
+    <Content Include="Views\Shared\_Ciclos.cshtml" />
+    <Content Include="Views\Shared\_NuevoAspecto.cshtml" />
+    <Content Include="Views\Shared\_ObtenerCriteriosPorCiclo.cshtml" />
+    <Content Include="Views\Competencia\CreateTematica.cshtml" />
+    <Content Include="Views\Cargo\Create.cshtml" />
+    <Content Include="Views\Cargo\Delete.cshtml" />
+    <Content Include="Views\Cargo\Details.cshtml" />
+    <Content Include="Views\Cargo\Edit.cshtml" />
+    <Content Include="Views\Cargo\Index.cshtml" />
+    <Content Include="Views\PerfilSocioDemoGrafico\Index.cshtml" />
+    <Content Include="Views\Afiliado\Afiliado.cshtml" />
+    <Content Include="Views\Afiliado\ConsultarAfiliado.cshtml" />
+    <Content Include="Views\Alertas\Alertas.cshtml" />
+    <Content Include="Views\Ausencias\ConsultarAusencia.cshtml" />
+    <Content Include="Views\Indicadores\Indicadores.cshtml" />
+    <Content Include="Views\Masivo\CargarPlantilla.cshtml" />
+    <Content Include="Views\Reportes\Reportes.cshtml" />
+    <Content Include="Views\Shared\_AlertasAusentismo.cshtml" />
+    <Content Include="Views\Shared\_DatosTrabajador.cshtml" />
+    <Content Include="Views\Shared\_DetallesAusencias.cshtml" />
+    <Content Include="Views\Shared\_NuevaAusencia.cshtml" />
+    <Content Include="Views\Shared\_ProrrogasAusencias.cshtml" />
+    <Content Include="Views\Shared\_ReporteCostoContingencia.cshtml" />
+    <Content Include="Views\Shared\_ReporteDiasEps.cshtml" />
+    <Content Include="Views\Shared\_ReporteOcupacion.cshtml" />
+    <Content Include="Views\Shared\_ReportesContingencia.cshtml" />
+    <Content Include="Views\Shared\_ReportesDepartamento.cshtml" />
+    <Content Include="Views\Shared\_ReporteSede.cshtml" />
+    <Content Include="Views\Shared\_ReportesEnfermedad.cshtml" />
+    <Content Include="Views\Shared\_ReportesEvento.cshtml" />
+    <Content Include="Views\Shared\_ReporteSexo.cshtml" />
+    <Content Include="Views\Shared\_TblIndicadores.cshtml" />
+    <Content Include="Views\Configuracion_HHT\ConfiguracionHHT.cshtml" />
+    <Content Include="Views\Competencia\ViewCompetencia.cshtml" />
+    <Content Include="Views\Ausencias\RegistrarAusencia.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\CargarDxGralDeSalud.cshtml" />
+    <Content Include="Views\Shared\_CalificacionFinal.cshtml" />
+    <Content Include="Views\Shared\_InformeParcial.cshtml" />
+    <Content Include="Views\Shared\_NuevaActividad.cshtml" />
+    <Content Include="Views\Shared\_PlanAccionEstandaresMinimos.cshtml" />
+    <Content Include="Views\EvaluacionEstandarMinimo\DescargarPlanAccionPDF.cshtml" />
+    <Content Include="Views\Shared\_EvaluacionInicialPdf.cshtml" />
+    <Content Include="Views\Shared\_InformeFinal.cshtml" />
+    <Content Include="Views\EvaluacionEstandarMinimo\EvaluacionPositiva.cshtml" />
+    <Content Include="Views\Competencia\RolPorTematicaVP.cshtml" />
+    <Content Include="Views\Acciones\Index.cshtml" />
+    <Content Include="Views\Acciones\Analisis5Porque.cshtml" />
+    <Content Include="Views\Acciones\AnalisisArbol.cshtml" />
+    <Content Include="Views\Acciones\AnalisisCausa.cshtml" />
+    <Content Include="Views\Acciones\AnalisisLluvia.cshtml" />
+    <Content Include="Views\Acciones\NuevaAccion.cshtml" />
+    <Content Include="Views\Acciones\NuevoHallazgo.cshtml" />
+    <Content Include="Views\PerfilSocioDemoGrafico\Listado.cshtml" />
+    <Content Include="Views\MaestroTipoInspeccions\Create.cshtml" />
+    <Content Include="Views\PerfilSocioDemoGrafico\Edit.cshtml" />
+    <Content Include="Views\MaestroTipoInspeccions\Delete.cshtml" />
+    <Content Include="Views\MaestroTipoInspeccions\Details.cshtml" />
+    <Content Include="Views\MaestroTipoInspeccions\Edit.cshtml" />
+    <Content Include="Views\MaestroTipoInspeccions\Index.cshtml" />
+    <Content Include="Views\Acciones\NuevaActividad.cshtml" />
+    <Content Include="Views\Acciones\NuevoSeguimiento.cshtml" />
+    <Content Include="Views\Acciones\Archivos.cshtml" />
+    <Content Include="Views\Acciones\ConsultaACAP.cshtml">
+      <BrowseToURL>~/Acciones/ConsultarAccion</BrowseToURL>
+    </Content>
+    <Content Include="Views\Ausencias\CargueMasivo.cshtml" />
+    <Content Include="Views\PlandeInspeccion\Index.cshtml" />
+    <Content Include="Views\Ausencias\AlertarAusencia.cshtml" />
+    <Content Include="Views\CrearEmpresaUsuaria\Index.cshtml" />
+    <Content Include="Views\Ausencias\AlertarAusenciaConsultar.cshtml" />
+    <Content Include="Views\Shared\_TotalAcumuladoIndicadores.cshtml" />
+    <Content Include="Views\Shared\_IndicadoresPorPeriodo.cshtml" />
+    <Content Include="Views\AdminUsuarios\Index.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\VisualizadorDocDX.cshtml" />
+    <Content Include="Views\Shared\_UserLogueado.cshtml" />
+    <Content Include="Views\Competencia\CompetenciaPorTematicaVP.cshtml" />
+    <None Include="Service References\GestposService\ws_login.wsdl" />
+    <Content Include="Views\Shared\_ReporteCantidadEventosEnfermedades.cshtml" />
+    <Content Include="Views\PlandeInspeccion\CrearInspecciones.cshtml" />
+    <Content Include="Views\RelacionesLaborales\ConsultaRelacionesLaborales.cshtml" />
+    <Content Include="Views\RelacionesLaborales\Consultar.cshtml" />
+    <Content Include="Views\RelacionesLaborales\ConsultarFiltros.cshtml" />
+    <Content Include="Views\RelacionesLaborales\ConsultarTercero.cshtml" />
+    <Content Include="Views\RelacionesLaborales\ConsultaTerceroRelacionesLaborales.cshtml" />
+    <Content Include="Views\RelacionesLaborales\ConsultarTerceroFiltros.cshtml" />
+    <Content Include="Views\Consideraciones\DOFA_PDF.cshtml" />
+    <Content Include="Views\Consideraciones\PEST_PDF.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\CrearDxGralDeSalud.cshtml" />
+    <Content Include="Views\Incidentes\Reportar.cshtml" />
+    <Content Include="Views\Shared\_ReporteAusenciasPorGruposEtarios.cshtml" />
+    <Content Include="Views\Shared\_ReporteAusenciasPorProcesos.cshtml" />
+    <Content Include="Views\Shared\_ReporteAusenciasPorTipoVinculacion.cshtml" />
+    <Content Include="Views\Acciones\EditarAccion.cshtml" />
+    <Content Include="Views\Acciones\ArchivosEd.cshtml" />
+    <Content Include="Views\Acciones\EditarHallazgo.cshtml" />
+    <Content Include="Views\Acciones\EditarActividad.cshtml" />
+    <Content Include="Views\Acciones\EditarSeguimiento.cshtml" />
+    <Content Include="Views\Home\CrearUsuarioSistema.cshtml" />
+    <Content Include="Views\Acciones\FooterPDF.cshtml" />
+    <Content Include="Views\Incidente\Consultar.cshtml" />
+    <Content Include="Views\Incidente\Reportar.cshtml" />
+    <Content Include="Views\Shared\_ListaMunicipios.cshtml" />
+    <Content Include="Views\Auditoria\Programa.cshtml" />
+    <Content Include="Views\Auditoria\Auditoria.cshtml" />
+    <Content Include="Views\Auditoria\PlanAuditoria.cshtml" />
+    <Content Include="Views\Auditoria\InformeAuditoria.cshtml" />
+    <Content Include="Views\Auditoria\ListaVerificacion.cshtml" />
+    <Content Include="Views\Auditoria\Index.cshtml" />
+    <Content Include="Views\Politicasst\PoliticaVP.cshtml" />
+    <Content Include="Views\Auditoria\EditarPrograma.cshtml" />
+    <Content Include="Views\Auditoria\EditarPlanAuditoria.cshtml" />
+    <Content Include="Views\Auditoria\Actividades.cshtml" />
+    <Content Include="Views\Auditoria\AuditoriaPDF.cshtml" />
+    <Content Include="Views\Auditoria\PlanPDF.cshtml" />
+    <Content Include="Views\AdminUsuarios\AprobarUsuariosSistema.cshtml" />
+    <Content Include="Views\AdminUsuarios\CambiarClave.cshtml" />
+    <Content Include="Views\Auditoria\Footer.cshtml" />
+    <Content Include="Views\Auditoria\header.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\HistoricoDxPorSedes.cshtml" />
+    <Content Include="Views\AccidenteTrabajo\ReporteAccidente.cshtml" />
+    <Content Include="Views\Shared\_AprobarUsuarioSistema.cshtml" />
+    <Content Include="Views\Incidente\Ayuda.cshtml" />
+    <Content Include="Views\Shared\_LayoutHeaderOnly.cshtml" />
+    <Content Include="Views\Incidente\Formato.cshtml" />
+    <Content Include="Views\Acciones\Footer.cshtml" />
+    <Content Include="Views\Acciones\Header.cshtml" />
+    <Content Include="Views\Acciones\AccionPDF.cshtml" />
+    <Content Include="Views\Auditoria\ListaPDF.cshtml" />
+    <Content Include="Views\Auditoria\ProgramaPDF.cshtml" />
+    <Content Include="Views\PlanTrabajoAnual\PlanArl.cshtml" />
+    <Content Include="Views\PlanTrabajoAnual\PlanEmpresa.cshtml" />
+    <Content Include="Views\PlanTrabajoAnual\Calendario.cshtml" />
+    <Content Include="Views\PerfilSocioDemoGrafico\CargueMasivo.cshtml" />
+    <Content Include="Views\MaestroConfiguracionPrioridades\Create.cshtml" />
+    <Content Include="Views\MaestroConfiguracionPrioridades\Delete.cshtml" />
+    <Content Include="Views\MaestroConfiguracionPrioridades\Details.cshtml" />
+    <Content Include="Views\MaestroConfiguracionPrioridades\Edit.cshtml" />
+    <Content Include="Views\MaestroConfiguracionPrioridades\Index.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\HistoricoDxSedesPorAnio.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\CrearMatriz.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\CrearMatrizVP.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\HistoricoSedeAnioPDF.cshtml" />
+    <Content Include="Views\Reporte\CrearReporte.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\ListadoMastrices.cshtml" />
+    <Content Include="Views\Shared\_ConsultaIncidentes.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\EditarMatriz.cshtml" />
+    <Content Include="Views\PlandeInspeccion\CrearI.cshtml" />
+    <Content Include="Views\PlandeInspeccion\CondicionInseguraPV.cshtml" />
+    <Content Include="Views\PerfilSocioDemoGrafico\DescargarPlantilla.cshtml" />
+    <Content Include="Views\Rol\Footer.cshtml" />
+    <Content Include="Views\Rol\Header.cshtml" />
+    <Content Include="Views\Recursos\Footer.cshtml" />
+    <Content Include="Views\Recursos\Header.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\AgregarNuevoRequisitoLegal.cshtml" />
+    <Content Include="Views\Shared\_Configuraciones.cshtml" />
+    <Content Include="Views\Shared\_ConfiguracionHHTModal.cshtml" />
+    <Content Include="Views\Shared\Header.cshtml" />
+    <Content Include="Views\Shared\Footer.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\AgregarRequisitoLegalVP.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Index.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\AgregarRegistroMatrizCreada.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\ModificarRequisitoMatriz.cshtml" />
+    <Content Include="Views\Auditoria\PruebaAuditoria.cshtml" />
+    <Content Include="Views\PerfilSocioDemoGrafico\ExportarExcel.cshtml" />
+    <Content Include="Views\Reporte\VisualizarReporte.cshtml" />
+    <Content Include="Views\Reporte\_PlanAccionCondicionesInseguras.cshtml" />
+    <Content Include="Views\PlandeInspeccion\BuscarInspeccion.cshtml" />
+    <Content Include="Views\PlandeInspeccion\InspeccionPorFechaPV.cshtml" />
+    <Content Include="Views\PlandeInspeccion\CondicionInsegura.cshtml" />
+    <Content Include="Views\PlandeInspeccion\ListarCondicionesPorInspeccion.cshtml" />
+    <Content Include="Views\PlandeInspeccion\VerificarInspeccion.cshtml" />
+    <Content Include="Views\PlandeInspeccion\ListaPlanAccionesParaCorrectivas.cshtml" />
+    <Content Include="Views\Home\Mantenimiento.cshtml" />
+    <Content Include="Views\Ausencias\DiasLaborables.cshtml" />
+    <Content Include="Views\AdminUsuarios\RecuperarClave.cshtml" />
+    <Content Include="Views\PlanesDeAccion\Index.cshtml" />
+    <Content Include="Views\Reporte\Index.cshtml" />
+    <Content Include="Views\Reporte\ReporteCondicionesInsegurasPDF.cshtml" />
+    <Content Include="Views\Reporte\Edit.cshtml" />
+    <Content Include="Views\Reporte\ReporteBusquedaVP.cshtml" />
+    <Content Include="Views\Reporte\VisualizarReporte.cshtml" />
+    <Content Include="Views\Reporte\_PlanAccionCondicionesInseguras.cshtml" />
+    <Content Include="Views\AdminUsuarios\RecuperarClave.cshtml" />
+    <Content Include="Views\AgregarGestionDelCambio.cshtml" />
+    <Content Include="Views\GestionDelCambio\AgregarGestionDelCambio.cshtml" />
+    <Content Include="Views\GestionDelCambio\ListadoGestionDelCambio.cshtml" />
+    <Content Include="Views\Comites\Index.cshtml" />
+    <Content Include="Views\ComitesConvivencia\Index.cshtml" />
+    <Content Include="Views\CriteriosSST\Calificar.cshtml" />
+    <Content Include="Views\CriteriosSST\Create.cshtml" />
+    <Content Include="Views\CriteriosSST\EditProdVP.cshtml" />
+    <Content Include="Views\AdquisicionBienes\CrearManualesAdquisicion.cshtml" />
+    <Content Include="Views\AdquisicionBienes\CrearManualesAdquisicion1.cshtml" />
+    <Content Include="Views\AdmoEMH\ConsultarEHM.cshtml" />
+    <Content Include="Views\AdmoEMH\DardeBajaEHM.cshtml" />
+    <Content Include="Views\AdmoEMH\EditarEHM.cshtml" />
+    <Content Include="Views\AdmoEMH\EHMPDF.cshtml" />
+    <Content Include="Views\AdmoEMH\Footer.cshtml" />
+    <Content Include="Views\AdmoEMH\Header.cshtml" />
+    <Content Include="Views\AdmoEMH\Index.cshtml" />
+    <Content Include="Views\AdmoEMH\NuevoEHM.cshtml" />
+    <Content Include="Views\AdmoEMH\PeligrosDetalles.cshtml" />
+    <Content Include="Views\AdmoEMH\VerEHM.cshtml" />
+    <Content Include="Views\AdmoEPP\AsignacionEPPPDF.cshtml" />
+    <Content Include="Views\AdmoEPP\AsignarEPP.cshtml" />
+    <Content Include="Views\AdmoEPP\CargueMasivoEPP.cshtml" />
+    <Content Include="Views\AdmoEPP\ConsultarAsignacion.cshtml" />
+    <Content Include="Views\AdmoEPP\EditarEPP.cshtml" />
+    <Content Include="Views\AdmoEPP\EPPPDF.cshtml" />
+    <Content Include="Views\AdmoEPP\MatrizEPP.cshtml" />
+    <Content Include="Views\AdmoEPP\MatrizEPPPDF.cshtml" />
+    <Content Include="Views\AdmoEPP\NuevoEPP.cshtml" />
+    <Content Include="Views\Consulta\Index.cshtml" />
+    <Content Include="Views\AdmoEMH\Inspecciones.cshtml" />
+    <Content Include="Views\AdmoEPP\Footer.cshtml" />
+    <Content Include="Views\AdmoEPP\Header.cshtml" />
+    <Content Include="Views\Consulta\Index.cshtml" />
+    <Content Include="Views\Consulta\LinkConsulta.cshtml" />
+    <Content Include="Views\PlandeInspeccion\ObtenerInspeccionNoejecutada.cshtml" />
+    <Content Include="Views\PlandeInspeccion\ResumenGeneralInspecciones.cshtml" />
+    <Content Include="Views\PlandeInspeccion\Header.cshtml" />
+    <Content Include="Views\PlandeInspeccion\Footer.cshtml" />
+    <Content Include="Views\GestionDelCambio\ModificarGestioDelCambio.cshtml" />
+    <Content Include="Views\EstudioPuestoTrabajo\Index.cshtml" />
+    <Content Include="Views\Shared\_NuevoSeguimientoPT.cshtml" />
+    <Content Include="Views\EstudioPuestoTrabajo\GridSeguimiento.cshtml" />
+    <Content Include="Views\PromocionPrevencion\PlanSeguridadVial.cshtml" />
+    <Content Include="Views\PromocionPrevencion\SeguridadVialFormulario.cshtml" />
+    <Content Include="Views\ComunicacionesExternas\Index.cshtml" />
+    <Content Include="Views\ComunicacionesInternas\Index.cshtml" />
+    <Content Include="Views\ComunicadosAPP\Index.cshtml" />
+    <Content Include="Views\IncidentesAT\CrearIncidenteAT.cshtml" />
+    <Content Include="Views\IncidentesEL\CrearIncidenteEL.cshtml" />
+    <Content Include="Views\ObetivoSST\ObjetivoSST.cshtml" />
+    <Content Include="Views\Shared\_DetalleObjetivos.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\CriteriosSST\CalificarVP.cshtml" />
+    <Content Include="Views\CriteriosSST\EditCalificacionProveedor.cshtml" />
+    <Content Include="Views\CriteriosSST\EditProveedorContratista.cshtml" />
+    <Content Include="Views\CriteriosSST\ProveedoresCalificados.cshtml" />
+    <Content Include="Views\CriteriosSST\ProveedoresContratistas.cshtml" />
+    <Content Include="Views\RequisitosLegalesOtros\CrearMatrizSinDatos.cshtml" />
+    <Content Include="Views\PlandeInspeccion\ContinuarEjecucionPlan.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\GestionDelCambio\ModificarGestioDelCambio.cshtml" />
+    <Content Include="Views\TipoPrincipalActa\Create.cshtml" />
+    <Content Include="Views\TipoPrincipalActa\Delete.cshtml" />
+    <Content Include="Views\TipoPrincipalActa\Details.cshtml" />
+    <Content Include="Views\TipoPrincipalActa\Edit.cshtml" />
+    <Content Include="Views\TipoPrincipalActa\Index.cshtml" />
+    <Content Include="Views\TipoPrioridadMiembro\Create.cshtml" />
+    <Content Include="Views\TipoPrioridadMiembro\Delete.cshtml" />
+    <Content Include="Views\TipoPrioridadMiembro\Details.cshtml" />
+    <Content Include="Views\TipoPrioridadMiembro\Edit.cshtml" />
+    <Content Include="Views\TipoPrioridadMiembro\Index.cshtml" />
+    <Content Include="Views\ComitesConvivencia\HistoricoActaConvivencia.cshtml" />
+    <Content Include="Views\ComitesConvivencia\CrearActaConvivencia.cshtml" />
+    <Content Include="Views\ComitesConvivencia\MiembroActaConvivenciaGuardados.cshtml" />
+    <Content Include="Views\ComitesConvivencia\DatosActaConvivencia.cshtml" />
+    <Content Include="Views\ComitesConvivencia\ActaConvivenciaPDF.cshtml" />
+    <Content Include="Views\ComitesConvivencia\DatosQuejasPDF.cshtml" />
+    <Content Include="Views\ComitesConvivencia\DatosSeguimientoPDF.cshtml" />
+    <Content Include="Views\Competencia\Delete.cshtml" />
+    <Content Include="Views\Competencia\MostrarTematicaPDF.cshtml" />
+    <Content Include="Views\CriteriosSST\CalificarVP.cshtml" />
+    <Content Include="Views\CriteriosSST\EditCalificacionProveedor.cshtml" />
+    <Content Include="Views\CriteriosSST\EditProveedorContratista.cshtml" />
+    <Content Include="Views\CriteriosSST\ProveedoresCalificados.cshtml" />
+    <Content Include="Views\CriteriosSST\ProveedoresContratistas.cshtml" />
+    <Content Include="Views\Consulta\MostrarConsultasSST.cshtml" />
+    <Content Include="Views\Consulta\TrazabilidadConsultaSST.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\DetalleDxCondicionesSalud.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\DetalleDxCondicionesSaludPDF.cshtml" />
+    <Content Include="Views\ComunicacionesExternas\IndexExternas.cshtml" />
+    <Content Include="Views\IncidentesConsulta\Index.cshtml" />
+    <Content Include="Views\PlanEmergencias\Index.cshtml" />
+    <Content Include="Views\PlanCapacitacion\Programacion.cshtml" />
+    <Content Include="Views\PlanCapacitacion\Calendario.cshtml" />
+    <Content Include="Views\Publicacion\PublicarEncuesta.cshtml" />
+    <Content Include="Views\Revision\Index.cshtml" />
+    <Content Include="Views\Revision\TemasActaRevision.cshtml" />
+    <Content Include="Views\Bateria\EncuestaTerminada.cshtml" />
+    <Content Include="Views\Bateria\Estres.cshtml" />
+    <Content Include="Views\Bateria\Extralaboral.cshtml" />
+    <Content Include="Views\Bateria\Index.cshtml" />
+    <Content Include="Views\Bateria\Inicial.cshtml" />
+    <Content Include="Views\Bateria\Inicializar.cshtml" />
+    <Content Include="Views\Bateria\InicioPublico.cshtml" />
+    <Content Include="Views\Bateria\IntralaboralA.cshtml" />
+    <Content Include="Views\Bateria\IntralaboralB.cshtml" />
+    <Content Include="Views\BateriaGestion\AdmoUsuarios.cshtml" />
+    <Content Include="Views\BateriaGestion\AplicacionCuestionario.cshtml" />
+    <Content Include="Views\BateriaGestion\Configurar.cshtml" />
+    <Content Include="Views\BateriaGestion\EnviarCorreo.cshtml" />
+    <Content Include="Views\BateriaGestion\Index.cshtml" />
+    <Content Include="Views\BateriaGestion\NuevaAplicacionCuestionario.cshtml" />
+    <Content Include="Views\BateriaGestion\ResultadosAplicacion.cshtml" />
+    <Content Include="Views\EnfermedadLaboralDiagnosticada\Registrar.cshtml" />
+    <Content Include="Views\Shared\_NuevaInstanciaEnfermedadLaboral.cshtml" />
+    <Content Include="Views\PlanTrabajo\CrearPlanTrabajo.cshtml" />
+    <Content Include="Views\PlanTrabajo\EditarPlanTrabajo.cshtml" />
+    <Content Include="Views\PlanTrabajo\GestionarPlanesTrabajo.cshtml" />
+    <Content Include="Views\Revision\PlanAccionActaRevision.cshtml" />
+    <Content Include="Views\Revision\ConsultaActasRevision.cshtml" />
+    <Content Include="Views\Revision\GetReporte.cshtml" />
+    <Content Include="Views\Revision\DesarrolloTemaActaRevision.cshtml" />
+    <Content Include="Views\Shared\_ModificarInstanciEnfermedadLaboral.cshtml" />
+    <Content Include="Views\BateriaGestion\InformePDF.cshtml" />
+    <Content Include="Views\BateriaGestion\ResultadoGeneral.cshtml" />
+    <Content Include="Views\BateriaGestion\EstresResultados.cshtml" />
+    <Content Include="Views\BateriaGestion\ExtralaboralResultados.cshtml" />
+    <Content Include="Views\BateriaGestion\InicialResultados.cshtml" />
+    <Content Include="Views\BateriaGestion\IntralaboralAResultados.cshtml" />
+    <Content Include="Views\BateriaGestion\IntralaboralBResultados.cshtml" />
+    <Content Include="Views\Auditoria\CrearPrograma.cshtml" />
+    <Content Include="Views\BateriaGestion\Footer.cshtml" />
+    <Content Include="Views\BateriaGestion\Header.cshtml" />
+    <Content Include="Views\MaestroCriterioSSTs\Create.cshtml" />
+    <Content Include="Views\MaestroCriterioSSTs\Edit.cshtml" />
+    <Content Include="Views\MaestroCriterioSSTs\Index.cshtml" />
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSet.xsc">
+      <DependentUpon>SGSSTDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\ReportesAplicacion\ReportesAplicacion.cshtml" />
+    <Content Include="Views\ReportesAplicacion\Reportes.cshtml" />
+    <Content Include="Views\ReportesAplicacion\ReportesIndicadores.cshtml" />
+    <Content Include="Views\EstudioPuestoTrabajo\GridArchivosPT.cshtml" />
+    <Content Include="Views\ReportesAplicacion\IndicadoresAunsentismo.cshtml" />
+    <Content Include="Views\ReportesAplicacion\IndicadoresProceso.cshtml" />
+    <Content Include="Views\ReportesAplicacion\IndicadoresResultado.cshtml" />
+    <Content Include="Views\ReportesAplicacion\IndicadoresEstructura.cshtml" />
+    <Content Include="Views\AdmoEMH\InspeccionPDF.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\AdmoEPP\NuevoEPP1.cshtml" />
+    <Content Include="Views\Consideraciones\ReporteDOFA_PDF.cshtml" />
+    <Content Include="Views\DxGralCondicionSalud\HistoricoDxPorSedesVP.cshtml" />
+    <Content Include="Views\EmpleadoOrg\EmpleadosBusqueda.cshtml" />
+    <Content Include="Views\PromocionPrevencion\AgregarParametro.cshtml" />
+    <Content Include="Views\PromocionPrevencion\ListaVariables.cshtml" />
+    <Content Include="Views\PromocionPrevencion\ValoresAgregados.cshtml" />
+    <None Include="Views\ReportesAplicacion\SGSSTDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGSSTDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSet.xss">
+      <DependentUpon>SGSSTDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Reportes\Reportes.cshtml" />
+    <Content Include="Views\Shared\_LayoutEncuesta.cshtml" />
+    <Content Include="Views\Shared\Logo.cshtml" />
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSetAuns.xsc">
+      <DependentUpon>SGSSTDataSetAuns.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\ReportesAplicacion\SGSSTDataSetAuns.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGSSTDataSetAuns.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSetAuns.xss">
+      <DependentUpon>SGSSTDataSetAuns.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\ReportesAplicacion\ReportesAusentismo.cshtml" />
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSetInd.xsc">
+      <DependentUpon>SGSSTDataSetInd.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\ReportesAplicacion\SGSSTDataSetInd.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGSSTDataSetInd.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSetInd.xss">
+      <DependentUpon>SGSSTDataSetInd.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Shared\_AgregarDocumentoEnfermedadLaboral.cshtml" />
+    <Content Include="Views\Shared\_ModificarInstanciEnfermedadLaboral.cshtml" />
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSetIndData.xsc">
+      <DependentUpon>SGSSTDataSetIndData.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\ReportesAplicacion\SGSSTDataSetIndData.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGSSTDataSetIndData.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\ReportesAplicacion\SGSSTDataSetIndData.xss">
+      <DependentUpon>SGSSTDataSetIndData.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Shared\_ModificarInstanciEnfermedadLaboral.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\App_Code\" />
+    <Folder Include="Content\ArchivosOtrasInteraccionesPolitica\" />
+    <Folder Include="Content\ArchivosRelacionesLaborales\" />
+    <Folder Include="Content\Bateria\Archivos\ExcelTemp\" />
+    <Folder Include="Content\Doc_Dx\" />
+    <Folder Include="Content\Doc_Inspecciones\" />
+    <Folder Include="Content\Doc_Revision\" />
+    <Folder Include="Content\Firmas\" />
+    <Folder Include="Content\Logo_Empresa\" />
+    <Folder Include="Content\Plantrabajo\Firmas\" />
+    <Folder Include="Content\Plantrabajo\ImagenesRepositorio\" />
+    <Folder Include="Content\Plantrabajo\ImagenesTemp\" />
+    <Folder Include="Descargas\" />
+    <Folder Include="Reportes\" />
+    <Folder Include="Repositories\Participacion\" />
+    <Folder Include="Services\PlanTrabajoAnual\" />
+    <Folder Include="Views\ConsultaRelLaborales\" />
+    <Folder Include="Views\DOFA\" />
+    <Folder Include="Views\General\" />
+    <Folder Include="Views\INSHT\" />
+    <Folder Include="Views\MaestroRolesSGSST\" />
+    <Folder Include="Views\NewFolder1\" />
+    <Folder Include="Views\PruebaDocumentacion\" />
+    <Folder Include="Views\Pruebas\" />
+    <Folder Include="Views\RAM\" />
+    <Folder Include="Views\TipoInspeccion\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SG-SST.Audotoria\SG-SST.Audotoria.csproj">
+      <Project>{bdd3c5f9-addd-442d-948a-4cfacf89ca75}</Project>
+      <Name>SG-SST.Audotoria</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.EntidadesDominio\SG-SST.EntidadesDominio.csproj">
+      <Project>{d9f2ceb3-2aa8-4934-9aa3-4c435a6d6cc3}</Project>
+      <Name>SG-SST.EntidadesDominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.Enumeraciones\SG-SST.Enumeraciones.csproj">
+      <Project>{5fc98daa-0ed5-4bf6-8f98-c9c4f4c9b4df}</Project>
+      <Name>SG-SST.Enumeraciones</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.Logica\SG-SST.Logica.csproj">
+      <Project>{3a33ec6e-d2bb-479c-ae62-6639bb180aba}</Project>
+      <Name>SG-SST.Logica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Modelos\SG_SST.Models.csproj">
+      <Project>{11c5da88-c228-4627-8108-3ddb07aa7898}</Project>
+      <Name>SG_SST.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Recursos\SG_SST.Recursos.csproj">
+      <Project>{9fe4c87b-9298-4962-8f9a-512c266b4cfd}</Project>
+      <Name>SG_SST.Recursos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Utilidades\SG_SST.Utilidades.csproj">
+      <Project>{b06c5de6-a727-4005-ab69-2a659ffac033}</Project>
+      <Name>SG_SST.Utilidades</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\GestposService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\ReportesFisicos\ACCIONESCORRECTIVASYPREVENTIVAS.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ACTOSYCONDICIONESINSEGURAS.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ADQUISCIONESBIENESOCONTRATACION.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\AusentismosPorEPS.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\DiasAusentismoEnfermedadesCIE10.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\GruposEtarios.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\NumeroDeEventosEnfermedadesCIE10.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\RepCostosContingencia.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\RepDiasContingencia.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\RepNumEventosContingencia.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\RepOcupacion.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\ReportAusenciasProceso.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\ReportSedes.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\RepSexo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\Rep_Departamento.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Ausentismo\TipoVinculacion.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\COMPETENCIAS.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\COMUNICACIONESEXTERNAS.RDLC" />
+    <EmbeddedResource Include="Content\ReportesFisicos\COMUNICACIONES_INTERNAS.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Comunicados_actividades.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\EstudioPTrabajo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\GESTIONDELCAMBIO.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Incidentes_EL.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndAccionCorrectivaPreventivaDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndCondicionInseguraDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndDxCondicionesSaludDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndEvalEstandaresMinimosDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndFrecuenciaAccidentesTrabajoDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndFrecuenciaAusentismoDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndLesionesIncapacitantesATDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndPlanCapacitacionDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndPlanTrabajoAnualDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndRequisitosLegalesDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndSeveridadAccidentesTrabajoDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndSeveridadAusentismoDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\IndicadoresDatos\ReporteIndTasaAccidentalidadDatos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\Comu_ini.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\Indicadordelcumplimientodelosrequisitoslegales.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\RepIndicadorActas.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\RepIndicadorPerfilSocioDemografico.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndAccionCorrectivaPreventiva.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndCondicionInsegura.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndDxCondicionesSalud.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndEvalEstandaresMinimos.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndFrecuenciaAccidentesTrabajo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndFrecuenciaAusentismo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndicadoresAusentismo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndicadoresAusentismoComparacion.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndPlanCapacitacion.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndPlanTrabajoAnual.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndSeveridadAusentismo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ReporteIndTasaAccidentalidad.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ÍndicedeLesionesIncapacitantesporAT.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Indicadores\ÍndicedeSeveridaddeAccidentesdeTrabajo.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\INFORMECOMUNICACIONESAPP.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\INSPECCIONESDESEGURIDAD.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\MEDIDASDEPREVENCIONYCONTROL.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\METODOLOGÍA_INSHT.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\PERFILSOCIODEMOGRÁFICO.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\PLANDECAPACITACION.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\PLANDETRABAJO.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\PlanesAccion.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Relacioneslaborales.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\REPORTEDEINCIDENTES.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ReporteDiagnosticoCondicionesdeSalud.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\REPORTEENFERMEDADLABORAL.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ReporteMetodologiaGTC45.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ReporteMetodologiaRAM.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ReportePlanEmergenciaFrentesAccion.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\ReportePlanEmergenciaInfoGeneral.rdlc" />
+    <EmbeddedResource Include="Content\ReportesFisicos\Reporte_au_por_proceso.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\ReportesFisicos\Reporte_Presupuesto.rdlc" />
+    <EmbeddedResource Include="Views\ReportesAplicacion\COMPETENCIAS.rdlc" />
+    <EmbeddedResource Include="Views\Reportes\ausentismo.rdlc" />
+    <EmbeddedResource Include="Views\Reportes\Competencias.rdlc" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3163</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:3163/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Habilite la restauración del paquete NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

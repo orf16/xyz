@@ -1,0 +1,80 @@
+﻿@model SG_SST.Models.Aplicacion.BusquedaInspeccionVModel
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+
+
+}
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>>Buscar Fecha</title>
+</head>
+<body>
+    <div class="container">
+        <form id="resultadofechas">
+
+            <table class="table  table-responsive uk-table-condensed" style="border:hidden" id="rangofechas">
+                <thead>
+                    <tr class="titulos_tabla">
+
+                        <th style="border:hidden">
+                            <p>Consecutivo Inspeccion</p>
+                        </th>
+                        <th style="border:hidden">
+                            <p>Area Inspeccion</p>
+                        </th>
+                        <th style="border:hidden">
+                            <p>Responsable</p>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    @{ var contador = 0; }
+                    @foreach (var item in Model.Inspecciones)
+                    {
+                        <tr id="">
+                            @*<td colspan="3" style="border:hidden">
+                                @Html.TextBoxFor(modelItem => item, new { id = "item_Descripcionconfiguracion_" + @contador, @class = "form-control", @style = "background-color:  white;color:black", @readonly = "readonly" })
+                                <label for="Descripcionconfiguracion" class="error" style="display:none;"></label>
+                            </td>*@
+                            <td style="border:hidden">
+                                @Html.DisplayFor(modelItem => item.intpkinspeccion, new { id = "intpkinspeccion" + @contador, @class = "form-control", @style = "background-color: white;color:black" })
+                                <label for="diasdesde" class="error" style="display:none;"></label>
+                            </td>
+                            <td style="border:hidden">
+                                @Html.DisplayFor(modelItem => item.area, new { id = "area" + @contador, @class = "form-control", @style = "background-color:  white;color:black" })
+                                @*@Html.TextBoxFor(modelItem => item.area, new { id = "area" + @contador, @class = "form-control", @style = "background-color:  white;color:black" })*@
+                                <label for="diashasta" class="error" style="display:none;"></label>
+                            </td>
+                            <td style="border:hidden">
+                                @Html.DisplayFor(modelItem => item.Responsable, new { id = "area" + @contador, @class = "form-control", @style = "background-color:  white;color:black" })
+                               
+                                @*@Html.HiddenFor(modelItem => item.Responsable, new { id = "Responsable" + @contador })*@
+                            </td>
+
+                        </tr>
+                        contador++;
+                    }
+                </tbody>
+            </table>
+
+
+
+        </form>
+        
+        
+        
+         
+    </div>
+</body>
+</html>

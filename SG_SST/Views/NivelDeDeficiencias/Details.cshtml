@@ -1,0 +1,44 @@
+﻿@model SG_SST.Models.Planificacion.NivelDeDeficiencia
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>NivelDeDeficiencia</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FLAG_Cuantitativa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FLAG_Cuantitativa)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor_Deficiencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor_Deficiencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Deficiciencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Deficiciencia)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Nivel_De_Deficiencia }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

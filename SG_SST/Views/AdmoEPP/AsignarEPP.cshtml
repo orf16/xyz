@@ -1,0 +1,648 @@
+﻿
+
+@{
+    ViewBag.Title = "Control de Suministro";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/Aplicacion/EPPSuministro.js")"></script>
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración de Elementos de Protección Personal</a></li>
+    <li class="active">Control de Suministro</li>
+</ol>
+@Html.AntiForgeryToken()
+
+<script>
+    //Buscar Persona y Cargo
+    $(document).ready(function () {
+        $("#CedulaTrabajador").on('keyup', function () {
+            $("#msj_novedad_validar").text('');
+            $("#div_novedad_validar").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#div_novedad_validar").empty();
+            if ($(this).val().length > 5) {
+                var valindex = 0;
+                PopupPosition();
+                $.ajax({
+                                type: "POST",
+                                url: "/AdmoEPP/BuscarPersonaDocumentoCargo",
+                                data: '{documento: "' + $("#CedulaTrabajador").val() + '" }',
+                                contentType: "application/json; charset=utf-8",
+                                cache: false,
+                                dataType: "json",
+                                success: function (response) {
+                                    OcultarPopupposition();
+                                    var Nombre = response.resultado_n;
+                                    var Cargo = response.resultado_c;
+
+                                    if (Nombre!=null) {
+                                        $("#NombreTrabajador").val(Nombre);
+                                    }
+                                    $('#Pk_Cargos option:eq(0)');
+                                    if (Cargo != null) {
+                                        $('#Pk_Cargos option').each(function () {
+                                            $(this).removeAttr("selected");
+                                            var opcion = $(this).text();
+                                            opcion = opcion.replace("á", "A");
+                                            opcion = opcion.replace("é", "E");
+                                            opcion = opcion.replace("í", "I");
+                                            opcion = opcion.replace("ó", "O");
+                                            opcion = opcion.replace("ú", "U");
+                                            opcion = opcion.replace("Á", "A");
+                                            opcion = opcion.replace("É", "E");
+                                            opcion = opcion.replace("Í", "I");
+                                            opcion = opcion.replace("Ó", "O");
+                                            opcion = opcion.replace("Ú", "U");
+                                            if (opcion == Cargo) {
+                                                $(this).attr('selected', 'selected');
+                                                var Id = $(this).index();
+                                                valindex = $(this).val();
+                                                $('#Pk_EPP')
+                                                .empty()
+                                                .append($("<option />").val(null).text("-- Seleccione un EPP --"));
+                                                ;
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: "/AdmoEPP/EPPporCargo",
+                                                    data: '{IdCargo: "' + valindex.toString() + '" }',
+                                                    contentType: "application/json; charset=utf-8",
+                                                    cache: false,
+                                                    dataType: "json",
+                                                    success: function (response1) {
+                                                        var ListaEPPSCargo = response1.ListaEPPCargo;
+                                                        var options = $("#Pk_EPP");
+                                                        ListaEPPSCargo.forEach(function (i) {
+                                                            options.append($("<option />").val(i.Pk_Id_EPP).text(i.NombreEPP));
+                                                        });
+                                                    },
+                                                    error: function (jqXHR, textStatus, errorThrown) {
+                                                    }
+                                                });
+                                                $('#Pk_Cargos option:eq(' + Id + ')');
+                                                return false;
+                                            }
+                                            return true;
+                                        });
+                                    }
+
+                                    $("#IdCargoEvent").val(valindex);
+                                    $("#IdCargoEvent").text(valindex);
+                                    
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    OcultarPopupposition();
+                                }
+                });
+
+                    
+
+            }
+
+        });
+    });
+    //Cargar datepicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('fechasum');
+    });
+    //Cargar EPP según cargo
+    $(document).ready(function () {
+        $('#Pk_Cargos').change(function () {
+            $("#div_novedad_validar").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#div_novedad_validar").empty();
+            $('#Pk_EPP')
+            .empty()
+            .append($("<option />").val(null).text("-- Seleccione un EPP --"));
+            ;
+            var val = $("#Pk_Cargos option:selected").val();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEPP/EPPporCargo",
+                data: '{IdCargo: "' + val + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response1) {
+                    var ListaEPPSCargo = response1.ListaEPPCargo;
+                    var options = $("#Pk_EPP");
+                    ListaEPPSCargo.forEach(function (i) {
+                        options.append($("<option />").val(i.Pk_Id_EPP).text(i.NombreEPP));
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+        });
+    });
+    //Agregar Asignación a la lista
+    function AgregarSuministro() {
+        $("#msj_novedad_validar").text('');
+        $("#div_novedad_validar").removeClass("alert alert-info alert-warning alert-danger alert-success");
+        $("#div_novedad_validar").empty();
+        var IdEPP = $("#Pk_EPP option:selected").val();
+        var IdEPP_text = $("#Pk_EPP option:selected").text();
+        var Cantidad = $('#Cantidad').val();
+        var Fecha = $("#fechasum").val();
+        var tableBody = $('#Grid3 > tbody');
+        var IdFila = 0;
+        var mensaje = "";
+        var mensaje_ul = "<ul>";
+        var probar = false;
+        if (IdEPP == null) {
+            probar = true;
+            if (mensaje=="") {
+                mensaje = "<li>No ha seleccionado un Elemento de protección personal</li>";
+            }
+            else {
+                mensaje = mensaje + "<li>No ha seleccionado un Elemento de protección personal</li>";
+            }
+        }
+        else {
+            if (IdEPP == "") {
+                probar = true;
+                if (mensaje == "") {
+                    mensaje = "<li>No ha seleccionado un Elemento de protección personal</li>";
+                }
+                else {
+                    mensaje = mensaje + "<li>No ha seleccionado un Elemento de protección personal</li>";
+                }
+            }
+        }
+        if (Cantidad == null) {
+            probar = true;
+            if (mensaje == "") {
+                mensaje = "<li>No ha digitado la cantidad</li>";
+            }
+            else {
+                mensaje = mensaje + "<li>No ha digitado la cantidad</li>";
+            }
+        }
+        else {
+            if (Cantidad == "") {
+                probar = true;
+                if (mensaje == "") {
+                    mensaje = "<li>No ha digitado la cantidad</li>";
+                }
+                else {
+                    mensaje = mensaje + "<li>No ha digitado la cantidad</li>";
+                }
+            }
+        }
+        if (Fecha == null) {
+            probar = true;
+            if (mensaje == "") {
+                mensaje = "<li>No ha seleccionado la fecha</li>";
+            }
+            else {
+                mensaje = mensaje + "<li>No ha seleccionado la fecha</li>";
+            }
+        }
+        else {
+            if (Fecha == "") {
+                probar = true;
+                if (mensaje == "") {
+                    mensaje = "<li>No ha seleccionado la fecha</li>";
+                }
+                else {
+                    mensaje = mensaje + "<li>No ha seleccionado la fecha</li>";
+                }
+            }
+        }
+
+        mensaje_ul = "<ul>" + mensaje + "</ul>";
+        if (probar) {
+            $("#div_novedad_validar").append(mensaje_ul);
+            $("#div_novedad_validar").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+        }
+        if (probar==false) {
+            $('#Grid3 > tbody').find('tr').each(function () {
+                var fila = $(this);
+                var Name = fila.attr("name");
+                IdFila = parseInt(Name);
+                IdFila++;
+            });
+            var html = "<tr class=\"fila_grid3\" name=\"" + IdFila + "\" elemento=\"" + IdEPP + "\" cantidad=\"" + Cantidad + "\" fecha=\"" + Fecha + "\">";
+            html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + IdEPP_text + "</td>";
+            html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:center\">" + Cantidad + "</td>";
+            html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:center\">" + Fecha + "</td>";
+            html += "<td class=\"esconder\" style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:center\">" + "<a name=\"" + IdFila + "\"  class=\"btn btn-search btn-md btnEliminarlista\" title=\"Eliminar Asignación\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+            $("#Grid3 tbody").append(html);
+
+
+            $('#Cantidad').val(null);
+            $("#fechasum").val(null);
+            $("#div_novedad_validar").empty();
+            swal("Estimado Usuario", "Asignación agregada a la lista", "success");
+        }
+    }
+    //Eliminar Asignación de lista a guardar
+    $(document).on("click", ".btnEliminarlista", function () {
+        var Id_Elm = $(this).attr('name');
+        var tableBody = $("#Grid3 tbody");
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar esta asignación de la lista?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            type: "warning",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            closeOnConfirm: false
+        },
+        function () {
+            var ElementoEliminar;
+            var cont = 0;
+            tableBody.find('tr').each(function () {
+                var row = $(this);
+                if (row.attr('name') == Id_Elm) {
+                    row.remove();
+                    cont++;
+                }
+            });
+            if (cont > 0) {
+                swal("Estimado Usuario", "Asignación eliminada de la lista", "success");
+            }
+            else {
+                swal("Estimado Usuario", "La asignación no se ha eliminado, por favor vuelva a intentar", "error");
+            }
+
+        });
+    });
+    //Guardar Formulario
+    $(function () {
+        $("#GuardarControl").bind("click", function () {
+
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea guardar este registro, después de guardarlo no podrá modificarlo?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+                var onEventLaunchGuardar = new postGuardar();
+                onEventLaunchGuardar.launchGuardar();
+            });
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var stringArray = new Array();
+            var ListaSuministros = new Array();
+            $('#Grid3 tbody').find('tr').each(function () {
+                var row = $(this);
+                var EDEPPSuministroEPP = {
+                    Cantidad: row.attr('cantidad'),
+                    Fecha: row.attr('fecha'),
+                    Fk_Id_EPP: row.attr('elemento')
+                }
+                ListaSuministros.push(EDEPPSuministroEPP);
+            });
+
+            if (ListaSuministros.length>0) {
+                stringArray[0] = $("#CedulaTrabajador").val();
+                stringArray[1] = $("#Pk_Procesos option:selected").val();
+                stringArray[2] = $("#NombreTrabajador").val();
+                stringArray[3] = $("#Pk_Sede option:selected").val();
+                stringArray[4] = $("#Pk_Cargos option:selected").val();
+
+                var EPPSuministro = {
+                    CedulaTrabajador: stringArray[0],
+                    NombreTrabajador: stringArray[2],
+                    Fk_Id_Cargo: stringArray[4],
+                    Fk_Id_Proceso: stringArray[1],
+                    Fk_Id_Sede: stringArray[3]
+                };
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: '/AdmoEPP/GuardarControlSuministro',
+                    traditional: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ GuardarSuministro: EPPSuministro, ListaSuministrosEPP: ListaSuministros }),
+                    success: function (data) {
+                        OcultarPopupposition();
+                        $("#val-CedulaTrabajador").css("display", "none");
+                        $("#val-CedulaTrabajador").text('');
+                        $("#val-Pk_Procesos").css("display", "none");
+                        $("#val-Pk_Procesos").text('');
+                        $("#val-NombreTrabajador").css("display", "none");
+                        $("#val-NombreTrabajador").text('');
+                        $("#val-Pk_Sede").css("display", "none");
+                        $("#val-Pk_Sede").text('');
+                        $("#val-Pk_Cargos").css("display", "none");
+                        $("#val-Pk_Cargos").text('');
+
+                        if (data.Probar == false) {
+                            if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                                location.reload(true);
+                            }
+                            if (data.Validacion[0] == true) {
+                                $("#val-CedulaTrabajador").css("display", "block");
+                                $("#val-CedulaTrabajador").text(data.ValidacionStr[0]);
+                            }
+                            if (data.Validacion[2] == true) {
+                                $("#val-Pk_Procesos").css("display", "block");
+                                $("#val-Pk_Procesos").text(data.ValidacionStr[2]);
+                            }
+                            if (data.Validacion[1] == true) {
+                                $("#val-NombreTrabajador").css("display", "block");
+                                $("#val-NombreTrabajador").text(data.ValidacionStr[1]);
+                            }
+                            if (data.Validacion[3] == true) {
+                                $("#val-Pk_Sede").css("display", "block");
+                                $("#val-Pk_Sede").text(data.ValidacionStr[3]);
+                            }
+                            if (data.Validacion[4] == true) {
+                                $("#val-Pk_Cargos").css("display", "block");
+                                $("#val-Pk_Cargos").text(data.ValidacionStr[4]);
+                            }
+
+                            swal("Estimado Usuario", data.Estado, "warning");
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "El control de suministro se ha guardado exitosamente",
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            })
+
+                            
+                            $(".esconder").css('display', 'none');
+                            $("#CedulaTrabajador").prop('disabled', true);
+                            $("#Pk_Procesos").prop('disabled', true);
+                            $("#NombreTrabajador").prop('disabled', true);
+                            $("#Pk_Sede").prop('disabled', true);
+                            $("#Pk_Cargos").prop('disabled', true);
+                            $("#Grid3").prop('disabled', true);
+                            $("#fechasum").prop('disabled', true);
+                            $("#Pk_EPP").prop('disabled', true);
+                            $("#Cantidad").prop('disabled', true);
+                            $("#GuardarControl").prop('disabled', true);
+
+                            $("#btnAgregarSuministro").prop('disabled', true);
+                            $(".btnEliminarlista").prop('disabled', true);
+
+                            var agregar1 = "<div class=\"internal-panel-header panel-heading\"><h4>Generar Certificados de entrega de EPP (Elija el formato para generar el documento)</h4></div><div class=\"internal-panel-body\">";
+                            var agregar2 = "<div class=\"row add-top-margin-05em\"><div class=\"col-sm-12\"><center><button id=\"Generar\" class=\"boton botonactive col-margin generarcertpdf\" idgenerar=\"" + data.IdUltimoRegistro + "\" title=\"Este botón le permitirá generar el registro de entrega de elementos de protección personal en PDF\">PDF</button></center></div></div><div class=\"row\"><div class=\"col-sm-12\"><center><button id=\"Generar\" class=\"boton botonactive col-margin generarcertexcel\" idgenerar=\"" + data.IdUltimoRegistro + "\" title=\"Este botón le permitirá generar el registro de entrega de elementos de protección personal en una hoja de cálculo\">HOJA DE CÁLCULO</button></center></div></div>";
+                            var agregar3 = "</div>";
+
+
+                            var agregar4 = "<div class=\"internal-panel-header panel-heading\"><h4>Registrar otro control de suministro de EPP (Esta opción creará un registro en blanco para otro diligenciamiento)</h4></div><div class=\"internal-panel-body\">";
+                            var agregar5 = "<div class=\"row add-top-margin-05em\"><div class=\"col-sm-12\"><center><button id=\"NuevoSuministro\" class=\"boton botonactive col-margin reiniciar\" title=\"Este botón le permitirá registrar otras asignaciones\">NUEVO REGISTRO</button></center></div></div>";
+                            var agregar6 = "</div>";
+
+
+                            var agregartot = agregar1 + agregar2 + agregar3 + agregar4 + agregar5 + agregar6;
+
+                            $("#div_generar").css("display", "none");
+                            $("#div_generar").css("display", "block");
+                            $("#div_generar").append(agregartot);
+
+
+                        }
+                    },
+                    error: function (data) {
+                        OcultarPopupposition();
+                    }
+                });
+            }
+            else {
+                swal({
+                    title: "Estimado Usuario",
+                    type: "warning",
+                    text: "El control de suministro no posee elementos de protección personal para ASIGNAR, por favor agrege una asignación de elementos de protección personal para guardar este registro",
+                    confirmButtonColor: "#DD6B55"
+                })
+            }
+
+            
+        }
+    }
+    //Redirigir a nuevo registro de asignacion de EPP
+    $(document).on("click", ".reiniciar", function () {
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea salir y grabar otro REGISTRO DE ASIGNACIONES?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            type: "warning",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            closeOnConfirm: false
+        },
+function () {
+    window.location.href = "/AdmoEPP/AsignarEPP";
+});
+
+    });
+    //Exportar Asignacion EPP PDF
+    $(document).on("click", ".generarcertpdf", function () {
+        var boton = document.getElementsByClassName("generarcertpdf");
+            var Id = boton["0"].attributes[2].value;
+            var stringArray = new Array();
+            window.location.href = '/AdmoEPP/AsignacionPDF?id=' + Id;
+    });
+    //Exportar Asignacion EPP EXCEL
+    $(document).on("click", ".generarcertexcel", function () {
+        var boton = document.getElementsByClassName("generarcertexcel");
+        var Id = boton["0"].attributes[2].value;
+        var stringArray = new Array();
+        window.location.href = '/AdmoEPP/AsignacionExcel?id=' + Id;
+    });
+</script>
+
+@Html.Hidden("IdCargoEvent","0")
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">CONTROL DE SUMINISTRO DE EPP</div>
+    <div class="panel-body">
+        
+
+
+
+
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Control de Suministro</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>OBJETIVO DEL CONTROL DE SUMINISTRO</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> En esta función del módulo de elementos de protección personal, el usuario puede asignar los elementos de protección personal a una persona y al final del proceso generar un certificado de entrega de elementos de protección personal</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Consulta persona:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para consultar una persona, digite en 'Cédula del Trabajador' el número del documento y el sistema adjuntará el 'Nombre del Trabajador' y el 'Cargo'</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Cargar Lista EPP:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para obtener la lista de elementos de protección personal, el usuario debe elegir un cargo; el sistema buscará los EPP por el cargo elegido y los mostrará en la lista</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar Asignación:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para agregar un registro en la tabla de asignaciones, digite el elemento de protección personal, la cantidad suministrada y la fecha de suministro y haga click en <i class="glyphicon glyphicon-plus" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Eliminar Asignación:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para eliminar una asignación de la lista haga click en <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Guardar Registro:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para guardar el registro completo de la asignación al trabajador haga click en <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Si el registro se guardó exitosamente, el sistema desplegará 2 opciones: generar el registro en PDF o hoja de cálculo o diligenciar otro registro de asignaciones <button type="button" class="boton botonactive" style="cursor:default;">GENERAR (PDF o Hoja de cálculo)</button> o <button type="button" class="boton botonactive" style="cursor:default;">NUEVO REGISTRO</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Si desea más adelante exportar el registro de entrega de elementos de protección personal, dirijase a: APLICACIÓN-> ADMINISTRACIÓN DE EPP -> CONSULTA DE CONTROL DE SUMINISTRO</p> 
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <label>Cédula del Trabajador</label>
+                            @Html.TextBox("CedulaTrabajador", null, new { @class = "form-control form-width-100" })
+                            <span id="val-CedulaTrabajador" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <label>Proceso</label>
+                            @Html.DropDownList("Pk_Procesos", null, "-- Seleccione un Proceso --", htmlAttributes: new { @class = "form-control form-width-100", onChange = "jsFunction_121()" })                          
+                            <span id="val-Pk_Procesos" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <label>Nombre del Trabajador</label>
+                            @Html.TextBox("NombreTrabajador", null, new { @class = "form-control form-width-100" })
+                            <span id="val-NombreTrabajador" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-4 ">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <label>Sede</label>
+                            @Html.DropDownList("Pk_Sede", null, "-- Seleccione un Sede --", htmlAttributes: new { @class = "form-control form-width-100", onChange = "jsFunction_121()" })
+                            <span id="val-Pk_Sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 ">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <label>Cargo</label>
+                            @Html.DropDownList("Pk_Cargos", null, "-- Seleccione un Cargo --", htmlAttributes: new { @class = "form-control form-width-100" })
+                            <span id="val-Pk_Cargos" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>                  
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-05em">
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="Tabla-Programa table-responsive col-sm-12 add-top-margin-05em" style="max-height:700px;overflow-y:scroll;">
+                        <h4>LISTA DE ASIGNACIÓN DE EPP</h4>
+                        <table id="Grid3" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                            
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th colspan="4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>REGISTROS AGREGADOS</span>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>NOMBRE</span>
+                                    </th>
+                                    <th style="width:20%;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>CANTIDAD</span>
+                                    </th>
+                                    <th style="width:20%;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>FECHA</span>
+                                    </th>
+                                    <th class="esconder" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot class="esconder">
+                                <tr class="titulos_tabla">
+                                    <th colspan="4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;border-top:2px solid lightslategray; text-align:center">
+                                        <span>AGREGAR REGISTRO</span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.DropDownList("Pk_EPP", null, "-- Seleccione un EPP --", htmlAttributes: new { @class = "form-control form-width-100 EPPCargos" })
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.TextBox("Cantidad", null, new { @class = "form-control form-width-100", @type = "number", @min = "1" })
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.TextBox("fechasum", null, new { @class = "form-control form-width-100" })
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <a id="btnAgregarSuministro" href="#" onclick="AgregarSuministro();return false;" class="btn btn-search btn-md btnAgregarSuministro" title="Agregar Suministro">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 form-group">
+                <div id="div_novedad_validar" >
+                    <span id="msj_novedad_validar"></span>
+                </div>
+            </div>
+            
+        </div>
+        <div id="div_generar" class="internal-panel add-bottom-margin-05em">
+
+
+        </div>
+    </div>
+
+    
+
+    <div class="panel-footer esconder">
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <button id="GuardarControl" class="boton botonactive col-margin">GUARDAR</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+

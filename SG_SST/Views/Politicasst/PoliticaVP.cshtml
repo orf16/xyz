@@ -1,0 +1,23 @@
+﻿<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr></tr>
+            <tr>
+                <td>
+
+                    @Html.Raw(ViewBag.DescripcionPolitica)@*descripcion de politica*@
+
+                    @if (ViewBag.mostrarFirma == true)
+                    {
+                        <img src="@Url.Action("GetImagenRepresentanteLegal","Politicasst", new {})" class="img-responsive img-rounded" />@*imagen*@
+                    }
+
+                </td>
+            </tr>
+
+        </thead>
+       
+    </table>
+
+</div>
+

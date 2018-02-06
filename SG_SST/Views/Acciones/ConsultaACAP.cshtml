@@ -1,0 +1,194 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAccion>
+
+@{
+    ViewBag.Title = "Consulta de Acciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/ConsultaACAP.js"></script>
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+    <li class="active">Consulta de Acciones</li>
+</ol>
+
+
+
+
+<div class="panel panel-default std-panel-body max-width-700-responsive">
+    <div class="panel-heading panel-heading-custom">CONSULTAR ACCIONES</div>
+
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Consultar acciones</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+                            <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">CONSULTAR</button> Para consultar las acciones que cumplan con las condiciones del filtro de busqueda</p>
+                            <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/simbolopdf.png" style="width:40px;" /></button> para exportar el contenido de una acción en PDF</p>
+                            <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar la acción correctiva o preventiva</p>
+                            <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar la acción correctiva o preventiva</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="col-sm-12">
+        <span>@ViewBag.Mensaje</span>
+        <br />
+    </div>
+    <div class="panel-body form-horizontal">
+        @using (Html.BeginForm())
+            {
+
+            <div class="form-horizontal add-side-padding">
+                <div class="form-group row">
+                    <label class="control-label col-sm-5">ID de la acción correctiva o preventiva</label>
+                    <div class="col-sm-7">
+                        @Html.TextBox("IdAccionTxt", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="control-label col-sm-5">Nombre de quien identificó la acción</label>
+                    <div class="col-sm-7">
+                        @Html.TextBox("NombrePersona", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-sm-5">Estado</label>
+                    <div class="col-sm-3">
+                        @Html.DropDownList("TipoEntrada", null, htmlAttributes: new { @class = "form-control col-md-10" })
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-sm-5">Sede</label>
+                    <div class="col-sm-5">
+                        @Html.DropDownList("Pk_Id_Sede1", (SelectList)ViewBag.Pk_Id_Sede, "-- Seleccione una Sede --", htmlAttributes: new { @class = "form-control col-md-10" })
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="row text-center" style="margin-bottom:0.5em;">
+                    <button class="boton botoninfo" href="@Url.Action("ConsultaACAP", "Acciones")">Consultar</button>
+                </div>
+                <div class="table-responsive" style="margin:auto;">
+
+                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                        <thead>
+                            <tr class="titulos_tabla">
+
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>ID</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Fecha Diligenciamiento</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayNameFor(model => model.Tipo)
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayNameFor(model => model.Estado)
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Sede</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                                </th>
+                            </tr>
+                        </thead>
+
+                        @{
+
+
+
+                            foreach (var item in Model)
+                            {
+                                string IdAccion = item.Id_Accion.ToString();
+                                <tr class="paginacc">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(model => item.Id_Accion)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @{
+                                            string Fecha_str = "";
+                                            try
+                                            {
+                                                Fecha_str = item.Fecha_dil.ToString("dd/MM/yyyy");
+                                            }
+                                            catch (Exception)
+                                            {
+
+                                            }
+                                            <span>@Fecha_str</span>
+                                        }
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(model => item.Tipo)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(model => item.Estado)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(model => item.Halla_Sede)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <a id="@item.Pk_Id_Accion.ToString()" href="@Url.Action("EditarAccion", "Acciones", new { id = item.Pk_Id_Accion })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Editar" style="height:35px;">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a id="@item.Pk_Id_Accion.ToString()" href="#" name="@IdAccion" class="btn btn-sm btn-positiva btnEliminarAccion" title="Eliminar" style="height:35px;">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </a>
+                                        <a id="@item.Pk_Id_Accion.ToString()" href="@Url.Action("UrlAsPDF", "Acciones", new { id = item.Pk_Id_Accion })" class="btn btn-sm btn-positiva btnEliminarArchivo " title="Exportar" style="height:35px;border:none">
+                                            <img src="~/Content/Images/simbolopdf.png" style="max-height:100%" />
+                                        </a>
+                                    </td>
+                                </tr>
+                                            }
+                        }
+
+                    </table>
+                    <center><div class="pagination" id="paginador1"></div></center>
+                </div>
+                <div class="row">
+
+
+
+
+
+                </div>
+            </div>
+               }
+    </div>
+</div>
+

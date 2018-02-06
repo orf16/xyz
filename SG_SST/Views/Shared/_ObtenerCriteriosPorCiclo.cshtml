@@ -1,0 +1,217 @@
+﻿@model SG_SST.Models.Planificacion.CicloModel
+@{var totalPaginas = 0; var paginaActual = 1; var ultimaPagina = false; }
+<div class="panel-heading" style="color:black">
+    Estándares Mínimos
+</div>
+<b class="texto-sgsst">Basado en la resolución 1111 de 2017 expedida por el Ministerio del Trabajo</b>
+<a class="popup_ayuda glyphicon glyphicon-question-sign" aria-hidden="true" href="javascript:void(0);" style="color:black"></a>
+<div class="btn-info-parcial">    
+    <button id="btn_inf_parcial" type="button" class="agr_aspec boton botoninfo">
+        Informe Parcial
+    </button>
+</div>
+<div class="crit_encabezado">
+    <div class="inner_encabezado">
+        <h3>@Model.Nombre</h3>
+        <h4>Estándar @Model.EstandarActual.Descripcion</h4>
+        <h5>@Model.EstandarActual.SubEstandarActual.Descripcion</h5>
+    </div>
+</div>
+<div class="inner_criterios">
+    <div class="form-group">
+        <h4>Numeral @Model.EstandarActual.SubEstandarActual.CriterioActual.Numeral - Marco Legal</h4>
+        <textarea class="textarea-criterios form-control" rows="3" readonly style="resize:none; text-align:justify">@Model.EstandarActual.SubEstandarActual.CriterioActual.Marco_Legal</textarea>
+    </div>
+    <div class="form-group">
+        <h4>Criterio</h4>
+        <textarea class="textarea-criterios form-control" rows="8" readonly style="resize:none; text-align:justify">@Model.EstandarActual.SubEstandarActual.CriterioActual.Descripcion</textarea>
+    </div>
+    <div class="form-group">
+        <h4>Modo de Verificación</h4>
+        <textarea class="textarea-criterios form-control" rows="3" readonly style="resize:none; text-align:justify">@Model.EstandarActual.SubEstandarActual.CriterioActual.Modo_Verificacion</textarea>
+    </div>
+</div>
+<div class="calif_crit">
+    <div class="row">
+        <div class="col-xs-6">
+            <h4>Calificación</h4>
+            <div class="radio">
+                <label>
+                    <input class="opc-calificacion" type="radio" name="calificacion" id="1" value="option1">
+                    Cumple Totalmente
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input class="opc-calificacion" type="radio" name="calificacion" id="2" value="option1">
+                    No Cumple
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input class="opc-calificacion" type="radio" name="calificacion" id="3" value="option1">
+                    No Aplica
+                </label>
+                <div class="radio_no_aplica">
+                    <label class="radio-inline">
+                        <input class="opc-opcionnoaplica" type="radio" name="opcionnoaplica" id="4" value="option1"> Justifica
+                    </label>
+                    <label class="radio-inline">
+                        <input class="opc-opcionnoaplica" type="radio" name="opcionnoaplica" id="5" value="option2"> No Justifica
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="justificacion" class="col-xs-6">
+            <h4>Justificación</h4>
+            <textarea id="textarea_justif" class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+</div>
+@if (Model.CantidadCriterios > 0)
+{
+    totalPaginas = Model.CantidadCriterios;
+    paginaActual = (totalPaginas - Convert.ToInt32(Model.StandPorEvaluar)) + 1;
+    if (totalPaginas == paginaActual) { ultimaPagina = true; }
+    <div class="paginado">
+        <div class="inner_paginado">
+        </div>
+    </div>
+}
+<div class="btn-guardar" style="display:none;">
+    <button id="guardar_ciclo" type="button" class="agr_aspec btn btn-default boton botonactive">
+        Guardar
+    </button>
+</div>
+<div id="container_actividades" class="container-actividades">
+    <div class="row">
+        <div class="col-xs-4">
+            <h4 class="titulo-actividades-agr">Activadades creadas</h4>
+        </div>
+        <div class="col-xs-4">
+            <button id="btn_agr_actv" class="titulo-actividades-agr btn-agr-activ btn-popup-activ btn btn-default btn-sm" data-toggle="modal" data-target="#CrearNuevaActividad">
+                Agregar
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+    <div id="inner_actividades_agr" class="inner-actividades-agr">
+        <div class="row show-grid head-activ">
+            <div class="head-activ col-md-5">Actividad</div>
+            <div class="head-activ col-md-3">Responsable</div>
+            <div class="head-activ col-md-2">Fecha fin</div>
+            <div class="head-activ col-md-1">Editar</div>
+            <div class="head-activ col-md-1">Eliminar</div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CrearNuevaActividad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-lg">
+            <div class="modal-header cabecera">
+                <h3 class="modal-title cabeceratitle" id="exampleModalLabel"><strong>Registrar nueva Actividad</strong></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="form_agr_actv">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="hidden" name="IdAusenciaModal" id="IdAusenciaModal" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="lbl-activ">Actividad:</label>
+                            </div>
+                            <div class="col-xs-6">
+                                <input type="text" id="Actividad" name="Actividad" class="nueva-activ form-control" placeholder="Actividad...">
+                                <span class="msg-validacion">Este campo es obligatorio</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="lbl-activ">Responsable:</label>
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="text" id="Responsable" name="Responsable" class="resp-actv form-control" placeholder="Responsable...">
+                                <span class="msg-validacion">Este campo es obligatorio</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label class="lbl-activ">Fecha fin:</label>
+                            </div>
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <div class="fecha-fin-activ input-group date" id='fecha_fin_actv'>
+                                        <input type='text' id="FechaFin" name="FechaFin" class="input-fecha-fin-actv form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                    <span class="msg-validacion">Este campo es obligatorio</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer form-inline">
+                <div class="form-group">
+                    <input id="idActv" type="hidden" value="0" />
+                    <button type="submit" class="boton botonactive" id="btn_crear_act">Guardar</button>
+                    <button type="submit" class="boton botonactive" id="btn_edit_act" style="display:none;">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/EvaluacionEstandarMinimo/paginador.js"></script>
+@Scripts.Render("~/Scripts/EvaluacionEstandarMinimo/evaluacion-estandar-minimo.js")
+<script>
+    var cicloActual = new Object();
+    cicloActual.IdEmpresaEvaluar = 1;
+    cicloActual.IdCiclo = @Model.IdCiclo;
+    cicloActual.IdEstandar = @Model.EstandarActual.Id_Estandar;
+    cicloActual.IdSubEstandar = @Model.EstandarActual.SubEstandarActual.Id_SubEstandar;
+    cicloActual.IdCriterio = @Model.EstandarActual.SubEstandarActual.CriterioActual.Id_Criterio;
+    var cicloGuardado = sessionStorage.getItem('CicloActual');
+    if(cicloGuardado != null && cicloGuardado != 'undefined' && cicloGuardado != ''){
+        sessionStorage.removeItem("CicloActual");
+    }
+    sessionStorage.setItem("CicloActual", JSON.stringify(cicloActual));
+    $('.inner_paginado').bootpag({
+        total: @totalPaginas,
+        page: @paginaActual,
+        maxVisible: 10,
+        leaps: false,
+        prev: null
+    }).on("page", function(event, num){
+        var valor = event.page;
+        console.log(num);
+        if(!ValidarCriterioAGuardar()){
+            $(this).bootpag({page:  @paginaActual, maxVisible: 10});
+            $('ul.bootpag').find('li[data-lp="' + @paginaActual + '"]').trigger('click');
+            $('ul.bootpag').find('li').each(function(e){
+               if($(this).data('lp') != '@paginaActual' && $(this).attr('class') != 'next'){
+                   $(this).attr('class', 'disabled');
+               }else if($(this).data('lp') == '@paginaActual'){
+                   $(this).attr('class', 'active');
+               }
+           });
+       }
+    });
+    $('.inner_paginado').find('li').each(function(e){
+        if($(this).data('lp') != '@paginaActual' && $(this).attr('class') != 'next'){
+            $(this).attr('class', 'disabled');
+        }else if($(this).data('lp') == '@paginaActual'){
+            $(this).attr('class', 'active');
+        }
+    });
+    if('@ultimaPagina' == 'True'){
+        $('.btn-guardar').show();
+    }
+</script>

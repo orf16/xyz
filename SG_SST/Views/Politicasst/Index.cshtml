@@ -1,0 +1,253 @@
+﻿@model SG_SST.Models.Politica.mPolitica
+
+@{
+    ViewBag.Title = "Crear-Modificar Política";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<!-- Referencia a alertas -->
+<link rel="stylesheet" href="~/Content/css/sweetalert.css">
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/js/sweetalert.min.js"></script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/Politica")
+}
+
+<style>
+    #mdialTamanio {
+        width: 80% !important;
+    }
+
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal-dialog{
+        width: 50%;
+        height: 60%;
+        margin: 30px auto;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Política</a></li>
+    <li><a href="javascript:void(0)">Política del SG-SST</a></li>
+    <li class="active">Crear-Modificar Política</li>
+</ol>
+
+<body>
+
+    <form method="post" action="@Url.Action("GrabarPolitica")">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white">Política de Seguridad y Salud en el Trabajo</div>
+
+            @*Boton ayuda*@
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Crear-Modificar Política</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <div style="text-align:justify">
+                                        Esta función le permitirá ingresar y modificar de manera manual la Política de Seguridad y Salud en el Trabajo. Utilice las herramientas de texto para ingresar el contenido a su gusto.
+                                    </div>
+                                    <br />
+                                    <div style="text-align:justify">
+                                        Puede insertar la firma del representante legal dando clic en la casilla de la opción “Insertar firma representante legal”, esta solo se insertará si en el Módulo Empresa en la pestaña de roles esta se ha creado y se ha adjuntado la firma.
+                                    </div>
+                                    <br />
+                                    <div style="text-align:justify; line-height:2.5">
+                                        Una vez el texto de la política sea completado, de clic en <button class="boton botonactive" disabled>Guardar</button>, y la política será guardada, de clic en <button class="boton botonactive" disabled>Imprimir</button> si desea descargar y/o imprimir la política; o de clic en las funciones <button class="boton botoninfo" disabled>Eliminar</button> para borrar la política creada y en la opción <button class="boton botoncancel" disabled>Cancelar</button> para deshacer las acciones.
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divMensaje"></div>
+            <div class="panel-body form-horizontal" rows="20" cols="12">
+                <div id="divMensajeError"></div>
+
+                @*<textarea name="strDescripcion_Politica" placeholder="Ingrese por favor la Política de Seguridad y Salud en el Trabajo." cols="7" id="editor1" required></textarea>
+                @Html.TextAreaFor(model => model.strDescripcion_Politica, new { htmlAttributes = new {@class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.strDescripcion_Politica  , "", new {@class = "text-danger" })
+                *@
+
+               @Html.TextAreaFor(m => m.strDescripcion_Politica, new { @class = "form-control" })  
+
+                
+                <script type="text/javascript">
+                    setTimeout(function () {
+                        CKEDITOR.replace('strDescripcion_Politica');
+                    }, 20);
+                </script>
+
+                @*
+                     <script>
+                        // Replace the <textarea id="editor1"> with a CKEditor
+                        // instance, using default configuration.
+                        CKEDITOR.replace('editor1');
+                    </script><hr />
+                *@
+
+                <br />
+
+                <div class="row" align="center">
+
+                    <button type="submit" class="boton botonactive" style="margin-right:4%; margin-left:3%">Guardar</button>
+
+                    @Html.ActionLink("Imprimir", "ValidarPoliticaModal", new { },
+                    htmlAttributes: new { @type = "button", @class = "boton botonactive", style = "margin-right:4%" })
+
+                    <button class="boton botoninfo" data-toggle="modal" data-target="#@string.Format("myModal1","")" style="margin-right:4%">
+                        @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                    </button>
+
+                    <button class="boton botoncancel" data-toggle="modal" data-target="#@string.Format("myModal2","")" style="margin-right:4%">
+                        Cancelar
+                    </button>
+
+                </div>
+
+                <div class="row" style="margin-top:2.5%">
+                    <div class="col-md-6">
+                        <p style="color:black">
+                            <input type="checkbox" onclick="ValorCheckBoxPolitica()" id="idcheckfirma"> 
+                            Insertar firma representante legal
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 5px" align="center">
+            <div id="imagen" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none" aria-hidden="true" tabindex="-1">
+                            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>*@
+                            <h4 class="modal-title title">Política</h4>
+                        </div>
+                        <div class="modal-body" id="politicaPartialView">
+
+                            <div class="pdf-modales">
+                                @*<object data="@Url.Action("Reporte_Documento")" type="application/pdf" width="575" height="500"></object>*@
+                                <iframe src="@Url.Action("Reporte_Documento")" type="application/pdf" width="575" height="500"></iframe>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer alert-dismissable">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="@string.Format("myModal1","")" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title title">Eliminar Política</h4>
+                    </div>
+                    <div class="modal-body " style="color:black">
+                        <center><p>¿Está Seguro de eliminar la Política de Seguridad y Salud en el Trabajo?</p></center>
+                    </div>
+                    <div class="modal-footer">
+                        @Html.ActionLink("Eliminar", "EliminarPolitica", new { IntELiminar = 1 },
+                        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="@string.Format("myModal2","")" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+
+                        <h4 class="modal-title title">Cancelar Acción</h4>
+                    </div>
+                    <div class="modal-body " style="color:black">
+                        <center><p>¿Está seguro que desea cancelar la acción?</p></center>
+                    </div>
+                    <div class="modal-footer">
+                        @Html.ActionLink("Aceptar", "Index", null, htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+@*<script>
+    $(document).ready(function () {
+        //$('#editor1').ckeditor();
+        ObtenerPolitica();
+    });
+</script>*@
+
+@if (ViewBag.Imprimir != null)
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        $('#imagen').modal("show");
+
+    </script>
+}

@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Programas de Auditoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/MedicionyEvaluacion/Programa.js")"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li class="active">Consultar Programa de Auditorias</li>
+</ol>
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">PRUEBA DE AUDITORÍA</div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+        @Html.TextBox("URLPRINCIPAL", null, new { @class = "form-control form-width-100" })
+        @Html.TextBox("FOOTER", null, new { @class = "form-control form-width-100" })
+        @Html.TextBox("HEADER", null, new { @class = "form-control form-width-100" })
+        <button class="boton botonactive col-margin" type="submit" value="Agregar">PRUEBA PROGRAMA</button>
+        }
+
+
+    </div>
+</div>
+

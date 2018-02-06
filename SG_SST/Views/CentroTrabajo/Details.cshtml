@@ -1,0 +1,51 @@
+﻿@model SG_SST.Models.Empresas.CentroTrabajo
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CentroTrabajo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Sede.Nombre_Sede)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sede.Nombre_Sede)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Actividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Actividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Codigo_Actividad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Codigo_Actividad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero_Trabajadores)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Numero_Trabajadores)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Pk_Id_Centro_de_Trabajo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

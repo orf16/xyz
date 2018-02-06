@@ -1,0 +1,347 @@
+﻿@model SG_SST.Models.Revision.RevisionVM
+@{
+    ViewBag.Title = "Plan Acción Acta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    <script src="~/Scripts/Revision/Revision.js"></script>
+
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: blue;
+        }
+
+        .box {
+            width: 65%;
+            height: 150px;
+            background: #DDD;
+            margin: 40px auto;
+        }
+
+            .box p {
+                text-align: center;
+                position: relative;
+                font-family: Arial;
+                color: black;
+                padding-bottom: 20px;
+                padding: 1%;
+                top: 30px;
+                font-size: 15px;
+            }
+
+                .box p b {
+                    color: #ff6a00;
+                }
+
+        .effect2 {
+            position: relative;
+        }
+
+            .effect2:before, .effect2:after {
+                z-index: -1;
+                position: absolute;
+                content: "";
+                bottom: 15px;
+                left: 10px;
+                width: 50%;
+                top: 80%;
+                max-width: 300px;
+                background: #DDD;
+                -webkit-box-shadow: 0 15px 10px #777;
+                -moz-box-shadow: 0 15px 10px #777;
+                box-shadow: 0 15px 10px #777;
+                -webkit-transform: rotate(-3deg);
+                -moz-transform: rotate(-3deg);
+                -o-transform: rotate(-3deg);
+                -ms-transform: rotate(-3deg);
+                transform: rotate(-3deg);
+            }
+
+            .effect2:after {
+                -webkit-transform: rotate(3deg);
+                -moz-transform: rotate(3deg);
+                -o-transform: rotate(3deg);
+                -ms-transform: rotate(3deg);
+                transform: rotate(3deg);
+                right: 10px;
+                left: auto;
+            }
+    </style>
+
+    @Scripts.Render("~/bundles/simplePagination")
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Estimado Usuario',
+                text: '@ViewBag.mensaje',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Revisión por la Dirección</a></li>
+    <li class="active">Plan de Acción Acta Revisión</li>
+</ol>
+<body onload="cargarplanes();validaFirmas()">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Generar Plan de Acción Acta Revisión</div>
+        <div align="right">
+            <!-- Botón Ayuda -->
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Información de Ayuda/Acta Revisión</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+                                    <ul>
+                                        <li><p style="text-align:justify"><b style="color:#FF7500">Firma Gerente General</b> Acción que realiza la carga de la firma digital del Gerente General de la Empresa, la carga de esta firma es opcional y se guarda al momento de presionar <button class="boton botonactive">GUARDAR ACTA</button></p></li>
+                                        <li><p style="text-align:justify">Para cargar la firma del Representante legal active <b style="color:#FF7500">Firma Representante SGSST</b>, si este Check es desactivado la firma no es cargada. </p></li>
+                                        <li><p style="text-align:justify">Para cargar la firma del Responsable SGSST active <b style="color:#FF7500">Firma Responsable SGSST</b>, si este Check es desactivado la firma no es cargada. </p></li>
+                                        <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para agregar un plan de acción al <strong>ACTA DE REVISIÓN</strong>,  presione <button class="boton botoninfo">AGREGAR PLAN ACCIÓN</button>, en la ventana que se abre diligencie los datos de la actividad, responsable y fecha y presione <button class="boton botoninfo">GUARDAR</button></p></li>
+                                        <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para guardar el <strong>ACTA DE REVISIÓN</strong> agregue al menos un plan de acción, diligencie quien elabora el acta y presione <button class="boton botonactive">GUARDAR ACTA</button> </p></li>
+                                        <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para visualizar el <strong>ACTA DE REVISIÓN</strong> en formato PDF presione <button class="boton botonactive">VISUALIZAR ACTA</button> </p></li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">SALIR</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel-body form-horizontal">
+                <div style="background-color:transparent">
+                    <div class="col-sm-12">
+                        <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1);text-align:initial">DESARROLLO DE LA REUNIÓN</h4>
+                        <table class="table table-bordered table-hover" style="border: 2px solid lightslategray" id="">
+                            <thead>
+                                <tr class="titulos_tabla" style="text-align:center">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <p>Nombre Item de la Agenda</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <p>Adjuntos</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model.AgendaActa)
+                            {
+                                <tr>
+                                    <td style="vertical-align:middle; border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.TituloAgenda)
+                                    </td>
+                                    <td style="vertical-align:middle; border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @if (item.AdjuntosAgenda != null)
+                                    {
+                                        foreach (var adj in item.AdjuntosAgenda)
+                                        {
+                                            <a id="botonBorrar" href="@Url.Action("Download", "Revision", new { NombreArchivo = adj.NombreArchivo })" data-toggle="tooltip" title="@adj.NombreArchivo" class="btn btn-search btn-md"><span class="glyphicon  glyphicon-download"></span></a>
+                                        }
+                                    }
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                        <input type="hidden" value="@Model.AgendaActa.FirstOrDefault().FKActaRevision" id="fkacta" />
+                        <input type="hidden" value="@Model.AgendaActa.FirstOrDefault().FKActaRevision" id="IdActa" name="IdActa" />
+                        <input type="hidden" value="@Model.AgendaActa.FirstOrDefault().ConsecutivoActaRevVM" id="consecutivo" />
+                        <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1);text-align:initial">PLANES DE ACCIÓN</h4>
+                        <table class="table table-bordered table-hover" style="border: 2px solid lightslategray" id="">
+                            <thead>
+                                <tr class="titulos_tabla" style="text-align:center">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <p>Actividad Plan de Acción</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <p>Responsable</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <p>Fecha Finalización</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="planaccionesrevision"></tbody>
+                        </table>
+                        <div class="pagination-page" id="paginadorr"></div>
+                        <form id="planaccionrevision">
+                            <div id="formplan" style="text-align:left">
+                                <button type="button" class="boton botoninfo" id="btnagrplaccionacta" data-toggle="modal" data-target="#formplan1">Agregar Plan Acción</button>
+                                <div id="formplan1" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                                <h4 class="modal-title title">Registrar Plan Acción Acta</h4>
+                                            </div>
+                                            <div class="modal-body " style="color:black">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="col-lg-12">
+                                                            <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Actividad:</h5>
+                                                            <input type="text" class="form-control" name="actividadpaacta" id="actividadpaacta" />
+                                                            <label for="actividadpaacta" class="error" style="display:none;"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="col-lg-6">
+                                                            <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Responsable:</h5>
+                                                            <input type="text" class="form-control" name="responsablepaacta" id="responsablepaacta" />
+                                                            <label for="responsablepaacta" class="error" style="display:none;"></label>
+                                                        </div>
+
+
+                                                        <div class="col-lg-6">
+                                                            <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Fecha:</h5>
+                                                            <input type="text" class="form-control" name="fechapaacta" id="fechapaacta" />
+                                                            <label for="fechapaacta" class="error" style="display:none;"></label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="boton botonactive" id="btnplanesacta">Guardar</button>
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <hr />
+                    </div>
+                </div>
+                @using (Html.BeginForm("CargarFirmaGerente", "Revision", FormMethod.Post, new { enctype = "multipart/form-data", @id = "almacenarfirmaGte" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" value="@Model.AgendaActa.FirstOrDefault().FKActaRevision" id="IdActa" name="IdActa" />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="col-lg-4">
+                                <h5 class="submenu-title" style="background-color: #7E8A97;color:white;text-align:initial">Firma Gerente General:</h5>
+                                @*<label class="submenu-title" style="text-align:left">Firma Gerente General:</label>*@
+                                <input type="file" class="form-control" name="ImagenGerente" />
+                                <label id="NombreImagenGerente" name="NombreImagenGerente" style="text-align:left"></label>
+                                <br />
+                            </div>
+
+                            <div class="col-lg-4">                                
+                                    <h5 class="submenu-title" style="background-color: #7E8A97;color:white;text-align:initial">Firma Representante SGSST:</h5>
+                                    @*<label class="submenu-title" style="text-align:initial">Firma Representante SGSST:</label>*@
+                                    <div class="col-md-10" style="color:black; text-align:left">
+                                        <input type="checkbox" onclick="ValorCheckBoxreplegal()" id="idcheckfirmareplegal">
+                                        Insertar firma Representante
+                                    </div>                                
+                            </div>
+                            <div class="col-lg-4">                                
+                                    <h5 class="submenu-title" style="background-color: #7E8A97;color:white;text-align:initial">Firma Responsable SGSST:</h5>
+                                    @*<label class="submenu-title" style="text-align:initial">Firma Responsable SGSST:</label>*@
+                                    <div class="col-md-10" style="color:black; text-align:left">
+                                        <input type="checkbox" onclick="ValorCheckBoxResponsable()" id="idcheckfirmaresponsable">
+                                        Insertar firma Responsable SGSST
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="box effect2">
+                        <p style="text-align:justify">
+                            <b style="color:#ff6a00">NOTA:</b> <b style="color:black">
+                                                                   Estimado Usuario, la divulgación de la revisión gerencial a las partes interesadas la puede realizar a través del módulo de comunicaciones.
+                                                                   Así mismo no olvidar que la revisión gerencial tiene como objeto principal la divulgación y toma de acción por parte de la alta dirección de la empresa
+                                                                   firmándola como evidencia de conocimiento y aprobación de planes para la mejora del SGSST.                            </b>
+                        </p>
+                    </div>
+                    <hr />
+                    <div class="panel-body">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label class="col-md-4" style="text-align:right">Acta Elaborada por:</label>
+                                <div class="col-md-8" style="color:black; text-align:left">
+                                    <input type="text" class="form-control" name="ElaboradaPor" id="ElaboradaPor" />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-lg-12">
+                            <div class="col-sm-4 col-lg-offset-8">
+                                <button type="submit" class="boton botoninfo">GUARDAR ACTA</button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                }
+            </div>
+        </div>
+
+
+        <hr />
+        <div class="panel-footer">
+            <a id="AtrasTema" href="@Url.Action("TemasActaRevision", new { IdActa = @Model.AgendaActa.FirstOrDefault().FKActaRevision })" class="boton botonactive">Anterior</a>
+            @*<div class="col-sm-4 col-lg-offset-8">*@
+                <button type="button" class="boton botoninfo" data-toggle="modal" data-target="#@string.Format("modal{0}", @Model.AgendaActa.FirstOrDefault().FKActaRevision)" title="Visualizar">VISUALIZAR ACTA</button>
+
+                <div id="@string.Format("modal{0}", @Model.AgendaActa.FirstOrDefault().FKActaRevision)" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">  </h4>
+                            </div>
+                            <div class="modal-body ">
+
+                                <div class="pdf-modales">
+                                    <iframe src="@Url.Action("ActaRevision_PDF", new { PKActa = @Model.AgendaActa.FirstOrDefault().FKActaRevision })" type="application/pdf" width="550" height="500"></iframe>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer alert-dismissable">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            @*</div>*@
+
+        </div>
+
+    </div>
+</body>

@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Mostrar Documentación Organización";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .pdf-documentacion-org {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-documentacion-org iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li class="active">Documentación del SG-SST</li>
+</ol>
+
+<div class="pdf-documentacion-org">
+    @*<object data="@Url.Action("Organizacion_DocumentacionPDF", new { ID_Documentacion_Org = ViewBag.ID_Documentacion_Org })" type="application/pdf" width="1000" height="500"></object>*@
+    <iframe width="640" height="360" src="@Url.Action("Organizacion_DocumentacionPDF", new { ID_Documentacion_Org = ViewBag.ID_Documentacion_Org })" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-3" style="margin-bottom:15px">
+        <a href="@Url.Action("Index", "Organizacion")" class="btn btn-search btn-md"> <span class="glyphicon glyphicon-home" title="Regresar"></span></a>
+    </div>
+</div>

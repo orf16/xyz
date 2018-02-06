@@ -1,0 +1,108 @@
+﻿
+<div id="idConsultaFiltros">
+    <label class="col-sm-3">
+        Estados:
+        @Html.DropDownList("dd_estado", (List<SelectListItem>)ViewBag.lstEstados, "Seleccione...", new { @class = "dropdown1 form-control" })
+    </label>
+    <label class="col-sm-3">
+        Tipo Cotizante:
+        @Html.DropDownList("dd_tipoCotizante", (List<SelectListItem>)ViewBag.lstTiposCotizantes, "Seleccione...", new { @class = "dropdown1 form-control" })
+    </label>
+</div>
+
+<br />
+
+<div class="col-sm-3 text-center">
+    <button type="button" onclick="ValidaConsultar();" class="boton botonactive" id="btnConsultar">Consultar</button>
+</div>
+
+<div class="text-center">
+    @*<button type="button" onclick="ValidaDescargar();" class="boton botoninfo" id="btnDescargar" style="padding-top:5px">*@
+        <img style="cursor:pointer" onclick="ValidaDescargar();" src="~/Images/iconExcelp.png" alt="Descargar Excel" title="Descargar a Excel" height="30"/>
+    @*</button>*@
+    <input type="hidden" name="dd_descargar" id="dd_descargar" value="0">
+    @*<img src="~/Images/Excel-icon.png" height="40px" width="40px"/>*@
+</div>
+<div>
+
+    <br />
+
+</div>
+
+
+<script type="text/javascript">
+    var urlBase = ""
+    try {
+        urlBase = utils.getBaseUrl();
+    } catch (e) {
+        console.error(e.message);
+        throw new Error("Revisa tienes errores");
+    };
+
+    $("#descargarFilelink").attr("href");
+    function Consultar() {
+    }
+    function descargarFile() {
+        $.ajax({
+            url: urlBase + '/RelacionesLaborales/DescargarRelLab',//primero el modulo/controlador/metodo que esta en el controlador
+            type: 'POST',
+            success: function (result) {
+            }
+        });
+    }
+
+    function ValidaConsultar() {
+
+        var $dd_estado = $("#dd_estado");
+        var $dd_tipoCotizante = $("#dd_tipoCotizante");
+        var $dd_descargar = $("#dd_descargar");
+
+        if ($dd_estado.val().length == 0)
+            swal("Estimado Usuario", 'El campo estado es obligatorio');
+        else if ($dd_tipoCotizante.val().length == 0)
+            swal("Estimado Usuario", 'El tipo de cotizante  es obligatorio');
+        else {
+            utils.showLoading();
+            $dd_descargar.val("0");
+            $("#idBuscarRelacionesLaborales").submit();
+            utils.closeLoading();
+        }
+    }
+
+    function ValidaDescargar() {
+
+        var $dd_estado = $("#dd_estado");
+        var $dd_tipoCotizante = $("#dd_tipoCotizante");
+        var $dd_descargar = $("#dd_descargar");
+
+        if ($dd_estado.val().length == 0) {
+            swal("Estimado Usuario", 'El campo estado es obligatorio');
+        }
+        else if ($dd_tipoCotizante.val().length == 0) {
+            swal("Estimado Usuario", 'El tipo de cotizante  es obligatorio');
+        }
+        else {
+            utils.showLoading();
+            $dd_descargar.val("1");
+            $("#idBuscarRelacionesLaborales").submit();
+            utils.closeLoading();
+        }
+    }
+
+    function GetEstado() {
+        var $dd_estado = $("#dd_estado");
+        return $dd_estado;
+    }
+
+    function GettipoCotizante() {
+        var $dd_tipoCotizante = $("#dd_tipoCotizante");
+        return $dd_tipoCotizante;
+    }
+
+    /*    $('#descargarFilelink').click(function () {
+            var url = $(this).attr('href') + '&dd_estado=' + GetEstado() + '&dd_tipoCotizante=' + GettipoCotizante(); // build new url
+            location.href = url; // redirect
+            return false; // cancel default redirect
+        });
+        */
+</script>

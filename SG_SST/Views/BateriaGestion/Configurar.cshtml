@@ -1,0 +1,279 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaGestion
+
+@{
+    ViewBag.Title = "Configurar Aplicación Cuestionario";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li><a href="@Url.Action("Index", "BateriaGestion")">Gestionar Batería Psicosocial</a></li>
+    <li class="active">Configurar Aplicación de Cuestionario</li>
+</ol>
+
+<script>
+    //Guardar Plan
+    $(function () {
+        $("#CambiarEstado").bind("click", function () {
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea cambiar el estado de esta aplicación de cuestionario?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type:"warning",
+                closeOnConfirm: false
+            },
+            function () {
+                var onEventLaunchGuardar = new postGuardar();
+                onEventLaunchGuardar.launchGuardar();
+            });
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var IdGestion = $("#Id").val();
+            var Estado = $("#Estado").val();
+            var stringArray = new Array();
+            stringArray[0] = IdGestion;
+            stringArray[1] = Estado;
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/BateriaGestion/CambiarEstado",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "El estado de esta aplicación de cuestionario fue cambiada correctamente",
+                        type: "success",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "OK",
+                        closeOnConfirm: true
+                    },
+                          function () {
+                              var url = "/BateriaGestion/Configurar?IdGestion=" + IdGestion + "";
+                              window.location.href = url;
+                          });
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Copiar Link
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+
+        swal({
+            title: "Estimado Usuario",
+            text: "El link se ha copiado en el portapapeles",
+            type: "success",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false
+        });
+    }
+
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">CONFIGURAR APLICACIÓN DE CUESTIONARIO</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / CONFIGURAR APLICACIÓN DE CUESTIONARIO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>EN ESTA SECCIÓN DE MÓDULO DE BATERIAS PSICOSOCIALES EL USUARIO PUEDE CAMBIAR EL ESTADO DE UNA APLICACIÓN DE BATERÍA</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>UNA APLICACIÓN DE CUESTIONARIO ES UNA CONVOCATORIA PARA DILIGENCIAR UN CUESTIONARIO DETERMINADO POR EL USUARIO, LA CUAL SE COMPONE DE CONVOCADOS O PERSONAS QUE SON INVITADAS A REALIZAR DICHO CUESTIONARIO</strong></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Lista de estados de una aplicación</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1.Convocatoria - Inactivo: Si la aplicación del cuestionario se encuentra inactiva, los usuarios no podrán ingresar a realizar el diligenciamiento, marque este estado si desea planear la aplicación del cuestionario y convocar personas para su posterior diligenciamiento</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2.Activo - Aplicación en curso: Si la aplicación del cuestionario se encuentra activa, los usuario pueden diligenciar el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3.Finalización - Inactivo: Si la aplicación del cuestionario se encuentra finalizada, los usuario no pueden diligenciar el cuestionario y se habilitará al usuario de Alissta para ver los resultados de los cuestionarios</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Cambiar estado de una aplicación de cuestionario</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para crear cambiar el estado de una aplicación de batería seleccione un tipo de estado y luego haga click en  <button type="button" class="boton botonactive" style="cursor:default;">CAMBIAR ESTADO</button> el sistema recargará la página de configuración con el cambio que se ha realizado</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg6.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Link público</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>un LINK/ENLACE PÚBLICO funciona para una persona que no tenga acceso a un correo electrónico o se le dificulte el acceso. funciona copiando el enlace en el navegador</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones uso link/enlace público</strong></u></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong>1. Copiar el link/enlace al portapapeles:</strong> presione <button type="button" class="boton botonactive" style="cursor:default;">COPIAR LINK</button> para copiar el enlace, el sistema le mostrará un mensaje cuando lo copie en el portapapeles</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg7.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg8.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong>2. Pegar el link/enlance en el navegador:</strong> después de copiar el link el usuario debe pegarlo en el navegador, a continuación el sistema le mostrará una página de acceso público en la cual para autenticarse correctamente el usuario del cuestionario deberá digitar <strong>nombre</strong>, <strong>NIT de la empresa</strong> y <strong>número de identificación</strong> para registrarse y diligenciar el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg9.png" /></p>
+                            
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong>El número de NIT VALIDO lo encontrará en la información de la aplicación ubicada en esta sección, este número es sin digito de verificación</strong></p>
+                            
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Hidden("Id",Model.Pk_Id_BateriaGestion)
+
+
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información de la Aplicación</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Registro:</label>
+                        <span id="FechaRegistro">@Model.FechaRegistro.ToShortDateString()</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nit de la empresa:</label>
+                        <span id="DesEncuesta">@ViewBag.nit</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre del Cuestionario:</label>
+                        <span id="DesEncuesta">@ViewBag.Nombre.Replace("Estres", "Estrés")</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Estado:</label>
+                        <span id="DesEncuesta">@Model.Estado</span>
+                    </div>
+                    @{
+                        if (Model.EstadoInt == 3)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Fecha de Finalización:</label>
+                                <span id="fechafin">@Model.FechaFinalizacion.ToShortDateString()</span>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (Model.EstadoInt == 1)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra inactivo, los usuarios no podrán ingresar a realizar el diligenciamiento, marque este estado si desea planear el cuestionario y convocar personas para su posterior diligenciamiento</span>
+                            </div>
+                        }
+                        if (Model.EstadoInt == 2)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra activo, los usuario pueden diligenciar el cuestionario</span>
+                            </div>
+                        }
+                        if (Model.EstadoInt == 3)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra finalizado, los usuario no pueden diligenciar el cuestionario y se habilitará al usuario de Alissta para ver los resultados de los cuestionarios</span>
+                            </div>
+                        }
+                    }
+                </div>
+
+
+            </div>
+            <br />
+
+        </div>
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Estado de Aplicación</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-12 row">
+                        <label>Seleccione el estado de la aplicación del cuestionario</label>
+                    </div>
+                    <div class="col-sm-12 col-md-5 row">
+                        @Html.DropDownList("Estado", null, "-- Seleccione el Estado --", htmlAttributes: new { @class = "form-control form-width-100" })
+                        <span id="val-sede" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 col-md-6 row" style="display:block">
+                        <label> </label>
+                        <button id="CambiarEstado" class="boton botonactive col-margin">CAMBIAR ESTADO</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <br />
+
+        </div>
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Link Público (Utilice este link para personas con problemas de acceso)</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-12 mostrar">
+                        <span>Si copia este link en el navegador y el usuario digita su NOMBRE, CÉDULA y número de NIT a la cual pertenece esta aplicación de batería el usuario se puede inscribir como parte de los convocados a realizar el cuestionario sin necesidad de tener un correo electrónico</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12 mostrar">
+                        @Html.TextBox("LinkPublico", (string)ViewBag.link, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                    </div>
+                    <div class="col-sm-12 col-md-6 add-top-margin-10em mostrar" style="display:block">
+                        <label> </label>
+                        <button id="CopiarLink" class="boton botonactive col-margin" onclick="copyToClipboard('#p1')" title="Copiar Link">COPIAR LINK</button>
+                    </div>
+                </div>
+                <p id="p1" style="display:none">@ViewBag.link</p>
+            </div>
+
+
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("index", "BateriaGestion")';return false;" class="boton botonactive col-margin">REGRESAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+

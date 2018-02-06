@@ -1,0 +1,1618 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaUsuario
+
+@{
+    ViewBag.Title = "Resultados del Cuestionario";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/Chart.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li><a href="@Url.Action("Index", "BateriaGestion")">Gestionar Bateria Psicosocial</a></li>
+    <li><a href="@Url.Action("AdmoUsuarios", "BateriaGestion", new {IdGestion=(string)ViewBag.IdGestion,orden="1", filtro="1" })">Administración de Usuarios</a></li>
+    <li class="active">Resultados del Cuestionario</li>
+</ol>
+
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('ExpedEval');       
+    });
+    //Guardar Resultados
+    $(function () {
+        $("#Guardar").bind("click", function () {
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var stringArray = new Array();
+            
+            
+
+            stringArray[0] = $("#Edad").val();
+            stringArray[1] = $("#NombreEval").val();
+            stringArray[2] = $("#IdentEval").val();
+            stringArray[3] = $("#ProfesionEval").val();
+            stringArray[4] = $("#PostgradoEval").val();
+            stringArray[5] = $("#TarjetaEval").val();
+            stringArray[6] = $("#LicenciaEval").val();
+            stringArray[7] = $("#ExpedEval").val();
+            stringArray[8] = $("#Observaciones").val();
+            stringArray[9] = $("#Recomendaciones").val();
+            stringArray[10] = $("#IdUsuario").val();
+
+
+            // Construir objeto JSON
+            var EDBateriaUsuario = {
+                Pk_Id_BateriaUsuario: stringArray[10],
+                Edad: stringArray[0],
+                NombreEvaluador: stringArray[1],
+                IdEvaluador: stringArray[2],
+                Profesion: stringArray[3],
+                Postgrado: stringArray[4],
+                TarjetaProfesional: stringArray[5],
+                Licencia: stringArray[6],
+                FechaExpedicion: stringArray[7],
+                Observaciones: stringArray[8],
+                Recomendaciones: stringArray[9]
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/BateriaGestion/ActualizarResultado',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDBateriaUsuario: EDBateriaUsuario }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    //$("#val-tipo").css("display", "none");
+                    //$("#val-tipo").text('');
+
+                    if (data.Probar == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        //if (data.Validacion[0] == true) {
+                        //    $("#val-tipo").css("display", "block");
+                        //    $("#val-tipo").text(data.ValidacionStr[0]);
+                        //}
+                        //if (data.Validacion[1] == true) {
+                        //    $("#val-NombreElemento").css("display", "block");
+                        //    $("#val-NombreElemento").text(data.ValidacionStr[1]);
+                        //}
+                        //if (data.Validacion[2] == true) {
+                        //    $("#val-CodigoElemento").css("display", "block");
+                        //    $("#val-CodigoElemento").text(data.ValidacionStr[2]);
+                        //}
+                        //if (data.Validacion[3] == true) {
+                        //    $("#val-Marca").css("display", "block");
+                        //    $("#val-Marca").text(data.ValidacionStr[3]);
+                        //}
+                        //if (data.Validacion[4] == true) {
+                        //    $("#val-Modelo").css("display", "block");
+                        //    $("#val-Modelo").text(data.ValidacionStr[4]);
+                        //}
+                        //if (data.Validacion[5] == true) {
+                        //    $("#val-Fabricante").css("display", "block");
+                        //    $("#val-Fabricante").text(data.ValidacionStr[5]);
+                        //}
+                        //if (data.Validacion[6] == true) {
+                        //    $("#val-Fecha_Fab").css("display", "block");
+                        //    $("#val-Fecha_Fab").text(data.ValidacionStr[6]);
+                        //}
+                        //if (data.Validacion[7] == true) {
+                        //    $("#val-HorasVida").css("display", "block");
+                        //    $("#val-HorasVida").text(data.ValidacionStr[7]);
+                        //}
+                        //if (data.Validacion[8] == true) {
+                        //    $("#val-Ubicacion").css("display", "block");
+                        //    $("#val-Ubicacion").text(data.ValidacionStr[8]);
+                        //}
+                        //if (data.Validacion[9] == true) {
+                        //    $("#val-Caracteristicas").css("display", "block");
+                        //    $("#val-Caracteristicas").text(data.ValidacionStr[9]);
+                        //}
+                        //if (data.Validacion[13] == true) {
+                        //    $("#val-NombreResponsable").css("display", "block");
+                        //    $("#val-NombreResponsable").text(data.ValidacionStr[13]);
+                        //}
+                        //if (data.Validacion[14] == true) {
+                        //    $("#val-CargoResponsable").css("display", "block");
+                        //    $("#val-CargoResponsable").text(data.ValidacionStr[14]);
+                        //}
+                        swal("Estimado Usuario", data.Estado,"warning");
+                    }
+                    else {
+                        //swal({
+                        //    title: "Estimado Usuario",
+                        //    text: data.Estado,
+                        //    type: "success",
+                        //    confirmButtonColor: "#DD6B55",
+                        //    confirmButtonText: "OK",
+                        //    closeOnConfirm: false
+                        //});
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/BateriaGestion/ResultadosAplicacion?IdUsuario="+ stringArray[10] +""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Abrir Inicial
+    function openNewTab1() {
+        var idUsuario = $("#IdUsuario").val();
+        window.open("/BateriaGestion/InicialResultados?IdUsuario=" + idUsuario + "");
+    }
+    function openNewTab2() {
+        var idUsuario = $("#IdUsuario").val();
+        window.open("/BateriaGestion/PrincipalResultados?IdUsuario=" + idUsuario + "");
+    }
+
+
+    //Graficar dominio
+    $(document).ready(function () {
+
+        var tables1 = document.getElementById("menu4");
+        $(tables1).find('tbody.tbody_dimension1').each(function () {
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(13,149,188,1)',
+
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(6,57,81,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+                    labsArray.push(descParametro);
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+
+            var chartOptions = {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 2
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            stepSize: 10
+                        },
+                        afterFit: function(scaleInstance) {
+                            scaleInstance.width = 100; // sets the width to 100px
+                        }
+                    }]
+                },title: {
+                    display: true,
+                    text: 'Resultados todos los dominios',
+                    fontSize: 20
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                          ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillStyle = "#000000";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x-15, bar._model.y-5);
+                            });
+                        });
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            };
+
+            var myChart = new Chart(ctx1, {
+                type: 'horizontalBar',
+                data: {
+                    label: 'Valor Transformado',
+                    labels: labsArray,
+                    datasets: [{
+                        data: datasArray,
+                        backgroundColor: ColorArray
+
+                    }]
+                }
+            ,
+                options: chartOptions
+                , onAnimationComplete: function () {
+
+                    
+                }
+
+
+            });
+
+        });
+    })
+    //Graficar dimension
+    $(document).ready(function () {
+        //var ctx = document.getElementById("chart-area");
+        var tables1 = document.getElementById("menu4");
+        $(tables1).find('tbody.tbody_dimension').each(function () {
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(13,149,188,1)',
+
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+                    labsArray.push(descParametro);
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+
+            var chartOptions = {
+                responsive: true,
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 2
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            stepSize: 10,
+                            autoSkip: false
+                        }
+                    }]
+
+                },title: {
+                display: true,
+                text: 'Resultados del dominio: ' + NomPilar + '',
+            fontSize: 20
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                          ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillStyle = "#000000";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x-15, bar._model.y-5);
+                            });
+                        });
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            };
+
+            var myChart = new Chart(ctx1, {
+                type: 'horizontalBar',
+                data: {
+                    label: 'Valor Transformado',
+                    labels: labsArray,
+                    datasets: [{
+                        data: datasArray,
+                        backgroundColor: ColorArray
+
+                    }]
+                }
+            ,
+                options: chartOptions
+            });
+
+        });
+    })
+//Habilitar PDF
+    $(document).ready(function () {
+        $('#pdf-btn').click(function () {
+            var atributo = $(this).attr('name');
+            if (atributo=="false") {
+                swal({
+                    title: "Estimado Usuario",
+                    text: "Antes de visualizar el informe en formato PDF el usuario debe diligenciar los datos del evaluador en la pestaña llamada 'DATOS GENERALES DEL EVALUADOR' y presionar el botón 'GUARDAR', todos los campos de esta pestaña deben ser diligenciados",
+                    type: "warning",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                });
+            }
+        });
+    })
+
+
+    Chart.pluginService.register({
+        beforeDraw: function (chart, easing) {
+            if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+                var helpers = Chart.helpers;
+                var ctx = chart.chart.ctx;
+                var ctx1 = chart.ctx;
+                var chartArea = chart.chartArea;
+
+                var h = parseInt(chart.right);
+                var w = parseInt(chart);
+
+                ctx.save();
+                ctx1.fillStyle = "white";
+                ctx1.fillRect(0, 0, 3000, 3000);
+                ctx1.restore();
+
+
+                ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+                ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+                ctx.restore();
+            }
+        }
+    });
+
+    //Graficar dominio
+    $(document).ready(function () {
+        var tables1 = document.getElementById("menu5");
+        $(tables1).find('tbody.tbody_dimension1').each(function () {
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var ctx1 = document.getElementById(graficotabla);
+            var ctx2 = ctx1.getContext("2d");
+            ctx2.fillStyle = "#FF0000";
+            ctx2.fillRect(20, 20, 150, 100);
+
+            var coloresgen = ['rgba(92,167,147,0.8)',
+
+'rgba(13,149,188,0.8)',
+'rgba(235,203,56,0.8)',
+'rgba(243,111,19,0.8)',
+'rgba(193,48,24,0.8)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(6,57,81,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+
+                    
+                    if (descParametro.indexOf(" ") >= 0)
+                    {
+                        var res = descParametro.split(" ");
+                        var rescount = res.length;
+
+                        var partir = new Array();
+                        var str = "";
+
+                       
+
+                        $.each(res, function (i, obj) {
+                            if (rescount-1!=i) {
+                                if (str.length >= 12) {
+                                    partir.push(str);
+                                    str = obj;
+                                }
+                                else {
+                                    if (str!="") {
+                                        str += " " + obj;
+                                    }
+                                    else {
+                                        str += obj;
+                                    }
+                                }
+                            }
+                            else {
+                                partir.push(str + " " + obj);
+                            }
+                            
+                        });
+
+                        var partircount = partir.length;
+                        var resultado = partir;
+                        labsArray.push(resultado);
+                    }
+                    else {
+                        labsArray.push(descParametro);
+
+                    }
+
+                    
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var riesgo = $(resultado).attr('riesgo');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+
+                    if (riesgo == "Sin riesgo o riesgo despreciable") {
+                        ColorArray.push(coloresgen[0]);
+                    }
+                    if (riesgo == "Riesgo bajo") {
+                        ColorArray.push(coloresgen[1]);
+                    }
+                    if (riesgo == "Riesgo medio") {
+                        ColorArray.push(coloresgen[2]);
+                    }
+                    if (riesgo == "Riesgo alto") {
+                        ColorArray.push(coloresgen[3]);
+                    }
+                    if (riesgo == "Riesgo muy alto") {
+                        ColorArray.push(coloresgen[4]);
+                    } 
+
+                    
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            var chartOptions = {
+                datasetFill: false,
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            stepSize: 10,
+                            fontColor: 'black',
+                            fontFamily: "Verdana"
+                        },
+                        afterFit: function (scaleInstance) {
+                            scaleInstance.width = 100; 
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Puntaje Transformado',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }],
+                    xAxes: [{
+                        fontColor: "black",
+                        barPercentage: 2,
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+                            
+                        },
+                        ticks: {
+                            fontColor: 'black',
+                            fontFamily: "Verdana"
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Dominio',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: 'VALORES TRANSFORMADO DE DOMINIOS',
+                    fontSize: 20
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                          ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillStyle = "#000000";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x , bar._model.y );
+                            });
+                        });
+                    }
+                },
+                chartArea: {
+                    backgroundColor: 'rgba(184, 177, 196, 0.4)'
+        },
+                elements: {
+                    rectangle: {
+                        borderSkipped: 'bottom' 
+                    }
+                },
+                legend: {
+                    labels: {
+                        generateLabels: function (chart) {
+                            labels = Chart.defaults.global.legend.labels.generateLabels(chart);
+                            labels[2].text = "";
+                            labels[2].hidden = true;
+                            labels[2].fillStyle = "rgba(255, 255, 255, 0)";
+                            labels[2].lineWidth = 0;
+                            //labels[2] = false;
+                            labels[2].boxWidth = 1;
+                            return labels;
+                        }, boxWidth: 10
+                    }
+                }
+            };
+            var myChart = new Chart(ctx1, {
+                backgroundColor: "#F5DEB3",
+                type: 'bar',
+                data: {
+                   label: 'Valor Transformado',
+                    labels: labsArray,
+                    datasets: [{
+                        backgroundColor: "rgba(92,167,147,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Sin riesgo    "
+                    },
+                    {
+                        
+
+                        backgroundColor: "rgba(13,149,188,0.8)",
+                        borderColor: 'black',
+                    borderWidth: 1,
+                    label: "Riesgo bajo"
+                    }
+                    ,
+                    {
+                        data: datasArray,
+                        backgroundColor: ColorArray,
+                        borderColor:'black',
+                        borderWidth: 1,
+                        
+
+                        
+                    }
+                    ,
+                    {
+                        backgroundColor: "rgba(235,203,56,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo medio    "
+                    }
+                    ,
+                    {
+                        backgroundColor: "rgba(243,111,19,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo alto    "
+                    }
+                    ,
+                    {
+                        backgroundColor: "rgba(193,48,24,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo muy alto"
+                    }
+                    ]
+                }
+            ,
+                options: chartOptions
+            });
+        });
+    })
+    //Graficar dimension
+    $(document).ready(function () {
+        //var ctx = document.getElementById("chart-area");
+        var tables1 = document.getElementById("menu5");
+        $(tables1).find('tbody.tbody_dimension').each(function () {
+            
+            var fontsize = 12;
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var titulo = "VALORES TRANSFORMADOS DOMINIO: " + NomPilar.toUpperCase();
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(92,167,147,0.8)',
+
+'rgba(13,149,188,0.8)',
+'rgba(235,203,56,0.8)',
+'rgba(243,111,19,0.8)',
+'rgba(193,48,24,0.8)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(6,57,81,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            var sumadim=0;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    sumadim++;
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+
+
+                    if (descParametro.indexOf(" ") >= 0) {
+                        var res = descParametro.split(" ");
+                        var rescount = res.length;
+
+                        var partir = new Array();
+                        var str = "";
+
+
+
+                        $.each(res, function (i, obj) {
+                            if (rescount - 1 != i) {
+                                if (str.length >= 10) {
+                                    partir.push(str);
+                                    str = obj;
+                                }
+                                else {
+                                    if (str != "") {
+                                        str += " " + obj;
+                                    }
+                                    else {
+                                        str += obj;
+                                    }
+                                }
+                            }
+                            else {
+                                partir.push(str + " " + obj);
+                            }
+
+                        });
+
+                        var partircount = partir.length;
+                        var resultado = partir;
+                        labsArray.push(resultado);
+                    }
+                    else {
+                        labsArray.push(descParametro);
+
+                    }
+
+
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var riesgo = $(resultado).attr('riesgo');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+
+                    if (riesgo == "Sin riesgo o riesgo despreciable") {
+                        ColorArray.push(coloresgen[0]);
+                    }
+                    if (riesgo == "Riesgo bajo") {
+                        ColorArray.push(coloresgen[1]);
+                    }
+                    if (riesgo == "Riesgo medio") {
+                        ColorArray.push(coloresgen[2]);
+                    }
+                    if (riesgo == "Riesgo alto") {
+                        ColorArray.push(coloresgen[3]);
+                    }
+                    if (riesgo == "Riesgo muy alto") {
+                        ColorArray.push(coloresgen[4]);
+                    }
+
+
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            if (sumadim>=8) {
+                fontsize = 10;
+            }
+            var chartOptions = {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            stepSize: 10,
+                            fontColor: 'black',
+                            fontFamily: "Verdana"
+                        },
+                        afterFit: function (scaleInstance) {
+                            scaleInstance.width = 100;
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Puntaje Transformado',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }],
+                    xAxes: [{
+                        fontColor: "black",
+                        barPercentage: 2,
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+
+                        },
+                        ticks: {
+                            fontColor: 'black',
+                            fontFamily: "Verdana",
+                            fontSize: fontsize
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Dimensión',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: titulo,
+                    fontSize: 20
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                          ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillStyle = "#000000";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x, bar._model.y);
+                            });
+                        });
+                    }
+                },
+                chartArea: {
+                    backgroundColor: 'rgba(184, 177, 196, 0.4)'
+                },
+                elements: {
+                    rectangle: {
+                        borderSkipped: 'bottom'
+                    }
+                },
+                legend: {
+                    labels: {
+                        generateLabels: function (chart) {
+                            labels = Chart.defaults.global.legend.labels.generateLabels(chart);
+                            labels[2].text = "";
+                            labels[2].hidden = true;
+                            labels[2].fillStyle = "rgba(255, 255, 255, 0)";
+                            labels[2].lineWidth = 0;
+                            //labels[2] = false;
+                            labels[2].boxWidth = 1;
+                            return labels;
+                        }, boxWidth: 10
+                    }
+                }
+            };
+            var myChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    label: 'Valor Transformado',
+                    labels: labsArray,
+                    datasets: [{
+                        backgroundColor: "rgba(92,167,147,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Sin riesgo    "
+                    },
+                    {
+
+
+                        backgroundColor: "rgba(13,149,188,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo bajo"
+                    }
+                    ,
+                    {
+                        data: datasArray,
+                        backgroundColor: ColorArray,
+                        borderColor: 'black',
+                        borderWidth: 1,
+
+
+
+                    }
+                    ,
+                    {
+                        backgroundColor: "rgba(235,203,56,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo medio    "
+                    }
+                    ,
+                    {
+                        backgroundColor: "rgba(243,111,19,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo alto    "
+                    }
+                    ,
+                    {
+                        backgroundColor: "rgba(193,48,24,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Riesgo muy alto"
+                    }
+                    ]
+                }
+            ,
+                options: chartOptions
+            });
+
+        });
+    })
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">RESULTADOS DEL CUESTIONARIO</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / RESULTADOS DEL CUESTIONARIO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>EN ESTA SECCIÓN DE MÓDULO DE BATERIAS PSICOSOCIALES EL USUARIO PUEDE VER LOS RESULTADOS DEL DILIGENCIAMIENTO DEL CUESTIONARIO YA TERMINADO, DILIGENCIAR Y VER EL INFORME FINAL DE LA MISMA</strong></p>
+                            
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><u><strong>Diligenciar el informe</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Datos del trabajador:</strong> en la pestaña datos del trabajador el usuario puede verificar la información básica del usuario de la batería, el unico campo diligenciable en esta perstaña es <strong>Edad</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Datos del evaluador:</strong>  en la pestaña datos del evaluador todos los campos son diligenciados por el evaluador que es un psicólogo con posgrado en salud ocupacional, con licencia vigente de prestación de servicios en psicología ocupacional</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Observaciones y comentarios:</strong> en la pesataña observaciones y comentarios el evaluador puede diligenciar estos dos campos opcionales</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Ver y analizar resultados</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">En la pestaña <strong>resultados del cuestionario</strong> el evaluador puede ver y analizar los resultados del cuestionario. El sistema desplegará la tabla donde quedan consignados los resultados de dominios, dimensiones y el total del cuestionario con su puntaje y nivel de riesgo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Si desea ver la <strong>FICHA DE DATOS GENERALES</strong> presione <button type="button" class="boton botonactive" style="cursor:default;">FICHA DE DATOS GENERALES</button> el sistema lo mostrará en una nueva pestaña</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Si desea ver el diligenciamiento del <strong>CUESTIONARIO</strong> presione <button type="button" class="boton botonactive" style="cursor:default;">CUESTIONARIO PRINCIPAL</button> el sistema lo mostrará en una nueva pestaña</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Guardar el informe de resultados</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR</button> para guardar la información de los resultados</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Exportar el informe en formato PDF</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Para poder ver el informe en formato PDF presione <button type="button" class="boton botonactive" style="cursor:default;">INFORME PDF</button> para descargar el informe</p>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*informacion guardada*@
+        <div class="internal-panel add-bottom-margin-05em mostrar">
+
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Registro de la aplicación de cuestionario:</label>
+                        <span id="FechaRegistro">@ViewBag.FechaRegistro</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre del cuestionario:</label>
+                        <span id="DesEncuesta">@Model.NombreEncuesta.Replace("Estres", "Estrés")</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre de la persona que diligencia:</label>
+                        <span id="DesEncuesta">@ViewBag.NombrePersona</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Número del documento de la persona que diligencia:</label>
+                        <span id="DesEncuesta">@ViewBag.Cedula</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Diligenciamiento:</label>
+                        <span id="DesEncuesta">@ViewBag.FechaDiligenciamiento</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nivel ocupacional:</label>
+                        <span id="DesEncuesta">@Model.BateriaInicial.TipoCargo</span>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+            <br />
+
+        </div>
+
+        @*resultados*@
+        @Html.Hidden("IdGestion", (string)ViewBag.IdGestion)
+        @Html.Hidden("IdUsuario", Model.Pk_Id_BateriaUsuario.ToString())
+
+        <div class="internal-panel add-bottom-margin-05em mostrar">
+            <div class="internal-panel-header panel-heading">
+                <h4>RESULTADOS DEL CUESTIONARIO</h4>
+            </div>
+            <div class="internal-panel-body">
+                <div class="row add-side-padding">
+                    <div class="col-sm-12">
+                        <span style="float:left;margin-left:5px;">Nota: Para ver el informe en formato pdf con los datos del evaluador es importante que el usuario diligencie el formulario en la pestaña <strong>DATOS DEL EVALUADOR</strong> y guarde el formulario</span>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" class="navigation-formulario" href="#menu0">DATOS DEL TRABAJADOR</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu1">DATOS DEL EVALUADOR</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu3">OBSERVACIONES Y COMENTARIOS</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu2">RESULTADOS DEL CUESTIONARIO</a></li>      
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu5">GRAFICAS RESULTADOS</a></li>       
+                    </ul>
+
+                    <div class="tab-content">
+                        @*DATOS GENERALES DEL TRABAJADOR*@
+                        <div id="menu0" class="tab-pane fade in active " style="min-height:500px;padding-top:10px;">
+                            <h4>DATOS GENERALES DEL TRABAJADOR</h4>
+                            
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-10">
+                                    <span>Nombre del trabajador</span>
+                                    @Html.TextBox("Nombre", Model.Nombre, htmlAttributes: new { @class = "form-control", @disabled= "disabled" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-4">
+                                    <span>Número de identificación (ID)</span>
+                                    @Html.TextBox("Identificacion", Model.NumeroIdentificacion, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-10">
+                                    <span>Cargo</span>
+                                    @Html.TextBox("Cargo", Model.BateriaInicial.CargoConEmpresa, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>Departamento o sección</span>
+                                    @Html.TextBox("LugarTrabajo", Model.BateriaInicial.LugarTrabajoDep, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-3">
+                                    <span>Edad</span>
+                                    @Html.TextBox("Edad", (string)ViewBag.Edad, htmlAttributes: new { @class = "form-control", @maxlength = "100" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-3">
+                                    <span>Sexo</span>
+                                    @Html.TextBox("Sexo", Model.BateriaInicial.Sexo, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-3">
+                                    <span>Fecha de aplicación del cuestionario</span>
+                                    @Html.TextBox("FechaResp", (string)ViewBag.FechaDiligenciamiento, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-10">
+                                    <span>Nombre de la empresa</span>
+                                    @Html.TextBox("RazonSocial", (string)ViewBag.NombreEmpresa, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                </div>
+                            </div>
+
+                            @*<div class="row">
+                                <div class="col-sm-12 col-md-3">
+                                    <button id="FiltroRol" class="boton botonactive col-margin">CONSULTAR</button>
+                                </div>
+                            </div>*@
+
+
+                            
+
+                        </div>
+                        @*DATOS GENERALES DEL ENCUESTADOR*@
+                        <div id="menu1" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>DATOS GENERALES DEL EVALUADOR (* Todo informe que carezca de estos datos no será válido.)</h4>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>Nombre del evaluador</span>
+                                    @Html.TextBox("NombreEval", Model.NombreEvaluador, htmlAttributes: new { @class = "form-control", @maxlength = "3000" })
+                                </div>
+                            </div>
+
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>Número de identificación (c.c.)</span>
+                                    @Html.TextBox("IdentEval", Model.IdEvaluador, htmlAttributes: new { @class = "form-control", @maxlength = "3000" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>Profesión</span>
+                                    @Html.TextBox("ProfesionEval", Model.Profesion, htmlAttributes: new { @class = "form-control", @maxlength = "3000" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>Postgrado</span>
+                                    @Html.TextBox("PostgradoEval", Model.Postgrado, htmlAttributes: new { @class = "form-control", @maxlength = "3000" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>No Tarjeta profesional*</span>
+                                    @Html.TextBox("TarjetaEval", Model.TarjetaProfesional, htmlAttributes: new { @class = "form-control", @maxlength = "3000" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-5">
+                                    <span>No. Licencia en salud ocupacional*</span>
+                                    @Html.TextBox("LicenciaEval", Model.Licencia, htmlAttributes: new { @class = "form-control", @maxlength = "3000" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-3">
+                                    <span>Fecha de expedición de la licencia en salud ocupacional*</span>
+                                    @{
+                                        if (Model.FechaExpedicion != null)
+                                        {
+                                            DateTime fecha = Model.FechaExpedicion ?? DateTime.MinValue;
+                                            string fechastr = fecha.ToShortDateString();
+                                            @Html.TextBox("ExpedEval", fechastr, htmlAttributes: new { @class = "form-control" })
+                                            }
+                                        else
+                                        {
+                                            @Html.TextBox("ExpedEval", Model.FechaExpedicion, htmlAttributes: new { @class = "form-control" })
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        @*RESULTADOS DEL CUESTIONARIO*@
+                        <div id="menu2" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>RESULTADOS DEL CUESTIONARIO</h4>
+
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-md-12 col-sm-12 ">
+                                    <button id="inicial" onclick="openNewTab1()" class="boton botonactive">FICHA DE DATOS GENERALES</button>
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-md-12 col-sm-12 ">
+                                    <button id="principal" onclick="openNewTab2()" class="boton botonactive" >CUESTIONARIO PRINCIPAL</button>
+                                </div>
+                            </div>
+
+                            <div class="Tabla-Gestion2 table-responsive add-side-padding">
+                                @{
+                                    if (Model.NombreEncuesta == "Cuestionario de Factores de Estrés")
+                                    {
+                                        <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray">
+                                            <thead>
+                                                <tr class="titulos_tabla ">
+                                                    <th colspan="4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;">
+                                                        <span>RESULTADOS DEL CUESTIONARIO</span>
+                                                    </th>
+                                                </tr>
+                                                <tr class="titulos_tabla">
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+                                                        
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+                                                        <span>Puntaje (transformado)</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                                        <span>Nivel de Riesgo</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                        <span><strong>@Model.NombreEncuestaTotal</strong></span>
+                                                    </td>
+                                                    @{
+                                                        string decimalstr3 = String.Format("{0:0.0}", Model.PuntajeTrans);
+                                                        <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                            <span>@decimalstr3</span>
+                                                        </td>
+                                                    }
+                                                    <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                        <span>@Model.NivelRiesgoDesc</span>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                                        }
+                                                        else
+                                                        {
+                                        <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray">
+                                            <thead>
+                                                <tr class="titulos_tabla ">
+                                                    <th colspan="4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;">
+                                                        <span>RESULTADOS DEL CUESTIONARIO</span>
+                                                    </th>
+                                                </tr>
+                                                <tr class="titulos_tabla">
+
+                                                    @{
+                                                        var numerodom = Model.Listadominios.Count;
+                                                        if (numerodom > 1)
+                                                        {
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                                                <span>Dominios</span>
+                                                            </th>
+                                                        }
+                                                    }
+
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:14%;width:50%;">
+                                                        <span>Dimensiones</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+                                                        <span>Puntaje (transformado)</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:15%;">
+                                                        <span>Nivel de Riesgo</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    var ListaDominios = Model.Listadominios.ToList();
+
+                                                    foreach (var item in ListaDominios)
+                                                    {
+                                                        string decimalstr1 = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                        int cont = 0;
+                                                        string NombreDom = item.Nombre;
+                                                        string numerofilasdom = item.ListaDimensiones.Count().ToString();
+                                                        foreach (var item1 in item.ListaDimensiones)
+                                                        {
+                                                            string decimalstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                            if (cont == 0)
+                                                            {
+                                                                <tr>
+                                                                    @{
+
+                                                                        if (numerodom > 1)
+                                                                        {
+                                                                            <td rowspan="@numerofilasdom" style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                <span>@NombreDom.Trim()</span>
+                                                                            </td>
+                                                                        }
+                                                                    }
+
+                                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                                        <span>@item1.Nombre</span>
+                                                                    </td>
+                                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                        <span>@decimalstr</span>
+                                                                    </td>
+                                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                        <span>@item1.NivelRiesgoDesc</span>
+                                                                    </td>
+                                                                </tr>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <tr>
+                                                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                                                    <span>@item1.Nombre</span>
+                                                                                </td>
+                                                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                    <span>@decimalstr</span>
+                                                                                </td>
+                                                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                    <span>@item1.NivelRiesgoDesc</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            }
+                                                                            cont++;
+                                                                        }
+
+
+                                                                        if (numerodom > 1)
+                                                                        {
+                                                                            <tr>
+                                                                                <td colspan="2" style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                                                    <span><strong>@item.Nombre</strong></span>
+                                                                                </td>
+                                                                                <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                    <span>@decimalstr1</span>
+                                                                                </td>
+                                                                                <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                    <span>@item.NivelRiesgoDesc</span>
+                                                                                </td>
+                                                                            </tr>
+                                                                        }
+
+
+
+                                                                        }
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    @{
+
+                                                        if (numerodom > 1)
+                                                        {
+                                                            <td colspan="2" style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                                <span><strong>@Model.NombreEncuestaTotal</strong></span>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                                <span><strong>@Model.NombreEncuestaTotal</strong></span>
+                                                            </td>
+                                                        }
+                                                    }
+
+                                                    @{
+                                                        string decimalstr2 = String.Format("{0:0.0}", Model.PuntajeTrans);
+                                                        <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                            <span>@decimalstr2</span>
+                                                        </td>
+                                                    }
+                                                    <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                        <span>@Model.NivelRiesgoDesc</span>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                                        }
+
+                                }
+                                
+                            </div>
+                        </div>
+                       
+                        @*OBSERVACIONES Y COMENTARIOS DEL EVALUADOR*@
+                        <div id="menu3" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>OBSERVACIONES Y COMENTARIOS DEL EVALUADOR</h4>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-12">
+                                    <span>OBSERVACIONES Y COMENTARIOS DEL EVALUADOR</span>
+                                </div>
+                                <div class="col-sm-12 col-md-12">
+                                    @Html.TextArea("Observaciones", null, htmlAttributes: new { @class = "form-control", @rows=6, @maxlength = "8000",@style= "resize: vertical;" })
+                                </div>
+                            </div>
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-sm-12 col-md-12">
+                                    <span>RECOMENDACIONES PARTICULARES</span>
+                                </div>
+                                <div class="col-sm-12 col-md-12">
+                                    @Html.TextArea("Recomendaciones", null, htmlAttributes: new { @class = "form-control", @rows = 6, @maxlength = "8000", @style = "resize: vertical;" })
+                                </div>
+                            </div>
+                        </div>
+                        @*GRAFICAS*@
+                        <div id="menu5" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>GRAFICAS DEL CUESTIONARIO</h4>
+
+                            
+
+
+                            @if (Model.NombreEncuesta == "Cuestionario de Factores de Estrés")
+                            {
+                                <div class="col-sm-12 remove-left-padding">
+                                    <h4>Cuestionario de Factores de Estrés no posee representación gráfica</h4>
+                                </div>
+                            }
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-md-12 col-sm-12 ">
+                                    @{
+
+
+                                        if (Model.Listadominios.Count > 1)
+                                        {
+                                            string Idgraph1 = "graph01";
+                                            
+                                            <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray;display:none ">
+                                                <thead>
+                                                    <tr class="titulos_tabla">
+                                                        <th>Nombre Dominio</th>
+                                                        <th>Puntaje</th>
+                                                        <th>Nivel Riesgo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody_dimension1" name="@Idgraph1" pilar="A">
+                                                    @{
+                                                        foreach (var item in Model.Listadominios)
+                                                        {
+                                                            string decimalPTstr = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                            <tr>
+                                                                <td descripcion="@item.Nombre" class="graphDesc" riesgo="@item.NivelRiesgoDesc">@item.Nombre</td>
+                                                                <td resultado="@decimalPTstr" class="graphResult" riesgo="@item.NivelRiesgoDesc">@decimalPTstr</td>
+                                                                <td resultado="@item.NivelRiesgoDesc" class="graphRiesgo">@item.NivelRiesgoDesc</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <div class="col-sm-12" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px;">
+                                                
+                                                <div class="col-sm-12">
+                                                    <canvas id="graph01" style="display: block;" class="chartjs-render-monitor" ></canvas>
+                                                </div>
+                                                
+
+                                            </div>
+                                                        }
+                                                        if (Model.Listadominios.Count() > 0 && Model.NombreEncuesta != "Cuestionario de Factores de Estrés")
+                                                        {
+
+
+                                                            foreach (var item in Model.Listadominios)
+                                                            {
+
+                                                                string Idgraph = "graphb" + item.Pk_Id_BateriaDimension;
+                                                                
+                                                                <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray;display:none">
+                                                                    <thead>
+                                                                        <tr class="titulos_tabla">
+                                                                            <th>Nombre dimension</th>
+                                                                            <th>Puntaje</th>
+                                                                            <th>Nivel Riesgo</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="tbody_dimension" name="@Idgraph" pilar="@item.Nombre">
+                                                                        @{
+                                                                            foreach (var item1 in item.ListaDimensiones)
+                                                                            {
+                                                                                string decimalPTstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                                                <tr>
+                                                                                    @{
+                                                                                        if (item1.Nombre == "Recompensas derivadas de la pertenencia a la organización y del trabajo que se realiza")
+                                                                                        {
+                                                                                            <td descripcion="Recompensas derivadas de la pertenencia a la organización" class="graphDesc"><span>Recompensas derivadas de la pertenencia a la organización</span></td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td descripcion="@item1.Nombre" class="graphDesc"><span>@item1.Nombre</span></td>
+                                                                                        }
+                                                                                    }
+
+                                                                                    <td resultado="@decimalPTstr" class="graphResult" riesgo="@item1.NivelRiesgoDesc"><span>@decimalPTstr</span></td>
+                                                                                    <td resultado="@item1.NivelRiesgoDesc" class="graphRiesgo" riesgo="@item1.NivelRiesgoDesc">@item1.NivelRiesgoDesc</td>
+                                                                                </tr>
+                                                                                        }
+                                                                        }
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <td colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;color:black;"></td>
+                                                                        </tr>
+
+                                                                    </tfoot>
+                                                                </table>
+                                                                <div class="col-sm-12" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px;">
+                                                                    <canvas id="@Idgraph" style="display: block;" class="chartjs-render-monitor"></canvas>
+                                                                </div>
+
+
+                                                                                            }
+                                                                                        }
+
+
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+            <br />
+
+        </div>
+
+
+
+        <div class="panel-footer">
+            <div class="row">
+                
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="Guardar" class="boton botonactive col-margin">GUARDAR</button>
+                </div>
+
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="pdf-btn" name="true" onclick="location.href='@Url.Action("UrlAsPDF","BateriaGestion",new { IdUsuario = Model.Pk_Id_BateriaUsuario })';return false;" class="boton botonactive col-margin">INFORME PDF</button>
+                </div>
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("AdmoUsuarios", "BateriaGestion", new {IdGestion=(string)ViewBag.IdGestion,orden="1", filtro="1" })';return false;" class="boton botoninfo col-margin">REGRESAR</button>
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>
+

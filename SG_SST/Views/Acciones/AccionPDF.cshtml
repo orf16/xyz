@@ -1,0 +1,820 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAccion
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+color:black;
+padding:0px !important;
+}
+
+.page-header {
+    display:inline-block;
+    text-align:center;
+    background-color:#e3e3e3;
+    color:black;
+    width:100%;
+}
+    .page-header .divtexto {float:left;
+                     text-align:left;
+                     width:50%;
+
+    }
+
+    .page-header .divimagen {float:right;
+                      text-align:right;
+                      max-height:100px;
+                      overflow:hidden;
+                      width:49%;
+    }
+
+.Unalinea{
+    display:inline-block;
+    width:100%;
+    font-size:11px;
+}
+
+.TipoCss {
+    font-size:20px;
+    float:left;
+    width:60%;
+  
+}
+
+.TipoCss > input {
+                    font-size:20px;        
+    }
+
+.IDCss {
+    font-size:20px;
+    float:right;
+    background-color:none;
+    width:40%;
+
+}
+.IDCss label {
+                    font-size:20px;
+                    width:120px;                
+    }
+    .IDCss input {
+                    font-size:20px;
+                    color:black;
+                    width:120px;
+                    text-align:right;
+    }
+   
+
+
+    .IDCss div {
+        float:right;
+        margin-right:30px;
+    }
+
+    .Doslinea {
+    width:100%;
+    background-color:none;
+    border: solid #bfbbce 1px;
+    padding:0px;
+    font-size:17px; 
+    page-break-inside: avoid !important;
+}
+.Doslinea .SubTitulo {background-color:#8a8a8a;
+                      margin:0px;
+                      padding-left:5px;  
+                      margin:0px 0px 2px 0px;                             
+}
+
+.AccionInline {
+    display:inline-block;
+    width:100%;
+    margin:0px;
+    padding-left:5px;
+}
+
+
+.AccionLeft30 {
+    float:left;
+    width:30%;
+}
+.AccionLeft40 {
+    float:left;
+    width:40%;
+}
+.AccionLeft50 {
+    float:left;
+    width:50%;
+}
+
+.my-style {
+    outline: none;
+    border: none;
+    font-size:15px; 
+}
+.my-style1 {
+    outline: none;
+    border: none;
+    font-size:15px; 
+    text-align:center;
+    outline: none !important;
+    border: none !important;
+
+}
+
+.NombreIdentifica {
+    width:90%;
+}
+
+.table-responsive {
+    
+}
+    .table-responsive table {
+        width:100%;
+        
+    }
+
+    .table-responsive .TableTitle {
+        background-color:none;
+    }
+
+    .table-responsive .InfoTable {
+        background-color:#e3e3e3;
+    }
+
+
+textarea {
+    width:98%;
+    outline: none;
+    border: solid 1px gray;
+    text-align:justify;
+}
+
+.add-padding {margin-left:5px;
+}
+
+.CambioDoc {
+    border-bottom:solid 1px black;
+}
+
+.breakhere { page-break-after:always }
+
+
+
+.datagrid table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.datagrid table td {    
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+    .datagrid table th {
+        border: 1px solid #ddd;
+    text-align: left;
+    }
+
+    .datagrid table tbody tr td {
+        padding:5px;
+    }
+    .datagrid table thead tr th {
+        text-align:center;
+    }
+
+    .datagrid table thead tr th {
+        text-align:center;
+        padding-left:3px;
+        padding-right:3px;
+    }
+
+    .datagrid table thead {background-color:#a3a3a3;
+                           color:black
+    }
+
+.datagrid table tbody tr .TdJustificar {
+    text-align:justify !important;
+    max-width:500px;
+}
+
+.datagrid table tbody tr .TdCentrar {
+    text-align:center !important;
+}
+
+input[type=text] {
+    outline: none;
+    border: solid 1px gray;
+}
+
+tr, td {
+page-break-inside: avoid !important;
+}
+    </style>
+    
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label class="radio-inline remove-left-padding">
+                <b>Tipo de Acción</b>
+            </label>
+            <label class="radio-inline">
+                @Html.RadioButtonFor(m => m.Tipo, "null", new { id = "Tipo", type = "hidden" })
+                @Html.RadioButtonFor(m => m.Tipo, "Acción correctiva", new { id = "Tipo" })
+                Acción correctiva
+            </label>
+            <label class="radio-inline">
+                @Html.RadioButtonFor(m => m.Tipo, "Acción preventiva", new { id = "Tipo" })
+                Acción Preventiva
+            </label>
+        </div>
+
+        <div class="IDCss">
+            <div>
+                <b>No.</b>
+                @Html.DisplayFor(m => m.Id_Accion)
+            </div>
+
+
+        </div>
+    </div>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label class="radio-inline remove-left-padding">
+                <b>Estado</b>
+            </label>
+            <label class="radio-inline">
+                @Html.RadioButtonFor(m => m.Estado, "null", new { id = "Tipo", type = "hidden" })
+                @Html.RadioButtonFor(m => m.Estado, "Abierta", new { id = "Estado" })
+                Abierta
+            </label>
+            <label class="radio-inline">
+                @Html.RadioButtonFor(m => m.Estado, "Cerrada", new { id = "Estado" })
+                Cerrada
+            </label>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>1. Datos del Hallazgo</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft30">
+                <div class="FechaOcurrencia">
+                    <b>Fecha de Ocurrencia</b>
+                    <div>
+                        @{
+                            string Fecha_str = "";
+                            try
+                            {
+                                Fecha_str = Model.Fecha_ocurrencia.ToString("dd/MM/yyyy");
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            @Html.Label(Fecha_str, Fecha_str)
+                        }
+
+                        
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="AccionLeft40">
+                <b>Clasificación de Hallazgo</b>
+                <div>
+                    <label>
+                        @Html.RadioButtonFor(m => m.Clase, "null", new { id = "Clase", type = "hidden" })
+                        @Html.RadioButtonFor(m => m.Clase, "No Conformidad", new { id = "Clase" })
+                        No Conformidad
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        @Html.RadioButtonFor(m => m.Clase, "Oportunidad de Mejora", new { id = "Clase" })
+                        Oportunidad de Mejora
+                    </label>
+                </div>
+            </div>
+            <div class="AccionLeft30">
+                <b>Fecha de Hallazgo</b>
+                <div>
+                    @{
+                        string Fecha_str1 = "";
+                        try
+                        {
+                            DateTime cast = Model.Fecha_hall ?? DateTime.Today;
+                            Fecha_str1 = cast.ToString("dd/MM/yyyy");
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        @Html.Label(Fecha_str1, Fecha_str1)
+                    }
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <div class="AccionInline">
+
+            <div class="AccionLeft30">
+                <b>ID del que identificó el hallazgo</b>
+                <div>
+                    @Html.DisplayFor(m => m.Halla_Num_Doc)
+                </div>
+            </div>
+            <div class="AccionLeft30">
+                <b>Tipo de Documento</b>
+                <div>
+                    @Html.DisplayFor(m => m.Halla_TipoDoc)
+                </div>
+
+            </div>
+            <div class="AccionLeft40">
+                <b>Nombre Persona que identifica el hallazgo</b>
+                <div>
+                    @Html.DisplayFor(m => m.Halla_Nombre)
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft90">
+                <b>Cargo</b>
+                <div>
+                    @{
+                        string ValorCargo = ViewBag.Pk_Id_Cargo;
+                    }
+                    @Html.Label("txtTitle", ValorCargo)
+                </div>
+
+            </div>
+
+
+            <div class="AccionLeft90">
+                <b>Sede Hallazgo</b>
+                <div>
+                    @{
+                        string ValorSede = ViewBag.Pk_Id_Sede;
+                    }
+                    @Html.Label("txtTitle1", ValorSede.ToString())
+                </div>
+            </div>
+            <div class="AccionLeft90">
+                <b>Origen del Hallazgo</b>
+                <div>
+                    @{
+                        string ValorOrigen = ViewBag.ValorOrigen;
+                    }
+                    @Html.Label("txtTitle2", ValorOrigen.ToString())
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+        @for (int i = 0; i < Model.HallazgoLista.Count; i++)
+        {
+            int numeroHallazgo = i + 1;
+            int IdHallazgo = Model.HallazgoLista[i].Clave;
+            <div class="table-responsive">
+                <table class="table table-bordered table-positiva">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="TableTitle"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <th scope="row" style="background-color:#bfbfbf;color:black;width:30%;">Proceso del Hallazgo</th>
+                            <td class="InfoTable">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Proceso)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" style="background-color:#bfbfbf;color:black;width:30%;">Norma Aplicable</th>
+                            <td class="InfoTable">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Norma)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" style="background-color:#bfbfbf;color:black;width:30%;">Numeral de la norma que incumple</th>
+                            <td class="InfoTable">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Numeral)</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" style="background-color:#bfbfbf;color:black;width:30%;">Descripción del Hallazgo</th>
+                            <td class="InfoTable">@Html.DisplayFor(modelItem => Model.HallazgoLista[i].Halla_Descripcion)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+    <div class="Doslinea">
+
+        <div class="SubTitulo">
+            <b>2. Análisis del Hallazgo</b>
+        </div>
+        <div class="add-padding">
+            <div class="col-sm-12">
+                <b>2.1 Corrección propuesta si aplica</b>
+                <div>
+                    @Html.DisplayFor(m => m.Correccion)
+                </div>
+
+            </div>
+            <div class="col-sm-12">
+                <b>2.2 Desarrollo del análisis de causas (Ver anexo análisis)</b>
+                <div style="height:10px;"></div>
+            </div>
+            <div class="col-sm-12">
+                <b>2.3 Causa raíz identificada</b>
+                <div>
+                    @Html.DisplayFor(m => m.Causa_Raiz)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>3. Cambios Documentales</b>
+        </div>
+        <div class="add-padding">
+            <div class="col-sm-12">
+                <b>3.1 ¿Requiere cambios en la documentación del SIG?</b>
+                @Html.DisplayFor(m => m.Cambio_Doc, new { @class = "CambioDoc" })
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <b>Descripción</b>
+            <div>
+                @Html.DisplayFor(m => m.Des_Cambio_Doc)
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>4. Plan de acción que eliminará la(s) causas(s) raíz identificada(s)</b>
+        </div>
+        <div>
+            @{
+                if (Model.ActividadLista.Count > 0)
+                {
+
+                    <div class="datagrid">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <p>
+                                            Actividad
+                                        </p>
+                                    </th>
+                                    <th>
+                                        <p>Responsable y Cargo</p>
+                                    </th>
+                                    <th>
+                                        <p>Fecha de finalización</p>
+                                    </th>
+                                    <th>
+                                        <p>Firma del responsable</p>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.ActividadLista)
+                                    {
+                                        <tr>
+                                            <td class="TdJustificar">
+                                                @Html.DisplayFor(modelItem => item.Actividad)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Responsable)
+                                            </td>
+                                            <td class="TdCentrar">
+                                                @Html.TextBoxFor(modelItem => item.FechaFinalizacion, "{0:dd/MM/yyyy}", new { @class = "my-style1", @readonly = true })
+                                            </td>
+                                            <td class="TdCentrar">
+                                                <img src="@Html.DisplayFor(modelItem => item.FirmaScrImage)" alt="" style="max-height:50px;" />
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                                    }
+
+            }
+
+
+        </div>
+
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>5. Seguimiento de las acciones propuestas</b>
+        </div>
+
+        <div>
+            @{
+                if (Model.SeguimientoLista.Count > 0)
+                {
+                    <div class="datagrid">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span>Fecha de Seguimiento</span>
+                                    </th>
+                                    <th>
+                                        <span>Observaciones del responsable del proceso</span>
+                                    </th>
+                                    <th>
+                                        <span>Firma del responsable</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.SeguimientoLista)
+                                    {
+                                        int NumeroFila = item.Clave;
+                                        int NumeroEstado = 0;
+
+                                        try
+                                        {
+                                            NumeroEstado = item.Estado;
+                                        }
+                                        catch (Exception)
+                                        {
+
+                                        }
+                                        <tr>
+                                            <td class="TdCentrar">
+                                                @Html.TextBoxFor(modelItem => item.Fecha_Seg, "{0:dd/MM/yyyy}", new { @class = "my-style1", @readonly = true })
+                                            </td>
+                                            <td class="TdJustificar">
+                                                @Html.DisplayFor(modelItem => item.Observaciones)
+                                            </td>
+                                            <td class="TdCentrar">
+                                                <img src="@Html.DisplayFor(modelItem => item.FirmaScrImage)" alt="" style="max-height:50px;" />
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                                    }
+
+
+            }
+
+
+        </div>
+
+        <div class="add-padding">
+            <div class="col-sm-12">
+                <div>
+                    <span>Tiene Evidencia?</span>
+                </div>
+            </div>
+
+            @{
+                if (Model.ArchivosLista.Count > 0)
+                {
+                    <div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButton("Evidencia", "Si", new { id = "Evidencia", @checked="cheked" })
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButton("Evidencia", "No", new { id = "Evidencia" })
+                                No
+                            </label>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButton("Evidencia", "Si", new { id = "Evidencia" })
+                                Si
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButton("Evidencia", "No", new { id = "Evidencia", @checked = "cheked" })
+                                No
+                            </label>
+                        </div>
+                    </div>
+                }
+            }
+
+            
+
+
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>6. Verificación de la eficacia de la acción tomada por parte del auditor o profesional de mejoramiento continuo</b>
+        </div>
+        <div class="add-padding">
+            <div class="col-sm-12">
+                <div>
+                    @Html.DisplayFor(m => m.Verificacion)
+                </div>
+            </div>
+            <div>
+                <div class="radio">
+                    @Html.RadioButtonFor(m => m.Eficacia, "null", new { id = "Efectividad", type = "hidden" })
+                </div>
+                <div class="radio">
+                    <label>
+                        @Html.RadioButtonFor(m => m.Eficacia, "No Implementada", new { id = "Efectividad" })
+                        No Implementada
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        @Html.RadioButtonFor(m => m.Eficacia, "Implementada pero no eficaz", new { id = "Efectividad" })
+                        Implementada pero no eficaz
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        @Html.RadioButtonFor(m => m.Eficacia, "Implementada y eficaz", new { id = "Efectividad" })
+                        Implementada y eficaz
+                    </label>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>Datos del profesional de mejoramiento continuo y del responsable del proceso</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft50">
+                <div style="height:10px;"></div>
+                <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                    <img id="ImagenFirmaAudId" src="@ViewBag.SrcImgAud" alt="" class="ImagenFirmaAud" style="max-height:100px;max-width:100%;" />
+                </div>
+                <div class="form-group">
+                    <b>Nombre</b>
+                    <div class="col-sm-10">
+                        @Html.DisplayFor(m => m.Nombre_Auditor, new { @class = "resud" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <b>Cargo</b>
+                    <div class="col-sm-10">
+
+                        @Html.DisplayFor(m => m.Cargo_Auditor, new { @class = "resud" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="AccionLeft50">
+                <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                    <div style="height:10px;"></div>
+                    <img id="ImagenFirmaResId" src="@ViewBag.SrcImgRes" alt="" class="ImagenFirmaRes" style="max-height:100px;max-width:100%;" />
+                </div>
+                <div class="form-group">
+                    <b>Nombre</b>
+                    <div class="col-sm-10">
+
+                        @Html.DisplayFor(m => m.Nombre_Responsable, new { @class = "resud" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <b>Cargo</b>
+                    <div class="col-sm-10">
+
+                        @Html.DisplayFor(m => m.Cargo_Responsable, new { @class = "resud" })
+                    </div>
+                </div>
+
+
+
+            </div>
+            @*Responsable*@
+        </div>
+    </div>
+    @{
+        if (Model.AnalisisLista.Count > 0)
+        {
+            <p class="breakhere"></p>
+            <div class="page-header">
+                <h2>ANEXO (ANÁLISIS)</h2>
+            </div>
+
+            if (@ViewBag.SrcImgAn1 != "")
+            {
+                <div class="Doslinea">
+
+                    <div class="SubTitulo">
+                        <b>Análisis - Árbol de Causas</b>
+                    </div>
+                    <div class="add-padding">
+                        <img id="ImagenAnalisis1" src="@ViewBag.SrcImgAn1" alt="" class="ImagenFirmaRes" style="max-width:100%;max-height:1000px;" />
+
+                    </div>
+                </div>
+            }
+
+            if (@ViewBag.SrcImgAn2 != "")
+            {
+                <div class="Doslinea">
+                    <div class="SubTitulo">
+                        <b>Análisis - Causa Efecto</b>
+                    </div>
+                    <div class="add-padding">
+
+
+                        <img id="ImagenAnalisis2" src="@ViewBag.SrcImgAn2" alt="" class="ImagenFirmaRes" style="max-width:100%;max-height:450px;" />
+
+                    </div>
+                </div>
+            }
+            if (@ViewBag.SrcImgAn3 != "")
+            {
+                <div class="Doslinea">
+                    <div class="SubTitulo">
+                        <b>Análisis - Cinco Porqués</b>
+                    </div>
+                    <div class="add-padding">
+
+                        <img id="ImagenAnalisis3" src="@ViewBag.SrcImgAn3" alt="" class="ImagenFirmaRes" style="max-width:100%;max-height:450px;" />
+
+                    </div>
+                </div>
+            }
+            if (@ViewBag.SrcImgAn4 != "")
+            {
+                <div class="Doslinea">
+                    <div class="SubTitulo">
+                        <b>Análisis - Lluvia de Ideas</b>
+                    </div>
+                    <div class="add-padding">
+
+                        <img id="ImagenAnalisis4" src="@ViewBag.SrcImgAn4" alt="" class="ImagenFirmaRes" style="max-width:100%;max-height:450px;" />
+
+                    </div>
+                </div>
+            }
+
+
+
+        }
+    }
+
+
+
+
+</body>
+</html>

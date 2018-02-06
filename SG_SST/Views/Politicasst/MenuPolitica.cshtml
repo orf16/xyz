@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Consultar Política";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages',
+        'warning'
+        )
+    </script>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<!-- Referencia a alertas -->
+<link rel="stylesheet" href="~/Content/css/sweetalert.css">
+<script src="~/js/sweetalert.min.js"></script>
+
+<style>
+    #mdialTamanio {
+        width: 80% !important;
+    }
+
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal-dialog{
+        width: 50%;
+        height: 60%;
+        margin: 30px auto;
+    }
+</style>
+
+<div class="panel-body form-horizontal">
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group" style="margin-left: 5px" align="center">
+                    <h5><b>     </b></h5>
+                    <hr />
+
+                    <div id="modalpolitica" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" align="center" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Política</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="pdf-modales">
+                                        <iframe src="@Url.Action("Reporte_Documento")" type="application/pdf" width="575" height="500"></iframe>
+                                    </div>
+                                    @*<center>
+                                        <iframe src="@Url.Action("Reporte_Documento")" type="application/pdf" width="575" height="500"></iframe>
+                                    </center>*@
+                                </div>
+                                <div class="modal-footer alert-dismissable">
+                                    <div class="row" style="margin-left:20px">
+                                        <div class="col-sm-6">
+                                            @Html.ActionLink("Eliminar Archivo", "EliminarPolitica", new { IntELiminar = 0 },
+                                            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Imprimir != null) {
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        $('#modalpolitica').modal("show");
+    </script>
+}

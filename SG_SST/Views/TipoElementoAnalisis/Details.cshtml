@@ -1,0 +1,34 @@
+﻿@model SG_SST.Models.Empresas.TipoElementoAnalisis
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TipoElementoAnalisis</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoAnalisis.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoAnalisis.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Elemento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Elemento)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Tipo_Elemneto_Analisis }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,272 @@
+﻿@model SG_SST.Models.Planificacion.RequisitosLegalesOtros
+
+@{
+    ViewBag.Title = "Agregar Requisitos Legales Otros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<ul class="nav nav-pills" role="tablist">
+    <li class=""><a id="tab3" href="#step3" role="tab" data-toggle="" class=""><h3>Registrar Requisitos Legales y Otros</h3></a></li>
+</ul>
+<hr />
+@*  @using (Html.BeginForm("RequisitosLegalesOtros", "GrabarRequisitosLegalesOtros", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {*@
+
+@using (Html.BeginForm("GrabarRequisitosLegalesOtros", "RequisitosLegalesOtros", FormMethod.Post, new { enctype = "multipart/form-data", id = "RequisitosLegales" }))
+{
+
+    @* <form method="post" action="@Url.Action("GrabarRequisitosLegalesOtros")" id="RequisitosLegales" name="RequisitosLegales">*@
+
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="col-md-12 col-md-offset-0">
+            <div class="panel panel-yellow">
+                <div class="panel-heading"><center><i class="glyphicon glyphicon-user"></i>Registrar Requisitos Legales y Otros</center></div>
+                <div class="panel-body">
+                    <div class="col-md-12 col-md-offset-0">
+                        <div class="row">
+                            @*   @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Sistema:</label>
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Fecha Publicación:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @*  <input type="date" value="@DateTime.Now" disabled />*@
+                                        @*  @Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                                        <input class="left" id="FechaPublicacion" name="FechaPublicacion">
+                                        <br>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Ente:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Ente, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Artículo:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Articulo, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Descripción:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Modificado por:</label>
+                                    </div>
+                                    <div class="col-md-4">
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Sugerencias:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Sugerencias, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Partes Interesadas:</label>
+                                    </div>
+                                    <div class="col-md-4">
+
+
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div class="panel panel-yellow">
+                                    <div class="well well-sm">
+                                        <table>
+                                            <tr>
+                                                <td class="titulo_peligros"><label>Peligros Aspectos e Impactos</label></td>
+                                            </tr>
+                                        </table>
+                                        <table>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="row">
+
+                                            <div class="col-md-2">
+                                                <label>Clase de peligo</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.Clase_De_Peligro, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label>Peligro:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.Peligro, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>Aspectos:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.Aspectos, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label>Impactos:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.Impactos, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            </div>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Evidencia de Cumplimiento</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Evidencia_Cumplimiento, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+                                </div>
+                                <br />
+
+                                <div class="class panel panel-yellow">
+                                    <div class="well well-sm">
+                                        <table>
+                                            <tr>
+                                                <td class=" titulo_peligros"><label>Evaluación</label></td>
+                                            </tr>
+                                        </table>
+                                        <table>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label>Cumplimiento:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.DropDownList("FK_Cumplimiento_Evaluacion", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label>Hallazgo:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                @Html.EditorFor(model => model.Hallazgo, new { htmlAttributes = new { @class = "form-control" } })
+
+                                            </div>
+                                            <table>
+                                                <tr>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Estado:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.DropDownList("FK_Estado_RequisitoslegalesOtros", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Responsable:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.EditorFor(model => model.Responsable, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Fecha de Seguimiento del control:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @*  <input type="date" value="@DateTime.Now" disabled />*@
+                                        @*  @Html.EditorFor(model => model.Fecha_Seguimiento_Control, new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                                        <input class="left" id="Fecha_Seguimiento_Control" name="Fecha_Seguimiento_Control">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Fecha de Actualización:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        @*  <input type="date" value="@DateTime.Now" disabled />*@
+                                        @*  @Html.EditorFor(model => model.Fecha_Actualizacion, new { htmlAttributes = new { @class = "form-control", @type = "date" } })*@
+                                        <input class="left" id="Fecha_Actualizacion" name="Fecha_Actualizacion">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Guardar Registro" onclick="Validaciones_Formulario_requisitosLegales()" class="form-control btn btn-warning" />
+                            @*  <button type="submit" class="btn btn-warning">Guardar</button> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <a href="@Url.Action("index","RequisitosLegalesOtros") " class="btn btn-success btn-md" title="Formulario Principal"> <span class="glyphicon glyphicon-list"></span>Formulario Principal</a>
+    @*   </form> *@
+    @* }*@
+}
+<hr />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+
+}

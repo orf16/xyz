@@ -1,0 +1,64 @@
+﻿@model SG_SST.Models.Empresas.Usuario
+
+@{
+    ViewBag.Title = "Eliminar Usuario";
+}
+
+<p>Usuarios- Eliminar Usuario</p>
+
+
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UsuarioRoles.FirstOrDefault().Rol.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UsuarioRoles.FirstOrDefault().Rol.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoDocumentos.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoDocumentos.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero_Documento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Numero_Documento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre_Usuario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre_Usuario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Imagen_Firma)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Imagen_Firma)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Listado Usuario", "Index")
+        </div>
+    }
+</div>

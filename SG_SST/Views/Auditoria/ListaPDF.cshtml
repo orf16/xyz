@@ -1,0 +1,239 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaInforme
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma;
+        }
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+    </style>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label>
+                <b>Sede</b>
+            </label>
+            @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.SedeAuditoria)
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>INFORMACIÓN DE PLAN DE AUDITORÍA</b>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Nombre del Programa</b>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Titulo)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft49">
+                <b>Proceso</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.NombreProceso1)
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Fecha de Realización</b>
+                <div>
+                    @{
+                        string Fecha_str1 = "";
+                        try
+                        {
+                            Fecha_str1 = Model.Informe_EDAuditoria.FechaRealizacion.ToString("dd/MM/yyyy");
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        @Html.Label(Fecha_str1, Fecha_str1)
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft49">
+                <b>Período</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.Periodo)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+
+        <div class="SubTitulo">
+            <b>LISTA DE VERIFICACIÓN</b>
+        </div>
+        <div>
+            @{
+                if (Model.ListaVerficiacionInforme.Count > 0)
+                {
+                    <div class="datagrid">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:30%;">
+                                        <p>
+                                            Pregunta
+                                        </p>
+                                    </th>
+                                    <th style="width:30%;">
+                                        <p>Requisito</p>
+                                    </th>
+                                    <th style="width:10%;">
+                                        <p>Tipo de Hallazgo</p>
+                                    </th>
+                                    <th style="width:30%;">
+                                        <p>Descripción del Hallazgo</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.ListaVerficiacionInforme)
+                                    {
+                                        <tr>
+                                            <td class="TdJustificar" style="width:30%;">
+                                                @Html.DisplayFor(modelItem => item.Pregunta)
+                                            </td>
+                                            <td class="TdJustificar" style="width:30%;">
+                                                @Html.DisplayFor(modelItem => item.Requisito)
+                                            </td>
+                                            <td class="TdCentrar" style="width:10%;">
+                                                @Html.DisplayFor(modelItem => item.Tipo_Hallazgo)
+                                            </td>
+                                            <td class="TdCentrar" style="width:30%;">
+                                                @Html.DisplayFor(modelItem => item.Hallazgo)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                                    }
+            }
+        </div>
+    </div>
+</body>
+</html>

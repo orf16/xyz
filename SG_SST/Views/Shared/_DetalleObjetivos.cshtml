@@ -1,0 +1,115 @@
+﻿@model List<SG_SST.Models.Planificacion.ObjetivoSSTModel>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row form-group">
+        <table class="table table-bordered" id="tblobjetivos" style="border: 2px solid lightslategray">
+            <thead>
+                <tr class="titulos_tabla">
+                    <th></th>
+                    <th style="text-align:center">Objetivo</th>
+                    <th style="text-align:center">Meta Asignada</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var a in Model)
+                {
+                    <tr id="content_@a.IdObjetivo">
+                        <td hidden>@Html.DisplayName(a.IdObjetivo.ToString())</td>
+                        <td style="text-align:center; width:5%" id="@a.IdObjetivo">
+                            <input name="EliminaObjetivo" type="checkbox" />
+                        </td>
+                        <td style="width:80%" id="Descripcion_@a.IdObjetivo">@string.Format("{0}", a.Descripcion)</td>
+                        <td style="text-align:center" id="Meta_@a.IdObjetivo">@string.Format("{0}", a.Meta)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="text-align:right">
+        <button class="boton botonactive" type="button" id="btnEliminarObjetivo">Eliminar Objetivo</button>
+    </div>
+}
+
+@{
+    <script>
+        var idTipoConting = 0;
+        $(document).ready(function () {
+            var Objetivos = '';
+
+            $('input[type=checkbox]').click(function () {
+                if ($(this).is(":checked")) {
+                    console.log($(this).parent().attr('id'));
+                    var IdObjetivo = $(this).parent().attr('id');
+                    Objetivos += IdObjetivo + ';';
+                }
+                else {
+                    var Ojbetivostmp = Objetivos.split(';');
+                    var i = 0;
+                    Objetivos = "";
+                    var IdObjetivo = $(this).parent().attr('id')
+                    for (i = 0; i < Ojbetivostmp.length - 1; i++)
+                    {
+                        if (Ojbetivostmp[i] != IdObjetivo)
+                            Objetivos += Ojbetivostmp[i] + ';';
+                    }                    
+                }
+            });
+
+            $("#btnEliminarObjetivo").click(function () {
+                console.log("ggg");
+                swal({
+                    title: 'Estimado Usuario',
+                    text: '¿Está seguro que desea eliminar los objetivos seleccionados?',
+                    type: 'warning',
+                    showCancelButton: true,                    
+                    //confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "SI",
+                    cancelButtonText: "NO",
+                    //closeOnConfirm: false,
+                    //closeOnCancel: false,
+                    //html: true
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        PopupPosition();
+                        $.ajax({
+                            type: "POST",
+                            data: { listaObjetivos: Objetivos },
+                            url: urlBase + '/ObetivoSST/EliminarObjetivo'
+                        }).done(function (response) {
+                            if (response != undefined && response != '' && response.Mensaje == 'OK') {
+                                $('#tablaConfiguraciones').empty();
+                                $('#tablaConfiguraciones').html(response.Data);
+                            }
+                            if (response != undefined && response != '' && response.Mensaje == 'BORRADO') {
+                                $('#tablaConfiguraciones').empty();
+                            }
+                            OcultarPopupposition();
+                            if (response != undefined && response != '' && response.Mensaje == 'FinSession') {
+                                swal({
+                                    title: 'Estimado Usuario',
+                                    text: response.Data,
+                                    type: 'warning',
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Aceptar",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false,
+                                    html: true
+                                }, function (isConfirm) {
+                                    if (isConfirm) {
+                                        window.location.href = '../Home/Login';
+                                    }
+                                });
+                            }
+                        }).fail(function (response) {
+                            console.log("Error en la peticion: " + response.Data);
+                            OcultarPopupposition()
+                        });                        
+                    }
+                });
+            });
+        });
+
+    </script>
+}

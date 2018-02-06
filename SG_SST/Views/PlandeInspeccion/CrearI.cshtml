@@ -1,0 +1,709 @@
+﻿@{@model SG_SST.Models.Aplicacion.CrearInspeccionModel
+
+    ViewBag.Title = "Registrar Inspección";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Mensaje del Sistema:',
+                text: '@ViewBag.mensaje',
+                timer: 4000,
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+}
+
+<style>
+    .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+        font-size: 12px;
+        color: blue;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Inspecciones de Seguridad</a></li>
+    <li class="active">Registrar Inspección</li>
+</ol>
+
+<style>
+    .container-main {
+        margin: 60px auto;
+        margin-bottom: 10%;
+        padding-bottom: 3em;
+        width: 100%;
+        min-width: 320px;
+        max-width: 95%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        background-color: white;
+    }
+
+        .container-main h4 {
+            font-size: 23px;
+            text-shadow: 4px 4px 5px #DDD;
+            padding-top: 1%;
+            padding-bottom: 2%;
+        }
+
+    body {
+        background: transparent;
+    }
+
+    #container-main {
+        margin: 40px auto;
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    }
+
+        #container-main h1 {
+            font-size: 40px;
+            text-shadow: 4px 4px 5px #16a085;
+        }
+
+    .accordion-container {
+        width: 100%;
+        margin: 0 0 10px;
+        clear: both;
+        background-color: white;
+    }
+
+    .accordion-titulo {
+        position: relative;
+        display: block;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        background: #7E8A97;
+        color: orange;
+        text-decoration: none;
+    }
+
+        .accordion-titulo.open {
+            background: #7E8A97;
+            color: orange;
+        }
+
+        .accordion-titulo:hover {
+            background: #7E8A97;
+            color: orange;
+        }
+
+        .accordion-titulo span.toggle-icon:before {
+            content: "+";
+        }
+
+        .accordion-titulo.open span.toggle-icon:before {
+            content: "-";
+        }
+
+        .accordion-titulo span.toggle-icon {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+    .accordion-content {
+        display: none;
+        padding: 20px;
+        overflow: auto;
+    }
+
+        .accordion-content p {
+            margin: 0;
+        }
+
+        .accordion-content img {
+            display: block;
+            float: left;
+            margin: 0 15px 10px 0;
+            width: 50%;
+            height: auto;
+        }
+
+    input[type='file'] {
+        color: transparent;
+        border: inherit;
+    }
+</style>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Registrar Inspección</div>
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Registrar Inspección</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <ul>
+                                <li><p style="text-align:justify">Por favor complete los datos de la caracterización de la inspección como: Descripción especifica de la inspección, proceso , área o lugar, sede y asistentes a la inspección entre otros. </p></li>
+                                <li><p style="text-align:justify">La opción de <b style="color:#FF7500">CONFIGURAR PRIORIDADES</b>, le permitirá establecer los rangos en días que le dará a las diferentes condiciones inseguras que detecte en el proceso de inspección. Esta priorización se debe dar por cada condición insegura registrada.</p></li>
+                                <li><p style="text-align:justify">Luego deberá registrar las diferentes condiciones inseguras evidenciadas usado la opción <b style="color:#FF7500">AGREGAR CONDICIÓN</b> y diligenciar la información requerida, recuerde que debe adjuntar evidencia de la condición insegura detectada, En los soportes de las evidencias inseguras identificadas, recuerde anexar la lista de verificación de la inspección y cargar archivos en formato pdf, jpg, ó png de máximo 6Mb.</p></li>
+                                <li><p style="text-align:justify">Finalmente la opción <b style="color:#FF7500">PLAN DE ACCIÓN</b> le permitirá definir las actividades del plan de acción para las condiciones identificadas y organizadas de acuerdo a la priorización que le asigno, así como la definición del responsable y su seguimiento.</p></li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="generarcondicion">
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent">
+                <div class="well" style="background-color:transparent">
+                    <div class="row">
+                        <div class="col-sm-4 col-sm-offset-8">
+                            <div class="form-group">
+                                <label class="col-md-8 col-lg-offset-0">Consecutivo Inspección:</label>
+                                <div class="col-md-12">
+                                    @*<input type="hidden" class="form-control" name="IDEmpresa" id="IDEmpresa" value="@Model.IDEmpresa" />*@
+                                    <input type="hidden" class="form-control" name="IdInspeccion" id="IdInspeccion" readonly style="color:black;background-color:#ddd" />
+                                    @Html.HiddenFor(model => model.idplaninspeccion, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD;font-size:15px" })
+                                    @Html.TextBoxFor(model => model.Consecutivo, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD;font-size:15px" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Razón Social Empresa:</label>
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Nit:</label>
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.idempresa, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Fecha Planeación Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="date" id="Fecha" name="Fecha" class="form-control" value="@Model.fechaplaninspeccion.ToString("yyyy-MM-dd")" readonly style="color:black;background-color:#DDD;font-size:15px" />
+                                    <label for="fecha" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Responsable Inspeccion:</label>
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => Model.responsableplaninspeccion, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD;font-size:15px" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Tipo Inspección:</label>
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => Model.descripcion, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD;font-size:15px" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Fecha Realización Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" id="FechaR" name="FechaR" class="form-control" />
+                                    <label for="fechaR" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (Model.IdTipoInspeccion == 4)
+                        {
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-md-8">Tipo de Elemento:</label>
+                                    <div class="col-md-12">
+                                        @Html.DropDownList("TipoElemento", null, htmlAttributes: new { @class = "form-control col-md-10", onChange = "jsFunction()", @style = "size:19" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-md-8">Seleccionar Elemento:</label>
+                                    <div class="col-md-12">
+
+                                        @{List<string> ListaEHM = (List<string>)ViewBag.TodosEHM;
+                                        <select class="form-control col-md-10" multiple="multiple" id="ListaEHM">
+
+                                            @{ foreach (var item in ListaEHM)
+                                             {
+                                                 string Valor = item;
+                                                 Char delimiter = '@';
+                                                 String[] substrings = Valor.Split(delimiter);
+                                                <option value="@substrings[0]" tipo="@substrings[2]">@substrings[1]</option>
+                                             }
+                                            }
+
+                                        </select>
+                                        }
+
+                                    </div>
+                                </div>
+                                <label for="ListaEHM" class="error" style="display:none;"></label>
+                            </div>
+                        }
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Descripción Tipo Inspección:</label>
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => Model.DescribeInspeccion, new { @class = "form-control", @style = "color:#7E8A97" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-12">Seleccionar Sede a Inspeccionar:</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(model => model.idSede, Model.Sedes, "--Seleccione Sede--", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="col-md-8">Hora:</label>
+
+                                @{
+                                    DateTime hora = DateTime.Now;
+                                }
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" value="@hora.ToString("hh:mm tt")" id="hora" name="hora" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="infoinspeccion">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Seleccione Proceso :</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(model => model.idProceso, Model.Procesos, "--Seleccione Proceso--", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Area ó Lugar de Inspección:</label>
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => Model.area, new { @class = "form-control", @style = "color:#7E8A97" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="infoinspeccions">
+                        <div class="col-sm-6">
+                            <div class="form-group  has-feedback">
+                                <label class="col-md-8">Responsable Area ó Lugar de Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="responsable" id="responsable" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Otros Asistentes Inspección:</label>
+                                <div class="col-md-12" style="margin-left:-3%;">
+                                    <div class="col-md-10" id="divSupRes" name="divSupRes">
+                                        <div class="form-group" id="divv" name="divv">
+                                            <div class="col-md-11" id="divasistente">
+                                                <input type="text" name="asistente" id="asistente" class="form-control" />
+                                            </div>
+                                            <div class="col-md-1" id="divIconRes">
+
+                                                <a href="javascript:void(0);" onclick="agregarasistentes(this)"
+                                                   title="Agregar Asistente" id="agregarasistente" name="agregarasistente"
+                                                   class="btn btn-link-1-google-plus btn-block btn-md">
+                                                    <i class="glyphicon glyphicon-plus btn-link" name="icono" style="color: #FF7500"></i>
+                                                </a>
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" id="divasistentes">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <button type="button" class="boton botoninfo" data-toggle="modal" data-target="#modal" id="btnconfig">Configurar Prioridades</button>
+                </div>
+            </div>
+            <div id="modal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content" id="modal1">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <h4 class="modal-title title">Configuracion Tipos de Prioridades</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-responsive table-bordered uk-table-condensed" style="border:2px solid lightslategray" id="configuracion">
+                                <thead>
+                                    <tr class="titulos_tabla">
+                                        <th colspan="3" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                            <p>Prioridad</p>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                            <p>Dias Desde</p>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                            <p>Dias Hasta</p>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    @{ var contador = 0; }
+                                    @foreach (var item in Model.Configuraciones)
+                                    {
+                                        <tr id="@contador">
+                                            <td colspan="3" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                @Html.TextBoxFor(modelItem => item.Descripcionconfiguracion, new { id = "item_Descripcionconfiguracion_" + @contador, @class = "form-control", @style = "background-color:  white;color:black", @readonly = "readonly" })
+                                                <label for="Descripcionconfiguracion" class="error" style="display:none;"></label>
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                @Html.TextBoxFor(modelItem => item.diasdesde, new { id = "item_diasdesde_" + @contador, @class = "form-control", @style = "background-color: white;color:black", required = "required" })
+                                                <label for="diasdesde" class="error" style="display:none;"></label>
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                @Html.TextBoxFor(modelItem => item.diashasta, new { id = "item_diashasta_" + @contador, @class = "form-control", @style = "background-color:  white;color:black", required = "required" })
+                                                <label for="diashasta" class="error" style="display:none;"></label>
+                                            </td>
+
+                                            @Html.HiddenFor(modelItem => item.idconfiguracion, new { id = "item_idconfiguracion_" + @contador })
+
+                                        </tr>
+                                        contador++;
+                                    }
+                                </tbody>
+                            </table>
+                            <p><b stye> * Sugerimos basarse en la NTC 4114 REALIZACIÓN DE INSPECCIONES PLANEADAS (1997-04-16) – ICONTEC.</b></p>
+                            <div class="modal-footer" style="border:hidden">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <button type="button" class="boton botonactive" id="btncreari" onclick="CargarFormularioCondicion()">Generar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="table-responsive">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="panelcondiciones">
+            <div class="panel-heading" style="color:white">Agregar Condiciones Inseguras Inspección</div>
+            <div class="panel-body form-horizontal">
+                <div style="background-color:transparent">
+                    <div class="col-sm-12">
+
+                        <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Condiciones Inseguras:</h4>
+                        <table class="table table-bordered table-responsive" style="border:2px solid lightslategray" id="condicion">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Seleccionar</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Prioridad Condición Insegura</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Dias Desde</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Dias Hasta</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Descripción Condición</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Ubicación Específica</p>
+                                    </th>
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Evidencia Condición</p>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        <p>Eliminar</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="condicionesins"></tbody>
+
+                        </table>
+
+                        <div class="pagination-page" id="paginador9" style="margin-left:40%">
+                        </div>
+                    </div>
+                    <input type="hidden" name="idinspeccion" id="idinspeccion" value=""/>
+                    <div class="panel-footer">
+                        <button type="button" class="boton botoninfo" id="btnagregarcondicion" onclick="ObtenerConfigInspecc(this)" data-toggle="modal" data-target="#@string.Format("AgregaCondicion")">Agregar Condición</button>
+                        <button type="button" class="boton botonactive" id="btnplanaccion" onclick="PlanAccion()">Plan de Acción</button>
+
+                    </div>
+                </div>
+            </div>
+            <form id="planas">
+                <div id="planacciones" class="well">
+                    <div id="planaccion" class="container-main">
+                        <h4 class="titulo-crear-recursos titulos_tabla" style="vertical-align:middle; text-align:center">Generar Plan de Acción a Inspección</h4>
+                        @*<hr style="border-top-color:#FD7500; padding-left:2em" />*@
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="col-lg-4">
+                                    <label>Actividad:</label>
+                                    <input type="text" class="form-control" name="actividad" id="actividad" />
+                                    <label for="actividad" class="error" style="display:none;"></label>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Responsable:</label>
+                                    <input type="text" class="form-control" name="responsablepa" id="responsablepa" />
+                                    <label for="responsable" class="error" style="display:none;"></label>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label>Fecha Finalización:</label>
+                                    <input type="text" class="form-control" name="fechafin" id="fechafin" readonly style="background-color:#DDD;color:black" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="" style="background-color:transparent">
+                            <div class="row">
+                                <div class="col-md-12 col-md-offset-7">
+                                    <button type="button" class="boton botonactive" id="btnplanes" onclick="GrabaPlanes()">Guardar</button>
+                                    <button type="button" class="boton botoninfo" id="btnlistadoplanes">Listar Planes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="@string.Format("AgregaCondicion")" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Agregar Condición Insegura Inspección</h4>
+                </div>
+                <form id="formularioCondicion">
+                    @*<input type="text" name="idinspeccion" id="idinspeccion" />*@
+                    <div class="modal-body" style="color:black">
+                        <div class="col-lg-12" style="background-color:white;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Condición Insegura Encontrada:</h5>
+                                    <textarea class="form-control" rows="5" id="DesCI" name="DesCI"></textarea>
+                                    <label for="DesCI" class="error" style="display:none;"></label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Ubicación Especifica:</h5>
+                                    <textarea class="form-control" rows="5" id="Uesp" name="Uesp"></textarea>
+                                    <label for="Uesp" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <hr style="border-top-color:lightslategray" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Riesgo ó Peligro:</h5>
+                                </div>
+                                <div class="col-md-10">
+                                    <select class="form-control" name="tipopeligro" id="tipopeligro" onchange="ConsultarClasesPeligro(this.value);"></select>
+                                    <label for="tipopeligro" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="row" id="inputOtro" hidden="hidden">
+                                <div class="col-md-2">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Cual:?</h5>
+
+                                </div>
+                                <div class="col-md-10">
+                                    <input name="Otro" id="Otro" type="text" class="form-control" />
+                                </div>
+                                <label for="Otro" class="error" style="display:none;"></label>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row" id="inputClasificacion">
+                                <div class="col-md-2">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Clasificación:</h5>
+                                </div>
+                                <div class="col-md-10">
+                                    <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>
+                                </div>
+                                <label for="Otro" class="error" style="display:none;"></label>
+                            </div>
+                            <br />
+                            <hr style="border-top-color:lightslategray" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Configuración Prioridad:</h5>
+                                    <select class="form-control" name="DescripcionConfig" id="DescripcionConfig"></select>
+                                    <label for="DescripcionConfig" class="error" style="display:none;"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Adjuntar Evidencia:</h5>
+                                    <input type="file" class="form-control" id="Evidencia" name="Evidencia" />
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                </form>
+                <div @*class="row col-lg-10"*@ class="modal-footer">
+                    @*<a href="#" id="hl-start-upload" type="button" class="boton botonactive">Guardar</a>*@
+                    <button type="button" class="boton botonactive" id="hl-start-upload" onclick="GrabarCondiciones()">Guardar</button>
+                    @*<button type="button" class="boton botonactive" id="btnvalci" onclick="GrabarCondiciones()">Guardar</button>*@
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Imagen -->
+    <div id="ModalPDF" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Archivo Cargado Condición Insegura</h4>
+                </div>
+                <div class="modal-body">
+                    <center><iframe height="600" width="650" id="imagen" @*typeof="application/pdf"*@></iframe></center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ModalImagen" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Archivo Cargado Condición Insegura</h4>
+                </div>
+                <div class="modal-body">
+                    <center><img id="img" height="600" width="550" /></center>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="ModalPlanes" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Lista Planes de Acción Generados</h4>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-bordered  table-hover" style="border-bottom:transparent" id="">
+                        <thead>
+                            <tr class="titulos_tabla" style="text-align:center">
+                                <th style="border:solid 1px #808080">
+                                    <p>Descripción Condición</p>
+                                </th>
+                                <th style="border:solid 1px #808080">
+                                    <p>Actividad</p>
+                                </th>
+                                <th style="border:solid 1px #808080">
+                                    <p>Responsable</p>
+                                </th>
+                                <th style="border:solid 1px #808080">
+                                    <p>Fecha Final</p>
+                                </th>
+                                <th style="border:solid 1px #808080">
+                                    <p>Estado</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaPlanes"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-page" id="paginador5" style="margin-left:40%;"></div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+

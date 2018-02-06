@@ -1,0 +1,571 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaActividad
+
+@{
+    ViewBag.Title = "Actividades de la Auditoria";
+}
+<link href="~/Content/Acciones/Auditorias.css" rel="stylesheet" />
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li class="active">Actividades de la Auditoria</li>
+</ol>
+
+
+@*Guardar Actividad*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#AgregarActividad").bind("click", function () {
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+
+            //Traer datos al modelo JSON
+
+            var stringArray = new Array();
+            stringArray[0] = $("#Fecha_Hora").val();
+            stringArray[1] = $("#Tema").val();
+            stringArray[2] = $("#Responsable").val();
+            stringArray[3] = $("#Lugar").val();
+            stringArray[4] = $("#TiempoEstimado").val();
+            stringArray[5] = $("#EdicionAuditoria").val();
+
+            // Construir objeto JSON
+            var EDAuditoriaActividad = {
+                Tema: stringArray[1],
+                Responsable : stringArray[2],
+                Fecha_Hora :stringArray[0],
+                TiempoEstimado :stringArray[4],
+                Lugar: stringArray[3],
+                Fk_Id_Auditoria:stringArray[5]
+            };
+            $.ajax({
+                type: "POST",
+                url: '/Auditoria/AgregarActividad',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDAuditoriaActividad),
+                success: function (data) {
+
+                    if (data.Probar == false) {
+                        var altura = $(document).height();
+                        $("html, body").animate({ scrollTop: altura + "px" });
+                        $("#msj_novedad").html(data.Estado);
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        
+                        $("#Fecha_Hora").val()=data.Model.Fecha_Hora;
+                        $("#Tema").val()=data.Model.Tema;
+                        $("#Responsable").val() = data.Model.Responsable;
+                        $("#TiempoEstimado").val() = data.Model.TiempoEstimado;
+                        $("#Lugar").val() = data.Model.Lugar;
+                        $("#EdicionAuditoria").val()=data.Model.Fk_Id_Auditoria;
+                    }
+                    else {
+                        swal({
+                            title: "Se agrego la actividad correctamente",
+                            text: "",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        location.reload(true);
+                    });
+                    }
+                },
+                error: function (data) {
+
+                    console.log(data.Estado)
+                }
+            });
+
+        }
+    }
+
+</script>
+@*Mostrar cuadro edicion*@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.btnEditarAct').click(function () {
+
+
+            $('#EdicionAct').hide();
+            $('#FechaEdicion').removeAttr('value');
+            $('#TemaEdicion').removeAttr('value');
+            $('#ResponsableEdicion').removeAttr('value');
+            $('#LugarEdicion').removeAttr('value');
+            $('#TiempoEdicion').removeAttr('value');
+            $('#PK_Act_Ed').removeAttr('value');
+
+
+            var Id_Elm = $(this).attr('id');
+
+            $.ajax({
+                type: "POST",
+                url: "/Auditoria/MostrarEdicionActividad",
+                data: '{values: "' + Id_Elm + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.probar == false) {
+                        $('#EdicionAct').hide();
+
+                    }
+                    else {
+                        $('#EdicionAct').show();
+                        var pk_s = response.Model.Pk_Id_Cronograma_Auditoria;
+                        var Tema_s = response.Model.Tema;
+                        var Responsable_s = response.Model.Responsable;
+                        var Fecha_Hora_s = response.Model.Fecha_Hora;
+                        var TiempoEstimado_s = response.Model.TiempoEstimado;
+                        var Lugar_s = response.Model.Lugar;
+
+
+
+                        JSON.stringify(pk_s);
+                        JSON.stringify(Tema_s);
+                        JSON.stringify(Responsable_s);
+                        JSON.stringify(Fecha_Hora_s);
+                        JSON.stringify(TiempoEstimado_s);
+                        JSON.stringify(Lugar_s);
+
+                        var d = new Date(Fecha_Hora_s);
+
+                        $("#FechaEdicion").val(response.Fecha_s);
+                        $("#TemaEdicion").val(Tema_s);
+                        $("#ResponsableEdicion").val(Responsable_s);
+                        $("#LugarEdicion").val(Lugar_s);
+                        $("#TiempoEdicion").val(TiempoEstimado_s);
+                        $("#PK_Act_Ed").val(pk_s);
+
+                       
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#msj_novedad").text('No se ha podido Editar la actividad o no existe');
+                    $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                }
+            });
+        });
+    });
+</script>
+@*Eliminar Actividad*@
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.btnEliminaract').click(function () {
+            var Id_Elm = $(this).attr('id');
+            swal({
+                title: "Advertencia",
+                text: "Estas seguro(a) que desea eliminar esta Actividad?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si Borrarlo, por favor",
+                cancelButtonText: "No",
+                closeOnConfirm: false
+            },
+function () {
+
+    $.ajax({
+        type: "POST",
+        url: "/Auditoria/EliminarActividad",
+        data: '{values: "' + Id_Elm + '" }',
+        contentType: "application/json; charset=utf-8",
+        cache: false,
+        dataType: "json",
+        success: function (response) {
+            if (response.probar == false) {
+                swal({
+                    title: response.resultado,
+                    text: "",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                },
+                                function () {
+
+                                });
+            }
+            else {
+                swal({
+                    title: response.resultado,
+                    text: "",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                },
+                                function () {
+                                    location.reload(true);
+                                });
+                            }
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#msj_novedad").text('No se ha podido eliminar la actividad o no existe');
+            $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+        }
+    });
+
+});
+
+
+
+
+        });
+    });
+</script>
+@*Editar Actividad*@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#EditarActividad").bind("click", function () {
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+    function postGuardar1() {
+        this.launchGuardar1 = function () {
+
+            //Traer datos al modelo JSON
+
+            var stringArray = new Array();
+            stringArray[0] = $("#FechaEdicion").val();
+            stringArray[1] = $("#TemaEdicion").val();
+            stringArray[2] = $("#ResponsableEdicion").val();
+            stringArray[3] = $("#LugarEdicion").val();
+            stringArray[4] = $("#TiempoEdicion").val();
+            stringArray[5] = $("#EdicionAuditoria").val();
+            stringArray[6] = $("#PK_Act_Ed").val();
+
+            // Construir objeto JSON
+            var EDAuditoriaActividad = {
+                Tema: stringArray[1],
+                Responsable : stringArray[2],
+                Fecha_Hora :stringArray[0],
+                TiempoEstimado :stringArray[4],
+                Lugar: stringArray[3],
+                Fk_Id_Auditoria:stringArray[5],
+                Pk_Id_Cronograma_Auditoria: stringArray[6]
+            };
+            $.ajax({
+                type: "POST",
+                url: '/Auditoria/EditarActividad',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDAuditoriaActividad),
+                success: function (data) {
+
+                    if (data.Probar == false) {
+                        var altura = $(document).height();
+                        $("html, body").animate({ scrollTop: altura + "px" });
+                        $("#msj_novedad").html(data.Estado);
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+
+
+                        $("#TemaEdicion").val() = data.Model.Tema;
+                        $("#ResponsableEdicion").val() = data.Model.Responsable;
+                        $("#TiempoEdicion").val() = data.Model.TiempoEstimado;
+                        $("#LugarEdicion").val() = data.Model.Lugar;
+                        $("#EdicionAuditoria").val()=data.Model.Fk_Id_Auditoria;
+                    }
+                    else {
+                        swal({
+                            title: "Se editó la actividad correctamente",
+                            text: "",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        location.reload(true);
+                    });
+                    }
+                },
+                error: function (data) {
+
+                    console.log(data.Estado)
+                }
+            });
+
+        }
+    }
+
+</script>
+@*Cancelar cuadro edicion*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#EditarCancelar').click(function () {
+            $('#EdicionAct').hide();
+            $('#FechaEdicion').removeAttr('value');
+            $('#TemaEdicion').removeAttr('value');
+            $('#ResponsableEdicion').removeAttr('value');
+            $('#LugarEdicion').removeAttr('value');
+            $('#TiempoEdicion').removeAttr('value');
+            $('#PK_Act_Ed').removeAttr('value');
+        });
+    });
+</script>
+<script></script>
+<script></script>
+
+
+@*<div class="container-fluid">
+
+    <div class="page-header">
+        <h2>Actividades de la Auditoria</h2>
+    </div>*@
+
+
+    <div class="panel panel-default std-panel-body">
+        <div class="panel-heading panel-heading-custom">ACTIVIDADES DEL PLAN DE AUDITORIA</div>
+        <div class="panel-body">
+
+
+            @Html.Hidden("EdicionPrograma", (object)ViewBag.IdPrograma)
+            @Html.Hidden("EdicionAuditoria", (object)ViewBag.IdAuditoria)
+
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-4 col-sm-offset-5">
+                        <h4><strong>AGREGAR ACTIVIDAD</strong></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-4">
+                        <label>Proceso:</label>
+                        <div>
+                            
+                            <label>@ViewBag.Proceso</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Fecha Planeada:</label>
+                        <div>     
+                                <label>@ViewBag.FechaPlaneada</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Período:</label>
+                        <div>
+                            <label>@ViewBag.Periodo</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+                        <div class="internal-panel-body">
+                            <div class="form-group row internal-panel-body">
+                                <div class="col-sm-4">
+                                    <label>Fecha y Hora:</label>
+                                    @Html.EditorFor(m => m.Fecha_Hora, new { htmlAttributes = new { @class = "form-control form-width-100", @placeHolder = string.Format("ej. {0} ", DateTime.Now.ToString("dd/MM/yyyy")) } })
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Tema:</label>
+                                    <div>
+                                        @Html.TextBoxFor(m => m.Tema, htmlAttributes: new { @class = "form-control " })
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>Responsable:</label>
+                                    <div>
+                                        @Html.TextBoxFor(m => m.Responsable, htmlAttributes: new { @class = "form-control " })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-4">
+                        <label>Lugar:</label>
+                        <div>
+                            @Html.TextBoxFor(m => m.Lugar, htmlAttributes: new { @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Tiempo Estimado:</label>
+                        <div>
+                            @Html.TextBoxFor(m => m.TiempoEstimado, htmlAttributes: new { @class = "form-control " })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-5">
+                        <button class="boton botonactive" id="AgregarActividad" type="submit" value="EditarAct">AGREGAR ACTIVIDAD</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+                        <div class="internal-panel add-bottom-margin-05em">
+                            <div class="internal-panel-header panel-heading">
+                                <h4>Actividades Guardadas</h4>
+                            </div>
+                            <div class="internal-panel-body">
+
+
+
+
+                                @{
+                                    if (Model.ListaActividad.Count > 0)
+                                    {
+                                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                            <tr class="titulos_tabla">
+
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Tema</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Fecha y Hora</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Responsable</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Tiempo Estimado</span>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Lugar</span>
+                                                </th>
+
+
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                            </tr>
+                                            @{
+                                        foreach (var item in Model.ListaActividad)
+                                        {
+                                            int NumeroFila = item.Pk_Id_Cronograma_Auditoria;
+
+                                            <tr>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Tema)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Fecha_Hora)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Responsable)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.TiempoEstimado)
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                    @Html.DisplayFor(modelItem => item.Lugar)
+                                                </td>
+
+
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <a id="@NumeroFila.ToString()" href="#" class="btn btn-search btn-md btnEliminaract" title="Eliminar">
+                                                        <span class="glyphicon glyphicon-erase"></span>
+                                                    </a>
+                                                    |
+                                                    <a id="@NumeroFila.ToString()" class="btn btn-search btn-md btnEditarAct" title="Editar">
+                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                            }
+                                        </table>
+                                    }
+                                }
+
+                                <div id="EdicionAct" style="display:none;">
+
+                                    @Html.HiddenFor(m => m.Pk_Id_Cronograma_Auditoria, htmlAttributes: new {id = "PK_Act_Ed" })
+                                    <div class="form-group row internal-panel-body">
+                                        <div class="col-sm-4">
+                                            <label>Fecha y Hora</label>
+                                            @Html.EditorFor(m => m.Fecha_Hora, new { htmlAttributes = new { @class = "form-control form-width-100", id = "FechaEdicion", @placeHolder = string.Format("ej. {0} ", DateTime.Now) } })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>Tema</label>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Tema, htmlAttributes: new { @class = "form-control ", id = "TemaEdicion" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>Responsable</label>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Responsable, htmlAttributes: new { @class = "form-control ", id = "ResponsableEdicion" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row internal-panel-body">
+
+                                        <div class="col-sm-4">
+                                            <label>Lugar</label>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.Lugar, htmlAttributes: new { @class = "form-control ", id = "LugarEdicion" })
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>Tiempo Estimado</label>
+                                            <div>
+                                                @Html.TextBoxFor(m => m.TiempoEstimado, htmlAttributes: new { @class = "form-control ", id = "TiempoEdicion" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row internal-panel-body">
+                                        <div class="col-sm-5">
+                                            <button class="boton botonactive" id="EditarActividad" type="submit" value="EditarAct">EDITAR ACTIVIDAD</button>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <button class="boton botoncancel" id="EditarCancelar" type="submit" value="EditarAct">CANCELAR EDICIÓN</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                </div>
+                        </div>
+
+
+
+
+
+
+
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="boton botoninfo" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("Auditoria","Auditoria",new { IdPrograma = (object)ViewBag.IdPrograma })';return false;">REGRESAR</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            @*</div>*@
+
+            <br />
+            <div class="col-md-12">
+                <div id="div_novedad">
+                    <span id="msj_novedad"></span>
+                </div>
+            </div>
+

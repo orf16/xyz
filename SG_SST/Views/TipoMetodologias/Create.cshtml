@@ -1,0 +1,46 @@
+﻿@model SG_SST.Models.Planificacion.TipoMetodologia
+
+@{
+    ViewBag.Title = "Crear Tipo de Metodología";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Configuración Maestros</a></li>
+    <li><a href="@Url.Action("Index", "TipoMetodologias")">Tipos de Metodologías</a></li>
+    <li class="active">Crear Tipo de Metodología</li>
+</ol>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Tipo de Metodología</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion_Metodologia, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Descripcion_Metodologia, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Descripcion_Metodologia, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-12">
+                @*<input type="submit" value="Create" class="btn btn-default" />*@
+                <button type="submit" class="boton botonactive">Guardar Registro</button> 
+                |
+                <a href="@Url.Action("Index")" class="boton botoninfo">
+                    Volver a la Lista
+                </a>
+            </div>
+        </div>
+    </div>
+}

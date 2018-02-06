@@ -1,0 +1,435 @@
+﻿@model SG_SST.Models.Comunicaciones.ComunicacionesExternasModel
+
+@{
+    ViewBag.Title = "Comunicaciones Internas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/tinymce/tinymce.min.js"></script>
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js">
+    @section Scripts {
+        @Scripts.Render("~/bundles/simplePagination")
+    }
+</script>
+
+<style>
+    .plabel {
+        border: none;
+    }
+
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+
+    body {
+        /*font-family: Gill Sans MT;*/
+        padding: 10px;
+    }
+
+    fieldset {
+        border: solid 1px lightslategray;
+        padding: 10px;
+        display: block;
+        clear: both;
+        margin: 5px 0px;
+    }
+
+    legend {
+        padding: 0px 10px;
+        background: lightslategray;
+        color: black;
+        border: solid 1px black;
+    }
+
+    input.add {
+        float: right;
+    }
+
+    input.fieldname {
+        float: left;
+        clear: left;
+        display: block;
+        margin: 5px;
+    }
+
+    select.fieldtype {
+        float: left;
+        display: block;
+        margin: 5px;
+    }
+
+    input.remove {
+        float: left;
+        display: block;
+        margin: 5px;
+    }
+
+    #yourform label {
+        float: left;
+        clear: left;
+        display: block;
+        margin: 5px;
+    }
+
+    #yourform input, #yourform textarea {
+        float: left;
+        display: block;
+        margin: 5px;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Comunicación</a></li>
+    <li class="active">Comunicaciones Internas</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        COMUNICACIONES INTERNAS
+    </div>
+
+    @*Boton Ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Comunicaciones Internas</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">                        
+                            <div style="text-align:justify">
+                                La función de Comunicaciones Internas le permitirá crear comunicados a su población trabajadora directamente desde Alissta. Tener en cuenta que esta funcionalidad depende de que las relaciones laborales cuenten con email. Tenga presente que  debe antes haber creado los roles (en roles y responsabilidades) para el envío por roles y asegurarse de que estos cuenten con email; puede solicitar una actualización de datos a positiva y entregar con ella el listado de correos actualizados de su personal.
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                Para crear comunicados internos siga las siguientes instrucciones:
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                1.	De clic en la opción <button class="boton botonactive" disabled>Crear Comunicado</button>, diligencie el formulario: 
+                            </div>
+                            <br />
+                            <div style="text-align:justify; line-height:2.5">
+                                <b>a. Campo para:</b> deberá definir las personas a las cuales les remitirá el comunicado, puede hacerlo seleccionando cargo en la opción <button class="boton botoninfo" disabled>Cargos</button>, por nombre de la persona en la opción <button class="boton botoninfo" disabled>Personas</button>, o en la opción <button class="boton botoninfo" disabled>Grupos</button> donde podrá crear agrupaciones.
+                            </div>
+                            <div style="text-align:justify">
+                                <b>b. Campos título y asunto del comunicado:</b> a continuación redacte el comunicado y use las herramientas de formato preestablecidas.
+                            </div>
+                            <div style="text-align:justify">
+                                <b>c. Dar clic en:</b> <button class="boton botonactive" disabled>Guardar Comunicado</button>
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                El sistema volverá a la pantalla inicial donde con las opciones de la parte final derecha podrá editar, enviar y reenviar el comunicado las veces que considere, además de eliminar los registros.
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//////*@
+
+    <div class="panel-body form-horizontal">
+        <center>
+            <center>
+                <button type="button" class="boton botonactive" onclick="CrearComunicado()">Crear Comunicado</button>
+            </center>
+            <br />
+            <div class="table-responsive">
+                <table id="gridcomunicadosapp" class="table table-bordered" style="border: 2px solid lightslategray"></table>
+            </div>
+        </center>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.PK_Id_Comunicado)
+<div id="myModal1" class="modal fade" role="dialog">
+    <form id="frmcomunicacionesexternas">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <h4 class="modal-title title">Crear Comunicado</h4>
+                </div>
+                <div class="modal-body">
+                    <table width="100%" border="0">
+                        <tr class="noborder">
+                            <td class="noborder" align="left">Para:</td>
+                            <td width="1546" rowspan="2" align="left" class="noborder">
+                                <table width="200" border="0" class="noborder">
+                                    <tr class="noborder">
+                                        <td class="noborder">
+                                            <select name="Destinatarios" multiple id="Destinatarios" style="width:400px;" class="form-control"></select>
+                                        </td>
+                                        <td valign="top" class="noborder"><a href="#" onclick="QuitarCampos();" class="btn btn-search btn-md" title="Quitar Campo"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">&nbsp;</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder">&nbsp;</td>
+                            <td class="noborder">
+                                @*<input type="button" value="Cargos" onclick="AgregarCargos();" class="boton botoninfo" style="width:10%; text-align:center" />*@
+                                <button type="button" onclick="AgregarCargos();" class="boton botoninfo">Cargos</button>
+                                @*<input type="button" value="Personas" onclick="AgregarPersonas();" class="boton botoninfo" style="width:10%; text-align:center" />*@
+                                <button type="button" onclick="AgregarPersonas();" class="boton botoninfo">Personas</button>
+                                @*<input type="button" value="Grupos" onclick="CrearGrupos();" class="boton botoninfo" style="width:10%; text-align:center" />*@
+                                <button type="button" onclick="CrearGrupos();" class="boton botoninfo">Grupos</button>
+                            </td>
+                        </tr>
+                        <tr class="noborder">
+                            <td width="500" class="noborder" align="right">Titulo del Comunicado:</td>
+                            <td class="noborder">@Html.TextBoxFor(x => x.Titulo, new { style = "width:405px;", @class="form-control" })</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td class="noborder" align="right">Asunto del Comunicado:</td>
+                            <td class="noborder">@Html.TextBoxFor(x => x.Asunto, new { style = "width:405px;", @class = "form-control" }) </td>
+                        </tr>
+                        <tr class="noborder">
+                            <td colspan="2" class="noborder">@Html.TextAreaFor(x => x.CuerpoMensaje , new { style = "resize:none"})</td>
+                        </tr>
+                        <tr class="noborder">
+                            <td colspan="2" class="noborder">&nbsp;</td>
+                        </tr>
+                    </table>
+                    
+                    @*<input type="button" id="guardarc" class="boton botonactive" value="Guardar Comunicado" onclick="GuardarComunicado('G');" style="text-align:center" />*@
+                    <button type="button" id="guardarc" class="boton botonactive" onclick="GuardarComunicado('G');">Guardar Comunicado</button>
+                    @*<input id="enviar" type="button" value="Enviar Comunicado" onclick="GuardarComunicado('E');" style="display:none;" />*@
+                    <button id="enviar" type="button" class="boton botonactive" onclick="GuardarComunicado('E');" style="display:none;" >Enviar Comunicado</button>
+                    
+                    <br />
+
+                    <div class="modal-footer">
+                        <a href="#" onclick="CerrarModal();" style="float:right; text-align:center" class="boton botoninfo">Atras</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="myModal0" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Seleccionar Cargos</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="txtbuscar" class="form-control" onkeypress="BuscarCargos(event, this.value);" placeholder="Buscar Cargo" />
+                <br />
+                <table id="cargos" width="30%" border="1" class="table table-condensed table-responsive  table-bordered" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <td style="border-right: 2px solid lightslategray; text-align:center" width="10%">&nbsp;</td>
+                        <td>Cargo</td>
+                    </tr>
+                </table>
+                <input type="checkbox" name="chktodos" id="chktodos" onclick="CheckTodos();"> Seleccionar Todo
+                <div class="modal-footer">
+                    @*<input type="button" value="Aceptar" onclick="AsignarCargos();" />*@
+                    <button type="button" class="boton botonactive" onclick="AsignarCargos();" style="margin-right:2%">Aceptar</button>
+                    <a href="#" onclick="CerrarModal1();" style="float:right;text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal2" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Agregar Personas</h4>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(x => x.pk_id_grupo_usuario_comunicaciones)
+                <input type="text" id="txtbuscarpersona" class="form-control" onkeypress="BuscarPersonas(event, this.value);" placeholder="Buscar Personas" style="width:50%" />
+                <br />
+
+                <div class="table-responsive">
+                    <table id="personas" class="table table-bordered" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla">
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Id. Persona</b></td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Nombre Persona</b></td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Correo Electronico</b></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <input type="checkbox" name="chktodos11" id="chktodos11" onclick="CheckTodos11();"> Seleccionar Todo
+
+                <div class="modal-footer">
+                    @*<input type="button" value="Aceptar" onclick="AsignarCargos();" />*@
+                    <button type="button" class="boton botonactive" onclick="AsignarPersonasTemp();">Aceptar</button>
+                    &nbsp;
+                    @*<input type="button" value="Agregar Persona sin Relacion Laboral" onclick="AsignarAnonimos();" />*@
+                    <button type="button" onclick="AsignarAnonimos();"  class="boton botonactive">Agregar Persona sin Relación Laboral</button>
+                    &nbsp;
+                    <a href="#" data-dismiss="modal" style="float:right;text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal3" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Grupos</h4>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(x => x.PK_Id_grupo)
+                <input type="text" id="txtgrupo" class="form-control" style="width:50%" />
+                <br />
+                @*<input type="button" value="Crear Grupo" onclick="GuardarGrupo();" />*@
+                <button type="button" onclick="GuardarGrupo();" class="boton botonactive">Crear Grupo</button>
+                <br /><br />
+                <div class="table-responsive">
+                    <table id="grupos" class="table table-bordered" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla">
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Nombre del Grupo</b></td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Acciones</b></td>
+                        </tr>
+                    </table>
+                </div>
+                <input type="checkbox" name="chktodos1" id="chktodos1" onclick="CheckTodos1();"> Seleccionar Todo
+
+                <div class="modal-footer">
+                    @*<input type="button" value="Aceptar" onclick="AsignarPersonas();" />*@
+                    <button type="button" class="boton botonactive" onclick="AsignarPersonas();">Aceptar</button>
+                    &nbsp;
+                    <a href="#" data-dismiss="modal" style="float:right;text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal4" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Agregar Miembros</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="txtmiembro" class="form-control" style="width:50%" placeholder="Nombre del Grupo a Editar" />
+                <br />
+                <center>
+                    @*<input type="button" value="Agregar Miembro" onclick="AgregarContacto();" />*@
+                    <button type="button" onclick="AgregarContacto();" class="boton botonactive">Agregar Miembro</button>
+                </center>
+                <br />
+                <div class="table-responsive">
+                    <table id="miembros" class="table table-bordered" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla">
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">&nbsp;</td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Nombre del Contacto</b></td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Correo Electronico</b></td>
+                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Acciones</b></td>
+                        </tr>
+                    </table>
+                </div>
+                <input type="checkbox" name="CheckMiembros1" id="CheckMiembros1" onclick="CheckMiembros();"> Seleccionar Todo
+                <div class="modal-footer">
+                    @*<input type="button" value="Aceptar" onclick="ActualizarGrupo();" style="float:left;" />*@
+                    <button type="button" onclick="ActualizarGrupo();" class="boton botonactive">Aceptar</button>
+                    &nbsp;
+                    <a href="#" data-dismiss="modal" style="float:right; text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal5" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Agregar Miembros</h4>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(x => x.pk_id_grupo_usuario_comunicaciones)
+                <table border="0">
+                    <tr class="noborder">
+                        <td class="noborder">Nombre del Contacto</td>
+                        <td class="noborder"><input type="text" id="txtnombre" class="form-control" style="width:250px;height:28px;" /></td>
+                    </tr>
+                    <tr class="noborder">
+                        <td class="noborder">Correo Electronico</td>
+                        <td class="noborder"><input type="text" id="txtcorreo" class="form-control" style="width: 250px; height: 28px; " /></td>
+                    </tr>
+                </table>
+                <br /><center><input type="button" value="Agregar" onclick="add();" /></center><a href="#" data-dismiss="modal" style="float:right;">< &nbsp; Atras</a>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+<div id="myModal6" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <h4 class="modal-title title">Agregar Persona sin relación laboral</h4>
+            </div>
+            <div class="modal-body">
+                @Html.HiddenFor(x => x.pk_id_grupo_usuario_comunicaciones)
+                <table border="0">
+                    <tr class="noborder">
+                        <td class="noborder">Nombre del Contacto:</td>
+                        <td class="noborder"><input type="text" id="txtnombre1" class="form-control" style="width: 150%" /></td>
+                    </tr>
+                    <tr class="noborder">
+                        <td class="noborder">Correo Electrónico:</td>
+                        <td class="noborder"><input type="text" id="txtcorreo1" class="form-control" style="width: 150%" /></td>
+                    </tr>
+                </table>
+                <br />
+                <center>
+                    @*<input type="button" value="Agregar" onclick="add2();" />*@
+                    <button type="button" onclick="add2();" class="boton botonactive">Agregar</button>
+                </center>
+                <br />
+                <div class="modal-footer">
+                    <a href="#" data-dismiss="modal" style="float:right; text-align:center" class="boton botoninfo">Atras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Comunicaciones/ComunicacionesExternas.js")

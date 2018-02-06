@@ -1,0 +1,265 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaVerificacion
+@{
+    ViewBag.Title = "Lista de Verificación Auditoria";
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/MedicionyEvaluacion/AuditoriaVerificacion.js")"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li><a href="@Url.Action("Programa", "Auditoria")">Programas</a></li>
+    <li><a href="@Url.Action("Auditoria", "Auditoria",new { IdPrograma = ViewBag.IdPrograma })">Auditorias</a></li>
+    <li class="active">Lista de Verificación de Auditoria</li>
+</ol>
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">LISTA DE VERIFICACIÓN DE AUDITORÍA</div>
+    <div class="panel-body">
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Lista de verificación de auditoría</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR A LISTA DE VERIFICACIÓN</button> Para agregar un nuevo registro a la lista de verificación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">FINALIZAR EDICIÓN</button> Para actualizar el elemento de la lista de verificación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">GENERAR PDF</button> Para exportar la lista de verificación a PDF</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">REGRESAR</button> Para regresar a la lista de auditorias del programa actual</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar un elemento de la lista de verificación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar un elemento de la lista de verificación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR EDICIÓN</button> Para cancelar la edición del elemento de la lista de verificación</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        @Html.Hidden("EdicionPrograma", (object)ViewBag.IdPrograma)
+        @Html.Hidden("EdicionAuditoria", (object)ViewBag.IdAuditoria)
+
+        <div class="internal-panel-body">
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-5 col-sm-offset-4">
+                    <h4><strong>AGREGAR ELEMENTO A LA LISTA</strong></h4>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel-body">
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-4">
+                    <label>Proceso:</label>
+                    <div>
+                        <label>@ViewBag.Proceso</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label>Fecha Planeada:</label>
+                    <div>
+                        <label>@ViewBag.FechaPlaneada</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label>Período:</label>
+                    <div>
+                        <label>@ViewBag.Periodo</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-12">
+                <label>Pregunta</label>
+                @Html.TextAreaFor(m => m.Pregunta, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                <span id="val-pregunta" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+        </div>
+
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-12">
+                <label style="text-decoration:underline" title="Indique norma, numeral u otro requisito con los cuales estará basado el plan de auditoría">Requisito</label>
+                @Html.TextAreaFor(m => m.Requisito, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                <span id="val-requisito" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+        </div>
+
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-12">
+                <label>Descripción del Hallazgo</label>
+                @Html.TextAreaFor(m => m.Hallazgo, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                <span id="val-deschallazgo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+        </div>
+
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-5">
+                <label>Tipo de Hallazgo</label>
+                @Html.DropDownList("TipoHallazgo", null, "-- Seleccione un Tipo de Hallazgo --", htmlAttributes: new { @class = "form-control col-md-10" })
+                <span id="val-hallazgo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+        </div>
+
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-12 col-sm-offset-5">
+                <button class="boton botonactive" id="AgregarLista" type="submit" value="EditarAct">AGREGAR A LISTA DE VERIFICACIÓN</button>
+            </div>
+        </div>
+
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Lista de Verificación</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+
+                <div class="Tabla-Programa table-responsive">
+
+                    @{
+                        if (Model.ListaVerficiacionLista.Count > 0)
+                        {
+                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                        <thead>
+                            <tr class="titulos_tabla">
+
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Pregunta</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Requisito</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Descripción del Hallazgo</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Tipo de Hallazgo</span>
+                                </th>
+
+
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                        foreach (var item in Model.ListaVerficiacionLista)
+                                        {
+                                            int NumeroFila = item.Pk_Id_Lista_Verificacion;
+
+                                    <tr>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(modelItem => item.Pregunta)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(modelItem => item.Requisito)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(modelItem => item.Hallazgo)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(modelItem => item.Tipo_Hallazgo)
+                                        </td>
+
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <a id="@NumeroFila.ToString()" href="#" class="btn btn-search btn-md btnEliminarlista" title="Eliminar">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+                                            |
+                                            <a id="@NumeroFila.ToString()" class="btn btn-search btn-md btnEditarlista" title="Editar">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                        }
+                            }
+                        </tbody>
+                    </table>
+                    <center><div class="pagination" id="paginador1"></div></center>
+                                        }
+                    }
+                </div>
+                <div id="EdicionListaDiv" style="display:none;">
+
+                    @Html.HiddenFor(m => m.Pk_Id_Lista_Verificacion, htmlAttributes: new { id = "PK_Lista_Ed" })
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Pregunta</label>
+                            @Html.TextAreaFor(m => m.Pregunta, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, id = "EdicionPregunta", maxlength = 3000 })
+                            <span id="val-preguntaed" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Requisito<span class="glyphicon glyphicon-question-sign" title="Indique norma, numeral u otro requisito con los cuales estará basado el plan de auditoría"></span></label>
+                            @Html.TextAreaFor(m => m.Requisito, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, id = "EdicionRequisito", maxlength = 3000 })
+                            <span id="val-requisitoed" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-12">
+                            <label>Descripción del Hallazgo</label>
+                            @Html.TextAreaFor(m => m.Hallazgo, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, id = "EdicionHallazgo", maxlength = 3000 })
+                            <span id="val-deschallazgoed" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-5">
+                            <label>Tipo de Hallazgo</label>
+                            @Html.DropDownList("TipoHallazgo", null, "-- Seleccione un Tipo de Hallazgo --", htmlAttributes: new { @class = "form-control col-md-10", id = "EdicionTipo" })
+                            <span id="val-hallazgoed" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row internal-panel-body">
+                        <div class="col-sm-5" style="margin-bottom:5px;">
+                            <button class="boton botonactive" id="EditarLista" type="submit" value="EditarAct">FINALIZAR EDICIÓN</button>
+                        </div>
+                        <div class="col-sm-5">
+                            <button class="boton botoncancel" id="EditarCancelar" type="submit" value="EditarAct">CANCELAR EDICIÓN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-6" style="margin-bottom:5px;">
+                <button class="boton botonactive" id="pdf-btn" type="submit" value="GenerarPDF" onclick="location.href='@Url.Action("ReporteLista","Auditoria",new { IdAuditoria = (object)ViewBag.IdAuditoria })';return false;">GENERAR PDF</button>
+            </div>
+            <div class="col-md-6">
+                <button class="boton botoninfo" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("Auditoria","Auditoria",new { IdPrograma = (object)ViewBag.IdPrograma })';return false;">REGRESAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

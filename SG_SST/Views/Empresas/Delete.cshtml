@@ -1,0 +1,126 @@
+﻿@model SG_SST.Models.Empresas.Empresa
+
+@{
+    ViewBag.Title = "Eliminar Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>Empresas - Eliminar Empresas</p>
+
+
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nit_Empresa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nit_Empresa)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Razon_Social)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Razon_Social)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Direccion_Principal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Direccion_Principal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fax)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fax)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Sitio_Web)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sitio_Web)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_Vigencia_Actual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_Vigencia_Actual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha_Retiro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fecha_Retiro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CIU.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CIU.Descripcion)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sede.Nombre_Sede)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sede.Nombre_Sede)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar Registro" class="btn btn-danger" />
+
+        </div>
+        <hr />
+        @Html.ActionLink("Regresar a la Lista", "Index")
+    }
+</div>
+<hr />

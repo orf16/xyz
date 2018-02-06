@@ -1,0 +1,136 @@
+﻿@model IEnumerable<SG_SST.Models.SedeMunicipio>
+
+@{
+    ViewBag.Title = "Sedes Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            confirmButtonColor: '#7E8A97'
+        })
+    </script>
+}
+
+@if (ViewBag.mensaje1 != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje1',
+            confirmButtonColor: '#7E8A97'
+        })
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@section OpcionesEmpresa
+{
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Create", "Empresas")" style="color:gray" title="Datos Generales Empresa">Datos Generales Empresa</a></li>
+        <li class="active"><a href="@Url.Action("SedesPorMunicipios", "Sede")" style="color:#ff7500" title="Sedes Empresa">Sedes</a></li>
+        <li><a href="@Url.Action("Index", "Usuarios")" style="color:gray" title="Usuarios Roles SG-SST">Roles SGSST</a></li>
+    </ol>
+}
+
+<p align="center" style="margin-bottom:20px">
+    @Html.ActionLink("Agregar Sede", "Create", null, htmlAttributes: new { @type = "button", @class = "boton botonactive", style = "text-decoration:none" })
+</p>
+
+<div class="panel panel-default" style="border: transparent">
+    <div class="panel-heading" style="color:white">
+        Listado Sedes Empresa
+    </div>
+    
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Sede.Nombre_Sede)
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Sede.Sector)
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Sede.Direccion_Sede)
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Municipio.Nombre_Municipio)
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Departamento
+                </th>
+                <th width="100" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Acciones
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Sede.Nombre_Sede)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Sede.Sector)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Sede.Direccion_Sede)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Municipio.Nombre_Municipio)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Municipio.Departamento.Nombre_Departamento)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a href="@Url.Action("Edit", new { id = item.Fk_id_Sede })" class="btn btn-search btn-md" title="Editar Sede">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        |
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.id_sedeMunicipio)" class="btn btn-search btn-md" title="Eliminar Sede">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                        <div id="@string.Format("modalEliminar{0}", item.id_sedeMunicipio)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Eliminar Sede</h4>
+                                    </div>
+                                    <div class="modal-body " style="text-align:center; color:black">
+                                        <p>¿Esta seguro que desea eliminar la Sede?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Fk_id_Sede },
+                                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

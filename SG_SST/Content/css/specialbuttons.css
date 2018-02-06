@@ -1,0 +1,213 @@
+
+.active-main-menu-item > .menu-item-icono {background-position: bottom;}
+
+.menu-item-icono-empresa{background-image: url('../../Images/iconos/headers/empresa_icon.png');}
+.menu-item-icono-empresa:focus:hover{background-image: url('../../Images/iconos/headers/empresa_icon.png');}
+.menu-item-icono-liderazgo{background-image: url('../../Images/iconos/headers/liderazgo_icon.png');}
+.menu-item-icono-liderazgo:focus:hover{background-image: url('../../Images/iconos/headers/liderazgo_icon.png');}
+.menu-item-icono-politica{background-image: url('../../Images/iconos/headers/politica_icon.png');}
+.menu-item-icono-politica:focus:hover{background-image: url('../../Images/iconos/headers/politica_icon.png');}
+.menu-item-icono-organizacion{background-image: url('../../Images/iconos/headers/organizacion_icon.png');}
+.menu-item-icono-organizacion:focus:hover{background-image: url('../../Images/iconos/headers/organizacion_icon.png');}
+.menu-item-icono-planificacion{background-image: url('../../Images/iconos/headers/planificacion_icon.png');}
+.menu-item-icono-planificacion:focus:hover{background-image: url('../../Images/iconos/headers/planificacion_icon.png');}
+.menu-item-icono-aplicacion{background-image: url('../../Images/iconos/headers/aplicacion_icon.png');}
+.menu-item-icono-aplicacion:focus:hover{background-image: url('../../Images/iconos/headers/aplicacion_icon.png');}
+.menu-item-icono-reporte{background-image: url('../../Images/iconos/headers/reporte_icon.png');}
+.menu-item-icono-reporte:focus:hover{background-image: url('../../Images/iconos/headers/reporte_icon.png');}
+.menu-item-icono-medicion{background-image: url('../../Images/iconos/headers/medicion_icon.png');}
+.menu-item-icono-medicion:focus:hover{background-image: url('../../Images/iconos/headers/medicion_icon.png');}
+.menu-item-icono-participacion{background-image: url('../../Images/iconos/headers/participacion_icon.png');}
+.menu-item-icono-participacion:focus:hover{background-image: url('../../Images/iconos/headers/participacion_icon.png');}
+.menu-item-icono-revision{background-image: url('../../Images/iconos/headers/revision_icon.png');}
+.menu-item-icono-revision:focus:hover{background-image: url('../../Images/iconos/headers/revision_icon.png');}
+.menu-item-icono-maestros{background-image: url('../../Images/iconos/headers/maestros.png');}
+.menu-item-icono-aprobacion{background-image: url('../../Images/iconos/headers/aprobacionUsuarios-normal.png');}
+.menu-item-icono-aprobacion:focus:hover{background-image: url('../../Images/iconos/headers/aprobacionUsuarios-h.png');}
+
+.boton{
+    background-color: #fff;
+    border: 1px solid;
+    line-height: 25px;
+    padding: 5px 30px 0px 5px;
+    text-transform: uppercase;
+    -webkit-transition: all ease-in-out .5s;
+    -o-transition: all ease-in-out .5s;
+    transition: all ease-in-out .5s;
+    display: inline-block;
+    min-width: 180px;
+    font-size: 12px!important;
+}
+
+.boton:hover {
+    color: #ffF!important;
+}
+
+.boton:before {
+    margin-right: 20px;
+    content: '';
+    display: inline-block;
+    width: 17px;  
+    border-left: 0px solid transparent; 
+    border-right: 10px solid transparent; 
+    top: 2px;
+    position: relative;
+    -webkit-transition: all ease-in-out .5s;
+    -o-transition: all ease-in-out .5s;
+    transition: all ease-in-out .5s;
+    float: left;
+}
+
+.boton:hover::before{
+    border-top: 15px solid #ffffff; 
+    width: 20px;
+    -webkit-transition: all ease-in-out .5s;
+    -o-transition: all ease-in-out .5s;
+    transition: all ease-in-out .5s;
+}
+
+.botonactive{
+    border-color: #4B9A49; 
+    color: #4B9A49!important; 
+}
+
+.botonactive:hover{
+    background-color: #4B9A49; 
+}
+
+.botonactive:before{
+    border-top: 15px solid #4B9A49; 
+}
+
+.botoncancel{
+    color: #AB022B!important; 
+    border-color: #AB022B; 
+}
+
+.botoncancel:hover{
+    background-color: #AB022B; 
+}
+
+.botoncancel:before{
+    border-top: 15px solid #AB022B; 
+}
+
+.botoninfo{
+    border-color: #FD7500; 
+    color: #FD7500!important; 
+}
+
+.botoninfo:before{
+    border-top: 15px solid #FD7500; 
+}
+
+.botoninfo:hover{
+     background-color: #FD7500; 
+}
+
+*, *:before, *:after{ 
+    box-sizing: border-box; 
+} 
+
+.btn-positiva {
+    color: #FD7500;
+    border: 1px solid #FD7500;
+}
+
+/*Estilos de paginación*/
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+.pagination > li {
+  display: inline;
+}
+.pagination > li > a,
+.pagination > li > span {
+  position: relative;
+  float: left;
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  text-decoration: none;
+  color: #ff7500;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  margin-left: -1px;
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+  margin-left: 0;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  z-index: 2;
+  color: #b35200;
+  background-color: #ffffff;
+  border-color: #dddddd;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  z-index: 3;
+  color: #ffffff;
+  background-color: #ff7500;
+  border-color: #ff7500;
+  cursor: default;
+}
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+  color: #cccccc;
+  background-color: #ffffff;
+  border-color: #dddddd;
+  cursor: not-allowed;
+}
+.pagination-lg > li > a,
+.pagination-lg > li > span {
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+}
+.pagination-lg > li:first-child > a,
+.pagination-lg > li:first-child > span {
+  border-bottom-left-radius: 6px;
+  border-top-left-radius: 6px;
+}
+.pagination-lg > li:last-child > a,
+.pagination-lg > li:last-child > span {
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.pagination-sm > li > a,
+.pagination-sm > li > span {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.pagination-sm > li:first-child > a,
+.pagination-sm > li:first-child > span {
+  border-bottom-left-radius: 3px;
+  border-top-left-radius: 3px;
+}
+.pagination-sm > li:last-child > a,
+.pagination-sm > li:last-child > span {
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+}

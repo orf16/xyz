@@ -1,0 +1,40 @@
+﻿@model List<SG_SST.Models.Planificacion.ActividadModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DescargarPlanAccionPDF</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="form-control">
+            <h3>Plan de Acción para los Estándares Mínimos SGSST</h3>
+            <table class="table table-bordered table-striped" id="tblausentismos" style="font-size:smaller;">
+                <thead>
+                    <tr>
+                        <th class="col-md-6" style="text-align:center;">Actividad</th>
+                        <th class="col-md-3" style="text-align:center">Responsable</th>
+                        <th class="col-md-3" style="text-align:center">Fecha Fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var a in Model)
+                    {
+                        <tr>
+                            <td class="col-md-6" style="text-align:justify">@string.Format("{0}", a.Descripcion)</td>
+                            <td class="col-md-3" style="text-align:center">@string.Format("{0}", a.Responsable)</td>
+                            <td class="col-md-3" style="text-align:center">@string.Format("{0}", a.strFechaFin)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</body>
+</html>

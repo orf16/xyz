@@ -1,0 +1,321 @@
+﻿@model SG_SST.EntidadesDominio.Planificacion.EDDxSalud
+
+@{
+    ViewBag.Title = "PDF Detalle Diagnóstico";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Detalle Dx. Condiciones Salud PDF</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="shortcut icon" href="http://test-positiva.adacsc.co/Images/IcoAlissta.ico">
+    <link rel="stylesheet" href="http://test-positiva.adacsc.co/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="http://test-positiva.adacsc.co/Content/css/estilos_positiva.css">
+    @*<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+        <link rel="stylesheet" href="~/Content/css/estilos_positiva.css">*@
+    <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+    <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+</head>
+<body>
+   
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">Diagnóstico General de Condiciones de Salud</div>
+            <div class="panel-body form-horizontal">
+                <div class="panel">
+                    <div class="panel-heading" style="background-color: rgba(196, 202,196, 0.1)">Período de Evaluación Médica Ocupacional / Autoreporte CS / PVE</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Fecha Inicial:</label>
+                                        <div class="col-md-10">
+                                            @Model.Fecha_Inicial_Dx.ToString("dd/MM/yyyy")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-8">Fecha Final:</label>
+                                        <div class="col-md-10">
+                                            @Model.Fecha_Final_Dx.ToString("dd/MM/yyyy")
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Vigencia:</label>
+                                        <div class="col-md-10">
+                                            @Model.vigencia
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr style="border-top-color:lightslategray; width:100%" />
+                        <div class="row">
+                            <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Sede:</label>
+                                        <div class="col-md-10">
+                                            @Model.NombreSede
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-8">Municipio:</label>
+                                        <div class="col-md-10">
+                                            @Model.NombreMunicipio
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Departamento:</label>
+                                        <div class="col-md-10">
+                                            @Model.NombreDepartamento
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Zona o Lugar:</label>
+                                        <div class="col-md-10">
+                                            @Model.ZonaLugar
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-8">Proceso:</label>
+                                        <div class="col-md-10">
+                                            @Model.nombreProceso
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Total de Trabajadores de la zona o lugar:</label>
+                                        <div class="col-md-10">
+                                            @Model.NumeroTrabajadoresLugar
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Responsable de la información:</label>
+                                        <div class="col-md-10">
+                                            @Model.Responsable_informacion
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-8">Profesión del responsable de la información:</label>
+                                        <div class="col-md-10">
+                                            @Model.Profesion_Responsable
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Tarjeta Profesional:</label>
+                                        <div class="col-md-10">
+                                            @Model.Tarjeta_Profesional
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border-top-color:lightslategray; width:100%" />
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaClasificacionPeligros">
+                        <thead>
+                            <tr class="titulos_tabla">
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:25%">
+                                    Clasificación de peligro
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:75%">
+                                    Descripción de peligro
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claspeligrodx in Model.EDClasificacionPeligroDx)
+                            {
+                                <tr id="ClasPeligroDx" name="ClasPeligroDx">
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @claspeligrodx.nombreTipoPeligro
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @claspeligrodx.nombreDescripcion
+                                    </th>
+
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaSintomatologia">
+                        <thead>
+                            <tr class="titulos_tabla">
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:55%">
+                                    SINTOMATOLOGÍA
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:30%">
+                                    Nº de Trabajadores con Anormalidad
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:15%">
+                                    % Anormalidad
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sintomatologia in Model.EDSintomatologiaDx)
+                            {
+                                <tr>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @sintomatologia.Sintomatologia
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @sintomatologia.Trabajadores_Sintomatologia
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @sintomatologia.porcentajeSintomatologia
+                                    </th>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaPruebas">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:55%">
+                                PRUEBAS CLÍNICAS
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:30%">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:15%">
+                                % Anormalidad
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pruebaC in Model.EDPruebasClinicasDx)
+                        {
+                            <tr>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @pruebaC.Prueba_Clinica
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @pruebaC.Trabajadores_Con_Prueba
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @pruebaC.porcentajePrueba
+                                </th>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaPruebasP">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:55%">
+                                PRUEBAS PARACLÍNICAS
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:30%">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:15%">
+                                % Anormalidad
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pruebascp in Model.EDPruebasPClinicasDx)
+                        {
+                            <tr>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @pruebascp.Prueba_P_Clinica
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @pruebascp.Trabajadores_Con_Prueba_P
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @pruebascp.Prueba_P_Clinica
+                                </th>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:55%">
+                                DIAGNÓSTICO CIE10
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:30%">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:15%">
+                                % Anormalidad
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabladiagnosticoCie">
+                        @foreach (var cie10 in Model.EDDiagnosticoCie10Dx)
+                        {
+                            <tr id="trCie10">
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @cie10.NombreDiagnosticoCIE10
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @cie10.NumeroTrabajadoresConDiagnostico
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @cie10.porcentajeDiagnostico
+                                </th>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+</body>
+</html>

@@ -1,0 +1,1502 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.ActividadPresupuesto>
+
+@{
+    ViewBag.Title = "Ejecutar Presupuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .campos-tabla {
+        width: 160px;
+        display: block;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: right;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Presupuesto</a></li>
+    <li class="active">Ejecutar Presupuesto</li>
+</ol>
+
+<form method="post" id="Presupuesto" action="@Url.Action("CrearPresupuesto", "Presupuesto")">
+    <input name="PK_Prepuesto" value="@ViewBag.Presupuesto.PK_Prepuesto" type="hidden" />
+    <input name="PK_Presupuesto_Por_Año" value="@ViewBag.PresupuestoPorAnio.PK_Presupuesto_Por_Año" type="hidden" />
+    <input name="FK_Presupuesto" value="@ViewBag.PresupuestoPorAnio.FK_Presupuesto" type="hidden" />
+    <input name="RubroTotal" id="RubroTotal" value="@ViewBag.Presupuesto.RubroTotal" type="hidden" />
+    <input name="Periodo" id="Periodo" value="@ViewBag.PresupuestoPorAnio.Periodo" type="hidden" />
+    <input name="FK_Sede" id="FK_Sede" value="@ViewBag.PresupuestoPorAnio.FK_Sede" type="hidden" />
+
+    <input type="hidden" id="cantidadActividades" value="@Model.Count()" />
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">EJECUCIÓN DE  PRESUPUESTO</div>
+    </div>
+    <div id="TablaPresupuesto">
+        <div class="table-responsive" style="overflow-x:scroll">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <thead>
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle"> </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            ACTIVIDADES
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ENERO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">FEBRERO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">MARZO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">ABRIL</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">MAYO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">JUNIO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">JULIO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">AGOSTO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">SEPTIEMBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">OCTUBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">NOVIEMBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">DICIEMBRE</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">TOTAL EJECUTADO</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">% EJECUTADO</th>
+                    </tr>
+                </thead>
+                <tbody id="actividades">
+                    @{
+                        int principales = 0;
+
+                        foreach (var actividad in Model)
+                        {
+
+                            if (actividad.actividadesPresupuesto != null)
+                            {
+
+                                int secundarias = 0;
+
+                                <tr name="@principales">
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <a data-toggle="collapse" onclick="habilitarFilas(@principales)">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                        <input name="@string.Format("[{0}].PK_Actividad_Presupuesto", principales)" type="hidden" class="campos-tabla" value="@actividad.PK_Actividad_Presupuesto" />
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @actividad.DescripcionActividad
+                                        <input name="@string.Format("[{0}].DescripcionActividad", principales)" type="hidden" class="campos-tabla" value="@actividad.DescripcionActividad" />
+                                    </th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th ></th>
+                                    <th style="border-right: 2px solid lightslategray; vertical-align:middle"></th>
+                                    <th ></th>
+                                </tr>
+
+                                foreach (var actividadSecudaria in actividad.actividadesPresupuesto)
+                                {
+                                    int terciarias = 0;
+                                    double sumaEjecutadaActividad = 0;
+                                    double totalActividad = 0;
+                                    <tr name="@principales">
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].PK_Actividad_Presupuesto", principales, secundarias)" type="hidden" class="campos-tabla" value="@actividadSecudaria.PK_Actividad_Presupuesto" />
+                                            <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].FK_Actividad_Presupuesto", principales, secundarias)" type="hidden" class="campos-tabla" value="@actividadSecudaria.FK_Actividad_Presupuesto" />
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @actividadSecudaria.DescripcionActividad
+                                            <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].DescripcionActividad", principales, secundarias)" type="hidden" class="campos-tabla" value="@actividadSecudaria.DescripcionActividad" />
+                                        </td>
+
+                                        @foreach (var presupuestoMes in actividadSecudaria.presupuestosPorMes)
+                                        {
+                                            if (presupuestoMes.Mes == 1)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="enero">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="1" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 2)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="febrero">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="2" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 3)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="marzo">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="3" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 4)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="abril">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="4" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 5)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="mayo">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="5" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 6)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="junio">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="6" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 7)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="julio">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="7" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 8)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="agosto">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="8" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 9)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="septiembre">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="9" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 10)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="octubre">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="10" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 11)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="noviembre">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="11" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            if (presupuestoMes.Mes == 12)
+                                            {
+                                                sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                                totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                                var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                                var estilo = "border-right: 2px solid lightslategray;";
+                                                if (comentario != "" && comentario != null)
+                                                {
+                                                    estilo = "border-right:5px solid Green";
+                                                }
+                                                <td name="diciembre">
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PK_Prepuesto_Por_Mes", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Actividad_Presupuesto", principales, secundarias, terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].FK_Presupuesto", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoMes", principales, secundarias, terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].Mes", principales, secundarias, terciarias)" value="12" type="hidden" />
+                                                    <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].ComentarioPresupuestoMesEjecutado", principales, secundarias, terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                    <div class="input-group add-on">
+                                                        <input name="@string.Format("[{0}].actividadesPresupuesto[{1}].presupuestosPorMes[{2}].PresupuestoEjecutadoPorMes", principales, secundarias, terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                        @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                        <div class="input-group-btn">
+                                                            <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                        <div class="modal-dialog modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                    <h4 class="modal-title">Comentarios</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                                Guardar
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="col-xs-6">
+                                                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            }
+                                            terciarias++;
+                                        }
+                                        @{
+                                    double porcentaje = Math.Round(sumaEjecutadaActividad / totalActividad * 100, 2);
+                                        }
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><input type="text" class="campos-tabla" name="total" value="@sumaEjecutadaActividad" disabled style="text-align:right; background-color:#E6EAEE;font-weight: bold;" /></th>
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><label>@porcentaje%</label></th>
+                                    </tr>
+                                    secundarias = secundarias + 1;
+                                }
+                            }
+                            else
+                            {
+                                int terciarias = 0;
+                                double sumaEjecutadaActividad = 0;
+                                double totalActividad = 0;
+                                <tr>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        <input name="@string.Format("[{0}].PK_Actividad_Presupuesto", principales)" type="hidden" class="campos-tabla" value="@actividad.PK_Actividad_Presupuesto" />
+
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                        <label>@actividad.DescripcionActividad</label>
+                                        <input name="@string.Format("[{0}].DescripcionActividad", principales)" type="hidden" class="campos-tabla" value="@actividad.DescripcionActividad" />
+                                    </td>
+                                    @foreach (var presupuestoMes in actividad.presupuestosPorMes)
+                                    {
+                                        if (presupuestoMes.Mes == 1)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="enero">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="1" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 2)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="febrero">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="2" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 3)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="marzo">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="3" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 4)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="abril">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="4" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 5)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="mayo">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="5" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 6)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="junio">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="6" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 7)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="julio">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="7" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 8)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="agosto">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="8" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 9)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="septiembre">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="9" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 10)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="octubre">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="10" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 11)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="noviembre">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" class="campos-tabla" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="11" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        if (presupuestoMes.Mes == 12)
+                                        {
+                                            sumaEjecutadaActividad = sumaEjecutadaActividad + presupuestoMes.PresupuestoEjecutadoPorMes;
+                                            totalActividad = totalActividad + presupuestoMes.PresupuestoMes;
+                                            var comentario = presupuestoMes.ComentarioPresupuestoMesEjecutado;
+                                            var estilo = "border-right: 2px solid lightslategray;";
+                                            if (comentario != "" && comentario != null)
+                                            {
+                                                estilo = "border-right:5px solid Green";
+                                            }
+                                            <td name="diciembre">
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PK_Prepuesto_Por_Mes", principales,terciarias)" type="hidden" value="@presupuestoMes.PK_Prepuesto_Por_Mes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Actividad_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Actividad_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].FK_Presupuesto", principales,terciarias)" type="hidden" value="@presupuestoMes.FK_Presupuesto" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoMes", principales,terciarias)" type="hidden" value="@presupuestoMes.PresupuestoMes" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].Mes", principales, terciarias)" value="12" type="hidden" />
+                                                <input name="@string.Format("[{0}].presupuestosPorMes[{1}].ComentarioPresupuestoMesEjecutado", principales,terciarias)" type='hidden' class='campos-tabla' value="@presupuestoMes.ComentarioPresupuestoMesEjecutado" />
+                                                <div class="input-group add-on">
+                                                    <input name="@string.Format("[{0}].presupuestosPorMes[{1}].PresupuestoEjecutadoPorMes", principales,terciarias)" type="decimal" class="campos-tabla" onchange="sumarPresupuestoMes(this)" value="@presupuestoMes.PresupuestoEjecutadoPorMes" data-toggle="popover" data-trigger="hover" data-placement="top" title="Presupuesto Planeado" data-content="@presupuestoMes.PresupuestoMes" />
+                                                    @*<input type="text" class="form-control required name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters.">*@
+                                                    <div class="input-group-btn">
+                                                        <button name="botonDeComentario" class="btn btn-default" style="@estilo" title="@presupuestoMes.ComentarioPresupuestoMesEjecutado" data-toggle="modal" data-target="#@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)"><i class="glyphicon glyphicon-edit"></i></button>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="@string.Format("modalComentario{0}", presupuestoMes.PK_Prepuesto_Por_Mes)" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                    <div class="modal-dialog modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                                                                <h4 class="modal-title">Comentarios</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <textarea rows="3" cols="70">@presupuestoMes.ComentarioPresupuestoMesEjecutado</textarea>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botonactive" onclick="ocultarComentario(this)" data-dismiss="modal">
+                                                                            Guardar
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="col-xs-6">
+                                                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        }
+                                        terciarias++;
+                                    }
+                                    @{
+                                        double porcentaje = Math.Round(sumaEjecutadaActividad / totalActividad * 100, 2);
+                                    }
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><input type="text" class="campos-tabla" name="total" value="@sumaEjecutadaActividad" disabled style="background-color:#E6EAEE; text-align: right;font-weight: bold;" /></td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"><label>@porcentaje%</label></td>
+                                </tr>
+                            }
+                            principales = principales + 1;
+                        }
+                        <input type="hidden" id="principales" value="@principales" />
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle"> </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:right; font-weight:bold">VALOR TOTAL MES EJECUTADO</td>
+                        <td >
+                            <input type="text" class="campos-tabla" id="sumaEnero" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaFebrero" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaMarzo" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaAbril" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaMayo" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaJunio" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaJulio" disabled style="text-align: right" />
+                        </td>
+                        <td >
+                            <input type="text" class="campos-tabla" id="sumaAgosto" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaSeptiembre" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaOctubre" disabled style="text-align: right" />
+                        </td>
+                        <td>
+                            <input type="text" class="campos-tabla" id="sumaNoviembre" disabled style="text-align: right" />
+                        </td>
+                        <td >
+                            <input type="text" class="campos-tabla" id="sumaDiciembre" disabled style="text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <input type="text" class="campos-tabla" id="sumaTotal" disabled style="background-color:#E6EAEE; text-align: right" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center"></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div>
+                <div class="col-md-10 col-md-offset-3" style="margin-bottom:15px">
+                    <div class="row">
+                        <div class="col-md-4">
+                            @*<input type="submit" class="campos-tabla btn btn-warning btn-md tbr" id="guardarActividad" value="Guardar" onclick="EditarPresupuesto()" />*@
+                            <button type="submit" class="boton botonactive" id="guardarActividadt" onclick="EditarPresupuesto()">Guardar</button>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.ActionLink("Cancelar", "BuscarPresupuestos", new { }, htmlAttributes: new { @type = "button", @class = "boton botoncancel" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+
+    <script>
+        $(document).ready(function () {
+            $("#actividades").find("input[name*='PresupuestoEjecutadoPorMes']").each(function (index, elemento) {
+                var numergo = parseFloat($(elemento).attr("data-content"));
+                $(elemento).attr("data-content", darFormato(numergo.toFixed(2)));
+                $(elemento).popover();
+            });           
+            $('#TablaPresupuesto').find("input[type=decimal]").on({
+                "focus": function (event) {
+                    $(event.target).select();
+                },
+                "keyup": function (event) {
+                    $(event.target).val(function (index, value) {
+                        valor = value.replace(/\D/g, "")
+                                    .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        stringValor = "$".concat(valor)
+                        return stringValor;
+                    });
+                }
+            });
+            $("#RubroTotal").on({
+                "focus": function (event) {
+                    $(event.target).select();
+                },
+                "keyup": function (event) {
+                    $(event.target).val(function (index, value) {
+                        valor = value.replace(/\D/g, "")
+                                    .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        stringValor = "$".concat(valor)
+                        return stringValor;
+                    });
+                }
+            });
+            sumarPresupuestoMes();
+            //  $('#RubroTotal').val(darFormato($('#RubroTotal').val()));
+            $('#TablaPresupuesto').find("input[type=decimal]").each(function (ind, element) {
+                var numero = parseFloat($(element).val())
+                $(element).val(darFormato(numero.toFixed(2)));
+            });
+
+            $('#TablaPresupuesto').find("input[name=total]").each(function (ind, element) {
+                var numero = parseFloat($(element).val())
+                $(element).val(darFormato(numero.toFixed(2)));
+            });
+
+        });
+
+        //function titlePresupuestoPlaneado(elemento)
+        //{
+        //    $(elemento).popover();
+        //}
+
+    </script>
+}

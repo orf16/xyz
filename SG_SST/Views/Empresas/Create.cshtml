@@ -1,0 +1,223 @@
+﻿@model SG_SST.Models.Empresas.Empresa
+
+@{
+    ViewBag.Title = "Datos Generales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+
+
+<script>
+    $(document).ready(function () {
+        ObtenerSiarp($("#nitempresa").val());
+        MostrarLogoCargado($("#nitempresa").val());
+        $('[data-toggle="tooltip"]').tooltip();
+        });
+</script>
+}
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+
+@section OpcionesEmpresa
+{
+    <ol class="breadcrumb">
+        <li class="active"><a href="javascript:void(0);" style="color:#ff7500" title="Datos Generales Empresa">Datos Generales Empresa</a></li>
+        <li><a href="@Url.Action("SedesPorMunicipios", "Sede")" style="color:gray" title="Sedes Empresa">Sedes</a></li>
+        <li><a href="@Url.Action("Index", "Usuarios")" style="color:gray" title="Usuarios Roles SGSST">Roles SGSST</a></li>
+    </ol>
+}
+
+<hr />
+<body>
+   
+    <input type="hidden" id="idEmpresa" value="@ViewBag.idEmpresa" />
+    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Eliminar Logo</h4>
+                </div>
+                <div class="modal-body " style="color:black;text-align:center">
+                    <p>¿Esta seguro que desea eliminar el Logo?</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="boton botonactive" title="Eliminar logo" onclick="EliminarLogo(@ViewBag.idEmpresa)">
+                        Eliminar
+                    </a>
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form method="post" action="@Url.Action("Create")" id="grabarempresa">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white; text-transform:uppercase">INFORMACIÓN EMPRESA</div>
+            <div class="panel-body form-horizontal">
+                <input type="hidden" id="nitempresa" value="@ViewBag.nitEmpresa" />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">NIT:</label>
+                            <div class="col-md-12">
+                                <input type="text" id="cc" name="Tipo_Documento" class="form-control" value="@ViewBag.nitEmpresa" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">Razón Social Empresa:</label>
+                            <div class="col-md-12">
+                                <input id="razonsocial" name="Razon_Social" class="form-control" rows="4" style="resize:none; overflow-y:scroll" disabled type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">Dirección Sede Principal:</label>
+                            <div class="col-md-12">
+                                <input id="direccion" name="Direccion" class="form-control" rows="4" style="resize:none" disabled type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-8">Departamento:</label>
+                            <div class="col-md-12">
+                                <input type="text" id="departamento" name="departamento" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-8">Municipio:</label>
+                            <div class="col-md-12">
+                                <input type="text" id="municipio" name="municipio" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">Dirección WEB:</label>
+                            <div class="col-md-12">
+                                <input type="url" id="www" name="Sitio_Web" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-5">Email:</label>
+                            <div class="col-md-12">
+                                <input type="text" id="email" name="Email" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-5">Teléfono:</label>
+                            <div class="col-md-12">
+                                <input type="text" id="telefono" name="Telefono" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-5">Fax:</label>
+                            <div class="col-md-12">
+                                <input type="text" name="Fax" id="fax" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group has-feedback">
+                            <label class="col-md-6">Fecha Afiliación:</label>
+                            <div class="col-md-12">
+                                <i class="glyphicon glyphicon-calendar form-control-feedback"></i>
+                                <input type="text" id="fecha" name="Fecha_Vigencia_Actual" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-5">Riesgo:</label>
+                            <div class="col-md-12">
+                                <input type="number" id="riesgo" name="Riesgo" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label class="col-md-5"></label>
+                            <div class="col-md-12">
+                                @Html.ActionLink("Trabajadores", "Relaciones", new { @class = "btn btn-link", @target = "_blank", @Onclick = "relacioneslaborales()" })
+                                <input type="number" id="totalemp" name="Total_Empleados" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label class="col-md-5">Estado:</label>
+                            <div class="col-md-12">
+                                <input type="text" id="estado" name="Flg_Estado" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-5">Código Actividad:</label>
+                            <div class="col-md-12">
+                                <input type="number" id="codactividad" name="Codigo_Actividad" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="idEmpresa" value="@ViewBag.nitempresa" />  
+                @*<input type="hidden" id="idEmpresa" value="@ViewBag.idEmpresa" />*@          
+                <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label class="col-md-8" for="File1">Logo Empresa:</label>
+                                <div class="col-md-12">
+                                    <div class="input-group" id="cargue">
+                                        <input type="file" name="archivo" class="form-control" id="archivo" onchange="ValidarTamañoDocumento()" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-positiva-invert" id="btn-add-file-edit" type="button" onclick="AdjuntarArchivo()">Cargar Logo</button>
+                                        </span>
+                                    </div>
+                                    <br />
+                                    <div class="img-responsive col-md-offset-0" id="logocargado">
+                                        <center><a href="#" data-toggle="modal" data-target="#@string.Format("modalAyuda")"><img id="imagen" title="Click para realizar acciones sobre el Logo."/></a></center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+              
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <label class="col-md-5">Actividad Económica Principal:</label>
+                            <div class="col-md-12">
+                                <textarea id="actecon" name="Descripcion_Actividad" class="form-control" rows="6" cols="45" style="resize:none; text-align:justify" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>

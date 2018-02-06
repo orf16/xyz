@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Estandares";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-yellow">
+    <div class="panel-heading"><p class="text-center">ESTANDARES</p></div>
+    <div class="panel-body">
+
+        <div class="col-lg-8">
+            <div class="form-group">
+                <div class="col-md-offset-8 col-md-10">
+
+                    <div id="divTexto"></div>
+
+                    <input id="btnEnviar" type="submit" value="Guardar" class="btn btn-primary form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+
+        var urlBase = "";
+        urlBase = utils.getBaseUrl();
+
+        $(document).ready(function () {
+
+            function inicializar() {
+                console.log("inicializando");
+
+                $.ajax({
+                    url: urlBase + '/Login/Empresas/EstandaresGetTexto',
+                    data: {},
+                    type: 'POST',
+                    success: function (result) {
+                        
+                        if(result.success){
+                            $("#divTexto").html(result.texto);
+                        } else {
+                            utils.showMessage("Se ha presentado un error consultando el texto.", "error", "#divMensajes", "top");
+                        }
+                    }
+                });
+            }
+
+            function consultar(fx) {
+                console.log("consultando");
+
+                $.ajax({
+                    url: urlBase + '/Login/Empresas/EstandaresGetTexto',
+                    data: {},
+                    type: 'POST',
+                    success: function (result) {
+
+                        if (fx) {
+                            fx(result.success, result);
+                        }
+                    }
+                });
+            }
+
+            inicializar();
+
+            $("#btnEnviar").on("click", function () {
+
+                utils.showLoading();
+                consultar(function (success, obj) {
+                    utils.closeLoading();
+
+                    if (success) {
+                        $("#divTexto").html(obj.texto);
+                        utils.showMessage("Texto consultado correctamente.", "success", "#divMensajes", "top");
+                    } else {
+                        utils.showMessage("Se ha presentado un error consultando el texto.", "error", "#divMensajes", "top");
+                    }
+                });
+                
+            });
+
+        });
+    </script>
+}
+
+
+

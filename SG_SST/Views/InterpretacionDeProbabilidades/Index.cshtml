@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SG_SST.Models.Planificacion.InterpretacionDeProbabilidad>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Interpretación De Probabilidades</h2>
+
+<p>
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+            htmlAttributes: new { @type = "button", @class = "btn btn-success btn-xs" })
+</p>
+<table class="table table-condensed table-responsive table-hover table-bordered">
+    <tr class="titulos_tabla">
+        <th>          
+            Nivel Inferior
+        </th>
+        <th>        
+            Nivel Superior
+        </th>
+        <th>
+            Interpretación
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nivel_Inferior)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nivel_Superior)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Interpretacion)
+            </td>
+            <td>
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.PK_Interpretacion_De_Probabilidad }
+             , htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" }) 
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "Delete", new { id = item.PK_Interpretacion_De_Probabilidad }
+             , htmlAttributes: new { @type = "button", @class = "btn btn-danger btn-xs jh" })
+            </td>
+        </tr>
+    }
+
+</table>

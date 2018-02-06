@@ -1,0 +1,240 @@
+﻿@model SG_SST.Models.Presupuesto
+
+@{
+    ViewBag.Title = "Crear Presupuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+@if (ViewBag.respuestaGuardado == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Presupuesto grabado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+
+@if (ViewBag.respuestaGuardado == false)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'No fue posible grabar el presupuesto',
+        'error'
+        )
+    </script>
+}   
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css"> 
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Presupuesto</a></li>
+    <li class="active">Crear Presupuesto</li>
+</ol>
+
+<form method="post" id="Presupuesto">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">CREAR PRESUPUESTO</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Crear Presupuesto</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                               
+                                <div style="text-align:justify">
+                                    Recuerde que el artículo 2.2.4.6.8 Obligaciones de los empleadores en su numeral 8, obliga a definir y asignar los recursos financieros, técnicos y el personal necesario para el diseño, implementación, revisión evaluación y mejora de las medidas de prevención y control, para la gestión eficaz de los peligros y riesgos en el lugar de trabajo y también, para que los responsables de la seguridad y salud en el trabajo en la empresa, el Comité Paritario o Vigía de Seguridad y Salud en el Trabajo según corresponda, puedan cumplir de manera satisfactoria con sus funciones.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    El presupuesto lo puede crear por sede y periodo respectivamente, para lo cual debe digitar el rubro total y seguidamente la opción <button class="boton botoninfo" disabled>Generar</button>
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button class="boton botoninfo" disabled>Agregar Actividad</button> Permite adicionar actividades dentro del presupuesto
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button class="boton botoninfo" disabled>Agrupar</button> Funcionalidad que facilita agrupa distintas actividades
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button class="boton botonactive" disabled>Guardar</button> Opción que guarda la información registrada
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button class="boton botoncancel" disabled>Cancelar</button> Opción que elimina la información no guardada
+                                </div>
+                                <br />
+                                <br />
+                                <div style="text-align:justify">
+                                    Utilizando los filtros de Sede y Período el sistema le muestra los distintos prepuestos creados previamente.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> Opción que permite al usuario modificar el presupuesto creado
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> Opción que permite al usuario eliminar el presupuesto creado
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <i class="glyphicon glyphicon-play" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> Opción que permite al usuario registrar la ejecución del presupuesto creado
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <i class="glyphicon glyphicon-edit" style="color: #FF7500"></i> Opción para insertar comentario en la ejecución de una actividad dentro del presupuesto
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    Recuerde que al acercar el cursor del mouse el sistema le muestra el valor planeado.
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+
+                    <div class="col-xs-4">
+                        <h5><b>Rubro total:</b></h5>
+                        <input name="RubroTotal" id="RubroTotal" class="form-control" />
+                    </div>
+
+                    <div class="col-xs-5">
+                        <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                        @Html.DropDownList("FK_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Sede --")
+                    </div>
+
+                    <div class="col-xs-3">
+                        <h5><b>Período:</b></h5>
+                        @Html.DropDownList("Periodo", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    @*@Html.ActionLink(SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar, "GenerarPresupuesto", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })*@
+                    @*<input id="btnGenerarMetodología" type="button" class="boton botoninfo" value="@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar" onclick="validarCamposPresupuesto()" />*@
+                    <button id="btnGenerarMetodología" type="button" class="boton botoninfo" onclick="validarCamposPresupuesto()">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="TablaPresupuesto">
+
+    </div>
+
+</form>
+
+<div id="ModalAgrupar" class="modal fade" role="dialog" name="modal">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    @*<span aria-hidden="true">&times;</span>*@
+                </button>
+                <h4 class="modal-title title">Agrupar Actividades</h4>
+            </div>
+            <div class="modal-body " style="color:black">
+                <center><p>Se debe seleccionar actividades para agrupar</p></center>
+            </div>
+            <div class="modal-footer">               
+                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                @*<div class="row">
+                    <div class="col-md-2 col-md-offset-5">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalGuardar" class="modal fade" role="dialog" name="modal">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    @*<span aria-hidden="true">&times;</span>*@
+                </button>
+                <h4 class="modal-title title">Guardar Actividades</h4>
+            </div>
+            <div class="modal-body " style="color:black">
+                <center><p>La cantidad total de las actividades NO debe sobrepasar la cantidad del rubro</p></center>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                @*<div class="row">
+                    <div class="col-md-2 col-md-offset-5">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>     
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+
+   <script>
+    $(document).ready(function () {
+        $("#FK_Sede").val("");
+      //  $("#Periodo").val("");
+        $("#RubroTotal").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value) {
+                    valor = value.replace(/\D/g, "")
+                                .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                    stringValor = "$".concat(valor)
+                    return stringValor;
+                });
+            }
+        });
+    });
+
+    </script>
+
+}

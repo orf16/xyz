@@ -1,0 +1,33 @@
+﻿@model SG_SST.Models.Ausentismo.AfiliadoModel
+@{
+    ViewBag.Title = "Ausencias Trabajador";
+}
+<div class="main">
+    <div class="page-header">
+        <ol class="breadcrumb">
+            <li><a href="javascript:void(0)">Planificación</a></li>
+            <li><a href="javascript:void(0)">Ausentismo laboral</a></li>
+            <li class="active">Registrar ausentismo</li>
+        </ol>
+    </div>
+    <div class="">
+        <p>Por favor ingrese el número de documento del trabajador sin puntos ni espacios</p>
+        <form id="frmEmpleado" class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-user"></span>
+                    </div>
+                    @Html.TextBoxFor(x => x.Documento, new { @class = "form-control", @placeholder = "Nro. Doc. Trabajador", required = "required" })
+                </div>
+            </div>    
+            <div class="form-group">
+                <a href="javascript:void(0)" id="ConsultarAfiliado" class="boton botonactive">Consultar</a>
+            </div>
+            <section id="datosTrabajador"></section>
+            
+        </form>
+        <section id="datosAusentismo"></section>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/Ausencias/GetDatosAfiliado.js")

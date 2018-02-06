@@ -1,0 +1,34 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.PresupuestoPorAnio>
+
+<div class="table-responsive" style="overflow-x:scroll">
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                @Html.DisplayNameFor(model => model.Sede.Nombre_Sede)
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase">
+                @Html.DisplayNameFor(model => model.Periodo)
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Sede.Nombre_Sede)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Periodo)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @Html.ActionLink("Eliminar", "EliminarPresupuesto", new { PK_PresupuestoPorAnio = item.PK_Presupuesto_Por_Año, PK_Presupuesto = item.Presupuesto.PK_Prepuesto })
+
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

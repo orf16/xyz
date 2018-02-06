@@ -1,0 +1,142 @@
+﻿@model SG_SST.Models.Empresas.Usuario
+
+@{
+    ViewBag.Title = "Registro de Usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Datos generales de la empresa</a></li>
+    <li class="active">Registro de Usuario</li>
+</ol>
+
+@using (Html.BeginForm("Create", "Usuarios", FormMethod.Post, new { enctype = "multipart/form-data", @id="grabarusuario" }))
+{
+  
+    @Html.AntiForgeryToken()
+
+    @*<div class="container">
+        <div class="col-md-12 col-md-offset-0">*@
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:white">INFORMACIÓN USUARIO</div>
+
+                @*Boton ayuda*@
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                            title="Ayuda" class="btn btn-ayuda btn-md">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>
+                        <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Ayuda/Crear Usuario Rol SGSST</h4>
+                                    </div>
+                                    <div class="modal-body " style="color:black">
+                                        <ul>
+                                            <li><p style="text-align:justify">Seleccione un tipo de documento de la lista. <select class="form-control"><option>--Seleccione Tipo Documento--</option></select></p></li>
+                                            <li><p style="text-align:justify">Digite número de cedula.<input type="text" placeholder="Digita Cedula"  class="form-control"/></p></li>
+                                            <li><p style="text-align:justify">Nombre Usuario es Obtenido Automaticamente</p></li>
+                                            <li><p style="text-align:justify">Seleccione un Perfil de Usuario Rol SGSST de la lista. <select class="form-control"><option>--Seleccione Perfil Usuario--</option></select></p></li>
+                                            <li><p style="text-align:justify">Adjunte la Firma digital del usuario.<input type="file"  class="form-control" /></p></li>
+                                            <li><p style="text-align:justify"><button type="submit" class="boton botonactive">Guardar Registro</button> Click Para almacenar en el sistema el nuevo usuario.</li>
+                                            <li><p style="text-align:justify"><button type="submit" class="boton botoninfo">Listado Usuarios</button> Click Para regresar al listado de usuarios registrados.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })              
+                    <div class="row">                    
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Tipo Documento:</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Fk_Tipo_Documento", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Tipo --")
+                                    @Html.ValidationMessageFor(model => model.Fk_Tipo_Documento, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Número Identificación:</label>
+                                <div class="col-md-12">
+                                    <input type="number" name="Numero_Documento" id="Numero_Documento" class=" form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-8">Nombre Usuario:</label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.Nombre_Usuario, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#ddd" } })
+                                    @Html.ValidationMessageFor(model => model.Nombre_Usuario, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Perfil Usuario:</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Fk_Id_Rol", null, htmlAttributes: new { @class = "form-control" }, @optionLabel: "-- Seleccionar Perfil --")
+                                    @Html.ValidationMessageFor(model => model.UsuarioRoles.FirstOrDefault().Fk_Id_Rol, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <label class="col-md-8">Firma Digital:</label>
+                                <div class="col-md-12">
+                                    <input type="file" value="Cargar Firma" name="Firma" class="form-control btn btn-default btn btn-sm" style="background-color:transparent; color:black" />
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-8">Firma Digital:</label>
+                                <div class="col-md-12">
+                                    <input type="file" value="Cargar Firma" name="Firma" class="form-control btn btn-default btn btn-md" style="background-color:transparent; width:310px; color:black" />
+                                </div>
+                            </div>
+                        </div>*@       
+                    </div>
+                    <div class="panel-footer" align="center">
+                        <button type="submit" class="boton botonactive" onclick="ValidarCrearUsuario()">Guardar Registro</button>
+                    </div>
+                </div>
+            </div> 
+    <div>
+        <a href="@Url.Action("index","Usuarios") " class="boton botoninfo" style="text-decoration:none">
+            Listado Usuarios
+        </a>
+    </div>
+}

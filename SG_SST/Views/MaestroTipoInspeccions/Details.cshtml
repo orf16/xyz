@@ -1,0 +1,26 @@
+﻿@model SG_SST.Models.Inspecciones.MaestroTipoInspeccion
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MaestroTipoInspeccion</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Tipo_Inspeccion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Tipo_Inspeccion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Pk_Id_Maestro_Tipo_Inspeccion }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<SG_SST.Models.Empleado.tblEmpleado>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-0">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><p class="text-center"></p>CONSULTA DE TRABAJADORES</div>
+
+            <p>
+                @Html.ActionLink("Consultar", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado_Empleado.EstEmplead)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TipoCotizante.Descripcion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TipoDocumento.Descripcion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PK_Numero_Documento_Empl)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Primer_Nombre_Empl)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Segundo_Nombre_Empl)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Primer_Apellido_Empl)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Segundo_Apellido_Empl)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado_Empleado.EstEmplead)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoCotizante.Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoDocumento.Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PK_Numero_Documento_Empl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Primer_Nombre_Empl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Segundo_Nombre_Empl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Primer_Apellido_Empl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Segundo_Apellido_Empl)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID_Empleado }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID_Empleado }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID_Empleado })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

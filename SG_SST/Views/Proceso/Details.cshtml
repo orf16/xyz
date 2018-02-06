@@ -1,0 +1,43 @@
+﻿@model SG_SST.Models.Empresas.Proceso
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Proceso</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Procesos.Descripcion_Proceso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Procesos.Descripcion_Proceso)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Proceso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Proceso)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.imagen_proceso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.imagen_proceso)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Pk_Id_Proceso }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,89 @@
+﻿@model SG_SST.Models.Empleado.tblEmpleado
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-0">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><p class="text-center">CONSULTA DE TRABAJADORES - DETALLES</p></div>
+
+            <div>
+
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Estado_Empleado.EstEmplead)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Estado_Empleado.EstEmplead)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoCotizante.Descripcion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoCotizante.Descripcion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoDocumento.Descripcion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoDocumento.Descripcion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PK_Numero_Documento_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PK_Numero_Documento_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Primer_Nombre_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Primer_Nombre_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Segundo_Nombre_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Segundo_Nombre_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Primer_Apellido_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Primer_Apellido_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Segundo_Apellido_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Segundo_Apellido_Empl)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Editar", "Edit", new { id = Model.ID_Empleado }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
+    </div>
+</div>

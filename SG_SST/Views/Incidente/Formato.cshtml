@@ -1,0 +1,537 @@
+﻿@model SG_SST.Models.ReporteIncidente.IncidenteModel
+@{
+    ViewBag.Title = "Reporte de Incidente";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Incidente</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="shortcut icon" href="http://test-positiva.adacsc.co/Images/IcoAlissta.ico">
+    <link rel="stylesheet" href="http://test-positiva.adacsc.co/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="http://test-positiva.adacsc.co/Content/css/estilos_positiva.css">
+    @*<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+        <link rel="stylesheet" href="~/Content/css/estilos_positiva.css">*@
+    <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
+    <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+    @Scripts.Render("~/Scripts/Incidente/ReporteIncidente.js")
+</head>
+<body>
+    <div class="container name_for">
+        <div class="col-xs-12 col-xs-12 col-xs-12 ">
+            <div class="col-xs-12 col-xs-12 col-xs-4 logo">
+                @*<img data-ytimg="1" src="~/Images/positiva-logo.png" />*@
+                <img data-ytimg="1" src="http://test-positiva.adacsc.co/Images/positiva-logo.png" />
+                <h2>NIT 860.011.153-6</h2>
+                <p>ADMINISTRADORA DE RIESGOS PROFESIONALES</p>
+                <p>www.positiva.gov.co</p>
+            </div>
+            <div class="col-xs-12 col-xs-12 col-xs-7 titulo" style="padding-left:50px">
+                <br />
+                <h2>Formato de Informe de Incidente de trabajo</h2>
+                <p style="font-size: 0.9em">El informe de incidente de trabajo debe ser diligenciado en su totalidad por parte del trabajador que presentó el evento. Este documento NO debe ser radicado ante la Administradora de Riesgos Laborales.</p>
+            </div>
+            @*<div class="col-xs-12 col-xs-12 col-xs-3 nit">
+                    <h2>No. <strong>149001</strong></h2>
+                </div>*@
+        </div>
+        <div class="col-xs-12 col-xs-12 col-xs-12 ">
+        </div>
+    </div>
+    <br />
+    <div class="container formulario">
+        <div class="row">
+            <div class="col-xs-12 col-xs-12 col-xs-12 seccion01-A">
+                <h2 class="col-xs-12 col-xs-12 col-xs-12 sectores">I. Identificación general de empleador, contratante o cooperativa</h2>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                        <h2>Nombre de la actividad económica (Sede principal)</h2>
+                        @Html.TextBoxFor(x => x.ActividadEconomica)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-2 seccion02">
+                        <h2>Código</h2>
+                        @Html.TextBoxFor(x => x.CodActividadEconomica)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                        <h2>Nombre o razón social</h2>
+                        @Html.TextBoxFor(x => x.RazonSocial)
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                        <h2>Tipo de identificación</h2>
+                        @foreach (var item in Model.TiposDeDocumento.Where(t => !t.Text.Contains("TI")))
+                        {
+                        <div class="check01">
+                            @Html.RadioButtonFor(x => Model.IdTipoDocumentoEmpresa, @item.Value, new { @class = "TipoDocumentoEmpresa" }) @item.Text
+                        </div>
+                        }
+                        @Html.HiddenFor(x => x.TipoDocumentoEmpresa, new { @id = "TipoDocumentoEmpresa" })
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-2 seccion02">
+                        <h2>No.</h2>
+                        @Html.TextBoxFor(x => x.NitEmpresa)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                        <h2>Dirección</h2>
+                        @Html.TextBoxFor(x => x.DireccionEmpresa)
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                        <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                            <h2>Teléfono</h2>
+                            @Html.TextBoxFor(x => x.TelefonoEmpresa)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-9 seccion02">
+                            <h2>Correo electrónico (e-mail)</h2>
+                            @Html.TextBoxFor(x => x.CorreoElectronico)
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                        <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                            <h2>Departamento</h2>
+                            @Html.TextBoxFor(x => x.DepartamentoEmp)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                            <h2>Municipio</h2>
+                            @Html.TextBoxFor(x => x.MunicipioEmp)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-2 seccion02" style="text-align:right">
+                            <h2>Zona</h2>
+                            @foreach (var item in Model.Zonas)
+                            {
+                                if (item.Text.Equals('U'))
+                                {
+                            <div class="check01">
+                                @Html.RadioButtonFor(x => Model.IdZonaEmpresa, @item.Value, new { @class = "ZonasEmpresa" }) @item.Text
+                            </div>
+                                }
+                                else
+                                {
+                            <div class="check01" style="margin-left:-28px;">
+                                @Html.RadioButtonFor(x => Model.IdZonaEmpresa, @item.Value, new { @class = "ZonasEmpresa" }) @item.Text
+                            </div>
+                                }
+                            }
+                            @Html.HiddenFor(x => x.ZonaEmpresa, new { @id = "ZonaEmpresa" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                        <h2>Sede de trabajo donde labora el trabajador</h2>
+                        <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                            <p class="text-in">¿Son los datos del centro de trabajo los mismos de la sede principal?</p>
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-2 seccion02">
+                            <div class="check01">
+                                <label>
+                                    @Html.RadioButtonFor(x => Model.EsSedePrincipal, "True", new { @class = "sedePrincipal" }) SI
+                                </label>
+                            </div>
+                            <div class="check01">
+                                <label>
+                                    @Html.RadioButtonFor(x => Model.EsSedePrincipal, "False", new { @class = "sedePrincipal" }) NO
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                            <p class="text-in">Sólo en caso negativo diligenciar las siguientes casillas sobre la sede:</p>
+                        </div>
+                    </div>
+                </div>
+                @if (!Model.EsSedePrincipal)
+                {
+                    <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                        <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                            <h2>Sede</h2>
+                            @Html.TextBoxFor(x => x.NombreSede)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                            <h2>Dirección</h2>
+                            @Html.TextBoxFor(x => x.DireccionSede)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                            <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                <h2>Teléfono</h2>
+                                @Html.TextBoxFor(x => x.TelefonoSede)
+                            </div>
+                            <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                                <h2>Departamento</h2>
+                                @Html.TextBoxFor(x => x.DepartamentoSede)
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                            <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                                <h2>Municipio</h2>
+                                @Html.TextBoxFor(x => x.MunicipioSede)
+                            </div>
+                            <div class="col-xs-12 col-xs-12 col-xs-4 seccion02" style="text-align:right">
+                                <h2>Zona</h2>
+                                @foreach (var item in Model.Zonas)
+                                {
+                                    if (item.Text.Equals('U'))
+                                    {
+                                <div class="check01">
+                                    @Html.RadioButtonFor(x => Model.IdZonaSede, @item.Value, new { @class = "ZonasSede" }) @item.Text
+                                </div>
+                                    }
+                                    else
+                                    {
+                                <div class="check01" style="margin-left:-28px;">
+                                    @Html.RadioButtonFor(x => Model.IdZonaSede, @item.Value, new { @class = "ZonasSede" }) @item.Text
+                                </div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                        <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                            <h2>Sede</h2>
+                            @Html.TextBoxFor(x => x.NombreSede)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                            <h2>Dirección</h2>
+                            @Html.TextBoxFor(x => x.DireccionSede)
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                        <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                            <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                                <h2>Teléfono</h2>
+                                @Html.TextBoxFor(x => x.TelefonoSede)
+                            </div>
+                            <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                                <h2>Departamento</h2>
+                                @Html.TextBoxFor(x => x.DepartamentoSede)
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                            <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                                <h2>Municipio</h2>
+                                @Html.TextBoxFor(x => x.MunicipioSede)
+                            </div>
+                            <div class="col-xs-12 col-xs-12 col-xs-4 seccion02" style="text-align:right">
+                                <h2>Zona</h2>
+                                @foreach (var item in Model.Zonas)
+                                {
+                                    if (item.Text.Equals('U'))
+                                    {
+                                <div class="check01">
+                                    @Html.RadioButtonFor(x => Model.IdZonaSede, @item.Value, new { @class = "ZonasSede" }) @item.Text
+                                </div>
+                                    }
+                                    else
+                                    {
+                                <div class="check01" style="margin-left:-28px;">
+                                    @Html.RadioButtonFor(x => Model.IdZonaSede, @item.Value, new { @class = "ZonasSede" }) @item.Text
+                                </div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!-- Seccion03 -->
+
+            <div class="col-xs-12 col-xs-12 col-xs-12 seccion01-A">
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores">
+                    <h2 class="sec01-A" style="width:400px;">II. Información de la Persona que reporta el Incidente</h2>
+                    <div class="sec02-A" style="font-size:x-small">
+                        <h2>Tipo de vinculación laboral</h2>
+                        @foreach (var item in Model.VinculacionLaboral)
+                        {
+                        <div class="check02" style="margin-left:13px;">
+                            @Html.RadioButtonFor(x => Model.IdVinculacionLab, @item.Value, new { @class = "vinculacion" }) @item.Text
+                        </div>
+                        }
+                        @Html.HiddenFor(x => x.VinculacionLab, new { @id = "VinculacionLab" })
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                        <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                            <h2>Tipo de identificación</h2>
+                            @foreach (var item in Model.TiposDeDocumento.Where(t => !t.Text.Contains("NI") && !t.Text.Contains("NU")))
+                            {
+                            <div class="check01">
+                                @Html.RadioButtonFor(x => Model.IdTipoDocumentoEmpleado, @item.Value, new { @class = "TipoDocumentopers" }) @item.Text
+                            </div>
+                            }
+                            @Html.HiddenFor(x => x.TipoDocumentoEmpleado, new { @id = "TipoDocumentoEmpleado" })
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                            <h2>No.</h2>
+                            @Html.TextBoxFor(x => x.DocumentoEmpleado)
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                        <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                            <h2>Primer Apellido</h2>
+                            @Html.TextBoxFor(x => x.PrimerApellido)
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                            <h2>Segundo Apellido</h2>
+                            @Html.TextBoxFor(x => x.SegundoApellido)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                        <h2>Primer Nombre</h2>
+                        @Html.TextBoxFor(x => x.PrimerNombre)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                        <h2>Segundo Nombre</h2>
+                        @Html.TextBoxFor(x => x.SegundNombre)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                        <h2>Fecha de nacimiento</h2>
+                        @Html.TextBoxFor(x => x.FechaNacimiento, new { Value = Model.FechaNacimiento.Year < 1000 ? "" : Model.FechaNacimiento.ToString("dd/MM/yyyy"), placeholder = "dd/mm/yyyy", inputtype = "datepicker" })
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02" style="text-align:center">
+                        <h2>Sexo</h2>
+                        <div class="check01">
+                            @Html.RadioButtonFor(x => Model.Genero, "M", new { @class = "cGenero" }) M
+                        </div>
+                        <div class="check01" style="margin:-20px;">
+                            @Html.RadioButtonFor(x => Model.Genero, "F", new { @class = "cGenero" }) F
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-9 seccion02">
+                        <h2>Dirección</h2>
+                        @Html.TextBoxFor(x => x.DireccionEmpleado)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                        <h2>Teléfono</h2>
+                        @Html.TextBoxFor(x => x.TelefonoEmpleado)
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                        <h2>Departamento</h2>
+                        @Html.TextBoxFor(x => x.DepartamentoEmpleado)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                        <h2>Municipio</h2>
+                        @Html.TextBoxFor(x => x.MunicipioEmpleado)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02" style="text-align:center">
+                        <h2>Zona</h2>
+                        @foreach (var item in Model.Zonas)
+                        {
+                        <div class="check01">
+                            @Html.RadioButtonFor(x => Model.IdZonaEmpleado, @item.Value, new { @class = "ZonaEmpleado" }) @item.Text
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                        <h2>Ocupación habitual</h2>
+                        @Html.TextBoxFor(x => x.Ocupacion)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                        <h2>Fecha de ingreso a la empresa</h2>
+                        @Html.TextBoxFor(x => x.FechaIngreso, new { Value = Model.FechaIngreso.Year < 1000 ? "" : Model.FechaIngreso.ToString("dd/MM/yyyy"), placeholder = "dd/mm/aaaa", inputtype = "datepicker" })
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-12 seccion02" style="text-align:left">
+                        <h2>Jornada de trabajo habitual</h2>
+                        @foreach (var item in Model.Jornadas)
+                        {
+                        <div class="check02" style="margin-left:15px;">
+                            @Html.RadioButtonFor(x => Model.IdJornadaHabitual, @item.Value, new { @class = "JornadaHabitual" }) @item.Text
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- Seccion04 -->
+
+            <div class="col-xs-12 col-xs-12 col-xs-12 seccion01">
+                <h2>III. Información del incidente</h2>
+                <div class="col-xs-12 col-xs-12 col-xs-2 seccion02" style="font-size:small;">
+                    <h2>Fecha del incidente</h2>
+                    @Html.TextBoxFor(x => x.FechaIncidente, new { Value = Model.FechaIncidente.Year < 1000 ? "" : Model.FechaIncidente.ToString("dd/MM/yyyy"), placeholder = "dd/mm/aaaa", inputtype = "datepicker" })
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-3 seccion02" style="font-size:small;">
+                    <h2>Hora del incidente (0-23 HRS)</h2>
+                    @Html.TextBoxFor(x => x._HoraIncidente, new { placeholder = "hh:mm" })
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-5 seccion02" style="text-align:left; font-size:small;">
+                    <h2 class="sem">Día de la semana en el que ocurrió el incidente</h2>
+                    @foreach (var item in Model.DiasSemana)
+                    {
+                        <div class="check02" style="margin-left:13px;">
+                            @Html.RadioButtonFor(x => Model.diaSemanaIncidente, @item.Value, new { @class = "CDiaSemanaIncidente" }) @item.Text
+                        </div>
+                    }
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-2 seccion02" style="font-size:small;">
+                    <h2>Jornada en que sucede:</h2>
+                    <div class="check02">
+                        <label>
+                            @Html.RadioButtonFor(x => Model.EsJornadaNormal, "True", new { @class = "JornadaNormal" }) Normal
+                        </label>
+                    </div>
+                    <div class="check02">
+                        <label>
+                            @Html.RadioButtonFor(x => Model.EsJornadaNormal, "False", new { @class = "JornadaNormal" }) Extra
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 seccion02" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-8 seccion02">
+                        <h2>¿Estaba realizando su labor habitual?</h2>
+                        <div class="check01">
+                            @Html.RadioButtonFor(x => Model.RealizabaLaborHabitual, "True", new { @class = "laborHabitual" }) SI
+                        </div>
+                        <div class="check01">
+                            @Html.RadioButtonFor(x => Model.RealizabaLaborHabitual, "False", new { @class = "laborHabitual" }) NO
+                        </div>
+                        <p class="sem1">¿Cuál? (Diligenciar solo en caso negativo):</p>
+                        @string.Format("{0}", Model.DescripcionLabor, new { @style = "font-size:x-small" })
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                        <h2>Total tiempo laborado previo al incidente</h2>
+                        @Html.TextBoxFor(x => x.Incidente_tiempo_previo_al_incidente_HHMM, new { placeholder = "hh:mm" })
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 seccion02" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                        <h2>Tipo de incidente</h2>
+                        @foreach (var item in Model.TiposIncidente)
+                        {
+                            <div class="check02" style="margin-left:13px;">
+                                @Html.RadioButtonFor(x => Model.IdTipoIncidente, @item.Value, new { @class = "cTipoIncidente" }) @item.Text
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="font-size:small;">
+                    <div class="col-xs-12 col-xs-12 col-xs-5 seccion02">
+                        <h2>Departamento del incidente</h2>
+                        @Html.TextBoxFor(x => x.DepartamentoIncidente)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-4 seccion02">
+                        <h2>Municipio del incidente</h2>
+                        @Html.TextBoxFor(x => x.MunicipioIncidente)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02" style="text-align:center">
+                        <h2>Zona</h2>
+                        @foreach (var item in Model.Zonas)
+                        {
+                            <div class="check01">
+                                @Html.RadioButtonFor(x => Model.IdZonaIncidente, @item.Value, new { @class = "ZonaIncidente" }) @item.Text
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                    @*<div>*@
+                    <div class="col-xs-12 col-xs-12 col-xs-6 seccion02">
+                        <h2>Lugar donde ocurrió el incidente</h2>
+                        <div class="col-xs-12 col-xs-12 col-xs-6">
+                            <div class="check02">
+                                @Html.RadioButtonFor(x => Model.EsDentroEmpresa, "True", new { @class = "dondeOcurrAccidente" }) Dentro de la empresa
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-6">
+                            <div class="check02">
+                                @Html.RadioButtonFor(x => Model.EsDentroEmpresa, "False", new { @class = "dondeOcurrAccidente" }) Fuera de la empresa
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                        <h2>Indique cual sitio</h2>
+                        @Html.TextBoxFor(x => x.SitioIncidente)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-3 seccion02">
+                        <h2>Otro (Especifique)</h2>
+                        @Html.TextBoxFor(x => x.OtroSitio)
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                        <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                            <h2>Posible consecuencia</h2>
+                            @Html.TextBoxFor(x => x.Consecuencia)
+                        </div>
+                    </div>
+                    @*<div class="col-xs-12 col-xs-12 col-xs-12 seccion01">
+                            <h2>IV. Descripcion del Incidente</h2>
+                            <div class="col-xs-12 col-xs-12 col-xs-12 sectores">
+                                <p class="sem4">Describa detalladamente lo ocurrido, al igual lo que originó o causó el incidente laboral. Adicione también información específica del lugar, personas y objetos entre otros. Así mismo incluya sugerencias o recomendaciones relacionadas a la solución del evento.</p>
+                                <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="border-left-style:outset; border-left-color:black; border-left-width:thin; border-right-style:outset; border-right-color:black; border-right-width:thin; border-bottom-style:outset; border-bottom-color:black; border-bottom-width:thin; border-top-style:outset; border-top-color:black; border-top-width:thin; text-align:justify;">
+                                    @string.Format("{0}", Model.DescripcionIncidente)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                            <h2>Fecha de diligenciamiento del incidente:</h2>
+                            @Html.TextBoxFor(x => x.FechaCreacionIncidente, new { Value = Model.FechaCreacionIncidente.Year < 1000 ? "" : Model.FechaCreacionIncidente.ToString("dd/MM/yyyy"), placeholder = "dd/mm/aaaa" })
+                        </div>*@
+                </div>
+            </div>
+            <!-- Fin -->
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="container name_for">
+        <div class="col-xs-12 col-xs-12 col-xs-12 ">
+            <div class="col-xs-12 col-xs-12 col-xs-4 logo">
+                @*<img data-ytimg="1" src="~/Images/positiva-logo.png" />*@
+                <img data-ytimg="1" src="http://test-positiva.adacsc.co/Images/positiva-logo.png" />
+                <h2>NIT 860.011.153-6</h2>
+                <p>ADMINISTRADORA DE RIESGOS PROFESIONALES</p>
+                <p>www.positiva.gov.co</p>
+            </div>
+            <div class="col-xs-12 col-xs-12 col-xs-7 titulo" style="padding-left:50px">
+                <br />
+                <h2>Formato de Informe de Incidente de trabajo</h2>
+                <p style="font-size: 0.9em">El informe de incidente de trabajo debe ser diligenciado en su totalidad por parte del trabajador que presentó el evento. Este documento NO debe ser radicado ante la Administradora de Riesgos Laborales.</p>
+            </div>
+            @*<div class="col-xs-12 col-xs-12 col-xs-3 nit">
+                    <h2>No. <strong>149001</strong></h2>
+                </div>*@
+        </div>
+        <div class="col-xs-12 col-xs-12 col-xs-12 ">
+        </div>
+    </div>
+    <br />
+    <div class="container formulario">
+        <div class="row">
+            <div class="col-xs-12 col-xs-12 col-xs-12 seccion01">
+                <h2>IV. Descripcion del Incidente</h2>
+                <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                    <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="text-align:justify">
+                        <p class="sem4">Describa detalladamente lo ocurrido, al igual lo que originó o causó el incidente laboral. Adicione también información específica del lugar, personas y objetos entre otros. Así mismo incluya sugerencias o recomendaciones relacionadas a la solución del evento.</p>
+                        <div class="col-xs-12 col-xs-12 col-xs-12 sectores" style="border-left-style:outset; border-left-color:black; border-left-width:thin; border-right-style:outset; border-right-color:black; border-right-width:thin; border-bottom-style:outset; border-bottom-color:black; border-bottom-width:thin; border-top-style:outset; border-top-color:black; border-top-width:thin; text-align:justify;">
+                            @string.Format("{0}", Model.DescripcionIncidente)
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-xs-12 col-xs-12 seccion02">
+                        <h2>Fecha de diligenciamiento del incidente:</h2>
+                        @Html.TextBoxFor(x => x.FechaCreacionIncidente, new { Value = Model.FechaCreacionIncidente.Year < 1000 ? "" : Model.FechaCreacionIncidente.ToString("dd/MM/yyyy"), placeholder = "dd/mm/aaaa" })
+                    </div>
+                </div>
+            </div>
+            <!-- Fin -->
+        </div>
+    </div>
+</body>
+</html>

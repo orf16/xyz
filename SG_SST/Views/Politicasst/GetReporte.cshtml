@@ -1,0 +1,47 @@
+﻿
+
+@model SG_SST.Models.Politica.PoliticaModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<div class="modal fade" id="modpolitica" role="dialog">
+
+
+    <div class="modal content" role="document">
+
+            <div class="row">
+                <div class="modal body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr></tr>
+                            <tr>
+                                <td>
+                                  
+
+                                    @Html.Raw(Model.DescripcionPolitica)@*descripcion de politica*@                                    
+
+                                    @if (Model.MostrarFirma == true)
+                                    {
+                                     <img src="@Model.FirmaFullPath" class="img-responsive img-rounded" />
+
+                //no esta llegando sesion las variables a getimagenreplegal
+                                    }
+                                  
+                                </td>
+                            </tr>
+
+                        </thead>
+
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+</div>
+

@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D9F2CEB3-2AA8-4934-9AA3-4C435A6D6CC3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SG_SST.EntidadesDominio</RootNamespace>
+    <AssemblyName>SG-SST.EntidadesDominio</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\..\Branches\0.3\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aplicacion\EDAdmoEMH.cs" />
+    <Compile Include="Aplicacion\EDAplicacionPlanTrabajo.cs" />
+    <Compile Include="Aplicacion\EDAplicacionPlanTrabajoActividad.cs" />
+    <Compile Include="Aplicacion\EDAplicacionPlanTrabajoDetalle.cs" />
+    <Compile Include="Aplicacion\EDAplicacionPlanTrabajoProgramacion.cs" />
+    <Compile Include="Aplicacion\EDAsistente.cs" />
+    <Compile Include="Aplicacion\EDBateria.cs" />
+    <Compile Include="Aplicacion\EDBateriaCuestionario.cs" />
+    <Compile Include="Aplicacion\EDBateriaDimension.cs" />
+    <Compile Include="Aplicacion\EDBateriaDominio.cs" />
+    <Compile Include="Aplicacion\EDBateriaGestion.cs" />
+    <Compile Include="Aplicacion\EDBateriaInicial.cs" />
+    <Compile Include="Aplicacion\EDBateriaResultado.cs" />
+    <Compile Include="Aplicacion\EDBateriaUsuario.cs" />
+    <Compile Include="Aplicacion\EDBusqueTipoPeligro.cs" />
+    <Compile Include="Aplicacion\EDCalificacionInt.cs" />
+    <Compile Include="Aplicacion\EDCondicionInsegura.cs" />
+    <Compile Include="Aplicacion\EDCondicionporInspeccion.cs" />
+    <Compile Include="Aplicacion\EDConfiguracion.cs" />
+    <Compile Include="Aplicacion\EDCriteriosSST.cs" />
+    <Compile Include="Aplicacion\EDCuestionarioA.cs" />
+    <Compile Include="Aplicacion\EDEHMInspecciones.cs" />
+    <Compile Include="Aplicacion\EDEPP.cs" />
+    <Compile Include="Aplicacion\EDEPPCargo.cs" />
+    <Compile Include="Aplicacion\EDEPPSuministro.cs" />
+    <Compile Include="Aplicacion\EDEPPSuministroEPP.cs" />
+    <Compile Include="Aplicacion\EDGestionDelCambio.cs" />
+    <Compile Include="Aplicacion\EDGestiondelcambioVista.cs" />
+    <Compile Include="Aplicacion\EDInspeccion.cs" />
+    <Compile Include="Aplicacion\EDManualAdquisicion.cs" />
+    <Compile Include="Aplicacion\EDPeligroEMH.cs" />
+    <Compile Include="Aplicacion\EDPlanAccionCorrectiva.cs" />
+    <Compile Include="Aplicacion\EDPlanAccionInspeccion.cs" />
+    <Compile Include="Aplicacion\EDPlanInspeccion.cs" />
+    <Compile Include="Aplicacion\EDPlanTrabajoMeses.cs" />
+    <Compile Include="Aplicacion\EDPlanVial.cs" />
+    <Compile Include="Aplicacion\EDProductoCriterio.cs" />
+    <Compile Include="Aplicacion\EDProductoPorCriterioSSt.cs" />
+    <Compile Include="Aplicacion\EDSegVialDetalle.cs" />
+    <Compile Include="Aplicacion\EDSegVialFormulario.cs" />
+    <Compile Include="Aplicacion\EDSegVialParametro.cs" />
+    <Compile Include="Aplicacion\EDSegVialPilar.cs" />
+    <Compile Include="Aplicacion\EDSegVialResultado.cs" />
+    <Compile Include="Aplicacion\EDProveedorContratista.cs" />
+    <Compile Include="Aplicacion\EDSeleccionYEvaluacion.cs" />
+    <Compile Include="Aplicacion\EDServicioProducto.cs" />
+    <Compile Include="Aplicacion\EDTipoInspeccion.cs" />
+    <Compile Include="Ausentismo\EDCalculoNHA.cs" />
+    <Compile Include="Ausentismo\EDAfiliado.cs" />
+    <Compile Include="Ausentismo\EDAlertas.cs" />
+    <Compile Include="Ausentismo\EDAusencia.cs" />
+    <Compile Include="Ausentismo\EDCargueMasivo.cs" />
+    <Compile Include="Ausentismo\EDConfiguracion.cs" />
+    <Compile Include="Ausentismo\EDContingencia.cs" />
+    <Compile Include="Ausentismo\EDDepartamento.cs" />
+    <Compile Include="Ausentismo\EDDiagnostico.cs" />
+    <Compile Include="Ausentismo\EDDiasLaborables.cs" />
+    <Compile Include="Ausentismo\EDEmpresa.cs" />
+    <Compile Include="Ausentismo\EDIndicadores.cs" />
+    <Compile Include="Ausentismo\EDMunicipio.cs" />
+    <Compile Include="Ausentismo\EDReportes.cs" />
+    <Compile Include="ComunicadosAPP\EDComunicadosAPP.cs" />
+    <Compile Include="ComunicadosAPP\EDEstadosComunicadosAPP.cs" />
+    <Compile Include="ComunicadosAPP\EDUsuarioComunicadosAPP.cs" />
+    <Compile Include="Empleado\EDCargo.cs" />
+    <Compile Include="Empleado\EDEstadoCivil.cs" />
+    <Compile Include="Empleado\EDEstrato.cs" />
+    <Compile Include="Empleado\EDGradoEscolaridad.cs" />
+    <Compile Include="Empleado\EDIngresos.cs" />
+    <Compile Include="Empleado\EDRaza.cs" />
+    <Compile Include="Empleado\EDVinculacionLaboral.cs" />
+    <Compile Include="Empresas\EDCIIU.cs" />
+    <Compile Include="Empresas\EDDepartamento.cs" />
+    <Compile Include="Empresas\EDEmpleadoRelLab.cs" />
+    <Compile Include="Empresas\EDEmpleadoTercero.cs" />
+    <Compile Include="Empresas\EDEmpresas.cs" />
+    <Compile Include="Empresas\EDEmpresaTercero.cs" />
+    <Compile Include="Empresas\EDEmpresa_Usuaria.cs" />
+    <Compile Include="Empresas\EDEmpresa_UsuariaA.cs" />
+    <Compile Include="Empresas\EDIncidente.cs" />
+    <Compile Include="Empresas\EDIncidenteAPP.cs" />
+    <Compile Include="Empresas\EDListEmpleadoRelLab.cs" />
+    <Compile Include="Empresas\EDListEmpleadoTercero.cs" />
+    <Compile Include="Empresas\EDListEmpresa_Usuaria.cs" />
+    <Compile Include="Empresas\EDMunicipio.cs" />
+    <Compile Include="Empresas\EDNotificarInconsistencia.cs" />
+    <Compile Include="Empresas\EDRelacionesLaborales.cs" />
+    <Compile Include="Empresas\EDOcupacion.cs" />
+    <Compile Include="Empresas\EDProceso.cs" />
+    <Compile Include="Empresas\EDRol.cs" />
+    <Compile Include="Empresas\EDSede.cs" />
+    <Compile Include="Empresas\EDSedeMunicipio.cs" />
+    <Compile Include="Empresas\EDIncidenteConsecuencia.cs" />
+    <Compile Include="Empresas\EDTipoDocumento.cs" />
+    <Compile Include="Empresas\EDSitioIncidente.cs" />
+    <Compile Include="Empresas\EDTipoIncidente.cs" />
+    <Compile Include="Empresas\EDTipoJornada.cs" />
+    <Compile Include="Empresas\EDTipos.cs" />
+    <Compile Include="Empresas\EDTiposS.cs" />
+    <Compile Include="Empresas\EDUsuario.cs" />
+    <Compile Include="EnfermedadLaboral\EDEnfermedadLaboral.cs" />
+    <Compile Include="EstudioPuestoTrabajo\EDArchivoEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\EDEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\EDObjetivoAnalisis.cs" />
+    <Compile Include="EstudioPuestoTrabajo\EDSeguimientoEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\EDTipoAnalisisPuestoTrabajo.cs" />
+    <Compile Include="Incidentes\EDIncidentesAT.cs" />
+    <Compile Include="MedicionEvaluacion\EDAccion.cs" />
+    <Compile Include="MedicionEvaluacion\EDActividad.cs" />
+    <Compile Include="MedicionEvaluacion\EDActividadAuditoria.cs" />
+    <Compile Include="MedicionEvaluacion\EDActividadPlanDeAccion.cs" />
+    <Compile Include="MedicionEvaluacion\EDAnalisis.cs" />
+    <Compile Include="MedicionEvaluacion\EDArchivosAcciones.cs" />
+    <Compile Include="MedicionEvaluacion\EDAuditoria.cs" />
+    <Compile Include="MedicionEvaluacion\EDAuditoriaActividad.cs" />
+    <Compile Include="MedicionEvaluacion\EDAuditoriaInforme.cs" />
+    <Compile Include="MedicionEvaluacion\EDAuditoriaPlan.cs" />
+    <Compile Include="MedicionEvaluacion\EDAuditoriaPrograma.cs" />
+    <Compile Include="MedicionEvaluacion\EDAuditoriaVerificacion.cs" />
+    <Compile Include="MedicionEvaluacion\EDHallazgo.cs" />
+    <Compile Include="MedicionEvaluacion\EDModulosPlanAccion.cs" />
+    <Compile Include="MedicionEvaluacion\EDPlanDeAccion.cs" />
+    <Compile Include="MedicionEvaluacion\EDSeguimiento.cs" />
+    <Compile Include="Participacion\EDAccionesActaConvivencia.cs" />
+    <Compile Include="Participacion\EDAccionesActaCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\EDAccionesActaQuejas.cs" />
+    <Compile Include="Participacion\EDActaConvivenciaQuejas.cs" />
+    <Compile Include="Participacion\EDActasConvivencia.cs" />
+    <Compile Include="Participacion\EDActasCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\EDActividadesActosInseguros.cs" />
+    <Compile Include="Participacion\EDBusqueda.cs" />
+    <Compile Include="Participacion\EDCompromisosPendientes.cs" />
+    <Compile Include="Participacion\EDConsultarConsultasSST.cs" />
+    <Compile Include="Participacion\EDConsultaSST.cs" />
+    <Compile Include="Participacion\EDConsultaTrazabilidad.cs" />
+    <Compile Include="Participacion\EDImagenesReportes.cs" />
+    <Compile Include="Participacion\EDIndicadores.cs" />
+    <Compile Include="Participacion\EDMiembrosConvivencia.cs" />
+    <Compile Include="Participacion\EDMiembrosCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\EDParticipantes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\EDParticipantesActaConvivencia.cs" />
+    <Compile Include="Participacion\EDReporte.cs" />
+    <Compile Include="Participacion\EDReporteApp.cs" />
+    <Compile Include="Participacion\EDReporteWS.cs" />
+    <Compile Include="Participacion\EDResponsablesQuejas.cs" />
+    <Compile Include="Participacion\EDSeguimientoActaConvivencia.cs" />
+    <Compile Include="Participacion\EDTemasActasConvivencia.cs" />
+    <Compile Include="Participacion\EDTemasActasCopasst.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Participacion\EDTipoPrincipalActa.cs" />
+    <Compile Include="Participacion\EDTipoPrioridadActa.cs" />
+    <Compile Include="Participacion\EDTipoReporte.cs" />
+    <Compile Include="Planificacion\EDActividadApp.cs" />
+    <Compile Include="Planificacion\EDDetalleValoracionRiesgoApp.cs" />
+    <Compile Include="Participacion\SelectListItem.cs" />
+    <Compile Include="Planificacion\EDFiltrosPeligrosApp.cs" />
+    <Compile Include="Planificacion\EDClasificacionPeligroDx.cs" />
+    <Compile Include="Planificacion\EDDiagnosticoCie10Dx.cs" />
+    <Compile Include="Planificacion\EDObjetivoSST.cs" />
+    <Compile Include="Planificacion\EDCondicionesRiesgoPerfil.cs" />
+    <Compile Include="Planificacion\EDOcupacionPerfil.cs" />
+    <Compile Include="Planificacion\EDActividad.cs" />
+    <Compile Include="Planificacion\EDAspecto.cs" />
+    <Compile Include="Planificacion\EDBusquedaMunicipio.cs" />
+    <Compile Include="Planificacion\EDCarguePerfil.cs" />
+    <Compile Include="Planificacion\EDCiclo.cs" />
+    <Compile Include="Planificacion\EDClasificacionDePeligro.cs" />
+    <Compile Include="Planificacion\EDConsecuencia.cs" />
+    <Compile Include="Planificacion\EDConsecuenciasPorPeligros.cs" />
+    <Compile Include="Planificacion\EDCriterio.cs" />
+    <Compile Include="Planificacion\EDDocDxSalud.cs" />
+    <Compile Include="Planificacion\EDDxSalud.cs" />
+    <Compile Include="Planificacion\EDEmpresaEvaluar.cs" />
+    <Compile Include="Planificacion\EDEstandar.cs" />
+    <Compile Include="Planificacion\EDEvaluacionEstandarMinimo.cs" />
+    <Compile Include="Planificacion\EDEvaluacionStandMinimo.cs" />
+    <Compile Include="Planificacion\EDGTC45.cs" />
+    <Compile Include="Planificacion\EDJustificacion.cs" />
+    <Compile Include="Planificacion\EDMetodologia.cs" />
+    <Compile Include="Planificacion\EDNivelDeDeficiencia.cs" />
+    <Compile Include="Planificacion\EDNivelDeExposicion.cs" />
+    <Compile Include="Planificacion\EDPeligroIdentificadoApp.cs" />
+    <Compile Include="Planificacion\EDPerfilSocioDemografico.cs" />
+    <Compile Include="Planificacion\EDPeligro.cs" />
+    <Compile Include="Planificacion\EDPerfilSocioDemograficoWS.cs" />
+    <Compile Include="Planificacion\EDProbabilidad.cs" />
+    <Compile Include="Planificacion\EDProcesoSede.cs" />
+    <Compile Include="Planificacion\EDPruebasClinicasDx.cs" />
+    <Compile Include="Planificacion\EDPruebasPClinicasDx.cs" />
+    <Compile Include="Planificacion\EDRequisitosLegalesOtros.cs" />
+    <Compile Include="Planificacion\EDSintomatologiaDx.cs" />
+    <Compile Include="Planificacion\EDSubEstandar.cs" />
+    <Compile Include="Planificacion\EDTipoDePeligro.cs" />
+    <Compile Include="Planificacion\EDValoracionDeRiesgosApp.cs" />
+    <Compile Include="Planificacion\EDZonaLugar.cs" />
+    <Compile Include="Planificacion\EDValoracionFinal.cs" />
+    <Compile Include="PlanTrabajoAnual\EDPlanEmpresa.cs" />
+    <Compile Include="Politica\EDPolitica.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Revision\EDActaRevision.cs" />
+    <Compile Include="Revision\EDAdjuntoAgendaRevision.cs" />
+    <Compile Include="Revision\EDAgendaRevision.cs" />
+    <Compile Include="Revision\EDItemRevision.cs" />
+    <Compile Include="Revision\EDParticipanteRevision.cs" />
+    <Compile Include="Revision\EDPlanAccionRevision.cs" />
+    <Compile Include="Usuario\EDCausalRechazoUsuarioSistema.cs" />
+    <Compile Include="Usuario\EDParametroSistema.cs" />
+    <Compile Include="Usuario\EDPreguntaSeguridad.cs" />
+    <Compile Include="Usuario\EDRolSistema.cs" />
+    <Compile Include="Usuario\EDUsuarioPorAprobar.cs" />
+    <Compile Include="Usuario\EDUsuarioSistema.cs" />
+    <Compile Include="Usuario\EDUsuario.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Habilite la restauración del paquete NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

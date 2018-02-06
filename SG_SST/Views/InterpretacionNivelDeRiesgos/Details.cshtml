@@ -1,0 +1,51 @@
+﻿@model SG_SST.Models.Planificacion.InterpretacionNivelDeRiesgo
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InterpretacionNivelDeRiesgo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nivel_Inferior)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nivel_Inferior)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nivel_Superior)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nivel_Superior)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Resultado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Resultado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Interpretacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Interpretacion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Interpretacion_Nivel_Riesgo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,160 @@
+﻿@model IEnumerable<SG_SST.Models.EmpleadoOrg>
+
+@{
+    ViewBag.Title = "Listado Cargos Organigrama";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+}
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+
+}
+@if (ViewBag.mensaje1 != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje1',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">  
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li class="active">Listado Cargos Organigrama</li>
+</ol>
+
+<p align="center" style="margin-bottom:20px">
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+</p>
+
+<div class="table-responsive">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Listado Cargos Organigrama</div>
+        <table class="table table-bordered table-hover" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla">
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Organigrama.Nombre_Organigrama)
+                    </th>*@
+                @*<th>
+                        @Html.DisplayNameFor(model => model.OrgChart.Jefe_Inmediato)
+                    </th>*@
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase">
+                    @Html.DisplayNameFor(model => model.Cargo_Empleado)
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase">
+                    <label>Acciones</label>
+                    @*@Html.DisplayNameFor(model => model.Cargo_Empleado)*@
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Organigrama.Nombre_Organigrama)
+                        </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.OrgChart.Jefe_Inmediato)
+                        </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.OrgChart.Jefe_Inmediato)
+
+                        </td>*@
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Cargo_Empleado)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @*@Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.Id_EmpleadoOrg },
+                            htmlAttributes: new { @type = "button", @class = "btn btn-editar" })*@
+                        <a href="@Url.Action("Edit", new { id = item.Id_EmpleadoOrg })" class="btn btn-search btn-md" title="Editar">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        |
+                        @*<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Id_EmpleadoOrg)">
+                                @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                            </button>*@
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Id_EmpleadoOrg)" class="btn btn-search btn-md" title="Eliminar">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                        <div id="@string.Format("modalEliminar{0}", item.Id_EmpleadoOrg)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Eliminar Cargo</h4>
+                                    </div>
+                                    <div class="modal-body" style="text-align:center">
+                                        <p>¿Esta seguro desea eliminar el Cargo?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Id_EmpleadoOrg },
+                                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<div class="row" align="center">
+    @*<div class="col-sm-3"><a href="@Url.Action("Index","Gobierno") " class="btn btn-warning btn-md tbr" title="Regresar"> <span class="glyphicon glyphicon-arrow-left"></span> Regresar</a></div>*@
+    @*<div class="col-sm-3">*@
+    <a href="@Url.Action("organigrama", "Empleado")" class="boton botoninfo">
+        Ver Organigrama
+    </a>
+    @*</div>*@
+</div> 
+ 

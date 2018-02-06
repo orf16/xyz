@@ -1,0 +1,363 @@
+﻿
+@model IEnumerable<SG_SST.EntidadesDominio.Planificacion.EDRequisitosLegalesOtros>
+      <!--  Models    .Planificacion.RequisitosLegalesOtros> -->
+
+@{
+    ViewBag.Title = "Editar Matriz Legal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Requisitos Legales y Otros</a></li>
+    <li><a href="@Url.Action("ListadoMastrices","RequisitosLegalesOtros")">Consultar Matrices</a></li>
+    <li class="active">Editar Matriz Legal</li>
+</ol>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Estimado Usuario</strong> @ViewBag.Messages
+    </div>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Messages2
+    </div>
+}
+
+<script type="text/javascript">
+    function MensajeGuardarRegistros() {
+
+        utils.showMessage("Registro guardado satisfactoriamente", "success", $('#divMensaje'));
+    }
+
+</script>
+
+@*Boton Ayuda*@
+<div align="right">
+    <div id="ayuda" style="text-align:right">
+        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+            title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+            class="btn btn-ayuda btn-md"
+            @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+            <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+        </a>
+        <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            @*<span aria-hidden="true">&times;</span>*@
+                        </button>
+                        <h4 class="modal-title title">Ayuda / Editar Matriz Legal</h4>
+                    </div>
+                    <div class="modal-body " style="color:black">
+
+                        <div class="row" style="text-align:justify">
+                            Visualice la información de los requisitos legales iniciales y edite los campos: Evidencia de cumplimiento, Evaluación, Estado, Responsable, Fechas de seguimiento y Actualización. Esto funcionalidad es por cada requisito legal que desee.
+                        </div>
+                        <br />
+                        <div class="row" style="text-align:justify">
+                            <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> Permite editar el requisito legal seleccionado.
+                        </div>
+                        <br />
+                        <div class="row" style="text-align:justify">
+                            <button class="boton botoninfo" disabled>Agregar Nuevo Requisito Legal</button> Permite adicionar nuevo requisito legal manualmente.
+                        </div>
+                        <br />
+                        <div class="row" style="text-align:justify">
+                            <button class="boton botoncancel" disabled>Eliminar</button> Permite eliminar los requisitos legales seleccionados.
+                        </div>
+
+                        @*<div class="row">
+                            <div class="col-xs-12">
+                                <p align="justify">
+                                      AQUI PODRA VISUALIZAR LA INFORMACIÓN DE SUS REQUISITOS LEGALES INICIALES Y EDITAR LOS CAMPOS: EVIDENCIA DE CUMPLIMIENTO, EVALUACIÓN, ESTADO, RESPONSABLE, FECHAS DE SEGUIMIENTO Y ACTUALIZACIÓN. ESTO LO PODRA HACER POR CADA REQUISITO LEGAL.
+                                </p>
+                                <p align="justify">
+                                    PUEDE AGREGAR OTROS REQUISITOS LEGALES MEDIANTE LA OPCIÓN AGREGAR NUEVO REQUISITO, Y PODRA CONSULTARLO O REGISTRA MANUALMENTE.
+                                </p><p align="justify">
+                                TAMBIEN PODRA ELIMINAR UNO A UNO CADA REQUISITO QUE SELECCIONE.
+                                </p>
+                                </div>                          
+                        </div>
+
+                        <br />*@
+
+          
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<br />    
+
+<div id="divMensaje1">   </div>
+
+<div class="table-responsive" id="IDscBusqueda">
+
+    <table class="table table-bordered" style="border:solid lightslategray" id="idRequisitosLegales">
+
+        <tr class="titulos_tabla">
+            @*<th rowspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;text-align:center; vertical-align:middle">
+                                    <p>SELECCIONAR</p><p>TODO</p><input type="checkbox" class="checkAll" id="checkAll" name="checkAll" onclick="Seleccionarcheckbox()" />
+                </th>*@
+            <th rowspan="2" style="text-align:center; vertical-align:middle; border: 2px solid lightslategray; text-transform:uppercase"><b></b></th>
+            <th rowspan="2" style="text-align:center; vertical-align:middle; border: 2px solid lightslategray; text-transform:uppercase"><b>Tipo de Norma</b></th>
+            <th rowspan="2" style="text-align:center; vertical-align:middle; border: 2px solid lightslategray; text-transform:uppercase"><b>N° Norma</b></th>
+
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Fecha de Publicación</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Ente</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Artículo</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Descripción</b></th>
+
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Sugerencias</b></th>
+
+            <th colspan="4" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase" align="center"><b>Peligros Aspectos e Impactos</b></th>
+
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Evidencia de Cumplimiento</b></th>
+            <th colspan="2" style="text-align:center; border: 2px solid lightslategray; text-transform:uppercase"><b>Evaluación</b></th>
+
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Estado</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Responsable</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Fecha de Seguimiento del control</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Fecha de Actualización</</b></th>
+            <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle; text-transform:uppercase"><b>Acciones</b></th>
+        </tr>
+        <tr class="titulos_tabla">
+            <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Clase de Peligro</b></th>
+            <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Peligro</b></th>
+            <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Aspectos</b></th>
+            <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Impactos</b></th>
+            <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Cumplimiento</b></th>
+            <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle; text-transform:uppercase"><b>Hallazgo</b></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            @Html.HiddenFor(model => item.FK_ActividadEconomica)
+    <tr name="pcs" class="pcs1">
+
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+            <input type="checkbox" class="checkBox" id="checklista" value="@item.PKRequisitoLegal" />
+        </td>
+
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.TipoNorma)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.NumeroNorma)
+        </td>
+
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @*@item.FechaPublicacionReq.ToString("dd/mm/yyyy")*@
+            @item.FechaPublicacionReq.ToShortDateString()
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.EnteReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.ArticuloReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.DescripcionReq)
+        </td>
+
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.SugerenciasReq)
+        </td>
+
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.ClaseDePeligro)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.PeligroReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.AspectosReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.ImpactosReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.EvidenciaCumplimiento)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.Descripcion_Cumplimiento_Evaluacion)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.HallazgoReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.Descripcion_Estado_RequisitoslegalesOtros)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @Html.DisplayFor(modelItem => item.ResponsableReq)
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @*@item.Fecha_Seguimiento_ControlReq.ToString("dd/mm/yyyy")*@
+            @item.Fecha_Seguimiento_ControlReq.ToShortDateString()
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @*@item.Fecha_Seguimiento_ControlReq.ToString("dd/mm/yyyy")*@
+            @item.Fecha_ActualizacionReq.ToShortDateString()
+        </td>
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+            <a href="@Url.Action("Editar_RequisitosLegalesOtrosMatriz", "RequisitosLegalesOtros", new { id = item.PKRequisitoLegal, FKActividadEconomica = Model.FirstOrDefault().FK_ActividadEconomica })" class="btn btn-md btn-search" title="Editar">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+        </td>
+
+    </tr>
+
+        }
+
+    </table>
+
+</div>
+
+<br />
+
+<div class="row" align="center">
+            
+    <div class="col-sm-4" style="margin-left:25%">     
+
+        <a style="text-decoration:none">
+            @Html.ActionLink("Agregar nuevo requisito legal", "AgregarNuevoRequisitoLegal", new
+        {
+            FK_MatrizRequisitosLegales = ViewBag.FK_MatrizRequisitosLegales,
+            FKActividadEconomica = Model.FirstOrDefault().FK_ActividadEconomica
+        },
+                    htmlAttributes: new { @type = "button", @class = "boton botoninfo" })
+        </a>
+    </div>
+
+
+
+
+
+    <div class="col-sm-4">
+        <div class="row">
+            @*<button type="button" class="boton botonactive" onclick="Eliminar_RequisitosLegalesOtros()">Eliminar</button>*@
+        </div>
+    </div>
+
+
+
+    <div class="col-sm-4">
+        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+            @*<button class="btn btn-danger btn-xs eliminar" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.ID_Documentacion_Org)">
+                    @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                </button>*@
+            <a data-toggle="modal" data-target="#@string.Format("modalEliminar")" class="boton botoncancel">
+                Eliminar<span></span>
+            </a>
+            <div id="@string.Format("modalEliminar")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Eliminar Archivo</h4>
+                        </div>
+                        <div class="modal-body" style="text-align:center; color: black">
+                            <p>¿Esta seguro desea eliminar el requisito legal seleccionado?</p>
+                        </div>
+                        <div class="modal-footer">
+                            @*<button type="button" class="boton botonactive borrar" name="ideliminarfila" id="ideliminarfila" onclick="EliminarArchivoDocumentacion(this,@item.ID_Documentacion_Org)" data-dismiss="modal">
+                                    @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                </button>*@
+                            @*@Html.ActionLink("Eliminar", "EliminarArchivoDocumetacionController", new { PKdArchivo = item.ID_Documentacion_Org },
+                                htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })*@
+                            @*<button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">Cancelar <i class="glyphicon glyphicon-log-out"></i></button>*@
+
+                            <button type="button" class="boton botonactive" data-dismiss="modal" onclick="Eliminar_RequisitosLegalesOtros()">Eliminar</button>
+
+
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </td>
+
+    </div>
+    
+
+    </div>
+<a href="@Url.Action("ListadoMastrices", "RequisitosLegalesOtros") " class="btn btn-search btn-md" title="Formulario Principal">
+
+
+
+    <span class="glyphicon glyphicon-arrow-left"></span>
+</a>
+<div class="pagination-page paginador1" id="paginador1" style="margin-left:40%"></div>
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script defer src="https://code.getmdl.io/1.1.1/material.min.js"></script>
+
+<script>
+    //$("document").ready(function () {
+    //    paginador1("#idRequisitosLegales", "tr[name = pcs]", "#paginador1");
+    //});
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".pcs1");
+        var numItems = items.length;
+        var perPage = 5;
+        items.slice(perPage).hide();
+        $(".paginador1").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+@section Scripts{
+    @Scripts.Render("~/bundles/planificacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}

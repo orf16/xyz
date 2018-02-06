@@ -1,0 +1,574 @@
+﻿@model IEnumerable<SG_SST.Models.Organizacion.Documentacion_Organizacion>
+
+@{
+    ViewBag.Title = "Documentación del SG-SST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .navigation-documentacion {
+        /*text-transform: capitalize;*/
+        color: gray;
+        background-color: rgb(202,209,218);
+    }
+
+    .navigation-documentacion:hover {
+        /*text-transform: capitalize;*/
+        color: gray;
+        background-color: rgb(175,184,196);
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li class="active">Documentación del SG-SST</li>
+</ol>
+
+@if (ViewBag.Messages1 != null && ViewBag.Messages1 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages1',
+        'warning'
+        )
+    </script>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}
+
+@*<form method="post" action="@Url.Action("CargarArchivoOrganizacion", "Organizacion")" id="idDocumentacion">*@
+   
+    @using (Html.BeginForm("CargarArchivoOrganizacion", "Organizacion", FormMethod.Post, new { @id = "idDocumentacion",enctype = "multipart/form-data"}))
+    {
+    <ul class="nav nav-tabs " role="tablist">
+
+        <li class="active"><a id="tab1" href="#step0" role="tab" data-toggle="tab" class="navigation-documentacion">Repositorio Documental</a></li>
+        <li><a id="tab1" href="#step1" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosEmpresa()">Empresa</a></li>
+        <li><a id="tab2" href="#step2" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosLiderazgo()">Liderazgo Gerencial</a></li>
+        <li><a id="tab3" href="#step3" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosPolitica()">Política</a></li>
+        <li><a id="tab4" href="#step4" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosOrganizacion()">Organización</a></li>
+        <li><a id="tab5" href="#step5" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosPlanificacion()">Planificación</a></li>
+        <li><a id="tab6" href="#step6" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosAplicacion()">Aplicación</a></li>
+        <li><a id="tab7" href="#step7" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosrReporteInvestigacion()">Reporte e investigación</a></li>
+        <li><a id="tab8" href="#step8" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosMedicionEvaluacion()">Medición y evaluación</a></li>
+        <li><a id="tab9" href="#step9" role="tab" data-toggle="tab" class="navigation-documentacion" onclick="MostrarArchivosParticipacionColaboradores()">Participación colaboradores</a></li>
+    </ul>
+
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="step0">
+
+            <div id="divMensaje"></div>
+
+            <hr />
+
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+
+                <div class="panel-heading" style="color:white">Repositorio Documental</div>
+
+                @*Boton ayuda*@
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                           title="Ayuda" class="btn btn-ayuda btn-md"
+                           @*class="btn btn-link-1-google-plus btn-circle btn-md"
+                       style="border: 1px solid lightslategray; border-radius:0px"*@>
+                            <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                        </a>
+                        <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                    </div>
+                                    <div class="modal-body" style="color:black">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <font face="cursival">
+                                                        <p align="justify">Recuerde que el parágrafo 1 del artículo 2.2.4.6.12. Documentación del Decreto 1072/2015 define que:<i> los documentos pueden existir en papel, disco magnético, óptico o electrónico, fotografía, o una combinación de estos y en custodia del responsable del desarrollo del Sistema de Gestión de la Seguridad y Salud en el Trabajo</i>. Fundamentado en esto el sistema da un apoyo a la empresa para evidenciar la gestión realizada en el SG-SST ante una auditoría del mismo</p>
+                                                    </font>
+                                                    <p align="justify">Los formatos de documentos que acepta este módulo es PDF, DOC, XLS, XLSX. Así mismo el tamaño máximo de cada archivo es 10MB</p>
+                                                </div>
+                                            </div>
+
+                                            <br />
+
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <p>Click en Cargar Documento para subir un archivo en el módulo seleccionado</p>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="boton botonactive" disabled>Cargar Documento</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body form-horizontal">
+
+                    @*<div class="content">*@
+
+                        <div class="row">
+
+                            <div class="col-md-4" align="center">
+                                <h3><b class="titulosorganigrama"></b></h3>
+                                
+                                <input type="file" value="Cargar Documento" id="NombreArchivo_Documentacion" name="NombreArchivo_Documentacion" class="form-control" onchange="validaciontamañodocumento()"/>
+                            </div>
+                            <div class="col-md-3" align="center">
+                                <h3><b class="titulosorganigrama"></b></h3>
+                                
+                                @Html.DropDownList("ID_TipoModulo_Organizacion", null, htmlAttributes: new { @class = "form-control", @id = "ID_TipoModulo_Organizacion" }, optionLabel: "-- Seleccione módulo para cargar la información --")
+                            </div>
+                            <div class="col-md-5" align="center">
+                                <h3><b class="titulosorganigrama"></b></h3>
+                                
+                                @*<button type="submit" class="boton botonactive">Cargar Documento</button>*@
+
+                                @*<button type="submit" class="boton botonactive" onclick="validaciontamaño()">Cargar Documento</button>*@
+                                <button type="submit" class="boton botonactive" onclick="validarDocumentacion()">Cargar Documento</button>
+
+
+                            </div>
+                        </div>
+                    @*</div>*@
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="tab-pane" id="step1">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep1")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep1")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" align="center">
+                @*<h2>Empresa</h2> *@
+            </div>
+
+            <div @*style="overflow-y:scroll"*@ id="IDscBusquedaEmpresa"></div>
+        </div>
+
+        <div class="tab-pane" id="step2">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep2")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep2")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                @* <h2>Liderazgo Gerencial</h2>*@
+            </div>
+            <div id="IDscBusquedaLiderazgo">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step3">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep3")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep3")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                @*<h2>Política</h2>*@
+            </div>
+            <div id="IDscBusquedaPolítica">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step4">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep4")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep4")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" align="center">
+                @* <h2>Organización</h2>*@
+            </div>
+            <div id="IDscBusquedaOrganización">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step5">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep5")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep5")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                @*  <h2>Planificación</h2>*@
+            </div>
+            <div id="IDscBusquedaPlanificación">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step6">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep6")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep6")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" align="center">
+                @* <h2>Aplicación</h2>*@
+            </div>
+            <div id="IDscBusquedaApl">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step7">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep7")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep7")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" align="center">
+                @* <h2>Reporte e Investigación</h2>*@
+            </div>
+            <div id="IDscBusquedaReporte">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step8">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep8")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep8")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                @*  <h2>Medición y Evaluación</h2>*@
+            </div>
+            <div id="IDscBusquedaMedición">
+            </div>
+        </div>
+
+        <div class="tab-pane" id="step9">
+
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyudastep9")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyudastep9")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda / Documentación del SG-SST</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p>Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el documento de tipo PDF</p>
+                                    <br />
+
+                                    <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar los documentos de tipo Excel y Word</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                @*<h2>Participación Colaboradores</h2>*@
+            </div>
+            <div id="IDscBusquedaParticipación">
+            </div>
+        </div>
+
+    </div>
+
+@ViewData["Nombre"]
+
+@ViewBag.Messages
+}
+
+@*</form>*@
+
+<script>
+    $(document).ready(function () {
+        paginador("idIndex", "tr[name = trIndex]", "#paginador");
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}

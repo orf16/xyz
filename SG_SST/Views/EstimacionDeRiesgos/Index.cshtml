@@ -1,0 +1,68 @@
+﻿@model IEnumerable<SG_SST.Models.Planificacion.EstimacionDeRiesgo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Estimación de Riesgos</h2>
+
+<p>
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+            htmlAttributes: new { @type = "button", @class = "btn btn-success btn-xs" })
+</p>
+<table class="table table-condensed table-responsive table-bordered">
+    <tr class="titulos_tabla">
+        <th>
+            Detalle de la Consecuencia
+        </th>
+        <th>
+            Detalle de la Probabilidad
+        </th>
+        <th>
+            Estimación de Riesgo
+        </th>
+        <th>
+            Valor Del Riesgo
+        </th>        
+        <th>Riesgo No Aceptable</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Consecuencia.Descripcion_Consecuencia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Probabilidad.Descripcion_Probabilidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Detalle_Estimacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValorDelRiesgo)
+            </td>
+            <td>
+                @if (item.RiesgoNoAceptable)
+                {
+                    <label> Si</label>
+                }
+                else
+                {
+                    <label> No</label>
+                }
+            </td>
+            <td>
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.PK_Estimacion_De_Riesgo }
+         , htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "Delete", new { id = item.PK_Estimacion_De_Riesgo }
+          , htmlAttributes: new { @type = "button", @class = "btn btn-danger btn-xs jh" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

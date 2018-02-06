@@ -1,0 +1,60 @@
+﻿@model SG_SST.Models.Ausentismo.AfiliadoModel
+@if (Model != null)
+{
+    var salario = Model.Salario == 0 ? 800000 : Model.Salario;
+    
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: black;
+        }
+    </style>
+
+    var a = Model;
+
+    var nombre = a.Nombre1 + " " + a.Nombre2 + " " + a.Apellido1 + " " + a.Apellido2;
+
+     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="panel panel-default" style="margin-top:  20px;">
+        <div class="panel-heading" style="color: #fff;">
+            DATOS DEL TRABAJADOR
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <strong class="text-primary">@Html.DisplayName(nombre)</strong>
+                </div>
+                <div class="col-md-6">
+                    <strong>Fecha nacimiento: </strong> @Model.FechaNacimiento
+                    <br />
+                    <strong>Sexo: </strong> @Model.Sexo
+                    <br />
+                    <strong>Departamento: </strong> @Model.Departamento
+                    <br />
+                    <strong>Municipio: </strong> @Model.Municipio   
+                </div>
+                <div class="col-md-6">
+                    <strong>NIT Empresa: </strong> @Model.IdEmpresa
+                    <br />
+                    <strong>Ocupación CIUO: </strong> @Model.Ocupacion
+                    <br />
+                    <strong>EPS: </strong> @Model.NombreEps
+                    <br />
+                    <strong>ARL: </strong> @Model.NombreArl
+                    <br />
+                    <strong>Salario: </strong> @Model.Salario
+                    <input type="hidden" value="@salario"   id="a_Salario" />
+                    <input type="hidden" value="@Model.FechaNacimiento" id="a_FechaNacimiento" />
+                    <input type="hidden" value="@Model.Sexo" id="a_Sexo" />
+                    <input type="hidden" value="@Model.IdOcupacion" id="a_Ocupacion" />
+                    <input type="hidden" value="@Model.NombreEps" id="a_NombreEps" />
+                    <input type="hidden" value="@Model.IdEmpresa" id="a_IdEmpresa" />
+                    <input type="hidden" value="@Model.Departamento" id="a_Departamento" />
+                    <input type="hidden" value="@Model.Municipio" id="a_Municipio" />
+                 </div>
+            </div>
+        </div>
+    </div>
+
+}

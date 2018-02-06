@@ -1,0 +1,109 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Empresas.EDEmpleadoRelLab>
+
+@{
+    ViewBag.Title = "Consulta de Relaciones Laborales";
+}
+<div class="table-responsive" style="overflow-x:scroll; margin:10px;">
+    <table class="table table-bordered" style="border: 2px solid lightslategray;">
+        <thead>
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.TipoDocumento)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.NumeroDocumento)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Apellido1)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Apellido2)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Nombre1)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Nombre2)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.FechaNacimiento)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Estado)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Ocupacion)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Cargo)
+                </th>
+                <th style="border-right: 2px solid lightslategray; text-align:center; vertical-align: middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                            @Html.DisplayFor(modelItem => item.TipoDocumento)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                            @Html.DisplayFor(modelItem => item.NumeroDocumento)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                            @Html.DisplayFor(modelItem => item.Apellido1)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Apellido2)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Nombre1)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Nombre2)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.strFechaNacimiento)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Ocupacion)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Cargo)
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<input type="hidden" name="id" id="id" value="1" />
+<div class="text-center">
+    <ul class="pagination">
+        <li>@Ajax.ActionLink("<<", "ListRelacionesLaborales", new { id = 1 }, new AjaxOptions { UpdateTargetId = "list-items", InsertionMode = InsertionMode.Replace })</li>
+        @if (ViewBag.PageCount != null)
+        {
+            if (ViewBag.PageCount > 0)
+            {
+                for (int i = 1; i <= ViewBag.PageCount; i++)
+                {
+                    <li>@Ajax.ActionLink(i.ToString(), "ListRelacionesLaborales", new { id = @i }, new AjaxOptions { UpdateTargetId = "list-items", InsertionMode = InsertionMode.Replace })</li>
+                }
+            }
+        }
+        <li>@Ajax.ActionLink(">>", "ListRelacionesLaborales", new { id = ViewBag.PageCount }, new AjaxOptions { UpdateTargetId = "list-items", InsertionMode = InsertionMode.Replace })</li>
+    </ul>
+</div>

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Empresas.EDEmpleadoRelLab>
+
+@{
+    ViewBag.Title = "Consulta de Relaciones Laborales";
+}
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+            'Estimado Usuario',
+            ' @ViewBag.Messages',
+            'success'
+            )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Relaciones Laborales</a></li>
+    <li class="active">Consultar Relaciones Laborales</li>
+</ol>
+
+@using (Html.BeginForm("BuscarRelLab", "RelacionesLaborales", FormMethod.Post, new { id = "idBuscarRelacionesLaborales" }))
+{
+    @*<h2>Consultar Relaciones Laborales</h2>*@
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:black">
+            CONSULTA DE RELACIONES LABORALES
+        </div>
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black; text-align:justify">
+                                <p>En esta funcionalidad consulta la información en línea registrada en POSITIVA COMPAÑÍA DE SEGUROS de las relaciones laborales de su empresa.</p>
+                                <p>
+                                    Si presenta alguna diferencia la información consultada, recuerde que puede realizar la actualización en línea, ingresando a través del portal transaccional https://www.positivaenlinea.gov.co/  opción NOVEDADES
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="idConsFiltros">
+            @Html.Partial("ConsultarFiltros", Model)
+        </div>
+        <div id="list-items">
+            @Html.Partial("ConsultaRelacionesLaborales", Model)
+        </div>
+    </div>
+}

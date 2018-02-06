@@ -1,0 +1,916 @@
+﻿
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>@ViewBag.Title</title>
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+    @RenderSection("metatags", required: false)
+    @Styles.Render("~/bundles/css")
+    @if (IsSectionDefined("HeadStyles"))
+    {
+        @RenderSection("HeadStyles", required: false);
+
+    }
+ 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/Utilidades")
+    @Scripts.Render("~/bundles/Empresas")
+    @if (IsSectionDefined("HeadScripts"))
+    {
+        @RenderSection("HeadScripts", required: false);
+    }
+    <script>
+    
+    $(document).ready(function () {
+        ObtenerLogo($("#pkempresa").val());
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
+
+    
+</head>
+
+<body>
+    <div id="capa_loading" class="capa_loading" style="display:none;">Procesando...</div>
+    <div id="_loading" class="_loading" style="display:none;"><img class="img_loading" src='@Url.Content("~/Images/fancyBox/fancybox_loading@2x.gif")' /><br></div>
+    <div id="popupMsg" style="display:none;">
+        <h4></h4>
+        <button id="btn_aceptMsg" type="submit" data-href="" class="btn btn-default" onclick="javascript:MostrarPopupMsg(e);">Aceptar</button>
+    </div>
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+            <div class="col-xs-1 mobile">
+                <a href="#" class="botonmobile">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <input type="hidden" value="@Session["pkempresa"]" id="pkempresa"/>
+            <div class="col-md-2 logo-empresa col-xs-6">
+               @Html.Partial("Logo")
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta" title="Desarrollado por ADA S.A.">
+            </div>
+        </div>
+
+        <div class="collapse navbar-collapse">
+        </div>
+    </div>
+    <div id="wrapper">
+        <div id="sidebar-wrapper" class="">
+            <div id="sidebar">
+                <section class="alissta-user-data">
+                    <row class="row-eq-height">
+                        <div class="col-xs-9 menu-text">
+                            @Html.Partial("_UserLogueado")
+                            @*<p class="user-role">Responsable SGSST</p>*@
+                        </div>
+                        <div class="col-xs-3 logout">
+                            <a href="~/Home/CerrarSesion" class="logout-link"> Salir </a>
+                        </div>
+                    </row>
+                </section>
+                <div class="open-close-sidebar">
+                    <a href="JavaScript:void(0)" id="button-menu">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                </div>
+                <nav class="menu">
+                    <ul class="parent-menu">
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item1">
+                                <span class="menu-item-icono menu-item-icono-empresa">
+                                    &nbsp;
+                                </span>
+                                <span class="menu-item-name menu-text  menu-item-name-empresa">
+                                    Empresa
+                                </span>
+                            </a>
+                            <ul class="sub-menu item1" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/empresa.png" alt="Empresa" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Empresa</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item empresa-datos" href="@Url.Action("Create", "Empresas")">
+                                        Datos generales de la empresa
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item empresa-gobierno" href="javascript:void(0)">
+                                        Gobierno organizacional
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class="sub-sub-menu-item"><a href="@Url.Action("misionM", "Gobierno")">Misión</a></li>
+                                        <li class="sub-sub-menu-item"><a href="@Url.Action("visionV", "Gobierno")">Visión</a></li>
+                                        <li class="sub-sub-menu-item"><a href="@Url.Action("index", "Organigrama")">Organigrama</a></li>
+                                        <li class="sub-sub-menu-item"><a href="@Url.Action("MenuProcesos", "Proceso")">Mapa de procesos</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item empresa-consideraciones" href="javascript:void(0)">
+                                        Consideraciones internas y externas
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("DOFA", "Consideraciones")">Crear DOFA</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("PEST", "Consideraciones")">Crear PEST</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("MostrarDOFA", "Consideraciones")">Consultar DOFA</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("MostrarPEST", "Consideraciones")">Consultar PEST</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item empresa-relaciones" href="javascript:void(0)">
+                                        Relaciones laborales
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("ConsultaRelacionesLaborales", "RelacionesLaborales")">Consulta de Relaciones Laborales</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "NotificarInconsistencias")">Notificar Inconsistencias</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "RelacionesLaborales")">Cargar Relaciones Laborales de Terceros</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("ConsultaTercerosRelacionesLaborales", "RelacionesLaborales")">Consulta Relaciones Laborales de Terceros</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "CrearEmpresaUsuaria")">Creación Empresas Asociadas</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item2">
+                                <span class="menu-item-icono menu-item-icono-liderazgo">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Liderazgo Gerencial</span>
+                            </a>
+                            <ul class="sub-menu item2" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/liderazgo.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Liderazgo Gerencial</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item liderazgo-presupuesto" href="javascript:void(0)">
+                                        Presupuesto
+                                        <span class="caret"></span>
+                                        @*@Url.Action("MenuPresupuesto", "Presupuesto")*@
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CrearPresupuesto", "Presupuesto")">Crear</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("BuscarPresupuestos", "Presupuesto")">Consultar</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("BuscarPresupuestoInforme", "Presupuesto")">Informe de Presupuesto</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item liderazgo-roles" href="@Url.Action("CrearRol", "Rol")">Roles y responsabilidades SST</a>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item liderazgo-mailbox" href="@Url.Action("MostrarConsultasSST", "Consulta")">Buzón Consulta SST</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item3">
+                                <span class="menu-item-icono menu-item-icono-politica">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Política</span>
+                            </a>
+                            <ul class="sub-menu item3" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/politica.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Política</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item politica-politica" href="#">
+                                        Política del SG-SST
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("MenuPolitica", "Politicasst")">Consultar Política</a></li>
+                                        @*<li class='sub-sub-menu-item'><a href="@Url.Action("ReportePolitica_Aplicativo", "Politicasst")">Consultar Política</a></li>*@@*09-06-17 se quito para q se muestre directamente el pdf en el navegador*@
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "Politicasst")">Crear-Modificar Política</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CargarArchivoPolitica", "Politicasst")">Cargar Política</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item politica-otras" href="@Url.Action("Index", "OtrasInteracciones")">
+                                        Otras intenciones y directrices
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item4">
+                                <span class="menu-item-icono menu-item-icono-organizacion">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Organización</span>
+                            </a>
+                            <ul class="sub-menu item4" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/organizacion.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Organización</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item organizacion-recursos" href="#">
+                                        Recursos en SST
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CrearRecurso", "Recursos")">Crear Recursos</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("ListadoRecursos", "Recursos")">Visualizar Recursos</a></li>
+                                    </ul>
+
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item organizacion-competenciassst" href="#">
+                                        Competencias SST
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("CreateTematica", "Competencia")'>Crear/Asignar Competencia</a></li>
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("MostrarTematica", "Competencia")'>Consultar Competencia</a></li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <a class="sub-menu-item organizacion-plan" href="#">
+                                        Plan de Capacitación
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("Programacion", "PlanCapacitacion")'>Programación</a></li>
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("Calendario", "PlanCapacitacion")'>Calendario</a></li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <a class="sub-menu-item organizacion-comunicacion" href="#">
+                                        Comunicación
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("Index", "ComunicacionesExternas")'>Comunicaciones Internas</a></li>
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("IndexExternas", "ComunicacionesExternas")'>Comunicaciones Externas</a></li>
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("Index", "ComunicacionesInternas")'>Encuestas</a></li>
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("Index", "ComunicadosAPP")'>Comunicados APP</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="sub-menu-item organizacion-documentacion" href="@Url.Action("Index", "Organizacion")">Documentación del SG-SST</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item5">
+                                <span class="menu-item-icono menu-item-icono-planificacion">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Planificación</span>
+                            </a>
+                            <ul class="sub-menu item5 submenu-two-cols" style="display: none">
+
+
+                                <div class="row submenu-title">
+
+                                    <div class="col-xs-12 icono">
+                                        <img src="~/Images/iconos/headers/planificacion.png" alt="watermark-alissta" class="center-block">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h3>Planificación</h3>
+                                    </div>
+
+                                </div>
+
+                                <div class="row long-col-menu-wrapper">
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-identificacion" href="#">
+                                            Identificación de peligros, evaluación y valoración riesgos
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("GenerarMetodologia", "Metodologia")">Seleccionar Metodología</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("VisualizarPeligrosSede", "Metodologia")">Consultar Metodología</a></li>
+                                        </ul>
+
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-prevencion" href="#">
+                                            Prevención, preparación y respuesta ante emergencias
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "PlanEmergencias")">Generar Plan de Emergencia</a></li>
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-dx" href="#">
+                                            Dx. Gral. condiciones de salud
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("CargarDxGralDeSalud", "DxGralCondicionSalud")">Cargar Dx General de Condiciones de salud</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("CrearDxGralDeSalud", "DxGralCondicionSalud")">Crear Dx General de Condiciones de salud</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("HistoricoDxPorSedes", "DxGralCondicionSalud")">Histórico de Diagnóstico</a></li>
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-perfil" href="#">
+                                            Perfil sociodemográfico
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("Listado", "PerfilSocioDemografico")'>Modificar Perfil Sociodemográfico</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("CargueMasivo", "PerfilSocioDemografico")'>Cargar Plantilla</a></li>
+                                            @*<li class='sub-sub-menu-item'><a href='@Url.Action("DescargarPlantilla", "PerfilSocioDemografico")'>Descargar Plantilla</a></li>*@
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("ExportarExcel", "PerfilSocioDemografico")'>Descargar Reporte</a></li>
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-ausentismo" href="#">
+                                            Ausentismo Laboral
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("DiasLaborables", "Ausencias")">Configurar dias laborables</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("RegistrarAusencia", "Ausencias")"> Registrar Ausentismo</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("ConsultarAusencia","Ausencias")'>Consultar</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("Reportes","Reportes")'>Reportes</a></li>
+                                            
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("ReportesAusentismo", "ReportesAplicacion")">Graficas Reportes</a></li>
+
+
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("ConfiguracionHHT","Configuracion_HHT")'>Configurar HHT</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("Indicadores","Indicadores")'>Indicadores</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("IndicadoresAunsentismo", "ReportesAplicacion")">Graficas Indicadores</a></li>
+
+
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("AlertarAusencia", "Ausencias")'>Alertas Ausentismo</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("CargueMasivo", "Ausencias")'>Cargue Masivo</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-requisitos" href="#">
+                                            Requisitos legales y otros
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("CrearMatriz", "RequisitosLegalesOtros")">Crear Matriz</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("ListadoMastrices", "RequisitosLegalesOtros")">Consultar Matrices</a></li>
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-evaluacionsg-sst" href="@Url.Action("Index", "Evaluacion")">Evaluación SG-SST</a>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item planificacion-objetivossg-sst" href="@Url.Action("ObjetivoSST", "ObetivoSST")">Objetivos SG-SST</a>
+                                    </li>
+                                    <li>
+                                        <a class="sub-menu-item planificacion-plan" href="#">
+                                            Plan de trabajo anual SG-SST
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("PlanArl", "PlanTrabajoAnual")">Plan ARL</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("PlanEmpresa", "PlanTrabajoAnual")">Plan Empresa</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("Calendario", "PlanTrabajoAnual")">Calendario</a></li>
+                                        </ul>
+                                    </li>
+                                </div>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item6">
+                                <span class="menu-item-icono menu-item-icono-aplicacion">&nbsp;</span>
+                                <span class="menu-item-name menu-text" style="display: inline-block;">Aplicación</span>
+                            </a>
+                            <ul class="sub-menu item6" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/aplicacion.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Aplicación</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item aplicacion-medidas" href="#">
+                                        Medidas de Prevención y Control
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("PlanSeguridadVial", "PromocionPrevencion")">Evaluación Plan Estratégico de Seguridad Vial</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "BateriaGestion")">Batería Riesgo Psicosocial</a></li>
+                                        <li class='sub-sub-menu-item'><a href='https://positivaeduca.positiva.gov.co/posipedia/public/#' target="_blank">Posipedia</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("GestionarPlanesTrabajo", "PlanTrabajo")">Plan de Trabajo</a></li>
+                                    </ul>
+
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item aplicacion-adquisiciones" href="#">
+                                        Adquisiciones Bienes o Contratación
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CrearManualesAdquisicion", "AdquisicionBienes")">Guía Adquisición de Bienes</a></li>
+                                        <li class="sub-sub-menu-item"><a href="@Url.Action("Create", "CriteriosSST")">Proveedores y Contratistas</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item aplicacion-administracion" href="#">
+                                        Administración EPP
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("NuevoEPP", "AdmoEPP")">Nuevo EPP</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CargueMasivoEPP", "AdmoEPP")">Cargue Masivo</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("AsignarEPP", "AdmoEPP")">Control de Suministros</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("MatrizEPP", "AdmoEPP")">Consultar Matriz</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("ConsultarAsignacion", "AdmoEPP")">Consultar Control de Suministros</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item aplicacion-administracion2" href="#">
+                                        Administración equipo, maquinaria y herramientas
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("NuevoEHM", "AdmoEMH")">Crear Hoja de Vida</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("ConsultarEHM", "AdmoEMH")">Consultar Equipos, máquinas o herramientas</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item aplicacion-inspecciones" href="#">
+                                        Inspecciones de Seguridad
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "PlandeInspeccion")">Planeación de Inspección</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("VerificarInspeccion", "PlandeInspeccion")">Verificar</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("BuscarInspeccion", "PlandeInspeccion")">Consultar</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item aplicacion-gestion" href="@Url.Action("ListadoGestionDelCambio", "GestionDelCambio")">
+                                        Gestión del Cambio
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item7">
+                                <span class="menu-item-icono menu-item-icono-reporte">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Reporte e Investigación</span>
+                            </a>
+                            <ul class="sub-menu item7" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/reporte.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Reporte e Investigación</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item reporte-reportedeincidentes" href="#">
+                                        Reporte de incidentes
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href='/Incidente/Reportar'>Reportar Incidente</a></li>
+                                        <li class='sub-sub-menu-item'><a href='/Incidente/Consultar'>Consultar Incidente</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item reporte-reporte" href="#">
+                                        Reporte A.T. a POSITIVA
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("ReporteAccidente", "AccidenteTrabajo")">Accidente de Trabajo</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item reporte-reporteenfermedad" href="@Url.Action("Registrar", "EnfermedadLaboralDiagnosticada")">Seguimiento a Presuntas Enfermedades Laborales</a>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item reporte-estudio" href="@Url.Action("Index", "EstudioPuestoTrabajo")">Estudio de Puestos de Trabajo</a>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item reporte-investigacion" href="#">
+                                        Investigación, Incidentes, Accidentes y E.L
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href='#'>Consultar</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CrearIncidenteAT", "IncidentesAT")">Crear Investigación de Incidentes y AT</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("CrearIncidenteEL", "IncidentesEL")">Crear Investigación de Enfermedad Laboral</a></li>
+                                        @*<li class='sub-sub-menu-item'><a href='#'>Información</a></li>*@
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item8">
+                                <span class="menu-item-icono menu-item-icono-medicion">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Medición y Evaluación SG-SST</span>
+                            </a>
+                            <ul class="sub-menu item8 submenu-two-cols" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/medicion.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Medición y Evaluación SG-SST</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item medicionsst-indicadores" href="#">
+                                            Indicadores
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                          
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("IndicadoresProceso", "ReportesAplicacion")'>Procesos</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("IndicadoresResultado", "ReportesAplicacion")'>Resultados</a></li>
+                                            <li class='sub-sub-menu-item'><a href='@Url.Action("IndicadoresEstructura", "ReportesAplicacion")'>Estructura</a></li>
+
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item medicionsst-auditorias" href="#">
+                                            Auditorias SG-SST
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("CrearPrograma", "Auditoria")">Crear Programa de Auditoria</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("Programa", "Auditoria")">Gestionar Programa de Auditoria</a></li>
+                                            @*<li class='sub-sub-menu-item'><a href='#'>Información</a></li>*@
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item medicionsst-acciones" href="#">
+                                            Acciones Preventivas y/o Correctivas
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("NuevaAccion", "Acciones")">Crear Acción Correctiva/Preventiva</a></li>
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("ConsultaACAP", "Acciones")">Consultar Acción Correctiva/Preventiva</a></li>
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item medicionsst-planes" href="#">
+                                            Planes de acción
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "PlanesDeAccion")">Gestión de Planes de Acción</a></li>
+                                        </ul>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item medicionsst-reportes" href="#">
+                                            Reportes y Estadisticas
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="sub-sub-menu">
+                                            <li class='sub-sub-menu-item'><a href="@Url.Action("ReportesAplicacion", "ReportesAplicacion")">Estadísticas</a></li>
+                                           <li class='sub-sub-menu-item'><a href='@Url.Action("ReportesIndicadores", "ReportesAplicacion")'>Reportes</a></li>
+ 
+                                         </ul>
+                                    </li>
+                                </div>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item9">
+                                <span class="menu-item-icono menu-item-icono-participacion">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Participación Trabajadores</span>
+                            </a>
+                            <ul class="sub-menu item9" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/participacion.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Participación Trabajadores</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item participacion-consultasst" href="@Url.Action("Index", "Consulta")">Consulta SST</a>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item participacion-comites" href="#">
+                                        Comités en SST
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "Comites")">Copasst</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "ComitesConvivencia")">Comité de Convivencia</a></li>
+                                        @*<li class='sub-sub-menu-item'><a href='#'>información</a></li>
+                                            <li class='sub-sub-menu-item'><a href='#'>Comités</a></li>*@
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item participacion-reportes" href="#">
+                                        Reporte de Actos y Condiciones Inseguras
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("Index", "Reporte")">Crear reporte condiciones inseguras</a></li>
+                                        <li class='sub-sub-menu-item'><a href="@Url.Action("VisualizarReporte", "Reporte") ">Consultar reporte</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item10">
+                                <span class="menu-item-icono menu-item-icono-revision">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Revisión por la Dirección</span>
+                            </a>
+                            <ul class="sub-menu item10" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/revision.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Revisión por la Dirección</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item revision-revisiondelsg-sst" href="#">
+                                        Revisión del SG-SST <span class="caret"></span>
+                                    </a>
+                                    <ul class="sub-sub-menu">
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("ConsultaActasRevision", "Revision")'>Consulta</a></li>
+                                        <li class='sub-sub-menu-item'><a href='@Url.Action("Index", "Revision")'>Nueva revisión</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item11">
+                                <img src="~/Images/iconos/headers/maestros.png" alt="Maestros" class="center-block menu-item-icon">
+                                <span class="menu-item-name menu-text">@SG_SST.Recursos.GeneralApp.General.menu_label_configuracion_maestros</span>
+                            </a>
+                            <ul class="sub-menu item11 submenu-two-cols" style="display: none">
+                                <div class="row submenu-title">
+
+                                    <div class="col-xs-12 icono">
+                                        <img src="~/Images/iconos/headers/maestros.png" alt="watermark-alissta" class="center-block">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h3>Maestros</h3>
+                                    </div>
+
+                                </div>
+                                <div class="row long-col-menu-wrapper">
+
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "Fase")" style="text-align:left">
+                                            Fase Recursos
+                                        </a>
+                                        @*@Html.ActionLink("Fase Recursos", "Index", "Fase")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "TipoRecurso")" style="text-align:left">
+                                            Tipos de Recursos
+                                        </a>
+                                        @*@Html.ActionLink("Tipos de Recursos", "Index", "TipoRecurso")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "TipoPrioridadMiembro")" style="text-align:left">
+                                            Tipos de Prioridad Miembros Comites
+                                        </a>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "TipoPrincipalActa")" style="text-align:left">
+                                            Tipos Principales Comites
+                                        </a>
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "TipoMetodologias")" style="text-align:left">
+                                            Tipos de Metodologías
+                                        </a>
+                                        @*@Html.ActionLink("Tipos de Metodologias", "Index", "TipoMetodologias")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "MaestroTipoInspeccions")" style="text-align:left">
+                                            Tipos de Inspección
+                                        </a>
+                                        @*@Html.ActionLink("Tipos de Inspeccion", "Index", "MaestroTipoInspeccions")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "MaestroConfiguracionPrioridades")" style="text-align:left">
+                                            Configuracion Prioridades
+                                        </a>
+                                        @*@Html.ActionLink("Tipos de Inspeccion", "Index", "MaestroTipoInspeccions")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "TipoDePeligros")" style="text-align:left">
+                                            Tipos de Peligro
+                                        </a>
+                                        @*@Html.ActionLink("Tipos de Peligro", "Index", "TipoDePeligros")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "ClasificacionDePeligros")" style="text-align:left">
+                                            Clasificación de Peligros
+                                        </a>
+                                        @*@Html.ActionLink("Clasificación de Peligros", "Index", "ClasificacionDePeligros")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "Grupos")" style="text-align:left">
+                                            Grupos de consecuencias
+                                        </a>
+                                        @*@Html.ActionLink("Grupos de consecuencias", "Index", "Grupos")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "Consecuencias")" style="text-align:left">
+                                            Consecuencias
+                                        </a>
+                                        @*@Html.ActionLink("Consecuencias", "Index", "Consecuencias")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "Probabilidades")" style="text-align:left">
+                                            Probabilidades
+                                        </a>
+                                        @*@Html.ActionLink("Probabilidades", "Index", "Probabilidades")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "InterpretacionDeProbabilidades")" style="text-align:left">
+                                            Interpretación de Probabilidades
+                                        </a>
+                                        @*@Html.ActionLink("Interpretación de Probabilidades", "Index", "InterpretacionDeProbabilidades")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "InterpretacionNivelDeRiesgos")" style="text-align:left">
+                                            Interpretación de niveles de riesgos
+                                        </a>
+                                        @*@Html.ActionLink("Interpretación de niveles de riesgos", "Index", "InterpretacionNivelDeRiesgos")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "NivelesDeExposicion")" style="text-align:left">
+                                            Niveles de Exposición
+                                        </a>
+                                        @*@Html.ActionLink("Niveles de Exposición", "Index", "NivelesDeExposicion")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "NivelDeDeficiencias")" style="text-align:left">
+                                            Niveles de Deficiencia
+                                        </a>
+                                        @*@Html.ActionLink("Niveles de Deficiencia", "Index", "NivelDeDeficiencias")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "EstimacionDeRiesgos")" style="text-align:left">
+                                            Estimación de riesgos
+                                        </a>
+                                        @*@Html.ActionLink("Estimacion de riesgos", "Index", "EstimacionDeRiesgos")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "ObligacionesEmpleadores")" style="text-align:left">
+                                            Obligaciones Empleadores
+                                        </a>
+                                        @*@Html.ActionLink("Obligaciones Empleadores", "Index", "ObligacionesEmpleadores")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "ObligacionesArls")" style="text-align:left">
+                                            Obligaciones ARL
+                                        </a>
+                                        @*@Html.ActionLink("Obligaciones ARL", "Index", "ObligacionesArls")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "Cargo")" style="text-align:left">
+                                            Cargos
+                                        </a>
+                                        @*@Html.ActionLink("Cargos", "Index", "Cargo")*@
+                                    </li>
+                                    <li style="border-bottom: 1px solid rgba(255, 117, 0, 0.6);">
+                                        <a class="sub-menu-item" href="@Url.Action("Index", "MaestroCriterioSSTs")" style="text-align:left">
+                                            Maestro Criterios SST
+                                        </a>
+                                    </li>
+                                </div>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="main-menu-item orden1 active-item" href="javascript:void(0)" id="item12">
+                                <span class="menu-item-icono menu-item-icono-aprobacion">&nbsp;</span>
+                                <span class="menu-item-name menu-text">Usuarios del Sistema</span>
+                            </a>
+                            <ul class="sub-menu item12" style="display: none">
+                                <div class="submenu-title">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-xs-offset-5 icono">
+                                            <img src="~/Images/iconos/headers/aprobacionUsuarios-normal.png" alt="watermark-alissta" class="center-block">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Administración Usuarios del Sistema</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <li>
+                                    <a class="sub-menu-item empresa-usuarios" href="@Url.Action("AprobarUsuariosSistema", "AdminUsuarios")">
+                                        Aprobación de Usuarios
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sub-menu-item" href="@Url.Action("CambiarClave","AdminUsuarios")">
+                                        Cambiar Clave
+                                    </a>
+                                 </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div id="main-wrapper">
+            <div id="main">
+                <div class="page-header">
+                </div>
+                <div id="divMensajes"></div>
+                @RenderSection("OpcionesEvaluacion", required: false)
+                @RenderSection("OpcionesEmpresa", required: false)
+                @RenderBody()
+            </div>
+            <div class="col-md-12 footer">
+                <p>Todos los derechos reservados - Positiva Compañía de Seguros S.A.</p>
+            </div>
+        </div>
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+
+@if (IsSectionDefined("HTMLBottomScripts"))
+{
+    @RenderSection("HTMLBottomScripts", required: false);
+}
+
+</html>

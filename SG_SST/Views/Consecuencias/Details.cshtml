@@ -1,0 +1,43 @@
+﻿@model SG_SST.Models.Planificacion.Consecuencia
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Consecuencia</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Grupo.Descripcion_Grupo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Grupo.Descripcion_Grupo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor_Consecuencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor_Consecuencia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion_Consecuencia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Consecuencia)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Consecuencia }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

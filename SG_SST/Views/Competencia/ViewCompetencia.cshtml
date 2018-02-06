@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Consultar Competencia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.mensaje != null && ViewBag.mensaje != "")
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.mensaje',
+        'success'
+        )
+    </script>
+}
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.Messages',
+        'error'
+        )
+    </script>
+}
+@if (ViewBag.cargosPorEmpresa == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'En este momento No se puede consultar competencias SST por el cargo',
+        'error'
+        )
+    </script>
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Competencias SST</a></li>
+    <li class="active">Consultar Competencia</li>
+</ol>
+
+@*<div class="panel panel-yellow" name="panel" id="panel" style="background-color: rgba(196, 202,196, 0.1); border: 1px solid lightslategray; width:1100px">
+    <div class="row">
+        <div class="row">*@
+@*<div class="col-md-1"></div>*@
+@*<div style="overflow-y:scroll;height:500px">*@
+@*<div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; color:black">
+                    Rol
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle ; width:25%">
+                    @Html.DropDownList("Fk_Id_Rol", null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione ...", onclick = "" }, optionLabel: "-- Seleccionar --")
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; color:black">
+                    Cargo
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle ; width:30%">
+                    @Html.DropDownList("Fk_Id_Cargo", null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione ...", onclick = "" }, optionLabel: "-- Seleccionar --")
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; color:black">
+                    Competencia
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; width:20%">
+                    <input type="text" name="BuscarCompetencia" id="BuscarCompetencia" class=" form-control" onkeyup="buscarcompetencia()" />
+                    <input type="hidden" class="form-control" id="IdTematicaComp" />
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    <a href="javascript:void(0);" onclick="BusquedaCompetencia()"
+                       class="btn btn-link-1-google-plus btn-circle btn-md btn-search" title="Buscar Competencia">
+                        <span class="glyphicon glyphicon-search" name="iconoRend"></span>
+                    </a>
+                </th>
+            </tr>
+        </table>
+    </div>*@
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:black">Consultar Competencia</div>
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+                            <p>Presione <button type="button" class="boton botoninfo" style="cursor:default;">Consultar</button> para consultar las competencias asignadas de acuerdo a los parámetros ingresados.</p>
+                            <p>Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para Editar las competencias asignadas al rol</p>
+                            <p>Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para Eliminar las competencias asignadas al rol.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body form-horizontal">
+        <div class="col-md-12">
+            <label class="col-md-2" style="line-height:2.5">Rol</label>
+            <div class="col-md-10">
+                @Html.DropDownList("Fk_Id_Rol", null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione ...", onclick = "" }, optionLabel: "-- Seleccionar --")
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-2" style="line-height:2.5">Cargo</label>
+            <div class="col-md-10">
+                @Html.DropDownList("Fk_Id_Cargo", null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione ...", onclick = "" }, optionLabel: "-- Seleccionar --")
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-2" style="line-height:2.5">Competencia</label>
+            <div class="col-md-10">
+                <input type="text" name="BuscarCompetencia" id="BuscarCompetencia" class="form-control" onkeyup="buscarcompetencia()" />
+                <input type="hidden" class="form-control" id="IdTematicaComp" />
+            </div>
+        </div>
+        <div class="col-md-3 col-md-offset-9">
+            <button href="javascript:void(0);" onclick="BusquedaCompetencia()" class="boton botoninfo" title="Consultar Competencia">Consultar</button>
+        </div>
+    </div>
+
+</div>
+
+<div id="TablaTematica"></div>
+@*<div id="TablaTematica"></div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.min.js")
+}

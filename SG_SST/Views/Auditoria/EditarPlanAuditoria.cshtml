@@ -1,0 +1,151 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoria
+@{
+    ViewBag.Title = "Editar Plan de Auditoria";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/MedicionyEvaluacion/AuditoriaEditarPlan.js")"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li><a href="@Url.Action("Programa", "Auditoria")">Programas</a></li>
+    <li><a href="@Url.Action("Auditoria", "Auditoria",new { IdPrograma = ViewBag.IdPrograma })">Auditorias</a></li>
+    <li class="active">Editar Plan de Auditoria</li>
+</ol>
+
+
+
+    @Html.Hidden("EdicionPrograma", (object)ViewBag.IdPrograma)
+    @Html.HiddenFor(m=>m.Pk_Id_Auditoria)
+    @Html.HiddenFor(m => m.Fk_Id_Proceso)
+    @Html.AntiForgeryToken()
+    <div class="panel panel-default std-panel-body">
+        <div class="panel-heading panel-heading-custom">EDITAR PLAN DE AUDITORÍA</div>
+        <div class="panel-body">
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Editar plan de auditorias</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">EDITAR PLAN</button> Para actualizar el plan de auditoría</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">GENERAR PDF</button> Para generar un PDF del plan de auditoría</p>
+                                    <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">REGRESAR</button> Para regresar al listado de auditorías del programa</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            
+
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-4">
+                    <label>Fecha Realización:</label>
+                    @Html.EditorFor(m => m.FechaRealizacion, new { htmlAttributes = new { @class = "form-control form-width-100", @Value = Model.FechaRealizacion.ToString("dd/MM/yyyy") } })
+                    <span id="val-fecha" class="text-danger field-validation-error val-message" style="display:none;"></span><span id="val-fecha" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-sm-4">
+                    <label>Proceso:</label>
+                    <div>
+                        @Html.TextBoxFor(m => m.NombreProceso1, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, @disabled = true })                       
+                        <span id="val-proceso" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label>Periodicidad</label>
+                    <div>
+                       @Html.DropDownList("ListaPeriodo", null, "-- Seleccione la Periodicidad --", htmlAttributes: new { @class = "form-control form-width-100" })
+                        <span id="val-periodo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label>Objetivo</label>
+                    @Html.TextAreaFor(m => m.Objetivo, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                    <span id="val-objetivo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+            </div>
+
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label>Alcance:</label>
+                    @Html.TextAreaFor(m => m.Alcance, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                    <span id="val-alcance" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+            </div>
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-12">
+                    <label>Criterios:</label>
+                    @Html.TextAreaFor(m => m.Criterios, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 3000 })
+                    <span id="val-criterios" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+            </div>
+
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-6">
+                    <label>Responsable del Proceso</label>
+                    @Html.TextBoxFor(m => m.Auditado, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 1000 })
+                    <span id="val-Auditado" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label>Auditor</label>
+                    @Html.TextBoxFor(m => m.Auditador, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 1000 })
+                    <span id="val-Auditor" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+            </div>
+
+            <div class="form-group row internal-panel-body">
+                <div class="col-sm-6">
+                    <label style="text-decoration:underline" title="Indique norma, numeral u otro requisito con los cuales estará basado el plan de auditoría">Requisito</label>
+                    @Html.TextBoxFor(m => m.Requisito, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 1000 })
+                    <span id="val-Requisito" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label style="text-decoration:underline" title="Tiempo estimado dedicado a la ejecución del plan de auditoría">Duración</label>
+                    @Html.TextBoxFor(m => m.Duracion, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 1000 })
+                    <span id="val-Duracion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-4">
+                    <button id="GuardarAuditoria" class="boton botonactive col-margin">EDITAR PLAN</button>
+                </div>
+                <div class="col-md-4" style="margin-bottom:5px;">
+                    <button class="boton botonactive" id="pdf-btn" type="submit" value="GenerarPDF" onclick="location.href='@Url.Action("ReportePlan","Auditoria",new { IdAuditoria = Model.Pk_Id_Auditoria })';return false;">GENERAR PDF</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="boton botoninfo" id="cancel-btn-seg" type="submit" onclick="location.href='@Url.Action("Auditoria","Auditoria",new { IdPrograma = (object)ViewBag.IdPrograma })';return false;">REGRESAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

@@ -1,0 +1,43 @@
+﻿@model SG_SST.Models.Planificacion.InterpretacionDeProbabilidad
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InterpretacionDeProbabilidad</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nivel_Inferior)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nivel_Inferior)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nivel_Superior)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nivel_Superior)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Interpretacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Interpretacion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PK_Interpretacion_De_Probabilidad }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

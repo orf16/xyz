@@ -1,0 +1,1722 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaInicial
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>FICHA DE DATOS GENERALES</title>
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+
+    <!-- Referencia a botones -->
+    @Styles.Render("~/bundles/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/Utilidades")
+
+</head>
+<body style="color:black; font-family:Arial; padding: 0px 20px 3px 20px">
+
+    <script>
+        //Numeric Inputs
+        $(document).ready(function () {
+            $("#PersonasDependen").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl/cmd+A
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+C
+                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+X
+                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+            $("#A_oNac").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl/cmd+A
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+C
+                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+X
+                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+            $("#A_osConEmpresaNum").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl/cmd+A
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+C
+                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+X
+                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+            $("#A_osOficioNum").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl/cmd+A
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+C
+                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+X
+                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+            $("#HorasEstablecidas").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl/cmd+A
+                    (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+C
+                    (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: Ctrl/cmd+X
+                    (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+
+        });
+        //Guardado parcial
+        $(function () {
+            $("#GuardarInicial1").bind("click", function () {
+                if ($("#key")!=null) {
+                    var onEventLaunchGuardar = new postGuardar();
+                    onEventLaunchGuardar.launchGuardar();
+                }
+                
+            });
+        });
+        function postGuardar() {
+            this.launchGuardar = function () {
+
+                $("#val-Nombre").css("display", "none");
+                $("#val-Nombre").text('');
+                $("#val-sexo").css("display", "none");
+                $("#val-sexo").text('');
+                $("#val-AñoNac").css("display", "none");
+                $("#val-AñoNac").text('');
+                $("#val-EstadoCivil").css("display", "none");
+                $("#val-EstadoCivil").text('');
+
+                $("#val-NivEstudios").css("display", "none");
+                $("#val-NivEstudios").text('');
+                $("#val-Profesion").css("display", "none");
+                $("#val-Profesion").text('');
+                $("#val-ResidenciaMun").css("display", "none");
+                $("#val-ResidenciaMun").text('');
+                $("#val-ResidenciaDep").css("display", "none");
+                $("#val-ResidenciaDep").text('');
+                $("#val-Estrato").css("display", "none");
+                $("#val-Estrato").text('');
+                $("#val-TipoVivienda").css("display", "none");
+                $("#val-TipoVivienda").text('');
+                $("#val-PersonasDependen").css("display", "none");
+                $("#val-PersonasDependen").text('');
+                
+                $("#val-LugarTrabajoMun").css("display", "none");
+                $("#val-LugarTrabajoMun").text('');
+                $("#val-LugarTrabajoDep").css("display", "none");
+                $("#val-LugarTrabajoDep").text('');
+                $("#val-AñosConEmpresa").css("display", "none");
+                $("#val-AñosConEmpresa").text('');
+                $("#val-CargoConEmpresa").css("display", "none");
+                $("#val-CargoConEmpresa").text('');
+                $("#val-TipoCargo").css("display", "none");
+                $("#val-TipoCargo").text('');
+                $("#val-AñosOficio").css("display", "none");
+                $("#val-AñosOficio").text('');
+                $("#val-AreaEmpresa").css("display", "none");
+                $("#val-AreaEmpresa").text('');
+
+                $("#val-AñosConEmpresaNum").css("display", "none");
+                $("#val-AñosConEmpresaNum").text('');
+                $("#val-AñosOficioNum").css("display", "none");
+                $("#val-AñosOficioNum").text('');
+
+                $("#val-TipoContrato").css("display", "none");
+                $("#val-TipoContrato").text('');
+                $("#val-TipoSalario").css("display", "none");
+                $("#val-TipoSalario").text('');
+
+                var EDBateriaInicial = {
+
+                    Nombre:$("#Nombre").val(),     
+                    Sexo:$('input:radio[name="Sexo"]:checked').val(),      
+                    AnioNacS: $("#A_oNac").val(),
+                    EstadoCivil :$('input:radio[name="EstadoCivil"]:checked').val(), 
+                    NivEstudios:$('input:radio[name="NivEstudios"]:checked').val(), 
+                    Profesion :$("#Profesion").val(), 
+                    ResidenciaMun :$("#ResidenciaMun").val(), 
+                    ResidenciaDep :$("#ResidenciaDep").val(), 
+                    Estrato :$('input:radio[name="Estrato"]:checked').val(), 
+                    TipoVivienda :$('input:radio[name="TipoVivienda"]:checked').val(), 
+                    PersonasDependenS: $("#PersonasDependen").val(),
+                    LugarTrabajoMun :$("#LugarTrabajoMun").val(), 
+                    LugarTrabajoDep :$("#LugarTrabajoDep").val(), 
+                    AñosConEmpresa: $('input:radio[name="AñosConEmpresa"]:checked').val(),
+                    AñosConEmpresaNumS: $("#A_osConEmpresaNum").val(),
+                    CargoConEmpresa :$("#CargoConEmpresa").val(), 
+                    TipoCargo: $('input:radio[name="TipoCargo"]:checked').val(),
+                    AñosOficio: $('input:radio[name="AñosOficio"]:checked').val(),
+                    AñosOficioNumS: $("#A_osOficioNum").val(),
+                    AreaEmpresa :$("#AreaEmpresa").val(), 
+                    TipoContrato :$('input:radio[name="TipoContrato"]:checked').val(),
+                    HorasEstablecidasS: $("#HorasEstablecidas").val(),
+                    TipoSalario :$('input:radio[name="TipoSalario"]:checked').val()
+                };
+                var EDBateriaInicial1 = {
+                    Nombre:$("#key").val(),
+                    Sexo:$("#form").val(),      
+                    Profesion:$("#pagina").val()
+                };
+
+
+
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: '/Bateria/GuardarInicial',
+                    traditional: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ EDBateriaInicial: EDBateriaInicial, Control:EDBateriaInicial1 }),
+                    success: function (data) {
+                        OcultarPopupposition();
+                        if (data.Probar[0] == false) {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.Estado,
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                            if (numpag=="1") {
+                                if (data.Probar[1] == false) {
+                                    if (data.Validacion[0]==false) {
+                                        $("#val-Nombre").css("display", "block");
+                                        $("#val-Nombre").text(data.ValidacionStr[0]);
+                                    }
+                                    if (data.Validacion[1]==false) {
+                                        $("#val-sexo").css("display", "block");
+                                        $("#val-sexo").text(data.ValidacionStr[1]);
+                                    }
+                                    if (data.Validacion[2]==false) {
+                                        $("#val-AñoNac").css("display", "block");
+                                        $("#val-AñoNac").text(data.ValidacionStr[2]);
+                                    }
+                                    if (data.Validacion[3]==false) {
+                                        $("#val-EstadoCivil").css("display", "block");
+                                        $("#val-EstadoCivil").text(data.ValidacionStr[3]);
+                                    }
+
+                                }
+                            }
+                            if (numpag == "2") {
+                                if (data.Probar[2] == false) {
+                                    if (data.Validacion[4] == false) {
+                                        $("#val-NivEstudios").css("display", "block");
+                                        $("#val-NivEstudios").text(data.ValidacionStr[4]);
+                                    }
+                                    if (data.Validacion[5] == false) {
+                                        $("#val-Profesion").css("display", "block");
+                                        $("#val-Profesion").text(data.ValidacionStr[5]);
+                                    }
+                                    if (data.Validacion[6] == false) {
+                                        $("#val-ResidenciaMun").css("display", "block");
+                                        $("#val-ResidenciaMun").text(data.ValidacionStr[6]);
+                                    }
+                                    if (data.Validacion[7] == false) {
+                                        $("#val-ResidenciaDep").css("display", "block");
+                                        $("#val-ResidenciaDep").text(data.ValidacionStr[7]);
+                                    }
+                                    if (data.Validacion[8] == false) {
+                                        $("#val-Estrato").css("display", "block");
+                                        $("#val-Estrato").text(data.ValidacionStr[8]);
+                                    }
+                                    if (data.Validacion[9] == false) {
+                                        $("#val-TipoVivienda").css("display", "block");
+                                        $("#val-TipoVivienda").text(data.ValidacionStr[9]);
+                                    }
+                                    if (data.Validacion[10] == false) {
+                                        $("#val-PersonasDependen").css("display", "block");
+                                        $("#val-PersonasDependen").text(data.ValidacionStr[10]);
+                                    }
+                                }
+                            }
+                            if (numpag == "3") {
+                                if (data.Probar[3] == false) {
+                                    if (data.Validacion[11] == false) {
+                                        $("#val-LugarTrabajoMun").css("display", "block");
+                                        $("#val-LugarTrabajoMun").text(data.ValidacionStr[11]);
+                                    }
+                                    if (data.Validacion[12] == false) {
+                                        $("#val-LugarTrabajoDep").css("display", "block");
+                                        $("#val-LugarTrabajoDep").text(data.ValidacionStr[12]);
+                                    }
+                                    if (data.Validacion[13] == false) {
+                                        $("#val-AñosConEmpresa").css("display", "block");
+                                        $("#val-AñosConEmpresa").text(data.ValidacionStr[13]);
+                                    }
+                                    if (data.Validacion[14] == false) {
+                                        $("#val-AñosConEmpresaNum").css("display", "block");
+                                        $("#val-AñosConEmpresaNum").text(data.ValidacionStr[14]);
+                                    }
+                                    if (data.Validacion[15] == false) {
+                                        $("#val-CargoConEmpresa").css("display", "block");
+                                        $("#val-CargoConEmpresa").text(data.ValidacionStr[15]);
+                                    }
+                                    if (data.Validacion[16] == false) {
+                                        $("#val-TipoCargo").css("display", "block");
+                                        $("#val-TipoCargo").text(data.ValidacionStr[16]);
+                                    }
+                                    if (data.Validacion[17] == false) {
+                                        $("#val-AñosOficio").css("display", "block");
+                                        $("#val-AñosOficio").text(data.ValidacionStr[17]);
+                                    }
+                                    if (data.Validacion[18] == false) {
+                                        $("#val-AñosOficioNum").css("display", "block");
+                                        $("#val-AñosOficioNum").text(data.ValidacionStr[18]);
+                                    }
+                                    if (data.Validacion[19] == false) {
+                                        $("#val-AreaEmpresa").css("display", "block");
+                                        $("#val-AreaEmpresa").text(data.ValidacionStr[19]);
+                                    }
+                                }
+                            }
+                            if (numpag == "4") {
+                                if (data.Probar[4] == false) {
+                                    if (data.Validacion[20] == false) {
+                                        $("#val-TipoContrato").css("display", "block");
+                                        $("#val-TipoContrato").text(data.ValidacionStr[20]);
+                                    }
+                                    if (data.Validacion[21] == false) {
+                                        $("#val-HorasEstablecidas").css("display", "block");
+                                        $("#val-HorasEstablecidas").text(data.ValidacionStr[21]);
+                                    }
+                                    if (data.Validacion[22] == false) {
+                                        $("#val-TipoSalario").css("display", "block");
+                                        $("#val-TipoSalario").text(data.ValidacionStr[22]);
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            var form = $("#form").val();
+                            var numpag=$("#pagina").val();
+                            if (numpag=="1") {
+                                if (data.Probar[1] == false) {
+                                    if (data.Validacion[0]==false) {
+                                        $("#val-Nombre").css("display", "block");
+                                        $("#val-Nombre").text(data.ValidacionStr[0]);
+                                    }
+                                    if (data.Validacion[1]==false) {
+                                        $("#val-sexo").css("display", "block");
+                                        $("#val-sexo").text(data.ValidacionStr[1]);
+                                    }
+                                    if (data.Validacion[2]==false) {
+                                        $("#val-AñoNac").css("display", "block");
+                                        $("#val-AñoNac").text(data.ValidacionStr[2]);
+                                    }
+                                    if (data.Validacion[3]==false) {
+                                        $("#val-EstadoCivil").css("display", "block");
+                                        $("#val-EstadoCivil").text(data.ValidacionStr[3]);
+                                    }
+
+                                }
+                                else {
+                                    var key=$("#key").val();
+                                    var url = "/Bateria/InicialPagina?formdata=" + key + "&form=" + form + "&pag=2";
+                                    window.location.href = url;
+                                }
+                            }
+                            if (numpag == "2") {
+                                if (data.Probar[2] == false) {
+                                    if (data.Validacion[4] == false) {
+                                        $("#val-NivEstudios").css("display", "block");
+                                        $("#val-NivEstudios").text(data.ValidacionStr[4]);
+                                    }
+                                    if (data.Validacion[5] == false) {
+                                        $("#val-Profesion").css("display", "block");
+                                        $("#val-Profesion").text(data.ValidacionStr[5]);
+                                    }
+                                    if (data.Validacion[6] == false) {
+                                        $("#val-ResidenciaMun").css("display", "block");
+                                        $("#val-ResidenciaMun").text(data.ValidacionStr[6]);
+                                    }
+                                    if (data.Validacion[7] == false) {
+                                        $("#val-ResidenciaDep").css("display", "block");
+                                        $("#val-ResidenciaDep").text(data.ValidacionStr[7]);
+                                    }
+                                    if (data.Validacion[8] == false) {
+                                        $("#val-Estrato").css("display", "block");
+                                        $("#val-Estrato").text(data.ValidacionStr[8]);
+                                    }
+                                    if (data.Validacion[9] == false) {
+                                        $("#val-TipoVivienda").css("display", "block");
+                                        $("#val-TipoVivienda").text(data.ValidacionStr[9]);
+                                    }
+                                    if (data.Validacion[10] == false) {
+                                        $("#val-PersonasDependen").css("display", "block");
+                                        $("#val-PersonasDependen").text(data.ValidacionStr[10]);
+                                    }
+                                }
+                                else {
+                                    var key = $("#key").val();
+                                    var url = "/Bateria/InicialPagina?formdata=" + key + "&form=" + form + "&pag=3";
+                                    window.location.href = url;
+                                }
+                            }
+                            if (numpag=="3") {
+                                if (data.Probar[3] == false) {
+                                    if (data.Validacion[11] == false) {
+                                        $("#val-LugarTrabajoMun").css("display", "block");
+                                        $("#val-LugarTrabajoMun").text(data.ValidacionStr[11]);
+                                    }
+                                    if (data.Validacion[12] == false) {
+                                        $("#val-LugarTrabajoDep").css("display", "block");
+                                        $("#val-LugarTrabajoDep").text(data.ValidacionStr[12]);
+                                    }
+                                    if (data.Validacion[13] == false) {
+                                        $("#val-AñosConEmpresa").css("display", "block");
+                                        $("#val-AñosConEmpresa").text(data.ValidacionStr[13]);
+                                    }
+                                    if (data.Validacion[14] == false) {
+                                        $("#val-AñosConEmpresaNum").css("display", "block");
+                                        $("#val-AñosConEmpresaNum").text(data.ValidacionStr[14]);
+                                    }
+                                    if (data.Validacion[15] == false) {
+                                        $("#val-CargoConEmpresa").css("display", "block");
+                                        $("#val-CargoConEmpresa").text(data.ValidacionStr[15]);
+                                    }
+                                    if (data.Validacion[16] == false) {
+                                        $("#val-TipoCargo").css("display", "block");
+                                        $("#val-TipoCargo").text(data.ValidacionStr[16]);
+                                    }
+                                    if (data.Validacion[17] == false) {
+                                        $("#val-AñosOficio").css("display", "block");
+                                        $("#val-AñosOficio").text(data.ValidacionStr[17]);
+                                    }
+                                    if (data.Validacion[18] == false) {
+                                        $("#val-AñosOficioNum").css("display", "block");
+                                        $("#val-AñosOficioNum").text(data.ValidacionStr[18]);
+                                    }
+                                    if (data.Validacion[19] == false) {
+                                        $("#val-AreaEmpresa").css("display", "block");
+                                        $("#val-AreaEmpresa").text(data.ValidacionStr[19]);
+                                    }
+                                }
+                                else {
+                                    var key = $("#key").val();
+                                    var url = "/Bateria/InicialPagina?formdata=" + key + "&form=" + form + "&pag=4";
+                                    window.location.href = url;
+                                }
+                            }
+                            if (numpag=="4") {
+                                if (data.Probar[4] == false) {
+                                    if (data.Validacion[20] == false) {
+                                        $("#val-TipoContrato").css("display", "block");
+                                        $("#val-TipoContrato").text(data.ValidacionStr[20]);
+                                    }
+                                    if (data.Validacion[21] == false) {
+                                        $("#val-HorasEstablecidas").css("display", "block");
+                                        $("#val-HorasEstablecidas").text(data.ValidacionStr[21]);
+                                    }
+                                    if (data.Validacion[22] == false) {
+                                        $("#val-TipoSalario").css("display", "block");
+                                        $("#val-TipoSalario").text(data.ValidacionStr[22]);
+                                    }
+                                }
+                                else {
+                                    var form =$("#form").val();
+                                    var key = $("#key").val();
+                                    var url = "/Bateria/Inicial?formdata=" + key + "&form=" + form + "";
+
+                                    swal({
+                                        title: "Estimado Usuario",
+                                        text: "La FICHA DE DATOS GENERALES se ha llenado correctamente, el sistema lo redigira a la encuesta",
+                                        type: "success",
+                                        confirmButtonColor: "#DD6B55",
+                                        confirmButtonText: "OK",
+                                        closeOnConfirm: true
+                                    },
+                          function () {
+                              window.location.href = url;
+                          });
+
+                                }
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        OcultarPopupposition();
+                    }
+                });
+            }
+        }
+
+        //Habilitar digitar años 
+        $(document).ready(function () {
+            $('input:radio[name="AñosConEmpresa"]').change(function () {
+                if (this.value == 'Si lleva más de un año, anote cuántos años:') {
+                    $("#A_osConEmpresaNum").removeAttr('disabled');
+                }
+                else if (this.value == 'Si lleva menos de un año marque esta opción') {
+                    $("#A_osConEmpresaNum").attr('disabled', 'disabled');
+                    $("#A_osConEmpresaNum").val('');
+                    $("#A_osConEmpresaNum").text('');
+                }
+            });
+        });
+        $(document).ready(function () {
+            if ($(".RadioSi").is(':checked')) {
+                $("#A_osConEmpresaNum").removeAttr('disabled');
+            }
+            if ($(".RadioNo").is(':checked')) {
+                $("#A_osConEmpresaNum").attr('disabled', 'disabled');
+                $("#A_osConEmpresaNum").val('');
+                $("#A_osConEmpresaNum").text('');
+            }
+        });
+        $(document).ready(function () {
+            $('input:radio[name="AñosOficio"]').change(function () {
+                if (this.value == 'Si lleva más de un año, anote cuántos años:') {
+                    $("#A_osOficioNum").removeAttr('disabled');
+                }
+                else if (this.value == 'Si lleva menos de un año marque esta opción') {
+                    $("#A_osOficioNum").attr('disabled', 'disabled');
+                    $("#A_osOficioNum").val('');
+                    $("#A_osOficioNum").text('');
+                }
+            });
+        });
+        $(document).ready(function () {
+            if ($(".ARadioSi").is(':checked')) {
+                $("#A_osOficioNum").removeAttr('disabled');
+            }
+            if ($(".ARadioNo").is(':checked')) {
+                $("#A_osOficioNum").attr('disabled', 'disabled');
+                $("#A_osOficioNum").val('');
+                $("#A_osOficioNum").text('');
+            }
+        });
+    </script>
+    <div id="capa_loading" class="capa_loading" style="display:none;">Procesando...</div>
+    <div id="_loading" class="_loading" style="display:none;"><img class="img_loading" src='@Url.Content("~/Images/fancyBox/fancybox_loading@2x.gif")' /><br></div>
+    <div id="popupMsg" style="display:none;">
+        <h4></h4>
+        <button id="btn_aceptMsg" type="submit" data-href="" class="btn btn-default" onclick="javascript:MostrarPopupMsg(e);">Aceptar</button>
+    </div>
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+
+            <div class="col-md-2 logo-empresa col-xs-6">
+                <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block">
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta">
+            </div>
+        </div>
+
+    </div>
+
+    <center><div class="col-sm-12" style="margin-top:6em"><h3><strong>FICHA DE DATOS GENERALES</strong></h3></div></center>
+    <div>
+        @Html.Hidden("key", (string)ViewBag.key)
+        @Html.Hidden("form", (string)ViewBag.form)
+        @Html.Hidden("pagina", (string)ViewBag.pagina)
+    </div>
+
+    <p><h3>Las siguientes son algunas preguntas que se refieren a información general de usted o su ocupación. Por favor seleccione una sola respuesta para cada pregunta y márquela o en escribala en la casilla.</h3></p>
+    
+
+
+    <div class="panel panel-default std-panel-body" style="color:black;">
+        <div class="panel-body">
+@*Boton de ayuda*@
+<div align="right">
+    <div id="ayuda" style="text-align:right">
+        <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+           title="Ayuda" class=" btn-ayuda btn-md">
+            <i class="glyphicon glyphicon-question-sign"></i>
+        </a>
+        <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title title">Ayuda / FICHA DE DATOS GENERALES</h4>
+                    </div>
+                    <div class="modal-body " style="color:black">
+                        <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> <strong>Esta ficha de datos generales consta de 19 preguntas en total distribuidas en 4 páginas que deben ser respondidas antes de diligenciar el cuestionario al cual fue invitado(a), en caso que la pregunta sea de selección solo puede eligir una respuesta</strong></p>
+
+                        <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Pasar a la siguiente página</strong></u></p>
+                        <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Presione <button type="button" class="boton botonactive" style="cursor:default;">SIGUIENTE</button> para ir a la siguiente página de la ficha de datos generales</p>
+
+                        <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Pasar a la anterior página</strong></u></p>
+                        <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Presione <button type="button" class="boton botonactive" style="cursor:default;">REGRESAR</button> para ir a la anterior página de la ficha de datos generales</p>
+
+                        <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Finalizar la ficha de datos generales</strong></u></p>
+                        <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Presione <button type="button" class="boton botonactive" style="cursor:default;">FINALIZAR FICHA</button> después de contestar las 19 preguntas de esta ficha para finalizar y continuar con el cuestionario</p>
+
+                        <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> <strong>Si tiene dudas respecto a una pregunta, solicite mayor explicación a la persona que supervisa el cuestionario.</strong></p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="form-group row add-bottom-margin-10em">
+                @{
+                    string paginaid = (string)ViewBag.pagina;
+                    if (paginaid == "1")
+                    {
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>1. Nombre completo:</label>
+                                @Html.EditorFor(m => m.Nombre, new { htmlAttributes = new { @class = "form-control form-width-100", @autocomplete = "off" } })
+                                <span id="val-Nombre" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>2. Sexo:</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.Sexo, "null", new { id = "Sexo", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.Sexo, "Masculino", new { id = "Sexo" })
+                                        Masculino
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.Sexo, "Femenino", new { id = "Sexo" })
+                                        Femenino
+                                    </label>
+                                </div>
+
+                                
+                                
+
+                                <span id="val-sexo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-3 col-lg-2 add-bottom-margin-10em">
+                                <label>3. Año de nacimiento:</label>
+                                @Html.EditorFor(m => m.AñoNac, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "1900", @maxlength = "4", @oninput = "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" } })
+                                <span id="val-AñoNac" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>4. Estado civil:</label>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "null", new { id = "EstadoCivil", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Soltero (a)", new { id = "EstadoCivil" })
+                                        Soltero (a)
+                                    </label>
+                                </div>
+                                
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Casado (a)", new { id = "EstadoCivil" })
+                                        Casado (a)
+                                    </label>
+                                </div>
+                                
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Unión libre", new { id = "EstadoCivil" })
+                                        Unión libre
+                                    </label>
+                                </div>
+                                
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Separado (a)", new { id = "EstadoCivil" })
+                                        Separado (a)
+                                    </label>
+                                </div>
+                                
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Divorciado (a)", new { id = "EstadoCivil" })
+                                        Divorciado (a)
+                                    </label>
+                                </div>
+                                
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Viudo (a)", new { id = "EstadoCivil" })
+                                        Viudo (a)
+                                    </label>
+                                </div>
+                                
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Sacerdote / Monja", new { id = "EstadoCivil" })
+                                        Sacerdote / Monja
+                                    </label>
+                                </div>
+
+                                <span id="val-EstadoCivil" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>1. Nombre completo:</label>
+                                @Html.EditorFor(m => m.Nombre, new { htmlAttributes = new { @class = "form-control form-width-100", @autocomplete = "off" } })
+                                <span id="val-Nombre" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>2. Sexo:</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.Sexo, "null", new { id = "Sexo", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.Sexo, "Masculino", new { id = "Sexo" })
+                                        Masculino
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.Sexo, "Femenino", new { id = "Sexo" })
+                                        Femenino
+                                    </label>
+                                </div>
+
+
+
+
+                                <span id="val-sexo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-3 col-lg-2 add-bottom-margin-10em">
+                                <label>3. Año de nacimiento:</label>
+                                @Html.EditorFor(m => m.AñoNac, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "1900", @maxlength = "4", @oninput = "javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" } })
+                                <span id="val-AñoNac" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>4. Estado civil:</label>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "null", new { id = "EstadoCivil", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Soltero (a)", new { id = "EstadoCivil" })
+                                        Soltero (a)
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Casado (a)", new { id = "EstadoCivil" })
+                                        Casado (a)
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Unión libre", new { id = "EstadoCivil" })
+                                        Unión libre
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Separado (a)", new { id = "EstadoCivil" })
+                                        Separado (a)
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Divorciado (a)", new { id = "EstadoCivil" })
+                                        Divorciado (a)
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Viudo (a)", new { id = "EstadoCivil" })
+                                        Viudo (a)
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.EstadoCivil, "Sacerdote / Monja", new { id = "EstadoCivil" })
+                                        Sacerdote / Monja
+                                    </label>
+                                </div>
+
+                                <span id="val-EstadoCivil" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                    if (paginaid == "2")
+                    {
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>5. Último nivel de estudios que alcanzó (marque una sola opción)</label>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "null", new { id = "NivEstudios", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Ninguno", new { id = "NivEstudios" })
+                                        Ninguno
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Primaria incompleta", new { id = "NivEstudios" })
+                                        Primaria incompleta
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Primaria completa", new { id = "NivEstudios" })
+                                        Primaria completa
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Bachillerato incompleto", new { id = "NivEstudios" })
+                                        Bachillerato incompleto
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Bachillerato completo", new { id = "NivEstudios" })
+                                        Bachillerato completo
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Técnico / tecnológico incompleto", new { id = "NivEstudios" })
+                                        Técnico / tecnológico incompleto
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Técnico / tecnológico completo", new { id = "NivEstudios" })
+                                        Técnico / tecnológico completo
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Profesional incompleto", new { id = "NivEstudios" })
+                                        Profesional incompleto
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Profesional completo", new { id = "NivEstudios" })
+                                        Profesional completo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Carrera militar / policía", new { id = "NivEstudios" })
+                                        Carrera militar / policía
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Post-grado incompleto", new { id = "NivEstudios" })
+                                        Post-grado incompleto
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Post-grado completo", new { id = "NivEstudios" })
+                                        Post-grado completo
+                                    </label>
+                                </div>
+
+                                <span id="val-NivEstudios" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>6. ¿Cuál es su ocupación o profesión?</label>
+                                @Html.EditorFor(m => m.Profesion, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-Profesion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>7. Lugar de residencia actual:</label>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>Ciudad / municipio</label>
+                                @Html.EditorFor(m => m.ResidenciaMun, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-ResidenciaMun" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>Departamento</label>
+                                @Html.EditorFor(m => m.ResidenciaDep, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-ResidenciaDep" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>8. Seleccione y marque el estrato de los servicios públicos de su vivienda</label>
+
+                                <div class="row add-side-padding">
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "null", new { id = "Estrato", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.Estrato, "1", new { id = "Estrato" })
+                                        1
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "4", new { id = "Estrato" })
+                                        4
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "Finca", new { id = "Estrato" })
+                                        Finca
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "2", new { id = "Estrato" })
+                                        2
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "5", new { id = "Estrato" })
+                                        5
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "No Sé", new { id = "Estrato" })
+                                        No Sé
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "3", new { id = "Estrato" })
+                                        3
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "6", new { id = "Estrato" })
+                                        6
+                                    </label>
+                                </div>
+
+                                <span id="val-Estrato" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>9. Tipo de vivienda</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "null", new { id = "TipoVivienda", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "Propia", new { id = "TipoVivienda" })
+                                        Propia
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "En arriendo", new { id = "TipoVivienda" })
+                                        En arriendo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "Familiar", new { id = "TipoVivienda" })
+                                        Familiar
+                                    </label>
+                                </div>
+
+
+                                <span id="val-TipoVivienda" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding remove-bottom-margin">
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label>10. Número de personas que dependen económicamente de usted (aunque vivan en otro lugar)</label>
+                            </div>
+                            <div class="col-sm-12 col-md-2 col-lg-2 add-bottom-margin-10em">
+                                @Html.EditorFor(m => m.PersonasDependen, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "0" } })
+                                <span id="val-PersonasDependen" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>5. Último nivel de estudios que alcanzó (marque una sola opción)</label>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "null", new { id = "NivEstudios", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Ninguno", new { id = "NivEstudios" })
+                                        Ninguno
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Primaria incompleta", new { id = "NivEstudios" })
+                                        Primaria incompleta
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Primaria completa", new { id = "NivEstudios" })
+                                        Primaria completa
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Bachillerato incompleto", new { id = "NivEstudios" })
+                                        Bachillerato incompleto
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Bachillerato completo", new { id = "NivEstudios" })
+                                        Bachillerato completo
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Técnico / tecnológico incompleto", new { id = "NivEstudios" })
+                                        Técnico / tecnológico incompleto
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Técnico / tecnológico completo", new { id = "NivEstudios" })
+                                        Técnico / tecnológico completo
+                                    </label>
+                                </div>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Profesional incompleto", new { id = "NivEstudios" })
+                                        Profesional incompleto
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Profesional completo", new { id = "NivEstudios" })
+                                        Profesional completo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Carrera militar / policía", new { id = "NivEstudios" })
+                                        Carrera militar / policía
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Post-grado incompleto", new { id = "NivEstudios" })
+                                        Post-grado incompleto
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.NivEstudios, "Post-grado completo", new { id = "NivEstudios" })
+                                        Post-grado completo
+                                    </label>
+                                </div>
+
+                                <span id="val-NivEstudios" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>6. ¿Cuál es su ocupación o profesión?</label>
+                                @Html.EditorFor(m => m.Profesion, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-Profesion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>7. Lugar de residencia actual:</label>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>Ciudad / municipio</label>
+                                @Html.EditorFor(m => m.ResidenciaMun, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-ResidenciaMun" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>Departamento</label>
+                                @Html.EditorFor(m => m.ResidenciaDep, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-ResidenciaDep" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>8. Seleccione y marque el estrato de los servicios públicos de su vivienda</label>
+
+                                <div class="row add-side-padding">
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "null", new { id = "Estrato", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.Estrato, "1", new { id = "Estrato" })
+                                        1
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "4", new { id = "Estrato" })
+                                        4
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "Finca", new { id = "Estrato" })
+                                        Finca
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "2", new { id = "Estrato" })
+                                        2
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "5", new { id = "Estrato" })
+                                        5
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "No Sé", new { id = "Estrato" })
+                                        No Sé
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "3", new { id = "Estrato" })
+                                        3
+                                    </label>
+                                    <label class="radio-inline">
+                                        @Html.RadioButtonFor(m => m.Estrato, "6", new { id = "Estrato" })
+                                        6
+                                    </label>
+                                </div>
+
+                                <span id="val-Estrato" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-10em">
+                                <label>9. Tipo de vivienda</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "null", new { id = "TipoVivienda", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "Propia", new { id = "TipoVivienda" })
+                                        Propia
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "En arriendo", new { id = "TipoVivienda" })
+                                        En arriendo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoVivienda, "Familiar", new { id = "TipoVivienda" })
+                                        Familiar
+                                    </label>
+                                </div>
+
+
+                                <span id="val-TipoVivienda" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding remove-bottom-margin" style="display:none">
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label>10. Número de personas que dependen económicamente de usted (aunque vivan en otro lugar)</label>
+                            </div>
+                            <div class="col-sm-12 col-md-2 col-lg-2 add-bottom-margin-10em">
+                                @Html.EditorFor(m => m.PersonasDependen, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "0" } })
+                                <span id="val-PersonasDependen" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                    if (paginaid == "3")
+                    {
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>11. Lugar donde trabaja actualmente:</label>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>Ciudad / municipio</label>
+                                @Html.EditorFor(m => m.LugarTrabajoMun, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-LugarTrabajoMun" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>Departamento</label>
+                                @Html.EditorFor(m => m.LugarTrabajoDep, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-LugarTrabajoDep" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-10em">
+                                <label>12. ¿Hace cuántos años que trabaja en esta empresa?</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.AñosConEmpresa, "null", new { id = "AñosConEmpresa", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.AñosConEmpresa, "Si lleva menos de un año marque esta opción", new { id = "AñosConEmpresa", @class = "RadioNo" })
+                                        Si lleva menos de un año marque esta opción
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding col-sm-12">
+                                    <label style="display:inline;padding-left:0px" class="col-sm-3 remove-side-margin">
+                                        @Html.RadioButtonFor(m => m.AñosConEmpresa, "Si lleva más de un año, anote cuántos años:", new { id = "AñosConEmpresa", @class = "RadioSi" })
+                                        Si lleva más de un año, anote cuántos años:
+                                    </label>
+                                    <div class="col-sm-2 remove-side-margin">
+                                        @Html.EditorFor(m => m.AñosConEmpresaNum, new { htmlAttributes = new { @class = "form-control", @min = "2", @max = "100", @disabled = "disabled" } })
+                                    </div>
+                                </div>
+                                <div class="row add-side-padding col-sm-12">
+                                    <span id="val-AñosConEmpresa" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                    <span id="val-AñosConEmpresaNum" class="text-danger field-validation-error val-message" style="display:none;"></span>
+
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>13. ¿Cuál es el nombre del cargo que ocupa en la empresa?</label>
+                                @Html.EditorFor(m => m.CargoConEmpresa, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-CargoConEmpresa" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-10em">
+                                <label>14. Seleccione el tipo de cargo que más se parece al que usted desempeña y señalelo en el cuadro correspondiente de la derecha. Si tiene dudas pida apoyo a la persona que le entregó este cuestionario</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "null", new { id = "TipoCargo", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Jefatura - tiene personal a cargo", new { id = "TipoCargo" })
+                                        Jefatura - tiene personal a cargo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Profesional, analista, técnico, tecnólogo", new { id = "TipoCargo" })
+                                        Profesional, analista, técnico, tecnólogo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Auxiliar, asistente administrativo, asistente técnico", new { id = "TipoCargo" })
+                                        Auxiliar, asistente administrativo, asistente técnico
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Operario, operador, ayudante, servicios generales", new { id = "TipoCargo" })
+                                        Operario, operador, ayudante, servicios generales
+                                    </label>
+                                </div>
+
+
+
+                                <span id="val-TipoCargo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-10em">
+                                <label>15. ¿Hace cuántos años que desempeña el cargo u oficio actual en esta empresa?</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.AñosOficio, "null", new { id = "AñosOficio", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.AñosOficio, "Si lleva menos de un año marque esta opción", new { id = "AñosOficio", @class = "ARadioNo" })
+                                        Si lleva menos de un año marque esta opción
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding col-sm-12">
+                                    <label style="display:inline;padding-left:0px" class="col-sm-3 remove-side-margin">
+                                        @Html.RadioButtonFor(m => m.AñosOficio, "Si lleva más de un año, anote cuántos años:", new { id = "AñosOficio", @class = "ARadioSi" })
+                                        Si lleva más de un año, anote cuántos años:
+                                    </label>
+                                    <div class="col-sm-2 remove-side-margin">
+                                        @Html.EditorFor(m => m.AñosOficioNum, new { htmlAttributes = new { @class = "form-control", @min = "2", @max = "100", @disabled = "disabled" } })
+                                    </div>
+                                </div>
+                                <div class="row add-side-padding col-sm-12">
+                                    <span id="val-AñosOficio" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                    <span id="val-AñosOficioNum" class="text-danger field-validation-error val-message" style="display:none;"></span>
+
+                                </div>
+                                    
+                                </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>16. Escriba el nombre del departamento, área o sección de la empresa en el que trabaja</label>
+                                @Html.EditorFor(m => m.AreaEmpresa, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-AreaEmpresa" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>11. Lugar donde trabaja actualmente:</label>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                <label>Ciudad / municipio</label>
+                                @Html.EditorFor(m => m.LugarTrabajoMun, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-LugarTrabajoMun" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>Departamento</label>
+                                @Html.EditorFor(m => m.LugarTrabajoDep, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-LugarTrabajoDep" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-10em">
+                                <label>12. ¿Hace cuántos años que trabaja en esta empresa?</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.AñosConEmpresa, "null", new { id = "AñosConEmpresa", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.AñosConEmpresa, "Si lleva menos de un año marque esta opción", new { id = "AñosConEmpresa", @class = "RadioNo" })
+                                        Si lleva menos de un año marque esta opción
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding col-sm-12">
+                                    <label style="display:inline;padding-left:0px" class="col-sm-3 remove-side-margin">
+                                        @Html.RadioButtonFor(m => m.AñosConEmpresa, "Si lleva más de un año, anote cuántos años:", new { id = "AñosConEmpresa", @class = "RadioSi" })
+                                        Si lleva más de un año, anote cuántos años:
+                                    </label>
+                                    <div class="col-sm-2 remove-side-margin">
+                                        @Html.EditorFor(m => m.AñosConEmpresaNum, new { htmlAttributes = new { @class = "form-control", @min = "2", @max = "100" } })
+                                    </div>
+                                </div>
+                                <span id="val-AñosConEmpresa" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                <span id="val-AñosConEmpresaNum" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>13. ¿Cuál es el nombre del cargo que ocupa en la empresa?</label>
+                                @Html.EditorFor(m => m.CargoConEmpresa, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-CargoConEmpresa" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-10em">
+                                <label>14. Seleccione el tipo de cargo que más se parece al que usted desempeña y señalelo en el cuadro correspondiente de la derecha. Si tiene dudas pida apoyo a la persona que le entregó este cuestionario</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "null", new { id = "TipoCargo", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Jefatura - tiene personal a cargo", new { id = "TipoCargo" })
+                                        Jefatura - tiene personal a cargo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Profesional, analista, técnico, tecnólogo", new { id = "TipoCargo" })
+                                        Profesional, analista, técnico, tecnólogo
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Auxiliar, asistente administrativo, asistente técnico", new { id = "TipoCargo" })
+                                        Auxiliar, asistente administrativo, asistente técnico
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoCargo, "Operario, operador, ayudante, servicios generales", new { id = "TipoCargo" })
+                                        Operario, operador, ayudante, servicios generales
+                                    </label>
+                                </div>
+
+
+
+                                <span id="val-TipoCargo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-10em">
+                                <label>15. ¿Hace cuántos años que desempeña el cargo u oficio actual en esta empresa?</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.AñosOficio, "null", new { id = "AñosOficio", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.AñosOficio, "Si lleva menos de un año marque esta opción", new { id = "AñosOficio", @class = "ARadioNo" })
+                                        Si lleva menos de un año marque esta opción
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding col-sm-12">
+                                    <label style="display:inline;padding-left:0px" class="col-sm-3 remove-side-margin">
+                                        @Html.RadioButtonFor(m => m.AñosOficio, "Si lleva más de un año, anote cuántos años:", new { id = "AñosOficio", @class = "ARadioSi" })
+                                        Si lleva más de un año, anote cuántos años:
+                                    </label>
+                                    <div class="col-sm-2 remove-side-margin">
+                                        @Html.EditorFor(m => m.AñosOficioNum, new { htmlAttributes = new { @class = "form-control", @min = "2", @max = "100", @disabled = "disabled" } })
+                                    </div>
+                                </div>
+                                <span id="val-AñosOficio" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                                <span id="val-AñosOficioNum" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>16. Escriba el nombre del departamento, área o sección de la empresa en el que trabaja</label>
+                                @Html.EditorFor(m => m.AreaEmpresa, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                                <span id="val-AreaEmpresa" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                    if (paginaid == "4")
+                    {
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>17. Seleccione el tipo de contrato que tiene actualmente (marque una sola opción)</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "null", new { id = "TipoContrato", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Temporal de menos de 1 año", new { id = "TipoContrato" })
+                                        Temporal de menos de 1 año
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Temporal de 1 año o más", new { id = "TipoContrato" })
+                                        Temporal de 1 año o más
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Término indefinido", new { id = "TipoContrato" })
+                                        Término indefinido
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Cooperado (cooperativa)", new { id = "TipoContrato" })
+                                        Cooperado (cooperativa)
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Prestación de servicios", new { id = "TipoContrato" })
+                                        Prestación de servicios
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "No sé", new { id = "TipoContrato" })
+                                        No sé
+                                    </label>
+                                </div>
+                                <span id="val-TipoContrato" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding remove-bottom-margin">
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label>18. Indique cuántas horas diarias de trabajo están establecidas habitualmente por la empresa para su cargo</label>
+                            </div>
+                            <div class="col-sm-12 col-md-2 col-lg-2 add-bottom-margin-10em">
+                                @Html.EditorFor(m => m.HorasEstablecidas, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "1" } })
+                                <span id="val-HorasEstablecidas" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label> horas de trabajo al día</label>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>19. Seleccione y marque el tipo de salario que recibe (marque una sola opción)</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "null", new { id = "TipoSalario", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "Fijo (diario, semanal, quincenal o mensual)", new { id = "TipoSalario" })
+                                        Fijo (diario, semanal, quincenal o mensual)
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "Una parte fija y otra variable", new { id = "TipoSalario" })
+                                        Una parte fija y otra variable
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "Todo variable (a destajo, por producción, por comisión)", new { id = "TipoSalario" })
+                                        Todo variable (a destajo, por producción, por comisión)
+                                    </label>
+                                </div>
+
+                                <span id="val-TipoSalario" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>17. Seleccione el tipo de contrato que tiene actualmente (marque una sola opción)</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "null", new { id = "TipoContrato", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Temporal de menos de 1 año", new { id = "TipoContrato" })
+                                        Temporal de menos de 1 año
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Temporal de 1 año o más", new { id = "TipoContrato" })
+                                        Temporal de 1 año o más
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Término indefinido", new { id = "TipoContrato" })
+                                        Término indefinido
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Cooperado (cooperativa)", new { id = "TipoContrato" })
+                                        Cooperado (cooperativa)
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "Prestación de servicios", new { id = "TipoContrato" })
+                                        Prestación de servicios
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoContrato, "No sé", new { id = "TipoContrato" })
+                                        No sé
+                                    </label>
+                                </div>
+                                <span id="val-TipoContrato" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding remove-bottom-margin" style="display:none">
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label>18. Indique cuántas horas diarias de trabajo están establecidas habitualmente por la empresa para su cargo</label>
+                            </div>
+                            <div class="col-sm-12 col-md-2 col-lg-2 add-bottom-margin-10em">
+                                @Html.EditorFor(m => m.HorasEstablecidas, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "1" } })
+                                <span id="val-HorasEstablecidas" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <label> horas de trabajo al día</label>
+                            </div>
+                        </div>
+                        <div class="row add-top-margin-10em add-side-padding" style="display:none">
+                            <div class="col-sm-12 col-md-8 col-lg-8 add-bottom-margin-10em">
+                                <label>19. Seleccione y marque el tipo de salario que recibe (marque una sola opción)</label>
+
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "null", new { id = "TipoSalario", type = "hidden" })
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "Fijo (diario, semanal, quincenal o mensual)", new { id = "TipoSalario" })
+                                        Fijo (diario, semanal, quincenal o mensual)
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "Una parte fija y otra variable", new { id = "TipoSalario" })
+                                        Una parte fija y otra variable
+                                    </label>
+                                </div>
+                                <div class="row add-side-padding">
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.TipoSalario, "Todo variable (a destajo, por producción, por comisión)", new { id = "TipoSalario" })
+                                        Todo variable (a destajo, por producción, por comisión)
+                                    </label>
+                                </div>
+
+                                <span id="val-TipoSalario" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            @{
+                if (paginaid == "1")
+                {
+                    <div class="row add-top-margin-10em">
+                        <center>
+                            <div class="col-md-12" style="margin-bottom:5px;">
+                                <button id="GuardarInicial1" class="boton botonactive col-margin" >SIGUIENTE</button>
+                            </div>
+                        </center>
+                    </div>
+                }
+                if (paginaid == "2")
+                {
+                    <div class="row add-top-margin-10em">
+                        <center>
+                            <div class="col-md-6">
+
+                                <button class="boton botonactive" onclick="location.href='@Url.Action("InicialPagina", "Bateria", new { formdata=(string)ViewBag.key, form=(string)ViewBag.form ,pag = "1" })';return false;">REGRESAR</button>
+                            </div>
+                            <div class="col-md-6" style="margin-bottom:5px;">
+                                <button id="GuardarInicial1" class="boton botonactive col-margin">SIGUIENTE</button>
+                            </div>
+                        </center>
+                    </div>
+                }
+                if (paginaid == "3")
+                {
+                    <div class="row add-top-margin-10em">
+                        <center>
+                            <div class="col-md-6">
+
+                                <button class="boton botonactive" onclick="location.href='@Url.Action("InicialPagina", "Bateria", new { formdata=(string)ViewBag.key, form=(string)ViewBag.form ,pag = "2" })';return false;">REGRESAR</button>
+                            </div>
+                            <div class="col-md-6" style="margin-bottom:5px;">
+                                <button id="GuardarInicial1" class="boton botonactive col-margin">SIGUIENTE</button>
+                            </div>
+                        </center>
+                    </div>
+                }
+                if (paginaid == "4")
+                {
+                    <div class="row add-top-margin-10em">
+                        <center>
+                            <div class="col-md-6">
+
+                                <button class="boton botonactive" onclick="location.href='@Url.Action("InicialPagina", "Bateria", new { formdata=(string)ViewBag.key, form=(string)ViewBag.form ,pag = "3" })';return false;">REGRESAR</button>
+                            </div>
+                            <div class="col-md-6" style="margin-bottom:5px;">
+                                <button id="GuardarInicial1" class="boton botonactive col-margin">FINALIZAR FICHA</button>
+                            </div>
+                        </center>
+                    </div>
+                }
+            }
+
+
+            
+
+            
+
+
+            </div>
+
+    </div>
+
+</body>
+</html>
+
+

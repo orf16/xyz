@@ -1,0 +1,425 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Iniciar Cuestionario</title>
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+    <!-- Referencia a botones -->
+    @Styles.Render("~/bundles/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/Utilidades")
+
+</head>
+<body style="background-color:none; color:black; font-family:Arial; padding: 0px 20px 3px 20px">
+
+    <script>
+        $(document).ready(function () {
+            var extra = $("#extra").val();
+            if (extra=="true") {
+                $("#noacepto").click(function () {
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "Estas seguro(a) que no desea realizar la encuesta?",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Si",
+                        cancelButtonText: "No",
+                        type: "warning",
+                        closeOnConfirm: true
+                    },
+                function () {
+                    var stringArray = new Array();
+                    stringArray[0] = $("#form").val();
+                    stringArray[1] = $("#key").val();
+                    stringArray[2] = $("#extra").val();
+                    var postData = { values: stringArray };
+                    PopupPosition();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Bateria/RechazoEncuesta",
+                        data: postData,
+                        dataType: "json",
+                        traditional: true,
+                        success: function (data) {
+                            OcultarPopupposition();
+                            var titulo = $("#titulo").val();
+                            var form = $("#form").val();
+                            var key = $("#key").val();
+                            var url = "/Bateria/Inicial?formdata=" + key + "&form=" + form + "";
+                            window.location.href = url;
+                        },
+                        error: function (data) {
+                            OcultarPopupposition();
+                        }
+                    });
+
+                });
+                });
+                $("#acepto").click(function () {
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "Estas seguro(a) que desea realizar la encuesta?",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Si",
+                        cancelButtonText: "No",
+                        type: "warning",
+                        closeOnConfirm: true
+                    },
+                function () {
+                    var stringArray = new Array();
+                    stringArray[0] = $("#form").val();
+                    stringArray[1] = $("#key").val();
+                    stringArray[2] = $("#extra").val();
+                    var postData = { values: stringArray };
+                    PopupPosition();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Bateria/AceptacionEncuesta",
+                        data: postData,
+                        dataType: "json",
+                        traditional: true,
+                        success: function (data) {
+                            OcultarPopupposition();
+
+                            var form = $("#form").val();
+                            var key = $("#key").val();
+                            var url = "/Bateria/Inicial?formdata=" + key + "&form=" + form + "";
+                            window.location.href = url;
+
+
+                        },
+                        error: function (data) {
+                            OcultarPopupposition();
+                        }
+                    });
+                });
+
+
+
+
+                });
+            }
+            else {
+                $("#noacepto").click(function () {
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "Estas seguro(a) que no desea realizar la encuesta?",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Si",
+                        cancelButtonText: "No",
+                        type: "warning",
+                        closeOnConfirm: true
+                    },
+                function () {
+                    var stringArray = new Array();
+                    stringArray[0] = $("#form").val();
+                    stringArray[1] = $("#key").val();
+                    stringArray[2] = null;
+                    var postData = { values: stringArray };
+                    PopupPosition();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Bateria/RechazoEncuesta",
+                        data: postData,
+                        dataType: "json",
+                        traditional: true,
+                        success: function (data) {
+                            OcultarPopupposition();
+                            var titulo = $("#titulo").val();
+                            var form = $("#form").val();
+                            var key = $("#key").val();
+                            var url = "/Bateria/Inicial?formdata=" + key + "&form=" + form + "";
+                            window.location.href = url;
+                        },
+                        error: function (data) {
+                            OcultarPopupposition();
+                        }
+                    });
+
+                });
+                });
+                $("#acepto").click(function () {
+                    swal({
+                        title: "Estimado Usuario",
+                        text: "Estas seguro(a) que desea realizar la encuesta?",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Si",
+                        cancelButtonText: "No",
+                        type: "warning",
+                        closeOnConfirm: true
+                    },
+                function () {
+                    var stringArray = new Array();
+                    stringArray[0] = $("#form").val();
+                    stringArray[1] = $("#key").val();
+                    stringArray[2] = null;
+                    var postData = { values: stringArray };
+                    PopupPosition();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Bateria/AceptacionEncuesta",
+                        data: postData,
+                        dataType: "json",
+                        traditional: true,
+                        success: function (data) {
+                            OcultarPopupposition();
+
+                            var form = $("#form").val();
+                            var key = $("#key").val();
+                            var url = "/Bateria/Inicial?formdata=" + key + "&form=" + form + "";
+                            window.location.href = url;
+
+
+                        },
+                        error: function (data) {
+                            OcultarPopupposition();
+                        }
+                    });
+                });
+
+
+
+
+                });
+            }
+     });
+
+
+
+    </script>
+
+    <div id="capa_loading" class="capa_loading" style="display:none;">Procesando...</div>
+    <div id="_loading" class="_loading" style="display:none;"><img class="img_loading" src='@Url.Content("~/Images/fancyBox/fancybox_loading@2x.gif")' /><br></div>
+    <div id="popupMsg" style="display:none;">
+        <h4></h4>
+        <button id="btn_aceptMsg" type="submit" data-href="" class="btn btn-default" onclick="javascript:MostrarPopupMsg(e);">Aceptar</button>
+    </div>
+
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+
+            <div class="col-md-2 logo-empresa col-xs-6">
+                <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block">
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta">
+            </div>
+        </div>
+
+    </div>
+
+    @{
+        @Html.Hidden("key", (string)ViewBag.key)
+        @Html.Hidden("form", (string)ViewBag.form)
+        @Html.Hidden("titulo", (string)ViewBag.formT)
+        @Html.Hidden("extra", (string)ViewBag.extraStr)
+    }
+
+    @{
+        string Titulo = (string)ViewBag.formT;
+        string descripcion= (string)ViewBag.Info;
+        string aceptacion = (string)ViewBag.acep;
+        string aceptacion1 = (string)ViewBag.acep1;
+        string aceptacion2 = (string)ViewBag.acep2;
+        string instrucciones = (string)ViewBag.instr;
+        string formid= (string)ViewBag.form;
+        bool Extrabl = (bool)ViewBag.Extra;
+    }
+
+
+    <div class="panel panel-default std-panel-body" style="margin-top:6em; padding:10px 10px 10px 10px;">
+        <div class="panel-body">
+            <div class="form-group row add-bottom-margin-10em">
+                <div class="row add-top-margin-10em add-side-padding" style="text-align:justify">
+                    <h3 style="color:black">Estimado usuario usted ha sido invitado a diligenciar el @Titulo, por favor lea atentamente la siguiente información y confirme su participación en la misma</h3>
+                </div>
+            </div>
+
+            <div class="form-group row add-bottom-margin-10em">
+                <div class="row add-top-margin-10em add-side-padding" style="text-align:justify">
+                    <h3 style="color:black">Objetivo de la encuesta</h3>
+                    @{
+                        if (formid == "1")
+                        {
+
+
+                            if ((bool)ViewBag.Extra)
+                            {
+                                <p style="color:black; font-size:18px;">El Cuestionario de factores de riesgo psicosocial extralaboral tiene como objetivo evaluar condiciones externas al medio laboral, que están relacionadas con el entorno familiar, social y económico del trabajador.</p>
+                            }
+                            else
+                            {
+                                <p style="color:black; font-size:18px;">El cuestionario de factores de riesgo psicosocial intralaboral tiene como objetivo evaluar condiciones propias del trabajo, de su organización y del entorno en el que se desarrolla, las cuales bajo ciertas características, pueden llegar a tener efectos negativos en la salud del trabajador o en el trabajo.</p>
+                            }
+                        }
+                        if (formid == "2")
+                        {
+                            if ((bool)ViewBag.Extra)
+                            {
+                                <p style="color:black; font-size:18px;">El Cuestionario de factores de riesgo psicosocial extralaboral tiene como objetivo evaluar condiciones externas al medio laboral, que están relacionadas con el entorno familiar, social y económico del trabajador.</p>
+                            }
+                            else
+                            {
+                                <p style="color:black; font-size:18px;">El cuestionario de factores de riesgo psicosocial intralaboral tiene como objetivo evaluar condiciones propias del trabajo, de su organización y del entorno en el que se desarrolla, las cuales bajo ciertas características, pueden llegar a tener efectos negativos en la salud del trabajador o en el trabajo.</p>
+                            }
+                        }
+                        if (formid == "3")
+                        {
+
+                        }
+                        if (formid == "4")
+                        {
+                            <p style="color:black;font-size:18px; ">El cuestionario para la evaluación del estrés tiene como objetivo evaluar síntomas reveladores de la presencia de reacciones de estrés</p>
+                        }
+                    }
+                    
+                </div>
+            </div>
+
+
+            <div class="form-group row add-bottom-margin-10em">
+                <div class="row add-top-margin-10em add-side-padding" style="text-align:justify">
+                    <h3 style="color:black">Instrucciones</h3>
+                    @{
+                        if (formid == "1")
+                        {
+                            if ((bool)ViewBag.Extra)
+                            {
+                                <p style="color:black; font-size:18px;">
+                                    Este cuestionario de factores psicosociales busca conocer su opinión sobre algunos aspectos de su vida familiar y personal.
+                                    Le agradecemos que usted se sirva contestar a las siguientes preguntas de forma absolutamente sincera. Las respuestas que usted de al cuestionario, no son ni buenas, ni malas, lo importante es que reflejen su manera de pensar sobre las condiciones de su vida familiar y personal.
+                                </p>
+                                <p style="color:black; font-size:18px;">El cuestionario iniciará con el <strong>registro de datos generales</strong>, y una vez diligenciado el sistema cargará el cuestionario.</p>
+                                <p style="color:black; font-size:18px;">Es muy importante que usted responda a todas las preguntas y en cada una de ellas marque una sola respuesta.</p>
+                                <p style="color:black; font-size:18px;">Ejemplo:</p>
+                                <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath6.png" style="max-width:100%" /></p>
+                                <p style="color:black; font-size:18px;">Una vez que las preguntas de una página sean contestadas haga click en <strong>SIGUIENTE</strong> para avanzar a la siguiente, repita este paso hasta finalizar la encuesta, una vez contestadas todas las preguntas el sistema el mostrará un mensaje que le indicará que la encuesta fue diligenciada satisfactoriamente.</p>
+                                <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath2.png" style="max-width:100%" /></p>
+                                <p style="color:black; font-size:18px;">Si desea regresar a la página anterior haga click en <strong>REGRESAR</strong>.</p>
+                                <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath4.png" style="max-width:100%" /></p>
+                                <p style="color:black; font-size:18px;">
+                                    Sus respuestas serán manejadas de forma absolutamente confidencial.
+                                </p>
+                                <p style="color:black; font-size:18px;">Si tiene dudas respecto a una pregunta, solicite mayor explicación a la persona que supervisa el cuestionario.</p>
+                                <p style="color:black; font-size:18px;">El cuestionario no tiene límite de tiempo; sin embargo, el tiempo aproximado que usted requiere para contestar todas las preguntas es de 10 minutos.</p>
+                            }
+                            else
+                            {
+                                <p style="color:black; font-size:18px;">
+                                    Este cuestionario de factores psicosociales busca conocer su opinión sobre algunos aspectos de su trabajo.
+                                    Le agradecemos que usted se sirva contestar a las siguientes preguntas de forma absolutamente sincera. Las respuestas que usted de al cuestionario, no son ni buenas, ni malas, lo importante es que reflejen su manera de pensar sobre su trabajo.
+                                </p>
+                                <p style="color:black; font-size:18px;">El cuestionario iniciará con el <strong>registro de datos generales</strong>, y una vez diligenciado el sistema cargará el cuestionario.</p>
+                                <p style="color:black; font-size:18px;">Al responder por favor lea cuidadosamente cada pregunta, luego piense como es su trabajo y responda a todas las preguntas, en cada una de ellas marque una sola respuesta.</p>
+                                <p style="color:black; font-size:18px;">Ejemplo:</p>
+                                <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath1.png" style="max-width:100%" /></p>
+                                <p style="color:black; font-size:18px;">Una vez que las preguntas de una página sean contestadas haga click en <strong>SIGUIENTE</strong> para avanzar a la siguiente, repita este paso hasta finalizar la encuesta, una vez contestadas todas las preguntas el sistema el mostrará un mensaje que le indicará que la encuesta fue diligenciada satisfactoriamente.</p>
+                                <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath2.png" style="max-width:100%" /></p>
+                                <p style="color:black; font-size:18px;">Si desea regresar a la página anterior haga click en <strong>REGRESAR</strong>.</p>
+                                <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath4.png" style="max-width:100%" /></p>
+                                <p style="color:black; font-size:18px;">
+                                    Tenga presente que el cuestionario NO lo evalúa a usted como trabajador, sino busca conocer cómo es el trabajo que le han asignado.
+                                    Sus respuestas serán manejadas de forma absolutamente confidencial.
+                                </p>
+                                <p style="color:black; font-size:18px;">Si tiene dudas respecto a una pregunta, solicite mayor explicación a la persona que supervisa el cuestionario.</p>
+                                <p style="color:black; font-size:18px;">El cuestionario no tiene límite de tiempo; sin embargo, aproximadamente usted requerirá 1 hora para contestar todas las preguntas.</p>
+                            }
+
+
+                        }
+                        if (formid == "2")
+                        {
+                            <p style="color:black; font-size:18px;">Este cuestionario de factores psicosociales busca conocer su opinión sobre algunos aspectos de su trabajo.
+                            Le agradecemos que usted se sirva contestar a las siguientes preguntas de forma absolutamente sincera. Las respuestas que usted de al cuestionario, no son ni buenas, ni malas, lo importante es que reflejen su manera de pensar sobre su trabajo.</p>
+                            <p style="color:black; font-size:18px;">El cuestionario iniciará con el <strong>registro de datos generales</strong>, y una vez diligenciado el sistema cargará el cuestionario.</p>
+                            <p style="color:black; font-size:18px;">Al responder por favor lea cuidadosamente cada pregunta, luego piense como es su trabajo y responda a todas las preguntas, en cada una de ellas marque una sola respuesta.</p>
+                            <p style="color:black; font-size:18px;">Ejemplo:</p>
+                            <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath1.png" style="max-width:100%" /></p>
+                            <p style="color:black; font-size:18px;">Una vez que las preguntas de una página sean contestadas haga click en <strong>SIGUIENTE</strong> para avanzar a la siguiente, repita este paso hasta finalizar la encuesta, una vez contestadas todas las preguntas el sistema el mostrará un mensaje que le indicará que la encuesta fue diligenciada satisfactoriamente.</p>
+                            <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath2.png" style="max-width:100%" /></p>
+                            <p style="color:black; font-size:18px;">Si desea regresar a la página anterior haga click en <strong>REGRESAR</strong>.</p>
+                            <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath4.png" style="max-width:100%" /></p>                       
+                            <p style="color:black; font-size:18px;">Tenga presente que el cuestionario NO lo evalúa a usted como trabajador, sino busca conocer cómo es el trabajo que le han asignado.
+                            Sus respuestas serán manejadas de forma absolutamente confidencial.</p>
+                            <p style="color:black; font-size:18px;">Si tiene dudas respecto a una pregunta, solicite mayor explicación a la persona que supervisa el cuestionario.</p>
+                            <p style="color:black; font-size:18px;">El cuestionario no tiene límite de tiempo; sin embargo, aproximadamente usted requerirá 1 hora para contestar todas las preguntas.</p>
+                        }
+                        if (formid == "3")
+                        {
+
+                        }
+                        if (formid == "4")
+                        {
+                            <p style="color:black; font-size:18px;">El Cuestionario iniciará con el <strong>registro de datos generales</strong>, y una vez diligenciado el sistema cargará el cuestionario.</p>
+                            <p style="color:black; font-size:18px;">Al responder por favor lea cuidadosamente cada pregunta, y responda cuidadosamente a todas las preguntas, en cada una de ellas marque una sola respuesta.</p>
+                            <p style="color:black; font-size:18px;">Ejemplo:</p>
+                            <p style="color:black;text-align:center;"><img src="~/Content/Bateria/Imagenes/bath5.png" style="max-width:100%" /></p>
+                            <p style="color:black; font-size:18px;">Si tiene dudas respecto a una pregunta, solicite mayor explicación a la persona que supervisa el cuestionario.</p>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="form-group row add-bottom-margin-10em">
+                <div class="row add-top-margin-10em add-side-padding" style="text-align:justify">
+                    <h3 style="color:black">Aceptar participación</h3>
+                    <p style="color:black">@aceptacion</p>
+                    <p style="color:black">@aceptacion1</p>
+                    <p style="color:black">@aceptacion2</p>
+                </div>
+            </div>
+
+            <div class="row add-top-margin-10em">
+                <center>
+                    <div class="col-md-6" style="margin-bottom:5px;">
+                        <button id="noacepto" class="boton botonactive col-margin">NO DESEO REALIZAR LA ENCUESTA</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button id="acepto" class="boton botonactive" >SI DESEO DILIGENCIAR LA ENCUESTA</button>
+                    </div>
+                </center>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
+
+

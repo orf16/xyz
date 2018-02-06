@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Recursos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+@if (ViewBag.mensaje != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type:'success',
+            title: 'Mensaje del Sistema:',
+            text: '@ViewBag.mensaje',
+            timer: 4000
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+@if (ViewBag.mensaje1 != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Mensaje del Sistema:',
+            text: '@ViewBag.mensaje1',
+            timer: 4000
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Organización</a></li>
+    <li><a href="javascript:void(0)">Recursos</a></li>
+    <li class="active">Gestión Recursos</li>
+</ol>
+
+@*<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">*@
+            <div class="breadcrumb">
+                <div class="panel-heading text-center "><text class="ti"></text> </div>
+                <div class="panel-body form-horizontal">
+                    <div class="col-md-6 col-md-offset-3" align="center">
+                        <div class="col-sm-12">
+                            <hr />
+                            <a href="@Url.Action("CrearRecurso", "Recursos")" class="boton botonactive" title="Asignar Recursos" style="margin-left:3px">
+                                Asignar
+                            </a>
+                        </div>
+                        <br />
+                        <br />
+                        <hr />
+
+                        <div class="col-sm-12">
+                            <a href="@Url.Action("ListadoRecursos","Recursos")" class="boton botoninfo" title="Visualizar Recursos" style="margin-left:3px">
+                                Ver Recursos
+                            </a>
+                            <hr />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        @*</div>
+    </div>
+</div>*@

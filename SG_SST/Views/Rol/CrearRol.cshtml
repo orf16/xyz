@@ -1,0 +1,359 @@
+﻿@model SG_SST.Dtos.LiderazgoGerencial.RolResponsabilidad
+@using System.Configuration;
+
+@{
+    ViewBag.Title = "Roles y Responsabilidades SST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.NoexisteRol == true)
+{
+    if (@ViewBag.NombreRol == "true")
+    { 
+        <script type="text/javascript">
+            swal(
+            'Estimado Usuario',
+            'Ud. no ha asignado el rol REPRESENTANTE LEGAL, por favor dirijase al modulo Datos Generales',
+            'error'
+            )                  
+        </script>
+    }
+    else if (@ViewBag.NombreRol == "false")
+    {
+        <script type="text/javascript">
+            swal(
+            'Estimado usuario',
+            'Usted no ha asignado el rol RESPONSABLE DE SGSST, por favor dirijase al modulo Datos Generales',
+            'error'
+            )
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            swal(
+            'Estimado usuario',
+            'Usted no ha asignado los roles RESPONSABLE DE SGSST y RESPONSABLE DE SGSST, por favor dirijase al modulo Datos Generales',
+            'error'
+            )
+        </script>
+    }
+}
+
+@if (ViewBag.respuestaEditado == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado usuario',
+        'Rol editado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+
+@if (ViewBag.respuestaEliminado == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado usuario',
+        'Rol eliminado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li class="active">Roles y responsabilidades SST</li>
+</ol>
+
+<form method="post" id="rol">
+    <div class="panel panel-default" name="panel" id="panel" style="background-color: rgba(196, 202,196, 0.1)">
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                   class="btn btn-ayuda btn-md"
+                   @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                   <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p>Presione <i class="glyphicon glyphicon-plus" style="color: #FF7500"></i> para Agregar una Responsabilidad o Rendición de Cuenta.</p>
+                                <p>Presione <i class="glyphicon glyphicon-minus" style="color: #FF7500"></i> para Eliminar una Responsabilidad o Rendición de Cuenta.</p>
+                                <p>Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para Editar un Rol con sus respectivas Responsabilidades.</p>
+                                <p>Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para Eliminar un Rol con sus respectivas Responsabilidades.</p>
+                                <p>Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para Generar el Acta de nombramiento Responsable SGSST.</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* ///////// *@
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-2" style="margin-right:-18px">
+                    <h5><b>Nombre del Rol:</b></h5>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" name="NameRol" id="NameRol" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-1" style="margin-right:50px">
+                    <h5><b>Responsabilidad:</b></h5>
+                </div>
+                <div class="col-md-4" id="divSupRes" name="divSupRes">
+                    <div class="input-group" id="divv" name="divv">
+                        <div class="col-md-10" id="divresponsabilidad">
+                            <input type="text" name="Responsab" id="Responsab" class="form-control" required="required" />
+                        </div>
+                        <div class="col-md-2" id="divIconRes">
+                            <a href="javascript:void(0);" onclick="agregarResponsabilidad(this)"
+                               title="Adicionar Responsabilidad" id="agregarResp" name="agregarResp"
+                               class="btn btn-link-1-google-plus btn-circle btn-md">
+                                <i class="glyphicon glyphicon-plus" name="icono" style="color: #FF7500"></i>
+                            </a>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="divresponsabilidadClon">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-right:-50px">
+                    <h5><b>Rendición de Cuentas:</b></h5>
+                </div>
+                <div class="col-md-4" id="divSupRend" name="divSupRend">
+                    <div class="input-group" id="divvRend" name="divvRend">
+                        <div class="col-md-10" id="divrendicion">
+                            <input type="text" name="Rendicion" id="Rendicion" class="form-control" required="required" />
+                        </div>
+                        <div class="col-md-2" id="divIconRend">
+                            <a href="javascript:void(0);" onclick="agregarRendicion(this)"
+                                title="Adicionar Rendición" id="agregarRend" name="agregarRend"
+                                class="btn btn-link-1-google-plus btn-circle btn-md">
+                                <i class="glyphicon glyphicon-plus" name="iconoRend" style="color: #FF7500"></i>
+                            </a>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="divrendicionClon">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="panel-footer">
+            <div class="row" align="center">
+                <div class="col-md-6">
+                    @*<input value="Guardar" type="button" class="form-control btn btn-warning btn-md tbr" onclick="validarCamposRol()" />*@
+                    <button type="button" class="boton botonactive" onclick="validarCamposRol()">Guardar</button>
+                </div>
+                <div class="col-md-6">
+                    @Html.ActionLink("Cancelar", "CrearRol", new { }, htmlAttributes: new { @type = " button", @class = "boton botoncancel" })
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="TablaRol">
+    <div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    @Html.Label("ROLES")
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    @Html.Label("RESPONSABILIDADES")
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    @Html.Label("RENDICIÓN DE CUENTAS")
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    @Html.Label("")
+                </th>
+            </tr>
+
+            @{
+                foreach (var item in Model.RolesResponsabilidad)
+                {
+                    int responsabilidades = 1;
+                    int rendiciones = 1;
+
+                    <tr>
+                        @if (item.Descripcion != ConfigurationManager.AppSettings["rolResponsableSGSST"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolRepresentanteLegal"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolProfesionalSST"])
+                        {  
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle" title="Este Rol NO se puede eliminar porque se utiliza en otros módulos del SGSST">
+                                <strong>@Html.DisplayFor(modelItem => item.Descripcion)</strong>
+                            </td>
+                        }
+                        <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+
+                            @foreach (var respxRol in item.ResponsabilidadesPorRoles)
+                            {
+                                @Html.Label(responsabilidades.ToString() + "- " + "  ")
+                                @Html.DisplayFor(modelItem => respxRol.Responsabilidades.Descripcion)
+                                <br />
+                                responsabilidades = responsabilidades + 1;
+                            }
+                        </td>
+                        <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                            @foreach (var rendxRol in item.RendicionDeCuentasPorRoles)
+                            {
+                                @Html.Label(rendiciones.ToString() + "- " + "  ")
+                                @Html.DisplayFor(modelItem => rendxRol.RendicionDeCuentas.Descripcion)
+                                <br />
+                                rendiciones = rendiciones + 1;
+                            }
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a href="javascript:void(0);" onclick="EditarRolResp(@item.Pk_Id_Rol)"
+                               title="Editar Rol" class="btn btn-md btn-search">
+                                <span class="glyphicon glyphicon-pencil" name="iconoRend"></span>
+                            </a>
+                            @if (item.Descripcion != ConfigurationManager.AppSettings["rolResponsableSGSST"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolRepresentanteLegal"]
+                            && item.Descripcion != ConfigurationManager.AppSettings["rolProfesionalSST"])
+                            {   
+                                <a href="" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Rol)"
+                                    title="Eliminar Rol" class="btn btn-md btn-search">
+                                    <i class="glyphicon glyphicon-erase" name="iconoRend"></i>
+                                </a>
+                                <div id="@string.Format("modalEliminar{0}", item.Pk_Id_Rol)" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    @*<span aria-hidden="true">&times;</span>*@
+                                                </button>
+                                                <h4 class="modal-title title">Eliminar Rol</h4>
+                                            </div>
+                                            <div class="modal-body " style="text-align:center; color:black">
+                                                <center><p>¿Seguro desea eliminar el Rol seleccionado?</p></center>
+                                            </div>
+                                            <div class="modal-footer">
+                                                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Pk_Id_Rol },
+                                                htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (item.Descripcion == ConfigurationManager.AppSettings["rolResponsableSGSST"])
+                            {
+                                <a href="@Url.Action("ActaRolPorResponsabilidad_PDF")"
+                                   class="btn btn-link-1-google-plus btn-circle btn-md btn-search" title="Generar Acta">
+                                    <i class="glyphicon glyphicon-download-alt" name="iconoRend"></i>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+
+            }
+        </table>
+    </div>
+</div>
+
+<br />
+
+<table class="table table-bordered" style="border: 0.5px solid lightslategray; border-radius:0px">
+    <tr class="titulos_tabla">
+        <th class="text-center">
+            @Html.Label("Obligaciones Empleadores")
+        </th>
+    </tr>
+    <tr>
+        <th style="font-weight:500; text-align:justify">
+            @foreach (var item in Model.ObligacionesEmpleadoresRol)
+            {
+                @item.Descripcion
+                <br />
+            }
+        </th>
+    </tr>
+</table>
+
+<br />
+
+<table class="table table-bordered" style="border: 0.5px solid lightslategray; border-radius:0px">
+    <tr class="titulos_tabla">
+        <th class="text-center">
+            @Html.Label("Obligaciones ARL")
+        </th>
+    </tr>
+    <tr>
+        <th style="font-weight:500; text-align:justify">
+            @foreach (var item in Model.ObligacionesArlRol)
+            {
+                @item.Descripcion
+                <br />
+            }
+        </th>
+    </tr>
+</table>
+
+<br />
+
+<div class="panel-footer" style="border: 0.5px solid lightslategray; border-radius:0px">
+    <div class="row" align="center">
+        @*<div class="col-md-2 col-md-offset-5">*@
+            <a href="@Url.Action("RolPorResponsabilidad_PDF")">
+                <img src="~/Content/Images/pdf-simbolo-de-formato-de-archivo (1).png" title="Descargar PDF" />
+            </a>
+        @*</div>*@
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+}

@@ -1,0 +1,719 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.MedicionEvaluacion.EDPlanDeAccion>
+
+@{
+    ViewBag.Title = "Gestión de Planes de Acción";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.mensaje == 0)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'No se han encontrado Planes de Acción de acuerdo a los campos ingresados',
+        'warning'
+        )
+    </script>
+}
+
+<style>
+    /*.modal-lg {
+        width: 90% !important;
+        height: 65% !important;
+    }*/
+
+    .textObservaciones {
+        width: 90%;
+        height: 90%;
+        resize: both;
+        overflow: auto;
+    }
+
+    .actividadesPlanAccion {
+        font-size: 90%;
+    }
+
+    .consColores_1 {
+        background-color: #36cf36;
+        color: white;
+        font-size: 110%;
+    }
+
+    
+
+    .consColores_2 {
+        background-color: #d43a3a;
+        color: white;
+        font-size: 110%;
+    }
+
+    .consColores_3 {
+        background-color: #deb11e;
+        color: white;
+        font-size: 110%;
+    }
+
+    .consColores_4 {
+        background-color: #1b4fad;
+        color: white;
+        font-size: 110%;
+    }
+
+    .consColores_5 {
+        background-color: #607855;
+        color: white;
+        font-size: 110%;
+    }
+
+     .consColores_6 {
+        background-color: #26b4a2;
+        color: white;
+        font-size: 110%;
+    }
+
+      .consColores_7 {
+        background-color: #c1d1cf;
+        color: white;
+        font-size: 110%;
+    }
+      
+        .consColores_8 {
+        background-color: #d0b352;
+        color: white;
+        font-size: 110%;
+    }
+</style>
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Medición y Evaluación SG-SST</a></li>
+    <li><a href="javascript:void(0)">Planes de Acción</a></li>
+    <li class="active">Gestión de Planes de Acción</li>
+</ol>
+
+@using (Html.BeginForm("Consultar", "PlanesDeAccion", FormMethod.Post, new { @id = "formPlanDeAccion", @class = "form-horizontal" }))
+{
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda / Gestión de Planes de Acción</h4>
+                        </div>
+
+                        <div class="modal-body" style="color:black">
+
+                            <p>Presione <i class="glyphicon  glyphicon-search" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para buscar las actividades de acuerdo al módulo y el rango de fechas de finalización.</p>
+                            <p>Presione <i class="glyphicon  glyphicon-refresh" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para actualizar el listado de planes de acción.</p>
+                            <p>Presione <i class="glyphicon glyphicon-floppy-save" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ingresar la fecha de cierre y la observación de la actividad.</p>
+                            <p>Presione <i class="glyphicon  glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar la actividad.</p>
+                            <p>Presione <i class="glyphicon  glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar la actividad.</p>
+                            <p>Presione <i class="glyphicon  glyphicon-plus" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para adicionar una nueva actividad en el plan de acción.</p>
+                            <p>Presione <button type="button" class="boton botonactive" style="cursor:default;">GRAFICAR</button> para generar las gráficas con la información de gestión de los planes de acción.</p>
+
+                            <br>
+                            <b>TIPOS DE GRÁFICAS</b>
+                            <br>
+                            <br>
+                            <b>  Porcentaje de planes abiertos</b>
+                            <br>
+                            <br>
+
+
+                            Corresponde a la ilustración grafica del total de planes de acción creados y con estado abierto en los distintos módulos del sistema (Evaluación SGSST, Inspecciones, Auditorias SGSST, Acciones correctivas y preventivas,Reporte de actos y condiciones inseguras, Coppast,Comité de Convivencia Laboral y Revisión del SG-SST). Es anotar que cada plan de acción puede tener “N” actividades, razón por lo cual en la gráfica se muestra con estado cerrado solo los planes de acción que tengan todas las actividades fechas de cierre definidas.
+
+                            <br> <br>
+                            <b>Porcentaje de la eficacia de los planes de acción</b>
+
+                            <br><br>
+
+                            Corresponde a la ilustración grafica del total de planes de acción creados donde las fechas de cierre de actividades que lo conforman sean igual o inferior a la fecha de finalización definida para la actividad.
+
+                            <br><br>
+                            <b> Porcentaje de planes de acción abiertos por origen</b>
+                            <br><br>
+
+                            Corresponde a la ilustración grafica de los planes de acción creados en los distintos módulos del sistema (Evaluación SGSST, Inspecciones, Auditorias SGSST, Acciones correctivas y preventiva, reporte de actos y condiciones inseguras, Coppast,Comité de Convivencia Laboral y Revisión del SG-SST) mostrando su estado.
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    Origen
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; width:25%">
+                    @Html.DropDownList("modulo", null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione", onclick = "" }, optionLabel: "-- Seleccionar --")
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    Fecha Finalización Inicial
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; width:15%">
+                    @*@Html.TextBox("fechaInicial", DateTime.Now.ToString("dd/MM/yyyy"), new { @class = "form-control fecha", @placeholder = DateTime.Now.ToString("dd/MM/yyyy")})*@
+                    <input type="text" id="fechaInicial" name="fechaInicial" class="form-control" readonly>
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    Fecha Finalización Final
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; width:15%">
+                    <input type="text" id="fechaFinal" name="fechaFinal" class="form-control" readonly>
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    <a href="javascript:void(0);" onclick="BuscarPlanesAccion()"
+                        class="btn btn-md btn-search" title="Buscar Planes de Acción">
+                        <span class="glyphicon glyphicon-search" name="iconoRend"></span>
+                    </a>
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                    <a id="refrescar" href="@Url.Action("Index", "PlanesDeAccion")"
+                        class="btn btn-md btn-search" title="Actualizar Planes de Acción">
+                        <span class="glyphicon glyphicon-refresh" name="iconoRend"></span>
+                    </a>
+                </th>
+            </tr>
+        </table>
+    </div>
+
+    <div class="table-responsive">
+        <table id="actividades" class="table table-bordered" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla">
+                <th width="8%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Origen
+                </th>
+                <th width="8%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Consecutivo
+                </th>
+                <th width="8%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    No. Actividad
+                </th>
+                <th width="10%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Actividad
+                </th>
+                <th width="10%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Responsable
+                </th>
+                <th width="12%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Fecha Finalización
+                </th>
+                <th width="12%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Fecha Cierre
+                </th>
+                <th width="18%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Observaciones
+                </th>
+                <th width="20%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Acción
+                </th>
+            </tr>
+
+            @{var i = 0;}
+
+            @{var j = 0;
+
+                var origen1 = "";
+                //var origen2 = "";
+
+            }
+
+            @foreach (var item in Model)
+            {
+
+                foreach (var actividadPlanDeAccion in item.EDActividadPlanDeAccion)
+                {
+
+                    <tr name="act" class="actividadesPlanAccion">
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <span id="origen_@i"> @Html.DisplayFor(modelItem => item.Origen)</span>
+                            @if (!item.Origen.Equals(@origen1))
+                            {
+                                j++;
+                                origen1 = item.Origen;
+                            }
+                        </td>
+                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle" hidden="hidden">
+                            @if (actividadPlanDeAccion.fechaEvaluacion > DateTime.Parse("01/01/0001"))
+                            {
+                                string fechaEvaluacion = "";
+                                try
+                                {
+                                    fechaEvaluacion = actividadPlanDeAccion.fechaEvaluacion.ToString("dd/MM/yyyy");
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                <span id="fechaEvaluacion_@i">@fechaEvaluacion</span>
+                                <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</hidden>
+
+                            }
+                            else if (actividadPlanDeAccion.consecutivo > 0)
+                            {
+                                <b> <span id="consecutivo_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.consecutivo)</span></b>
+                                <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</hidden>
+
+
+                            }
+                            else
+                            {
+                                <span id="fk_Plan_Inspección_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</span>
+
+
+                            }
+                            <br />
+                        </td>
+
+                        <td class="consColores_@j" style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                            @if (actividadPlanDeAccion.fechaEvaluacion > DateTime.Parse("01/01/0001"))
+                            {
+                                string fechaEvaluacion = "";
+                                try
+                                {
+                                    fechaEvaluacion = actividadPlanDeAccion.fechaEvaluacion.ToString("dd/MM/yyyy");
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                <b>  <span id="fechaEvaluacion_@i">@fechaEvaluacion</span></b>
+                                <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.actividadReporte)</hidden>
+
+                            }
+                            else
+                            {
+
+                                <b> <span id="consColores_@j">@Html.DisplayFor(modelItem => actividadPlanDeAccion.actividadReporte)</span></b>
+                            }
+                        </td>
+                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                            <span id="num_Actividad_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.Num_Actividad)</span>
+                            @*<br />*@
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <span id="actividad_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.Actividad)</span>
+                            @*<br />*@
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <span id="responsable_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.Responsable)</span>
+                            @*<br />*@
+                        </td>
+                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                            @{
+                                string Fecha_str = "";
+                                try
+                                {
+                                    Fecha_str = actividadPlanDeAccion.FechaFinalizacion.ToString("dd/MM/yyyy");
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                <span id="fechaFinalizacion_@i">@Fecha_str</span>
+                            }
+                            @*<br />*@
+                        </td>
+                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                            @if (actividadPlanDeAccion.FechaCierre > DateTime.Parse("01/01/0001"))
+                            {
+                                string Fecha_fin = "";
+                                try
+                                {
+                                    Fecha_fin = actividadPlanDeAccion.FechaCierre.ToString("dd/MM/yyyy");
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                <span id="fechaCierre_@i">@Fecha_fin</span>
+
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(modelItem => actividadPlanDeAccion.FechaCierre,
+                                    new
+                                    {
+                                        @class = "form-control fecha",
+                                        Value = "",
+                                        @placeHolder = string.Format("ej. {0} ",
+                                            DateTime.Now.ToString("dd/MM/yyyy")),
+                                        @id = "fechaCierre_" + @i
+                                    })
+
+                            }
+
+                            @*<br />*@
+                        </td>
+                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                            @if (String.IsNullOrEmpty(actividadPlanDeAccion.Observaciones) && actividadPlanDeAccion.FechaCierre <= DateTime.Parse("01/01/0001"))
+                            {
+                                @Html.TextAreaFor(modelItem => actividadPlanDeAccion.Observaciones, new { id = "observaciones_" + @i, @class = "form-control textObservaciones", style = "resize: none; width:100%" })
+                            }
+                            else
+                            {
+                                @Html.TextAreaFor(modelItem => actividadPlanDeAccion.Observaciones, new { @id = "observaciones_" + @i, @readonly = true, @class = "form-control textObservaciones", style = "resize: none; width:100%" })
+                            }
+                            @*<br />*@
+                        </td>
+                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                            @if (actividadPlanDeAccion.FechaCierre > DateTime.Parse("01/01/0001"))
+                            {
+                                <a id=@i onclick="NoGuardarAccion()"
+                                   title="Guardar Actividad" name="agregarRend"
+                                   class="btn btn-md btn-search actividad">
+                                    <span class="glyphicon glyphicon-floppy-save" name="iconoRend"></span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a onclick="GuardarAccion(@i, @actividadPlanDeAccion.Fk_Id_ModuloPlanAccion ,@actividadPlanDeAccion.Fk_Plan_Inspección,@actividadPlanDeAccion.Fk_Id_Actividad)"
+                                <a id=@i onclick="GuardarAccion(@i,)"
+                                    title="Guardar Actividad" name="agregarRend"
+                                    class="btn btn-md btn-search">
+                                    <span class="glyphicon glyphicon-floppy-save" name="iconoRend"></span>
+                                </a>
+                            }
+
+                            @if (actividadPlanDeAccion.FechaCierre > DateTime.Parse("01/01/0001"))
+                            {
+                                <a id=@i onclick="NoEliminarActividad()"
+                                   title="Eliminar Actividad" name="agregarRend"
+                                   class="btn btn-md btn-search actividad">
+                                    <span class="glyphicon glyphicon-erase" name="iconoRend"></span>
+                                </a>
+                            }
+                            else if (actividadPlanDeAccion.Fk_Id_ModuloPlanAccion == 4)
+                            {
+                                <a onclick="NoEliminarInspección()"
+                                    title="Eliminar Actividad" name="agregarRend"
+                                    class="btn btn-md btn-search">
+                                    <span class="glyphicon glyphicon-erase" name="iconoRend"></span>
+                                </a>
+
+                            }
+                            else
+                            {
+                                <a onclick="EliminarActividad('@item.Origen', @actividadPlanDeAccion.Fk_Id_ModuloPlanAccion ,@actividadPlanDeAccion.Fk_Plan_Inspección,@actividadPlanDeAccion.Fk_Id_Actividad,@item.cantidadActividades)"
+                                   title="Eliminar Actividad" id="agregarRend" name="agregarRend"
+                                   class="btn btn-md btn-search">
+                                    <span class="glyphicon glyphicon-erase" name="iconoRend"></span>
+                                </a>
+                            }
+
+                            @if (actividadPlanDeAccion.FechaCierre > DateTime.Parse("01/01/0001"))
+                            {
+                                <a onclick="NoEditarAccion()"
+                                    title="Editar Actividad" name="agregarRend"
+                                    class="btn btn-md btn-search">
+                                    <span class="glyphicon glyphicon-pencil" name="iconoRend"></span>
+                                </a>
+
+                            }
+                            else
+                            {
+                                <a href=""
+                                    data-toggle="modal" data-target="#@string.Format("modalEditar{0}", @i)"
+                                    title="Editar actividad" class="btn btn-md btn-search">
+                                    <span class="glyphicon glyphicon-pencil" name="iconoRend"></span>
+                                </a>
+                                <div id="@string.Format("modalEditar{0}",@i)" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content modal-lg">
+                                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>*@
+                                                <h4 class="modal-title title">Editar Actividad</h4>
+                                            </div>
+                                            <div class="modal-body" style="text-align:center; color:black">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" style="border: 2px solid lightslategray">
+                                                        <tr class="titulos_tabla">
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                Origen
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase" hidden="hidden">
+                                                                Consecutivo
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                No. Actividad
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                Actividad
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                Responsable
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                Fecha Fin
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                Fecha Cierre
+                                                            </th>
+                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                                Observaciones
+                                                            </th>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                @Html.DisplayFor(modelItem => item.Origen)
+                                                            </td>
+                                                            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle" hidden="hidden">
+                                                                @if (actividadPlanDeAccion.fechaEvaluacion > DateTime.Parse("01/01/0001"))
+                                                                {
+                                                                    string fechaEvaluacion = "";
+                                                                    try
+                                                                    {
+                                                                        fechaEvaluacion = actividadPlanDeAccion.fechaEvaluacion.ToString("dd/MM/yyyy");
+                                                                    }
+                                                                    catch (Exception)
+                                                                    {
+
+                                                                    }
+                                                                    <span id="fechaEvaluacion_@i">@fechaEvaluacion</span>
+                                                                    <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</hidden>
+                                                                }
+                                                                else if (actividadPlanDeAccion.consecutivo > 0)
+                                                                {
+                                                                    <span id="consecutivo_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.consecutivo)</span>
+                                                                    <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</hidden>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span id="fk_Plan_Inspección_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</span>
+
+                                                                }
+                                                                <br />
+                                                            </td>
+
+
+                                                            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                @Html.DisplayFor(modelItem => actividadPlanDeAccion.Num_Actividad)
+                                                                @*<br />*@
+                                                            </td>
+                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                @Html.TextAreaFor(modelItem => actividadPlanDeAccion.Actividad, new { @id = "actividadEdit_" + @i, @class = "form-control", style = "resize: none; width:100%" })
+                                                                @*<br />*@
+                                                            </td>
+                                                            <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                @Html.TextAreaFor(modelItem => actividadPlanDeAccion.Responsable, new { @id = "responsableEdit_" + @i, @class = "form-control", style = "resize: none; width:100%" })
+                                                                @*<br />*@
+                                                            </td>
+                                                            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                <span title="La fecha de finalización no se puede editar">@Fecha_str</span>
+
+                                                            </td>
+                                                            <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                @Html.TextBoxFor(modelItem => actividadPlanDeAccion.FechaCierre, new { @id = "fechaCierreEdit_" + @i, @class = "form-control fecha", Value = "", @placeHolder = string.Format("ej. {0} ", DateTime.Now.ToString("dd/MM/yyyy")) })
+                                                            </td>
+                                                            <td style="text-align:left; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                                @Html.TextAreaFor(modelItem => actividadPlanDeAccion.Observaciones, new { @id = "observacionesEdit_" + @i, @class = "form-control", style = "resize: none; width:100%" })
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" onclick="EditarActividad('@item.Origen',@i,@actividadPlanDeAccion.Fk_Id_ModuloPlanAccion, @actividadPlanDeAccion.Fk_Plan_Inspección, @actividadPlanDeAccion.Fk_Id_Actividad)" class="boton botonactive">Guardar</button>
+                                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                         @if (item.Estado!=1)
+                        {
+                            <a onclick="NoAdicionarActividad()"
+                                title="Adicionar Actividad" name="agregarRend"
+                                class="btn btn-md btn-search">
+                                <span class="glyphicon glyphicon-plus" name="iconoRend"></span>
+                            </a>
+
+                        }
+                         else if (actividadPlanDeAccion.Fk_Id_ModuloPlanAccion == 4)
+                        {
+                            <a onclick="NoAdicionarInspección()"
+                                title="Adicionar Actividad" name="agregarRend"
+                                class="btn btn-md btn-search">
+                                <span class="glyphicon glyphicon-plus" name="iconoRend"></span>
+                            </a>
+
+                        }
+                        else
+                        {
+                            <a href=""
+                                data-toggle="modal" data-target="#@string.Format("modalActividad{0}", @i)"
+                                title="Adicionar Actividad"
+                                class="btn btn-md btn-search">
+                                <span class="glyphicon glyphicon-plus" name="iconoRend"></span>
+                            </a>
+                            <div id="@string.Format("modalActividad{0}", @i)" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>*@
+                                            <h4 class="modal-title title">Adicionar Actividad</h4>
+                                        </div>
+                                        <div class="modal-body" style="text-align:center; color:black">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                                                    <tr class="titulos_tabla">
+                                                        <th width="14%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Origen
+                                                        </th>
+                                                        <th width="5%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase" hidden="hidden">
+                                                            Consecutivo
+                                                        </th>
+                                                        <th width="20%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Actividad
+                                                        </th>
+                                                        <th width="14%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Responsable
+                                                        </th>
+                                                        <th width="14%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Fecha Fin
+                                                        </th>
+                                                        <th width="15%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Fecha Cierre
+                                                        </th>
+                                                        <th width="20%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Observaciones
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.DisplayFor(modelItem => item.Origen)
+                                                        </td>
+                                                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle" hidden="hidden">
+                                                            @if (actividadPlanDeAccion.fechaEvaluacion > DateTime.Parse("01/01/0001"))
+                                                            {
+                                                                string fechaEvaluacion = "";
+                                                                try
+                                                                {
+                                                                    fechaEvaluacion = actividadPlanDeAccion.fechaEvaluacion.ToString("dd/MM/yyyy");
+                                                                }
+                                                                catch (Exception)
+                                                                {
+
+                                                                }
+                                                                <span id="fechaEvaluacion_@i">@fechaEvaluacion</span>
+                                                                <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</hidden>
+
+                                                            }
+                                                            else if (actividadPlanDeAccion.consecutivo > 0)
+                                                            {
+                                                                <span id="consecutivo_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.consecutivo)</span>
+                                                                <hidden id="fk_Plan_Inspección_@i">@Html.HiddenFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</hidden>
+
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <span id="fk_Plan_Inspección_@i">@Html.DisplayFor(modelItem => actividadPlanDeAccion.Fk_Plan_Inspección)</span>
+
+
+                                                            }
+                                                            @*<br />*@
+                                                        </td>
+
+
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.TextArea("actividadAdd_" + @i, null, new { @id = "actividadAdd_" + @i, Value = "", @class = "form-control textObservaciones", style = "resize:none; width:100%" })
+                                                            @*<br />*@
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.TextArea("responsableAdd_" + @i, null, new { @id = "responsableAdd_" + @i, Value = "", @class = "form-control textObservaciones", style = "resize:none; width:100%" })
+                                                            @*<br />*@
+                                                        </td>
+                                                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.TextBoxFor(modelItem => actividadPlanDeAccion.FechaFinalizacion, new { @id = "fechaFinalizacionAdd_" + @i, @class = "form-control fecha", Value = "" })
+
+                                                        </td>
+                                                        <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.TextBoxFor(modelItem => actividadPlanDeAccion.FechaCierre, new { @id = "fechaCierreAdd_" + @i, @class = "form-control fecha", Value = "" })
+
+                                                        </td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                            @Html.TextArea("observacionesAdd_" + @i, null, new { @id = "observacionesAdd_" + @i, Value = "", @class = "form-control textObservaciones", style = "resize:none; width:100%" })
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="AdicionarActividad(@i,@actividadPlanDeAccion.Fk_Id_ModuloPlanAccion, @actividadPlanDeAccion.Fk_Plan_Inspección, @actividadPlanDeAccion.Fk_Id_Actividad )" class="boton botonactive">Guardar</button>
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            <br />
+                        </td>
+                    </tr>
+                    i++;
+
+                }
+
+                i++;
+            }
+
+        </table>
+    </div>
+
+    <div class="pagination-page" id="paginador1" style="margin-left:45%"></div>
+
+    <div class="row">
+        <div class="col-md-3" style="margin-left:42.5%">
+            <button type="button" onclick="graficar()" class="boton botonactive">Graficar</button>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <canvas id="canvas1" height="30" width="30"></canvas>
+    </div>
+
+    <br />
+
+    <div class="col-md-6">
+        <canvas id="canvas2" height="30" width="30"></canvas>
+    </div>
+
+    <br><br><br><br>
+    <div class="col-md-6">
+        <canvas id="canvas3" height="30" width="30"></canvas>
+    </div>
+    
+}
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/MedicionyEvaluacion/PlanDeAccion.js")
+    @Scripts.Render("~/bundles/ChartEstadisticos")
+    @Scripts.Render("~/bundles/simplePagination")
+}

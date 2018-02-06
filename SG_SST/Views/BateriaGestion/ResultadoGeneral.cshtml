@@ -1,0 +1,1849 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaGestion
+
+@{
+    ViewBag.Title = "Resultado General";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/Chart.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li><a href="@Url.Action("Index", "BateriaGestion")">Gestionar Batería Psicosocial</a></li>
+    <li class="active">Resultado General</li>
+</ol>
+
+<script>
+ 
+
+
+    Chart.pluginService.register({
+        beforeDraw: function (chart, easing) {
+            if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
+                var helpers = Chart.helpers;
+                var ctx = chart.chart.ctx;
+                var ctx1 = chart.ctx;
+                var chartArea = chart.chartArea;
+
+                var h = parseInt(chart.right);
+                var w = parseInt(chart);
+
+                ctx.save();
+                ctx1.fillStyle = "white";
+                ctx1.fillRect(0, 0, 3000, 3000);
+                ctx1.restore();
+
+
+                ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
+                ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+                ctx.restore();
+            }
+        }
+    });
+
+    //Graficar dominio
+    $(document).ready(function () {
+        PopupPosition();
+        var tables1 = document.getElementById("menu4");
+        $(tables1).find('tbody.tbody_dimension1').each(function () {
+
+            var terminados=$("#realizados").attr('name');
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var ctx1 = document.getElementById(graficotabla);
+            var ctx2 = ctx1.getContext("2d");
+            ctx2.fillStyle = "#FF0000";
+            ctx2.fillRect(20, 20, 150, 100);
+            
+            var titles= "VALORES TRANSFORMADO DE DOMINIOS"+ " - "+ terminados+" TRABAJADORES EVALUADOS";
+            var coloresgen = ['rgba(92,167,147,0.8)',
+
+'rgba(13,149,188,0.8)',
+'rgba(235,203,56,0.8)',
+'rgba(243,111,19,0.8)',
+'rgba(193,48,24,0.8)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(6,57,81,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+
+                    
+                    if (descParametro.indexOf(" ") >= 0)
+                    {
+                        var res = descParametro.split(" ");
+                        var rescount = res.length;
+
+                        var partir = new Array();
+                        var str = "";
+
+                       
+
+                        $.each(res, function (i, obj) {
+                            if (rescount-1!=i) {
+                                if (str.length >= 12) {
+                                    partir.push(str);
+                                    str = obj;
+                                }
+                                else {
+                                    if (str!="") {
+                                        str += " " + obj;
+                                    }
+                                    else {
+                                        str += obj;
+                                    }
+                                }
+                            }
+                            else {
+                                partir.push(str + " " + obj);
+                            }
+                            
+                        });
+
+                        var partircount = partir.length;
+                        var resultado = partir;
+                        labsArray.push(resultado);
+                    }
+                    else {
+                        labsArray.push(descParametro);
+
+                    }
+
+                    
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var riesgo = $(resultado).attr('riesgo');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+
+                    if (riesgo == "Sin riesgo o riesgo despreciable") {
+                        ColorArray.push(coloresgen[0]);
+                    }
+                    if (riesgo == "Riesgo bajo") {
+                        ColorArray.push(coloresgen[1]);
+                    }
+                    if (riesgo == "Riesgo medio") {
+                        ColorArray.push(coloresgen[2]);
+                    }
+                    if (riesgo == "Riesgo alto") {
+                        ColorArray.push(coloresgen[3]);
+                    }
+                    if (riesgo == "Riesgo muy alto") {
+                        ColorArray.push(coloresgen[4]);
+                    } 
+
+                    
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            var chartOptions = {
+                datasetFill: false,
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            stepSize: 10,
+                            fontColor: 'black',
+                            fontFamily: "Verdana"
+                        },
+                        afterFit: function (scaleInstance) {
+                            scaleInstance.width = 100; 
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Puntaje Transformado',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }],
+                    xAxes: [{
+                        fontColor: "black",
+                        barPercentage: 0.5,
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+                            
+                        },
+                        ticks: {
+                            fontColor: 'black',
+                            fontFamily: "Verdana"
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Dominio',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: titles,
+                    fontSize: 20
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                          ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillStyle = "#000000";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x , bar._model.y );
+                            });
+                        });
+                    }
+                },
+                chartArea: {
+                    backgroundColor: 'rgba(184, 177, 196, 0.4)'
+                },
+                elements: {
+                    rectangle: {
+                        borderSkipped: 'bottom' 
+                    }
+                }
+
+            };
+            var myChart = new Chart(ctx1, {
+                backgroundColor: "#F5DEB3",
+                type: 'bar',
+                data: {
+                    label: 'Valor Transformado',
+                    labels: labsArray,
+                    datasets: [{
+                        data: datasArray,
+                        backgroundColor: "rgba(13,149,188,0.8)",
+                        borderColor:'black',
+                        borderWidth: 1,
+                        label: "Puntaje"
+                    }]
+                }
+            ,
+                options: chartOptions
+            });
+        });
+        OcultarPopupposition();
+    })
+    //Graficar dimension
+    $(document).ready(function () {
+        PopupPosition();
+        //var ctx = document.getElementById("chart-area");
+        var tables1 = document.getElementById("menu4");
+        $(tables1).find('tbody.tbody_dimension').each(function () {
+            var terminados=$("#realizados").attr('name');
+            var fontsize = 12;
+            var graficotabla = $(this).attr('name');
+            var NomPilar = $(this).attr('pilar');
+            var titles= "VALORES TRANSFORMADO DE DOMINIOS"+ " - "+ terminados+" APLICACIONES REALIZADAS";
+            var titulo = "VALORES TRANSFORMADOS DOMINIO: " + NomPilar.toUpperCase()+ " - "+ terminados+" TRABAJADORES EVALUADOS";
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(92,167,147,0.8)',
+
+'rgba(13,149,188,0.8)',
+'rgba(235,203,56,0.8)',
+'rgba(243,111,19,0.8)',
+'rgba(193,48,24,0.8)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(6,57,81,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+            var sumadim=0;
+            $(this).find('tr').each(function () {
+                var fila = $(this);
+                fila.find('td.graphDesc').each(function () {
+                    sumadim++;
+                    var Descripcion = this;
+                    var descParametro = $(Descripcion).attr('descripcion');
+
+
+                    if (descParametro.indexOf(" ") >= 0) {
+                        var res = descParametro.split(" ");
+                        var rescount = res.length;
+
+                        var partir = new Array();
+                        var str = "";
+
+
+
+                        $.each(res, function (i, obj) {
+                            if (rescount - 1 != i) {
+                                if (str.length >= 10) {
+                                    partir.push(str);
+                                    str = obj;
+                                }
+                                else {
+                                    if (str != "") {
+                                        str += " " + obj;
+                                    }
+                                    else {
+                                        str += obj;
+                                    }
+                                }
+                            }
+                            else {
+                                partir.push(str + " " + obj);
+                            }
+
+                        });
+
+                        var partircount = partir.length;
+                        var resultado = partir;
+                        labsArray.push(resultado);
+                    }
+                    else {
+                        labsArray.push(descParametro);
+
+                    }
+
+
+                });
+                fila.find('td.graphResult').each(function () {
+                    var resultado = this;
+                    var resultadoParametro = $(resultado).attr('resultado');
+                    var riesgo = $(resultado).attr('riesgo');
+                    var decimal = resultadoParametro.replace(",", ".");
+                    datasArray.push(decimal);
+
+                    if (riesgo == "Sin riesgo o riesgo despreciable") {
+                        ColorArray.push(coloresgen[0]);
+                    }
+                    if (riesgo == "Riesgo bajo") {
+                        ColorArray.push(coloresgen[1]);
+                    }
+                    if (riesgo == "Riesgo medio") {
+                        ColorArray.push(coloresgen[2]);
+                    }
+                    if (riesgo == "Riesgo alto") {
+                        ColorArray.push(coloresgen[3]);
+                    }
+                    if (riesgo == "Riesgo muy alto") {
+                        ColorArray.push(coloresgen[4]);
+                    }
+
+
+                    sumaResultados = sumaResultados - decimal;
+                });
+            });
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            if (sumadim>=8) {
+                fontsize = 10;
+            }
+            var chartOptions = {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+                        },
+                        ticks: {
+                            min: 0,
+                            max: 100,
+                            stepSize: 10,
+                            fontColor: 'black',
+                            fontFamily: "Verdana"
+                        },
+                        afterFit: function (scaleInstance) {
+                            scaleInstance.width = 100;
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Puntaje Transformado',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }],
+                    xAxes: [{
+                        fontColor: "black",
+                        barPercentage: 0.5,
+                        gridLines: {
+                            zeroLineColor: "black",
+                            zeroLineWidth: 1
+
+                        },
+                        ticks: {
+                            fontColor: 'black',
+                            fontFamily: "Verdana",
+                            fontSize: fontsize
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Dimensión',
+                            fontColor: 'black',
+                            fontSize: 15,
+                            fontFamily: "Verdana",
+                            fontStyle: "bold"
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: titulo,
+                    fontSize: 20
+                },
+                "animation": {
+                    "duration": 1,
+                    "onComplete": function () {
+                        var chartInstance = this.chart,
+                          ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+                        ctx.fillStyle = "#000000";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var data = dataset.data[index];
+                                ctx.fillText(data, bar._model.x, bar._model.y);
+                            });
+                        });
+                    }
+                },
+                chartArea: {
+                    backgroundColor: 'rgba(184, 177, 196, 0.4)'
+                },
+                elements: {
+                    rectangle: {
+                        borderSkipped: 'bottom'
+                    }
+                }
+            };
+            var myChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    label: 'Valor Transformado',
+                    labels: labsArray,
+                    datasets: [{
+                        data: datasArray,
+                        backgroundColor: "rgba(13,149,188,0.8)",
+                        borderColor: 'black',
+                        borderWidth: 1,
+                        label: "Puntaje"
+                    }]
+                }
+            ,
+                options: chartOptions
+            });
+
+        });
+        OcultarPopupposition();
+    })
+
+    //Graficar Informes
+    $(document).ready(function () {
+        PopupPosition();
+        var tables1 = document.getElementById("menu5");
+
+        $(tables1).find('tbody tr').each(function () {
+            var terminados=$("#realizados").attr('name');
+            var titles= " - "+ terminados+" TRABAJADORES EVALUADOS";
+
+            var graficotabla = $(this).attr('ubicacion');
+            var tipo = $(this).attr('tipo');
+            var nivel1=$(this).attr('niv1');
+            var nivel2=$(this).attr('niv2');
+            var nivel3=$(this).attr('niv3');
+            var nivel4=$(this).attr('niv4');
+            var nivel5=$(this).attr('niv5');
+
+            var NomPilar = $(this).attr('nombre');
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+
+            labsArray.push("Sin riesgo o riesgo despreciable");
+            labsArray.push("Riesgo bajo");
+            labsArray.push("Riesgo medio");
+            labsArray.push("Riesgo alto");
+            labsArray.push("Riesgo muy alto");
+
+            datasArray.push(nivel1);
+            datasArray.push(nivel2);
+            datasArray.push(nivel3);
+            datasArray.push(nivel4);
+            datasArray.push(nivel5);
+            
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            
+
+            var myChart = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: labsArray,
+                    datasets: [{
+                        label: 'Número de Ocurrencias',
+                        data: datasArray,
+                        backgroundColor: ColorArray,
+                        borderColor:	'rgba(255, 255, 255, 1)',
+                        borderWidth: 4
+                    }]
+                }
+            ,
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: tipo +': '+ NomPilar + titles,
+                        fontSize: 20
+                    },
+                    events: false,
+                    animation: {
+                        duration: 500,
+                        easing: "easeOutQuart",
+                        onComplete: function () {
+                            var ctx = this.chart.ctx;
+                            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+
+                            this.data.datasets.forEach(function (dataset) {
+
+                                for (var i = 0; i < dataset.data.length; i++) {
+                                    var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                                        total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                                        mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
+                                        start_angle = model.startAngle,
+                                        end_angle = model.endAngle,
+                                        mid_angle = start_angle + (end_angle - start_angle)/2;
+
+                                    var x = mid_radius * Math.cos(mid_angle);
+                                    var y = mid_radius * Math.sin(mid_angle);
+
+                                    ctx.fillStyle = '#fff';
+                                    if (i == 3){ // Darker text color for lighter background
+                                        ctx.fillStyle = '#444';
+                                    }
+                                    var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                                    if (percent!="0%") {
+                                        ctx.font="20px Calibri";
+                                        ctx.fillText(dataset.data[i], model.x + x, model.y + y);
+                                        // Display percent in another line, line break doesn't work for fillText
+                                        ctx.fillText(percent, model.x + x, model.y + y + 15);
+
+                                    }
+                                
+                                }
+                            });               
+                        }
+                    },
+                    chartArea: {
+                        backgroundColor: 'rgba(255, 255, 255, 1)'
+                    }
+                }
+            });
+
+        });
+
+        OcultarPopupposition();
+
+    });
+    //Graficar Informes Total
+    $(document).ready(function () {
+        PopupPosition();
+        var tables1 = document.getElementById("menu5");
+
+        $(tables1).find('tfoot tr').each(function () {
+            var terminados=$("#realizados").attr('name');
+            var titles= " - "+ terminados+" TRABAJADORES EVALUADOS";
+            var graficotabla = "graficatotal";
+            var tipo = $(this).attr('tipo');
+            var nivel1=$(this).attr('niv1');
+            var nivel2=$(this).attr('niv2');
+            var nivel3=$(this).attr('niv3');
+            var nivel4=$(this).attr('niv4');
+            var nivel5=$(this).attr('niv5');
+
+            var NomPilar = $(this).attr('nombre');
+            var ctx1 = document.getElementById(graficotabla);
+            var coloresgen = ['rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 176, 128,1)',
+'rgba(151, 165, 158,1)',
+'rgba(13,149,188,1)',
+'rgba(6,57,81,1)',
+'rgba(92,167,147,1)',
+'rgba(235,203,56,1)',
+'rgba(243,111,19,1)',
+'rgba(193,48,24,1)',
+'rgba(208, 178, 109,1)',
+'rgba(109, 208, 189,1)',
+'rgba(208, 109, 152,1)',
+'rgba(255, 135, 61,1)',
+'rgba(151, 165, 158,1)'];
+            var labsArray = new Array();
+            var datasArray = new Array();
+            var ColorArray = new Array();
+            var sumaResultados = 100;
+
+            if (tipo!="estres") {
+                labsArray.push("Sin riesgo o riesgo despreciable");
+                labsArray.push("Riesgo bajo");
+                labsArray.push("Riesgo medio");
+                labsArray.push("Riesgo alto");
+                labsArray.push("Riesgo muy alto");
+            }
+            else {
+                labsArray.push("Nivel de estrés muy bajo");
+                labsArray.push("Nivel de estrés bajo");
+                labsArray.push("Nivel de estrés medio");
+                labsArray.push("Nivel de estrés alto");
+                labsArray.push("Nivel de estrés muy alto");
+            }
+            
+
+            datasArray.push(nivel1);
+            datasArray.push(nivel2);
+            datasArray.push(nivel3);
+            datasArray.push(nivel4);
+            datasArray.push(nivel5);
+            
+            var cont = 0;
+            $.each(labsArray, function (key, value) {
+                var color = coloresgen[key];
+                ColorArray.push(color);
+                cont++;
+            });
+            
+
+            var myChart = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: labsArray,
+                    datasets: [{
+                        label: 'Número de Ocurrencias',
+                        data: datasArray,
+                        backgroundColor: ColorArray,
+                        borderColor:	'rgba(255, 255, 255, 1)',
+                        borderWidth: 4
+                    }]
+                }
+            ,
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: NomPilar + titles,
+                        fontSize: 20
+
+                    },
+                    events: false,
+                    animation: {
+                        duration: 500,
+                        easing: "easeOutQuart",
+                        onComplete: function () {
+                            var ctx = this.chart.ctx;
+                            ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+
+                            this.data.datasets.forEach(function (dataset) {
+
+                                for (var i = 0; i < dataset.data.length; i++) {
+                                    var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                                        total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                                        mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
+                                        start_angle = model.startAngle,
+                                        end_angle = model.endAngle,
+                                        mid_angle = start_angle + (end_angle - start_angle)/2;
+
+                                    var x = mid_radius * Math.cos(mid_angle);
+                                    var y = mid_radius * Math.sin(mid_angle);
+
+                                    ctx.fillStyle = '#fff';
+                                    if (i == 3){ // Darker text color for lighter background
+                                        ctx.fillStyle = '#444';
+                                    }
+                                    var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                                    if (percent!="0%") {
+                                        ctx.font="20px Calibri";
+                                        ctx.fillText(dataset.data[i], model.x + x, model.y + y);
+                                        // Display percent in another line, line break doesn't work for fillText
+                                        ctx.fillText(percent, model.x + x, model.y + y + 15);
+
+                                    }
+                                
+                                }
+                            });               
+                        }
+                    },
+                    chartArea: {
+                        backgroundColor: 'rgba(255, 255, 255, 1)'
+                    }
+                }
+            });
+
+        });
+
+        OcultarPopupposition();
+
+    });
+
+
+    
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">RESULTADOS GENERALES DE LA APLICACIÓN</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / RESULTADOS GENERALES</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>EN ESTA SECCIÓN DE MÓDULO DE BATERIAS PSICOSOCIALES EL USUARIO PUEDE VER LOS RESULTADOS GENERALES DE LA APLICACIÓN DEL CUESTIONARIO</strong></p>
+                                <p style="margin-bottom:20px;line-height: 220%;text-align:justify;"> Si la aplicación del cuestionario es de tipo INTRALABORAL Y EXTRALABORAL presione <button type="button" class="boton botonactive" style="cursor:default;">EXTRALABORAL</button> para ver los resultados generales del cuestionario extralaboral o presione <button type="button" class="boton botonactive" style="cursor:default;">INTRALABORAL</button> para regresar a los resultados generales del cuestionario intralaboral</p>
+                                <p style="margin-bottom:20px;line-height: 220%;text-align:justify;"> Presione <button type="button" class="boton botonactive" style="cursor:default;">EXPORTAR HOJA DE CÁLCULO</button> para descargar todos los resultados en una hoja de cálculo </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Hidden("Id", Model.Pk_Id_BateriaGestion)
+        @Html.Hidden("form", "0")
+
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información de la Aplicación</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Registro:</label>
+                        <span id="FechaRegistro">@Model.FechaRegistro.ToShortDateString()</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nit de la empresa:</label>
+                        <span id="DesEncuesta">@ViewBag.nit</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre del Cuestionario:</label>
+                        <span id="DesEncuesta">@ViewBag.Nombre.Replace("Estres", "Estrés")</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Estado:</label>
+                        <span id="DesEncuesta">@Model.Estado</span>
+                    </div>
+                    @{
+                        if (Model.EstadoInt == 3)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Fecha de Finalización:</label>
+                                <span id="fechafin">@Model.FechaFinalizacion.ToShortDateString()</span>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (Model.EstadoInt == 1)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra inactivo, los usuarios no podrán ingresar a realizar el diligenciamiento, marque este estado si desea planear la aplicación del cuestionario y convocar personas para su posterior diligenciamiento</span>
+                            </div>
+                        }
+                        if (Model.EstadoInt == 2)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra activo, los usuario pueden diligenciar el cuestionario</span>
+                            </div>
+                        }
+                        if (Model.EstadoInt == 3)
+                        {
+                            <div class="col-sm-12 col-md-12">
+                                <label>Explicación Estado:</label>
+                                <span id="expliestado">Si el cuestionario se encuentra finalizado, los usuario no pueden diligenciar el cuestionario y se habilitará al usuario de Alissta para ver los resultados de los cuestionario</span>
+                            </div>
+                        }
+                    }
+                </div>
+                
+
+            </div>
+            <br />
+
+        </div>
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información del cuestionario</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre del cuestionario:</label>
+                        <span id="nombrebat">@ViewBag.NombreBat</span>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12">
+                        <label>Número de cuestionarios planeados:</label>
+                        <span>@ViewBag.Total</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Número de cuestionarios terminados:</label>
+                        <span id="realizados" name="@ViewBag.Terminados">@ViewBag.Terminados</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Porcentaje de Ejecución:</label>
+                        <span>@ViewBag.Ejecutado</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        @{
+                            if ((bool)ViewBag.bateriaextra)
+                            {
+                                if ((string)ViewBag.form == "0")
+                                {
+                                    <center><button id="regresar" onclick="location.href='@Url.Action("ResultadoGeneral", "BateriaGestion", new { IdGestion = Model.Pk_Id_BateriaGestion, form = 0 })';return false;" class="boton botonactive col-margin">IR A INTRALABORAL</button></center>
+                                }
+                                if ((string)ViewBag.form == "1")
+                                {
+                                    <center><button id="regresar" onclick="location.href='@Url.Action("ResultadoGeneral", "BateriaGestion", new { IdGestion = Model.Pk_Id_BateriaGestion, form = 1 })';return false;" class="boton botonactive col-margin">IR A EXTRALABORAL</button></center>
+                                }
+                            }
+                        }
+
+
+
+                    </div>
+                </div>
+
+
+            </div>
+            <br />
+
+        </div>
+        <div class="internal-panel add-bottom-margin-05em mostrar add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>RESULTADOS (PROMEDIO DE TODOS LOS RESULTADOS POR PERSONAS OBTENIDOS DURANTE LA APLICACIÓN DEL CUESTIONARIO)</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a  data-toggle="tab" class="navigation-formulario" href="#menu2">RESULTADOS DEL CUESTIONARIO</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu4">GRAFICAS RESULTADOS: PUNTAJE TRANSFORMADO</a></li>
+                        @{
+                            if (Model.Fk_Id_Bateria == 4)
+                            {
+                                <li><a id="graficar" data-toggle="tab" class="navigation-formulario" href="#menu5">GRAFICAS RESULTADOS: NIVEL DE ESTRÉS</a></li>
+                            }
+                            else
+                            {
+                                <li><a id="graficar" data-toggle="tab" class="navigation-formulario" href="#menu5">GRAFICAS RESULTADOS: NIVEL DE RIESGO</a></li>
+                            }
+                        }
+                        
+                    </ul>
+
+                    <div class="tab-content">
+
+                        @*RESULTADOS DEL CUESTIONARIO*@
+                        <div id="menu2" class="tab-pane fade in active" style="min-height:500px;padding-top:10px;">
+                            <h4>RESULTADOS DEL CUESTIONARIO</h4>
+
+                            <div class="row add-side-padding">
+                                <div class="col-sm-12 esconderseleccion">
+                                    <div style="width:15px;height:15px;background-color:#cccdd1;float:left"></div>
+                                    <span style="float:left;margin-left:5px;">Nivel de riesgo más frecuente</span>
+                                </div>
+                            </div>
+
+
+                            <div class="Tabla-Gestion2 table-responsive add-side-padding">
+                                @{
+                                    if (Model.Fk_Id_Bateria == 4)
+                                    {
+                                        <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray">
+                                            <thead>
+                                                <tr class="titulos_tabla ">
+                                                    <th colspan="7" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;">
+                                                        <span>RESULTADOS DEL CUESTIONARIO</span>
+                                                    </th>
+                                                </tr>
+                                                <tr class="titulos_tabla">
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+                                                        <span>Puntaje (transformado)</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                        <span>Niveles de Estrés Muy Bajo</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                        <span>Niveles de Estrés Bajo</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                        <span>Niveles de Estrés Medio</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                        <span>Niveles de Estrés Alto</span>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                        <span>Niveles de Estrés Muy Alto</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tfoot>
+                                                <tr>
+                                                    <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                        <span><strong>@Model.Informe.NombreEncuestaTotal</strong></span>
+                                                    </td>
+                                                    @{
+                                                        string decimalstr3 = String.Format("{0:0.0}", Model.Informe.PuntajeTrans);
+                                                        <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                            <span>@decimalstr3</span>
+                                                        </td>
+                                                        int[] Niv = new int[5] { 0, 0, 0, 0, 0 };
+                                                        string[] backes = new string[5] { "none", "none", "none", "none", "none" };
+                                                        int max4 = 0;
+
+                                                        foreach (var itemUs in Model.ListaUsuarios)
+                                                        {
+                                                            if (itemUs.NivelRiesgoDesc == "Muy bajo") { Niv[0]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Bajo") { Niv[1]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Medio") { Niv[2]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Alto") { Niv[3]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Muy alto") { Niv[4]++; }
+                                                        }
+
+                                                        for (int i = 0; i < 5; i++)
+                                                        {
+                                                            if (Niv[i] > max4)
+                                                            {
+                                                                max4 = Niv[i];
+                                                            }
+
+                                                        }
+                                                        for (int i = 0; i < 5; i++)
+                                                        {
+                                                            if (Niv[i] == max4)
+                                                            {
+                                                                backes[i] = "#cccdd1";
+                                                            }
+                                                        }
+                                                    }
+                                                    @*<td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                        @{
+                                                            var Niv0 = Model.ListaUsuarios.Where(s => s.NivelRiesgoDesc == "Muy bajo").ToList().Count;
+                                                            <span>@Niv0</span>
+                                                        }
+                                                    </td>*@
+                                              @{
+                                                  for (int i = 0; i < 5; i++)
+                                                  {
+                                                    <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;background-color:@backes[i]">
+                                                        @{
+                                                            if (Niv[i] != 0)
+                                                            {
+                                                                <span>@Niv[i]</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span></span>
+                                                            }
+                                                        }
+                                                    </td>
+                                                            }
+                                            }
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                                        }
+                                                        else
+                                                        {
+                                                            <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray">
+                                                                <thead>
+                                                                    <tr class="titulos_tabla ">
+                                                                        <th colspan="8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;">
+                                                                            <span>RESULTADOS DEL CUESTIONARIO</span>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr class="titulos_tabla">
+
+                                                                        @{
+                                                                            var numerodom = Model.Informe.Listadominios.Count;
+                                                                            if (numerodom > 1)
+                                                                            {
+                                                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+                                                                                    <span>Dominios</span>
+                                                                                </th>
+                                                                            }
+                                                                        }
+
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                                                            <span>Dimensiones</span>
+                                                                        </th>
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+                                                                            <span>Puntaje (transformado)</span>
+                                                                        </th>
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                                            <span>Sin riesgo</span>
+                                                                        </th>
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                                            <span>Riesgo bajo</span>
+                                                                        </th>
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                                            <span>Riesgo medio</span>
+                                                                        </th>
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                                            <span>Riesgo alto</span>
+                                                                        </th>
+                                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:8%;">
+                                                                            <span>Riesgo muy alto</span>
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @{
+                                                                        var usuarios = Model.ListaUsuarios.ToList();
+                                                                        var ListaDominios = Model.Informe.Listadominios.ToList();
+
+                                                                        foreach (var item in ListaDominios)
+                                                                        {
+                                                                            int[] NivDomUs = new int[5] { 0, 0, 0, 0, 0 };
+                                                                            string[] backsdom = new string[5] { "none", "none", "none", "none", "none" };
+                                                                            int max1 = 0;
+
+                                                                            foreach (var itemUs in usuarios)
+                                                                            {
+                                                                                var domUs = itemUs.Listadominios.Where(s => s.Pk_Id_BateriaDimension == item.Pk_Id_BateriaDimension).FirstOrDefault();
+                                                                                if (domUs.NivelRiesgoDesc == "Sin riesgo o riesgo despreciable") { NivDomUs[0]++; }
+                                                                                if (domUs.NivelRiesgoDesc == "Riesgo bajo") { NivDomUs[1]++; }
+                                                                                if (domUs.NivelRiesgoDesc == "Riesgo medio") { NivDomUs[2]++; }
+                                                                                if (domUs.NivelRiesgoDesc == "Riesgo alto") { NivDomUs[3]++; }
+                                                                                if (domUs.NivelRiesgoDesc == "Riesgo muy alto") { NivDomUs[4]++; }
+                                                                            }
+
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                if (NivDomUs[i] > max1)
+                                                                                {
+                                                                                    max1 = NivDomUs[i];
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                if (NivDomUs[i] == max1)
+                                                                                {
+                                                                                    backsdom[i] = "#cccdd1";
+                                                                                }
+                                                                            }
+
+                                                                            string decimalstr1 = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                                            int cont = 0;
+                                                                            string NombreDom = item.Nombre;
+                                                                            string numerofilasdom = item.ListaDimensiones.Count().ToString();
+                                                                            foreach (var item1 in item.ListaDimensiones)
+                                                                            {
+                                                                                int[] NivDimUs = new int[5] {0,0,0,0,0 };
+                                                                                string[] backsdim = new string[5] { "none", "none", "none", "none", "none" };
+                                                                                int max = 0;
+                                                                                foreach (var itemUs in usuarios)
+                                                                                {
+                                                                                    var domUs = itemUs.Listadominios.Where(s => s.Pk_Id_BateriaDimension == item.Pk_Id_BateriaDimension).FirstOrDefault();
+                                                                                    foreach (var item2 in domUs.ListaDimensiones)
+                                                                                    {
+                                                                                        if (item2.Nombre== item1.Nombre)
+                                                                                        {
+                                                                                            if (item2.NivelRiesgoDesc == "Sin riesgo o riesgo despreciable") { NivDimUs[0]++; }
+                                                                                            if (item2.NivelRiesgoDesc == "Riesgo bajo") { NivDimUs[1]++; }
+                                                                                            if (item2.NivelRiesgoDesc == "Riesgo medio") { NivDimUs[2]++; }
+                                                                                            if (item2.NivelRiesgoDesc == "Riesgo alto") { NivDimUs[3]++; }
+                                                                                            if (item2.NivelRiesgoDesc == "Riesgo muy alto") { NivDimUs[4]++; }
+                                                                                        }
+                                                                                    }
+                                                                                }
+
+                                                                                for (int i = 0; i < 5; i++)
+                                                                                {
+                                                                                    if (NivDimUs[i] > max)
+                                                                                    {
+                                                                                        max = NivDimUs[i];
+                                                                                    }
+
+                                                                                }
+                                                                                for (int i = 0; i < 5; i++)
+                                                                                {
+                                                                                    if (NivDimUs[i] == max)
+                                                                                    {
+                                                                                        backsdim[i] = "#cccdd1";
+                                                                                    }
+                                                                                }
+
+
+                                                                                string decimalstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                                                if (cont == 0)
+                                                                                {
+                                                                                    <tr>
+                                                                                        @{
+
+                                                                                            if (numerodom > 1)
+                                                                                            {
+                                                                                                <td rowspan="@numerofilasdom" style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                                    <span>@NombreDom.Trim()</span>
+                                                                                                </td>
+                                                                                            }
+                                                                                        }
+
+                                                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                                                            <span>@item1.Nombre</span>
+                                                                                        </td>
+                                                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                            <span>@decimalstr</span>
+                                                                                        </td>
+                                                                                        @{
+                                                                                            for (int i = 0; i < 5; i++)
+                                                                                            {
+                                                                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;background-color:@backsdim[i]">
+                                                                                                    @{
+                                                                                                        if (NivDimUs[i] != 0)
+                                                                                                        {
+                                                                                                            <span>@NivDimUs[i]</span>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <span></span>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </td>
+                                                                                                        }
+                                                                                        }
+
+
+
+                                                                                    </tr>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <tr>
+                                                                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;">
+                                                                                                        <span>@item1.Nombre</span>
+                                                                                                    </td>
+                                                                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                                        <span>@decimalstr</span>
+                                                                                                    </td>
+                                                                                                    @{
+                                                                                                        for (int i = 0; i < 5; i++)
+                                                                                                        {
+                                                                                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center;background-color:@backsdim[i]">
+                                                                                                                @{
+                                                                                                                    if (NivDimUs[i] != 0)
+                                                                                                                    {
+                                                                                                                        <span>@NivDimUs[i]</span>
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                        <span></span>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            </td>
+                                                                                                                    }
+                                                                                                    }
+                                                                                                </tr>
+                                                                                                }
+                                                                                                cont++;
+                                                                                            }
+                                                                                            if (numerodom > 1)
+                                                                                            {
+                                                                                                <tr>
+                                                                                                    <td colspan="2" style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                                                                        <span><strong>@item.Nombre</strong></span>
+                                                                                                    </td>
+                                                                                                    <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                                        <span>@decimalstr1</span>
+                                                                                                    </td>
+                                                                                                    @{
+                                                                                                        for (int i = 0; i < 5; i++)
+                                                                                                        {
+                                                                                                            <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;background-color:@backsdom[i]">
+                                                                                                                @{
+                                                                                                                    if (NivDomUs[i] != 0)
+                                                                                                                    {
+                                                                                                                        <span>@NivDomUs[i]</span>
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                        <span></span>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            </td>
+                                                                                                                    }
+                                                                                                    }
+                                                                                                </tr>
+                                                                                             }
+                                                                                            }
+                                                                    }
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        @{
+
+                                                                            if (numerodom > 1)
+                                                                            {
+                                                                                <td colspan="2" style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                                                    <span><strong>@Model.Informe.NombreEncuestaTotal</strong></span>
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center; background-color:#cad1da;color:black">
+                                                                                    <span><strong>@Model.Informe.NombreEncuestaTotal</strong></span>
+                                                                                </td>
+                                                                            }
+                                                                        }
+
+                                                                        @{
+                                                                            string decimalstr2 = String.Format("{0:0.0}", Model.Informe.PuntajeTrans);
+                                                                            <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;">
+                                                                                <span>@decimalstr2</span>
+                                                                            </td>
+                                                                            int[] NivUs = new int[5] { 0, 0, 0, 0, 0 };
+                                                                            string[] backs = new string[5] { "none", "none", "none", "none", "none" };
+                                                                            int max2 = 0;
+
+                                                                            foreach (var itemUs in usuarios)
+                                                                            {
+                                                                                if (itemUs.NivelRiesgoDesc == "Sin riesgo o riesgo despreciable") { NivUs[0]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo bajo") { NivUs[1]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo medio") { NivUs[2]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo alto") { NivUs[3]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo muy alto") { NivUs[4]++; }
+                                                                            }
+
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                if (NivUs[i] > max2)
+                                                                                {
+                                                                                    max2 = NivUs[i];
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                if (NivUs[i] == max2)
+                                                                                {
+                                                                                    backs[i] = "#cccdd1";
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        @{
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                <td style="border: 2px solid lightslategray; vertical-align:middle;text-align:center;background-color:@backs[i]">
+                                                                                    @{
+                                                                                        if (NivUs[i] != 0)
+                                                                                        {
+                                                                                            <span>@NivUs[i]</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span></span>
+                                                                                        }
+                                                                                    }
+                                                                                </td>
+                                                                                        }
+                                                                        }
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                                                        }
+                                }
+                            </div>
+                        </div>
+                        @*GRAFICAS*@
+                        <div id="menu4" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            
+
+                            <div class="row add-bottom-margin-05em">
+                                <div class="col-md-12 col-sm-12 ">
+                                    @{
+                                       
+                                                                                    
+                                                        if (Model.Informe.NombreEncuesta == "Cuestionario de Factores de Estrés")
+                                                        {
+                                                                                            <div class="col-sm-12 remove-left-padding" >
+                                                                                                <h4>Cuestionario de Factores de Estrés no posee representación gráfica de los puntos transformados</h4>
+                                                                                            </div>
+                                                                                        }
+
+                                        
+                                        if (Model.Informe.Listadominios.Count > 1)
+                                        {
+                                            string Idgraph1 = "graph01";
+                                            <h5>REPRESENTACIÓN GRÁFICA DE DOMINIOS</h5>
+                                            <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray; display:none">
+                                                <thead>
+                                                    <tr class="titulos_tabla">
+                                                        <th>Nombre Dominio</th>
+                                                        <th>Puntaje</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody_dimension1" name="@Idgraph1" pilar="A">
+                                                    @{
+                                                        foreach (var item in Model.Informe.Listadominios)
+                                                        {
+                                                            string decimalPTstr = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                            <tr>
+                                                                <td descripcion="@item.Nombre" class="graphDesc" riesgo="@item.NivelRiesgoDesc">@item.Nombre</td>
+                                                                <td resultado="@decimalPTstr" class="graphResult" riesgo="@item.NivelRiesgoDesc">@decimalPTstr</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            <div class="col-sm-12" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px;">
+                                                <div class="col-sm-12">
+                                                    <canvas id="graph01" style="display: block;" class="chartjs-render-monitor"></canvas>
+                                                </div>
+                                            </div>
+                                                        }
+                                                        if (Model.Fk_Id_Bateria != 4)
+                                                        {
+                                                            foreach (var item in Model.Informe.Listadominios)
+                                                            {
+                                                                string Idgraph = "graph" + item.Pk_Id_BateriaDimension;
+                                                                
+                                                                <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray; display:none">
+                                                                    <thead>
+                                                                        <tr class="titulos_tabla">
+                                                                            <th>Nombre dimension</th>
+                                                                            <th>Puntaje</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="tbody_dimension" name="@Idgraph" pilar="@item.Nombre">
+                                                                        @{
+                                                                            foreach (var item1 in item.ListaDimensiones)
+                                                                            {
+                                                                                string decimalPTstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                                                <tr>
+                                                                                    @{
+                                                                                        if (item1.Nombre == "Recompensas derivadas de la pertenencia a la organización y del trabajo que se realiza")
+                                                                                        {
+                                                                                            <td descripcion="Recompensas derivadas de la pertenencia a la organización" riesgo="@item1.NivelRiesgoDesc" class="graphDesc"><span>Recompensas derivadas de la pertenencia a la organización</span></td>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <td descripcion="@item1.Nombre" class="graphDesc" riesgo="@item1.NivelRiesgoDesc"><span>@item1.Nombre</span></td>
+                                                                                        }
+                                                                                    }
+                                                                                    
+                                                                                    <td resultado="@decimalPTstr" class="graphResult" riesgo="@item1.NivelRiesgoDesc"><span>@decimalPTstr</span></td>
+                                                                                </tr>
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <td colspan="5" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;max-width:50px;color:black;"></td>
+                                                                        </tr>
+
+                                                                    </tfoot>
+                                                                </table>
+                                                                <div class="col-sm-12" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px;">
+                                                                    <canvas id="@Idgraph" style="display: block; width: 296px; height: 148px;" width="296" height="148" class="chartjs-render-monitor"></canvas>
+                                                                </div>
+                                                                                }
+                                                                            }
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        @*GRAFICAS 1*@
+                        <div id="menu5" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            
+
+                            <div id="generalresultados" class="Tabla-Gestion2 table-responsive add-side-padding">
+                                @{
+                                    if (Model.Fk_Id_Bateria == 4)
+                                    {
+                                        <table id="Grid5" class="table table-bordered" style="border: 2px solid lightslategray;display:none">
+                                            <thead>
+                                                <tr class="titulos_tabla">
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;width:10%;">
+
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                
+                                                    @{
+                                                        string decimalstr3 = String.Format("{0:0.0}", Model.Informe.PuntajeTrans);
+
+                                                        int[] Niv = new int[5] { 0, 0, 0, 0, 0 };
+                                                        string[] backes = new string[5] { "none", "none", "none", "none", "none" };
+                                                        int max4 = 0;
+
+                                                        foreach (var itemUs in Model.ListaUsuarios)
+                                                        {
+                                                            if (itemUs.NivelRiesgoDesc == "Muy bajo") { Niv[0]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Bajo") { Niv[1]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Medio") { Niv[2]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Alto") { Niv[3]++; }
+                                                            if (itemUs.NivelRiesgoDesc == "Muy alto") { Niv[4]++; }
+                                                        }
+
+                                                        for (int i = 0; i < 5; i++)
+                                                        {
+                                                            if (Niv[i] > max4)
+                                                            {
+                                                                max4 = Niv[i];
+                                                            }
+
+                                                        }
+                                                        for (int i = 0; i < 5; i++)
+                                                        {
+                                                            if (Niv[i] == max4)
+                                                            {
+                                                                backes[i] = "#cccdd1";
+                                                            }
+                                                        }
+                                                        <tr tipo="estres" nombre="@Model.Informe.NombreEncuestaTotal" niv1="@Niv[0]" niv2="@Niv[1]" niv3="@Niv[2]" niv4="@Niv[3]" niv5="@Niv[4]">
+                                                            <td>
+                                                                <span><strong>@Model.Informe.NombreEncuestaTotal</strong></span>
+                                                            </td>
+
+                                                        </tr>
+                                                    }
+                                                
+                                            </tfoot>
+                                        </table>
+                                                            }
+                                                            else
+                                                            {
+                                                                <table id="Grid4" class="table table-bordered" style="border: 2px solid lightslategray; display:none">
+                                                                    <thead>
+                                                                        <tr class="titulos_tabla">
+
+                                                                            @{
+                                                                                var numerodom = Model.Informe.Listadominios.Count;
+                                                                                if (numerodom > 1)
+                                                                                {
+
+                                                                                }
+                                                                            }
+
+                                                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                                                                <span>Dimensiones</span>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody >
+                                                                        @{
+                                                                            var usuarios = Model.ListaUsuarios.ToList();
+                                                                            var ListaDominios = Model.Informe.Listadominios.ToList();
+                                                                            int domcont = 0;
+                                                                            foreach (var item in ListaDominios)
+                                                                            {
+                                                                                int[] NivDomUs = new int[5] { 0, 0, 0, 0, 0 };
+                                                                                string[] backsdom = new string[5] { "none", "none", "none", "none", "none" };
+                                                                                int max1 = 0;
+
+                                                                                foreach (var itemUs in usuarios)
+                                                                                {
+                                                                                    var domUs = itemUs.Listadominios.Where(s => s.Pk_Id_BateriaDimension == item.Pk_Id_BateriaDimension).FirstOrDefault();
+                                                                                    if (domUs.NivelRiesgoDesc == "Sin riesgo o riesgo despreciable") { NivDomUs[0]++; }
+                                                                                    if (domUs.NivelRiesgoDesc == "Riesgo bajo") { NivDomUs[1]++; }
+                                                                                    if (domUs.NivelRiesgoDesc == "Riesgo medio") { NivDomUs[2]++; }
+                                                                                    if (domUs.NivelRiesgoDesc == "Riesgo alto") { NivDomUs[3]++; }
+                                                                                    if (domUs.NivelRiesgoDesc == "Riesgo muy alto") { NivDomUs[4]++; }
+                                                                                }
+
+                                                                                for (int i = 0; i < 5; i++)
+                                                                                {
+                                                                                    if (NivDomUs[i] > max1)
+                                                                                    {
+                                                                                        max1 = NivDomUs[i];
+                                                                                    }
+
+                                                                                }
+                                                                                for (int i = 0; i < 5; i++)
+                                                                                {
+                                                                                    if (NivDomUs[i] == max1)
+                                                                                    {
+                                                                                        backsdom[i] = "#cccdd1";
+                                                                                    }
+                                                                                }
+
+                                                                                string decimalstr1 = String.Format("{0:0.0}", item.PuntajeTrans);
+                                                                                int cont = 0;
+                                                                                string NombreDom = item.Nombre;
+                                                                                string numerofilasdom = item.ListaDimensiones.Count().ToString();
+                                                                                if (numerodom > 1)
+                                                                                {
+                                                                                    <tr class="tbody_fila" ubicacion="@domcont.ToString()-0" tipo="Dominio" nombre="@item.Nombre" niv1="@NivDomUs[0]" niv2="@NivDomUs[1]" niv3="@NivDomUs[2]" niv4="@NivDomUs[3]" niv5="@NivDomUs[4]">
+                                                                                        <td>
+                                                                                            <span><strong>@item.Nombre NOMBRE DOMINIO</strong></span>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                                int dimcont = 1;
+                                                                                foreach (var item1 in item.ListaDimensiones)
+                                                                                {
+                                                                                    int[] NivDimUs = new int[5] { 0, 0, 0, 0, 0 };
+                                                                                    string[] backsdim = new string[5] { "none", "none", "none", "none", "none" };
+                                                                                    int max = 0;
+                                                                                    foreach (var itemUs in usuarios)
+                                                                                    {
+                                                                                        var domUs = itemUs.Listadominios.Where(s => s.Pk_Id_BateriaDimension == item.Pk_Id_BateriaDimension).FirstOrDefault();
+                                                                                        foreach (var item2 in domUs.ListaDimensiones)
+                                                                                        {
+                                                                                            if (item2.Nombre == item1.Nombre)
+                                                                                            {
+                                                                                                if (item2.NivelRiesgoDesc == "Sin riesgo o riesgo despreciable") { NivDimUs[0]++; }
+                                                                                                if (item2.NivelRiesgoDesc == "Riesgo bajo") { NivDimUs[1]++; }
+                                                                                                if (item2.NivelRiesgoDesc == "Riesgo medio") { NivDimUs[2]++; }
+                                                                                                if (item2.NivelRiesgoDesc == "Riesgo alto") { NivDimUs[3]++; }
+                                                                                                if (item2.NivelRiesgoDesc == "Riesgo muy alto") { NivDimUs[4]++; }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+
+                                                                                    for (int i = 0; i < 5; i++)
+                                                                                    {
+                                                                                        if (NivDimUs[i] > max)
+                                                                                        {
+                                                                                            max = NivDimUs[i];
+                                                                                        }
+
+                                                                                    }
+                                                                                    for (int i = 0; i < 5; i++)
+                                                                                    {
+                                                                                        if (NivDimUs[i] == max)
+                                                                                        {
+                                                                                            backsdim[i] = "#cccdd1";
+                                                                                        }
+                                                                                    }
+                                                                                    string decimalstr = String.Format("{0:0.0}", item1.PuntajeTrans);
+                                                                                    if (cont == 0)
+                                                                                    {
+                                                                                        <tr class="tbody_fila" ubicacion="@domcont.ToString()-@dimcont.ToString()" tipo="Dimensión" nombre="@item1.Nombre" niv1="@NivDimUs[0]" niv2="@NivDimUs[1]" niv3="@NivDimUs[2]" niv4="@NivDimUs[3]" niv5="@NivDimUs[4]">
+                                                                                            <td >
+                                                                                                <span>@item1.Nombre PRIMERA FILA</span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <tr class="tbody_fila" ubicacion="@domcont.ToString()-@dimcont.ToString()" tipo="Dimensión" nombre="@item1.Nombre" niv1="@NivDimUs[0]" niv2="@NivDimUs[1]" niv3="@NivDimUs[2]" niv4="@NivDimUs[3]" niv5="@NivDimUs[4]">
+                                                                                            <td >
+                                                                                                <span>@item1.Nombre OTRAS FILAS</span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                    cont++;
+                                                                                    dimcont++;
+                                                                                }
+                                                                                domcont++;
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        @{
+                                                                            string decimalstr2 = String.Format("{0:0.0}", Model.Informe.PuntajeTrans);
+
+                                                                            int[] NivUs = new int[5] { 0, 0, 0, 0, 0 };
+                                                                            string[] backs = new string[5] { "none", "none", "none", "none", "none" };
+                                                                            int max2 = 0;
+
+                                                                            foreach (var itemUs in usuarios)
+                                                                            {
+                                                                                if (itemUs.NivelRiesgoDesc == "Sin riesgo o riesgo despreciable") { NivUs[0]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo bajo") { NivUs[1]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo medio") { NivUs[2]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo alto") { NivUs[3]++; }
+                                                                                if (itemUs.NivelRiesgoDesc == "Riesgo muy alto") { NivUs[4]++; }
+                                                                            }
+
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                if (NivUs[i] > max2)
+                                                                                {
+                                                                                    max2 = NivUs[i];
+                                                                                }
+
+                                                                            }
+                                                                            for (int i = 0; i < 5; i++)
+                                                                            {
+                                                                                if (NivUs[i] == max2)
+                                                                                {
+                                                                                    backs[i] = "#cccdd1";
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        <tr tipo="total" nombre="@Model.Informe.NombreEncuestaTotal" niv1="@NivUs[0]" niv2="@NivUs[1]" niv3="@NivUs[2]" niv4="@NivUs[3]" niv5="@NivUs[4]">
+
+
+                                                                            
+                                                                            @{
+
+                                                                                if (numerodom > 1)
+                                                                                {
+                                                                                    <td >
+                                                                                        <span><strong>@Model.Informe.NombreEncuestaTotal TOATLNOMBRE</strong></span>
+                                                                                    </td>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <td>
+                                                                                        <span><strong>@Model.Informe.NombreEncuestaTotal TOATLNOMBRE</strong></span>
+                                                                                    </td>
+                                                                                }
+                                                                            }
+                                                                        </tr>
+
+                                                                    </tfoot>
+                                                                </table>
+                                                                                }
+                                }
+                            </div>
+
+
+                            <div class="col-sm-12 col-md-6 col-md-offset-3">
+                                <div class="col-sm-12" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px; margin-left:5px;">
+                                    <canvas id="graficatotal" style="display: block;" class="chartjs-render-monitor"></canvas>
+                                </div>
+                            </div>
+                            @{
+                                var ListaDominios20 = Model.Informe.Listadominios.ToList();
+                                int domcont1 = 0;
+                                foreach (var item in ListaDominios20)
+                                {
+
+                                    
+                                    
+                                        if (ListaDominios20.Count > 1)
+                                        {
+                                            <div class="row add-bottom-margin-05em">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                                    <h3>@item.Nombre</h3>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-6 col-md-offset-3" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px;">
+                                                <div class="col-sm-12">
+                                                    <canvas id="@domcont1.ToString()-0" style="display: block;" class="chartjs-render-monitor"></canvas>
+                                                </div>
+                                            </div>
+                                    }
+
+
+
+
+
+                                    int dimcont1 = 1;
+                                    foreach (var item1 in item.ListaDimensiones)
+                                    {
+                                        if (item.ListaDimensiones.Count > 1)
+                                        {
+                                            <div class="col-sm-12 col-md-6">
+                                                <div class="col-sm-12" style="border-style:double;padding-bottom:5px;background-color:#fff;margin-top:5px; margin-left:5px;">
+                                                    <canvas id="@domcont1.ToString()-@dimcont1.ToString()" style="display: block;" class="chartjs-render-monitor"></canvas>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        dimcont1++;
+                                    }
+                                    domcont1++;
+                                }
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+       
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-6" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("index", "BateriaGestion")';return false;" class="boton botonactive col-margin">REGRESAR</button>
+                </div>
+
+                @{
+                    if (Model.Fk_Id_Bateria != 4)
+                    {
+                        if ((bool)ViewBag.bateriaextra)
+                        {
+                            if ((string)ViewBag.form == "0")
+                            {
+                                using (Html.BeginForm("ResultadoExcel", "BateriaGestion", new { @IdGestion = Model.Pk_Id_BateriaGestion.ToString(), @form = 1 }, FormMethod.Post))
+                                {
+                                    <div class="col-md-6" style="margin-bottom:5px;">
+
+                                        <button id="Exportar" class="boton botonactive col-margin">EXPORTAR HOJA DE CÁLCULO</button>
+                                    </div>
+                                }
+                            }
+                            if ((string)ViewBag.form == "1")
+                            {
+                                using (Html.BeginForm("ResultadoExcel", "BateriaGestion", new { @IdGestion = Model.Pk_Id_BateriaGestion.ToString(), @form = 0 }, FormMethod.Post))
+                                {
+                                    <div class="col-md-6" style="margin-bottom:5px;">
+
+                                        <button id="Exportar" class="boton botonactive col-margin">EXPORTAR HOJA DE CÁLCULO</button>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("ResultadoExcel", "BateriaGestion", new { @IdGestion = Model.Pk_Id_BateriaGestion.ToString(), @form = 0 }, FormMethod.Post))
+                        {
+                            <div class="col-md-6" style="margin-bottom:5px;">
+
+                                <button id="Exportar" class="boton botonactive col-margin">EXPORTAR HOJA DE CÁLCULO</button>
+                            </div>
+                        }
+                    }
+
+                }
+
+                
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+

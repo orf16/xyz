@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3FCDDE0A-392B-4BB3-B87C-B42B4A1AB0A8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SG_SST.Interfaces</RootNamespace>
+    <AssemblyName>SG-SST.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aplicacion\IAdquicisionBienes.cs" />
+    <Compile Include="Aplicacion\IBateria.cs" />
+    <Compile Include="Aplicacion\ICriterioSST.cs" />
+    <Compile Include="Aplicacion\IEHM.cs" />
+    <Compile Include="Aplicacion\IEPP.cs" />
+    <Compile Include="Aplicacion\IGestionDelCambio.cs" />
+    <Compile Include="Aplicacion\IInspeccion.cs" />
+    <Compile Include="Aplicacion\IplanInspeccion.cs" />
+    <Compile Include="Aplicacion\IPlanTrabajo.cs" />
+    <Compile Include="Aplicacion\IPromocioPrevencion.cs" />
+    <Compile Include="Ausentismo\IAlertas.cs" />
+    <Compile Include="Ausentismo\IAusencia.cs" />
+    <Compile Include="Ausentismo\IConfiguracion.cs" />
+    <Compile Include="Ausentismo\IContingencia.cs" />
+    <Compile Include="Ausentismo\IDepartamento.cs" />
+    <Compile Include="Ausentismo\IDiagnostico.cs" />
+    <Compile Include="Ausentismo\IIndicadores.cs" />
+    <Compile Include="Ausentismo\IMunicipio.cs" />
+    <Compile Include="Ausentismo\IReportes.cs" />
+    <Compile Include="ComunicadosAPP\IUsuariosComunicadoAPP.cs" />
+    <Compile Include="EnfermedadLaboral\IEnfermedadLaboral.cs" />
+    <Compile Include="Empresas\IIncidente.cs" />
+    <Compile Include="Empresas\IEmpresa.cs" />
+    <Compile Include="Empresas\IEmpresaUsuaria.cs" />
+    <Compile Include="Empresas\IncidenteAPP.cs" />
+    <Compile Include="Empresas\IRelacionesLaborales.cs" />
+    <Compile Include="Empresas\ISedeRepositorio.cs" />
+    <Compile Include="EstudioPuestoTrabajo\IArchivoEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\IEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\IObjetivoAnalisis.cs" />
+    <Compile Include="EstudioPuestoTrabajo\ISeguimientoEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\ITipoAnalisisPT.cs" />
+    <Compile Include="Incidentes\IIncidentesAT.cs" />
+    <Compile Include="MedicionEvaluacion\IAccion.cs" />
+    <Compile Include="MedicionEvaluacion\IAuditoria.cs" />
+    <Compile Include="MedicionEvaluacion\IPlanDeAccion.cs" />
+    <Compile Include="Participacion\IAuntentificarApp.cs" />
+    <Compile Include="Participacion\IComite.cs" />
+    <Compile Include="Participacion\IConsulta.cs" />
+    <Compile Include="Participacion\IReporte.cs" />
+    <Compile Include="Planificacion\IClasificacionPeligros.cs" />
+    <Compile Include="Planificacion\IConsecuencias.cs" />
+    <Compile Include="Planificacion\IDxGralCondicionesDeSalud .cs" />
+    <Compile Include="Planificacion\IEvaluacionEstandMinimos.cs" />
+    <Compile Include="Planificacion\IEvaluacionInicial.cs" />
+    <Compile Include="Planificacion\IMetodologia.cs" />
+    <Compile Include="Planificacion\INivelDeDeficiencia.cs" />
+    <Compile Include="Planificacion\INivelesDeExposicion.cs" />
+    <Compile Include="Planificacion\IObjetivoSST.cs" />
+    <Compile Include="Planificacion\IPeligro.cs" />
+    <Compile Include="Planificacion\IPerfilSocioDemografico.cs" />
+    <Compile Include="Planificacion\IProbabilidad.cs" />
+    <Compile Include="Planificacion\IReportesEstandaresMinimos.cs" />
+    <Compile Include="Planificacion\ITipoDePeligro.cs" />
+    <Compile Include="PlanTrabajoAnual\IPlanEmpresa.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Revision\IRevision.cs" />
+    <Compile Include="Usuarios\IUsuario.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SG-SST.EntidadesDominio\SG-SST.EntidadesDominio.csproj">
+      <Project>{d9f2ceb3-2aa8-4934-9aa3-4c435a6d6cc3}</Project>
+      <Name>SG-SST.EntidadesDominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Modelos\SG_SST.Models.csproj">
+      <Project>{11C5DA88-C228-4627-8108-3DDB07AA7898}</Project>
+      <Name>SG_SST.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Habilite la restauración del paquete NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

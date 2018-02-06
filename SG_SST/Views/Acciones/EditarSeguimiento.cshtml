@@ -1,0 +1,221 @@
+﻿@model SG_SST.Models.MedicionEvaluacion.Seguimiento
+
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/EditarSeguimiento.js"></script>
+@{
+    TempData.Keep("FirmaSeg");
+    SG_SST.EntidadesDominio.MedicionEvaluacion.EDSeguimiento Seguimiento = new SG_SST.EntidadesDominio.MedicionEvaluacion.EDSeguimiento();
+    if (TempData["FirmaSeg"] != null)
+    {
+        Seguimiento = (SG_SST.EntidadesDominio.MedicionEvaluacion.EDSeguimiento)TempData["FirmaSeg"];
+    }
+    ViewBag.Title = "Editar Seguimiento";
+}
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+    @{
+        string Ruta = ViewBag.EdicionKey;
+        if (Ruta == null)
+        {
+            <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+        }
+        else
+        {
+            if (Ruta != "")
+            {
+                if (Ruta != "NuevaAccion")
+                {
+                    string numeroRuta = Ruta.Replace("EditarAccion", "");
+                    string valorRuta = Ruta.Replace(numeroRuta, "");
+                    <li><a href="@Url.Action(valorRuta, "Acciones",new { id = numeroRuta })">Editar Acción</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+                }
+            }
+            else
+            {
+                <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+            }
+        }
+    }
+    <li class="active">Editar Seguimiento</li>
+</ol>
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">EDITAR SEGUIMIENTO DE LAS ACCIONES PROPUESTAS</div>
+    <div class="panel-body">
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / EDITAR SEGUIMIENTO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><strong>*</strong> Indica que el campo es obligatorio</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">ADJUNTAR</button> Para adjuntar una firma. Solo se aceptan imagenes</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">QUITAR FIRMA</button> Para quitar la firma cargada</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botonactive" style="cursor:default;">EDITAR SEGUIMIENTO</button> Para guardar el registro del seguimiento en la lista de seguimientos de la acción</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para cancelar el registro del seguimiento y regresar al registro de la acción</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.Hidden("EdicionKey", (object)ViewBag.EdicionKey)
+            @Html.Hidden("Clave", (object)ViewBag.Clave)
+            @Html.AntiForgeryToken()
+
+            <div class="internal-panel-body">
+                <div class="row add-side-padding">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Fecha_Seg, "Fecha de Seguimiento", htmlAttributes: new { @class = "" })
+                            @{
+
+                                if (Model != null)
+                                {
+                                    if (Model.Fecha_Seg != DateTime.MinValue)
+                                    {
+                                        @Html.TextBoxFor(model => model.Fecha_Seg, new { @class = "form-control form-width-100", @Value = Model.Fecha_Seg.ToShortDateString() })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(model => model.Fecha_Seg, new { @class = "form-control form-width-100", @Value = "" })
+                                    }
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(model => model.Fecha_Seg, new { @class = "form-control form-width-100", @Value = "" })
+                                }
+                            }
+
+
+                            @Html.ValidationMessageFor(model => model.Fecha_Seg, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Observaciones, "Observaciones", htmlAttributes: new { @class = "" })
+                            @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                            @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row add-side-padding  add-bottom-margin-05em">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="File2">Firma del responsable</label>
+                            <div class="input-group">
+                                <input type="file" name="File2" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-file-seg" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-positiva-invert" id="btn-add-seg" type="button">Adjuntar</button>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group" id="sign-group-seg">
+                            <div class="col-md-12 text-center col-margin">
+
+                                @{
+                                    if (Seguimiento.FirmaScrImage != null)
+                                    {
+                                        <img id="img-seg" class="firma-acciones-estilo" src="@Seguimiento.FirmaScrImage" alt="" />
+                                        <button class="boton botoninfo" id="btn-delete-seg" type="button">Quitar Firma</button>
+                                    }
+                                    else
+                                    {
+                                        <img id="img-seg" class="firma-acciones-estilo" src="" alt="" />
+                                        <button class="boton botoninfo" id="btn-delete-seg" type="button">Quitar Firma</button>
+                                    }
+                                }
+
+                            </div>
+                            <div class="col-md-12 text-center">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div id="div_novedad" class="divMensajes">
+                    <span id="msj_novedad"></span>
+                </div>
+            </div>
+
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="boton botonactive col-margin" id="add-act-btn-seg" type="submit" value="Agregar Actividad">Editar Seguimiento</button>
+
+                    </div>
+                    <div class="col-md-6">
+                        @{
+                            string ModoEdicion = ViewBag.EdicionKey;
+                            if (ModoEdicion != "")
+                            {
+                                ModoEdicion = ModoEdicion.Replace("EditarAccion", "");
+                                <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("EditarAccion","Acciones",new { id = ModoEdicion })';return false;">Cancelar</button>
+                            }
+                            else
+                            {
+                                <button class="boton botoncancel" id="cancel-btn-seg" type="submit" value="Cancelar" onclick="location.href='@Url.Action("NuevaAccion","Acciones")';return false;">Cancelar</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="internal-panel-body">
+
+            </div>
+
+
+
+
+                            }
+
+    </div>
+</div>
+

@@ -1,0 +1,195 @@
+﻿@model IEnumerable<SG_SST.Models.Organizacion.Documentacion_Organizacion>
+
+<div id="divMensaje3"></div>
+<div class="table-responsive">
+    <table class="table table-bordered" style="border: 2px solid lightslategray" id="idPolitica">
+
+        <tr class="titulos_tabla">
+            <td style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Nombre del Documento</b></td>
+            <td style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Fecha de Modificación</b></td>
+            <td style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Visualizar / Descargar</b></td>
+            <td style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Eliminar</b></td>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (item.FK_TipoModuloOrganizacion == 3)
+            {
+
+                int posicion = 0;
+                int cuantos = 0;
+                string cadena = item.NombreArchivo_Documentacion;
+                string extencion;
+
+                posicion = cadena.LastIndexOf(".") + 1;
+                cuantos = (cadena.Length - posicion);
+
+                extencion = cadena.Substring(posicion, cuantos);
+
+
+
+
+                <tr name="pcs8" class="pcs8">
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.NombreArchivo_Documentacion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        @item.FechaModificacion_Documentacion.ToShortDateString()
+                    </td>
+
+
+                    @if (extencion == "pdf")
+                    {
+
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <button type="button" class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal{0}", item.ID_Documentacion_Org)" title="Visualizar">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </button>
+
+                            <div id="@string.Format("modal{0}", item.ID_Documentacion_Org)" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                            <h4 class="modal-title title">  </h4>
+                                        </div>
+                                        <div class="modal-body ">
+
+                                            @*<center><img src="@Url.Action("MostrarOtrasInteraccionesPDF", new { item.ID_OtrasInteraciones })"/></center>*@
+                                            <div class="pdf-modales">
+                                                @*<object data="@Url.Action("MostrarOtrasInteraccionesPDF", new { item.ID_OtrasInteraciones })" type="application/pdf" width="575" height="500"></object>*@
+                                                <iframe src="@Url.Action("Organizacion_DocumentacionPDF", new { item.ID_Documentacion_Org })" type="application/pdf" width="530" height="500"></iframe>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer alert-dismissable">
+                                            @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a href="@Url.Action("DescargaDocumentacion",  null, new { idArchivoDocumentacion = item.ID_Documentacion_Org  })" class="btn btn-search btn-md" title="Descargar">
+                                <span class="glyphicon glyphicon-download-alt" name="iconoRend"></span>
+                            </a>
+                        </td>
+                    }
+
+
+                    @*
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            @Html.ActionLink("Ver Doc", "MostrarOrganizacion_Documentacion", new { item.ID_Documentacion_Org },
+                                htmlAttributes: new { @type = "", @class = "" })
+                            <a href="@Url.Action("MostrarOrganizacion_Documentacion", new { item.ID_Documentacion_Org })" class="btn btn-search btn-md" title="Ver Doc">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+                        </td>*@
+
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @*<button class="btn btn-danger btn-xs eliminar" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.ID_Documentacion_Org)">
+                                @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                            </button>*@
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.ID_Documentacion_Org)" class="btn btn-search btn-md" title="Eliminar">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+                        <div id="@string.Format("modalEliminar{0}", item.ID_Documentacion_Org)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Eliminar Archivo</h4>
+                                    </div>
+                                    <div class="modal-body" style="text-align:center; color: black">
+                                        <p>¿Esta seguro desea eliminar el archivo seleccionado?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "EliminarArchivoDocumetacion", new { PKdArchivo = item.ID_Documentacion_Org },
+                                            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        @*<button type="button" class="boton botonactive borrar" name="ideliminarfila" id="ideliminarfila" onclick="EliminarArchivoDocumentacion(this,@item.ID_Documentacion_Org)" data-dismiss="modal">
+                                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                        </button>*@
+                                        @*@Html.ActionLink("Eliminar", "EliminarArchivoDocumetacionController", new { PKdArchivo = item.ID_Documentacion_Org },
+                                            htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })*@
+                                        @*<button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">Cancelar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+
+                    @*
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a href="@Url.Action("DescargaDocumentacion",  null, new { idArchivoDocumentacion = item.ID_Documentacion_Org  })" class="btn btn-search btn-md">
+                          <i class="glyphicon glyphicon-download-alt" name="iconoRend"></i>
+                                </a>
+                        </td>
+                    *@
+
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<div class="pagination-page paginador8" id="paginador8" style="margin-left:45%"></div>
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script defer src="https://code.getmdl.io/1.1.1/material.min.js"></script>
+
+<script>
+    //$("document").ready(function () {
+    //    paginador1("#idRequisitosLegales", "tr[name = pcs]", "#paginador1");
+    //});
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".pcs8");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".paginador8").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/Documentacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}

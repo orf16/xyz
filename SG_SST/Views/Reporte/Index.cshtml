@@ -1,0 +1,221 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Participacion.EDReporte>
+
+@{
+    ViewBag.Title = "Listado Reportes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .pag {
+        width: 50%;
+        margin: 0 auto;
+    }
+</style>
+
+
+@if (ViewBag.MensajeGuardar != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: "El Reporte de Incidentes fue almacenado satisfactoramiente",
+           
+            confirmButtonColor: '#7E8A97'
+        });
+
+    </script>
+}
+
+@if (ViewBag.MensajeExitoso != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: "El Reporte de Incidentes fue actualizado satisfactoramiente",
+      
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+
+@if (ViewBag.MensajeError != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.MensajeError',
+
+            confirmButtonColor: '#7E8A97'
+        });
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Reporte de Actos y Condiciones Inseguras</a></li>
+    <li class="active">Listado Reportes</li>
+</ol>
+
+@*Boton ayuda*@
+<div align="right">
+    <div id="ayuda" style="text-align:right">
+        <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+           title="Ayuda" class="btn btn-ayuda btn-md">
+            <i class="glyphicon glyphicon-question-sign"></i>
+        </a>
+        <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            @*<span aria-hidden="true">&times;</span>*@
+                        </button>
+                        <h4 class="modal-title title">Ayuda</h4>
+
+
+                    </div>
+
+
+                    <div class="modal-body" style="color:black; text-align:justify">
+                        En este módulo el usuario podrá registrar uno a uno los diferentes reportes de actos y condiciones inseguras que reciba a través de los diferentes mecanismos de comunicación que la organización tenga establecidos para el SGSST.
+                        <br />
+
+                        Para agregar un reporte de acto y/o condición insegura de Clic en la opción “Crear nuevo” y  diligencie uno a uno los campos.
+                        <br /><br />
+
+                        En pantalla principal también podrá buscar los reportes ya registrados, escribiendo una palabra asociada al reporte que busca en el campo “Buscar reporte”,  y automáticamente le traerá los resultados específicos asociados a su búsqueda.
+                        <br /><br />
+
+                        Cada vez que ingrese a la este módulo, se le precargará el historial de todos los reportes que se hallan creado, dejando como primero el más reciente y las diferentes acciones como “Edición”, “Descarga en PDF en formato ALISSTA” y descarga en Excel.
+                        <br /><br />
+
+                        En la parte inferior encontrará un paginador para navegar por las  diferentes hojas de los registros guardados de los reportes de actos y condiciones inseguras.
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" align="center">
+    <p>
+        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "CrearReporte", null,
+        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+    </p>
+</div>
+
+<br />
+
+<div class="col-md-4" style="margin-left:-1%">
+    <div class="input-group">
+        <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+        <input type="text" id="buscar" value="" placeholder="Buscar Reporte" class="form-control" />
+    </div>
+</div>
+
+<div class="row">
+    <br />
+    <br />
+    <br />
+</div>
+
+<div class="table-responsive">
+    <table id="select_reporte" class="table table-bordered" style="border: 2px solid lightslategray">
+        <thead>
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Tipo</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">ID</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha evento</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Documento</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Sede</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Área / Lugar</th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Causa</th>
+                <th width="150" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acciones</th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+
+            string FechaOcurrencia = item.FechaOcurrencia.ToString("dd/MM/yyyy");
+            <tbody>
+                <tr name="temPer">
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.tipo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @Html.DisplayFor(modelItem => item.ConsecutivoReporte)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @FechaOcurrencia
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.CedulaQuienReporta)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.sede)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.AreaLugar)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.CausaReporte)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a name="Editar Perfil" href="@Url.Action("Edit", null, new { id = item.IdReportes })" title="Editar Reporte" class="btn btn-search btn-md">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        |
+                        <a href="@Url.Action("DescargarPDFPorReporte", null, new { id = item.IdReportes })" title="Descargar PDF" class="btn btn-search btn-md">
+                            <span class="glyphicon glyphicon-download-alt"></span>
+                            @*<img src="~/Content/Images/pdf-simbolo-de-formato-de-archivo (1).png" title="Descargar PDF" />*@
+                        </a>
+                        |
+                        <a href="@Url.Action("DescargarReporteExcelCondicionesInsegurasPorReporte", null, new { id = item.IdReportes })">
+                            <img src="~/Images/iconExcelp.png" title="Descargar Excel" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+
+</div>
+
+<div>
+    <div class="pag">
+        <div class="pagination-page" id="paginador1" style="margin-left:45%"></div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+    @Scripts.Render("~/bundles/Organizacion")
+    @Scripts.Render("~/bundles/simplePagination")
+
+    <script>
+        $(document).ready(function () {
+            paginador("#select_reporte", "tr[name = temPer]", "#paginador1");
+        });
+    </script>
+}

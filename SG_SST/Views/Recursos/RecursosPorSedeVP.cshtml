@@ -1,0 +1,210 @@
+﻿@model IEnumerable<SG_SST.Models.Organizacion.RecursoporSede>
+
+
+@if (ViewBag.mensaje != null)
+{
+
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<hr />
+
+<div class="row alert-link">
+
+    @if (ViewBag.nulo == true)
+    {
+       
+            <p align="center" style="margin-bottom:10px">
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "CrearRecurso", null,
+                htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+            </p>
+        
+
+    }
+    else
+    {
+        <div class="col-sm-5">
+        </div>
+        <div class="">
+            <div class="col-sm-9">
+                @*<h4 style="text-align:left; margin-left: 60px"><b>Recursos Asignados:</b> @Model.First().Sede.Nombre_Sede</h4>*@
+            </div>
+            <div class="col-md-1">
+                <text>
+                    <strong>Generar</strong> 
+                </text>
+                <a href="@Url.Action("Recursos_PDF", new { Pk_Id_Sede = Model.FirstOrDefault().Sede.Pk_Id_Sede, Periodo=Model.FirstOrDefault().Recurso.Periodo})">
+                    <img src="~/Content/Images/pdf-simbolo-de-formato-de-archivo (1).png" title="Descargar PDF" class="img img-responsive" />
+                </a>
+            </div>
+            <div class="col-md-1">
+                <text>
+                    <strong>Exportar</strong>
+                </text>
+                <a href="@Url.Action("ExportarExcel", new { Pk_Id_Sede = Model.FirstOrDefault().Sede.Pk_Id_Sede, Periodo = Model.FirstOrDefault().Recurso.Periodo})">
+                    <img src="~/Images/iconExcelp.png" title="Exportar a Excel" class="img img-responsive" />
+                </a>
+            </div>
+        </div>
+    }
+
+</div>
+<hr />
+<div class="table-responsive">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Recursos Asignados por Sede</div>
+        <table class="table pdf table-bordered" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla" @*style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;"*@>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Recurso Asignado
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Periodo de Asignación
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Ampliar Información
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Eliminar Recurso
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr @*class="titulos_filas"*@>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Recurso.Nombre_Recurso)
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Recurso.Periodo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <button type="button" class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal{0}", item.Recurso.Pk_Id_Recurso)" title="Ampliar Informacion">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+
+                        <div id="@string.Format("modal1{0}", item.Recurso.Pk_Id_Recurso)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <h4 class="modal-title title">Eliminar Recurso</h4>
+                                    </div>
+                                    <div class="modal-body ">
+                                        <center><p>¿Seguro desea eliminar el Recurso de esta Sede?</p></center>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <a href="@Url.Action("EliminarRecursos", "Recursos",new {Pk_Id_Recurso=item.Recurso.Pk_Id_Recurso})" class="boton botonactive">ELIMINAR</a>
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <button type="button" class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal1{0}", item.Recurso.Pk_Id_Recurso)" title="Eliminar Recurso">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </button>
+                        <div id="@string.Format("modal{0}", item.Recurso.Pk_Id_Recurso)" class="modal fade" role="dialog">
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <h4 class="modal-title title">Recurso Asignado</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                                                <tr class="titulos_tabla" @*style="background-color: RGB(202,209,218)"*@>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                        <label>Sede</label>
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                        Recurso Asignado
+
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                        Tipo Recurso
+
+
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                        Fase
+
+                                                    </th>
+                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                        Periodo
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @item.Recurso.RecursosporSede.FirstOrDefault().Sede.Nombre_Sede
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @item.Recurso.Nombre_Recurso
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @item.Recurso.RecursosTipoRecursos.FirstOrDefault().TipoRecurso.Descripcion_Tipo_Recurso
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @item.Recurso.RecursosFase.FirstOrDefault().Fase.Descripcion_Fase
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                        @item.Recurso.RecursosFase.FirstOrDefault().Recurso.Periodo
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <a href="@Url.Action("EditarRecursos", "Recursos", new
+                                    {
+                                        Pk_Id_RecursoporSede = item.Pk_Id_RecursoporSede,
+                                        Pk_Id_Recurso = item.Recurso.Pk_Id_Recurso,
+                                        Pk_Id_RecursoFase = item.Recurso.RecursosFase.FirstOrDefault().Pk_Id_RecursoFase,
+                                        Pk_Id_RecursoTipoRecurso =item.Recurso.RecursosTipoRecursos.FirstOrDefault().Pk_Id_RecursoTipoRecurso}) " class="boton botoninfo">
+                                            MODIFICAR
+                                        </a>
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+
+            }
+        </table>
+    </div>
+    </div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/Organizacion")
+}

@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A33EC6E-D2BB-479C-AE62-6639BB180ABA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SG_SST.Logica</RootNamespace>
+    <AssemblyName>SG-SST.Logica</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.1\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aplicacion\LNAdmoEMH.cs" />
+    <Compile Include="Aplicacion\LNAdquisicionBienes.cs" />
+    <Compile Include="Aplicacion\LNBateria.cs" />
+    <Compile Include="Aplicacion\LNCriteriosSST.cs" />
+    <Compile Include="Aplicacion\LNEPP.cs" />
+    <Compile Include="Aplicacion\LNGestionDelCambio.cs" />
+    <Compile Include="Aplicacion\LNInspeccion.cs" />
+    <Compile Include="Aplicacion\LNPlanTrabajo.cs" />
+    <Compile Include="Aplicacion\LNPromocionPrevencion.cs" />
+    <Compile Include="Ausentismos\LNAlertas.cs" />
+    <Compile Include="Ausentismos\LNAusencia.cs" />
+    <Compile Include="Ausentismos\LNConfiguracion.cs" />
+    <Compile Include="Ausentismos\LNContingencia.cs" />
+    <Compile Include="Ausentismos\LNDepartamento.cs" />
+    <Compile Include="Ausentismos\LNDiagnostico.cs" />
+    <Compile Include="Ausentismos\LNIndicadores.cs" />
+    <Compile Include="Ausentismos\LNMunicipio.cs" />
+    <Compile Include="ComunicadosAPP\LNUsuariosComunicadoAPP.cs" />
+    <Compile Include="Empresas\LNIncidente.cs" />
+    <Compile Include="Empresas\LNEmpresaUsuaria.cs" />
+    <Compile Include="Empresas\LNIncidenteApp.cs" />
+    <Compile Include="Empresas\LNProcesos.cs" />
+    <Compile Include="Ausentismos\LNReportes.cs" />
+    <Compile Include="Empresas\LNEmpresa.cs" />
+    <Compile Include="EnfermedadLaboral\LNEnfermedadLaboral.cs" />
+    <Compile Include="EstudioPuestoTrabajo\LNArchivoEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\LNEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\LNObjetivoAnalisis.cs" />
+    <Compile Include="EstudioPuestoTrabajo\LNSeguimientoEstudioPuestoTrabajo.cs" />
+    <Compile Include="EstudioPuestoTrabajo\LNTipoAnalisisPT.cs" />
+    <Compile Include="MedicionEvaluacion\LNAcciones.cs" />
+    <Compile Include="MedicionEvaluacion\LNAuditoria.cs" />
+    <Compile Include="MedicionEvaluacion\LNPlanDeAccion.cs" />
+    <Compile Include="Participacion\LNAutentificacionAPP.cs" />
+    <Compile Include="Participacion\LNComite.cs" />
+    <Compile Include="Participacion\LNConsultaSST.cs" />
+    <Compile Include="Participacion\LNReporte.cs" />
+    <Compile Include="Planificacion\LNCargue.cs" />
+    <Compile Include="Empresas\LNRelacionesLaborales.cs" />
+    <Compile Include="Planificacion\LNCargueDx.cs" />
+    <Compile Include="Planificacion\LNCarguePerfilSocioDemografico.cs" />
+    <Compile Include="Planificacion\LNDxGralCondicionesDeSalud.cs" />
+    <Compile Include="Planificacion\LNEvaluacionInicial.cs" />
+    <Compile Include="Planificacion\LNEvaluacionStandMinimos.cs" />
+    <Compile Include="Planificacion\LNMetodologia.cs" />
+    <Compile Include="Planificacion\LNObjetivoSST.cs" />
+    <Compile Include="Planificacion\LNPeligro.cs" />
+    <Compile Include="Planificacion\LNPerfilSocioDemografico.cs" />
+    <Compile Include="Planificacion\LNReportesEstandaresMinimos.cs" />
+    <Compile Include="PlanTrabajoAnual\LNPlanEmpresa.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Revision\LNRevision.cs" />
+    <Compile Include="Usuarios\LNGeneraPassword.cs" />
+    <Compile Include="Usuarios\LNUsuario.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SG-SST.Audotoria\SG-SST.Audotoria.csproj">
+      <Project>{bdd3c5f9-addd-442d-948a-4cfacf89ca75}</Project>
+      <Name>SG-SST.Audotoria</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.EntidadesDominio\SG-SST.EntidadesDominio.csproj">
+      <Project>{d9f2ceb3-2aa8-4934-9aa3-4c435a6d6cc3}</Project>
+      <Name>SG-SST.EntidadesDominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.Enumeraciones\SG-SST.Enumeraciones.csproj">
+      <Project>{5fc98daa-0ed5-4bf6-8f98-c9c4f4c9b4df}</Project>
+      <Name>SG-SST.Enumeraciones</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.Interfaces\SG-SST.Interfaces.csproj">
+      <Project>{3fcdde0a-392b-4bb3-b87c-b42b4a1ab0a8}</Project>
+      <Name>SG-SST.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.InterfazManager\SG-SST.InterfazManager.csproj">
+      <Project>{e2449aa1-d448-4d8b-9fc8-6a08e1da06f6}</Project>
+      <Name>SG-SST.InterfazManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG-SST.Repositorio\SG-SST.Repositorio.csproj">
+      <Project>{246E26F9-8546-4E48-B89F-942EC2DCAAA1}</Project>
+      <Name>SG-SST.Repositorio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.ClienteServicios\SG_SST.ClienteServicios.csproj">
+      <Project>{bc60a8f0-da25-4763-bb09-3c6950d8badd}</Project>
+      <Name>SG_SST.ClienteServicios</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Modelos\SG_SST.Models.csproj">
+      <Project>{11C5DA88-C228-4627-8108-3DDB07AA7898}</Project>
+      <Name>SG_SST.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Recursos\SG_SST.Recursos.csproj">
+      <Project>{9fe4c87b-9298-4962-8f9a-512c266b4cfd}</Project>
+      <Name>SG_SST.Recursos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SG_SST.Utilidades\SG_SST.Utilidades.csproj">
+      <Project>{b06c5de6-a727-4005-ab69-2a659ffac033}</Project>
+      <Name>SG_SST.Utilidades</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Habilite la restauración del paquete NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

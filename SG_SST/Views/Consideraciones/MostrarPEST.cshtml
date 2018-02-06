@@ -1,0 +1,182 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.ElementoMatriz>
+
+@{
+    ViewBag.Title = "Consultar PEST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Consideraciones internas y externas</a></li>
+    <li class="active">Consultar PEST</li>
+</ol>
+
+<div class="tab-pane active" id="step1" name="step1">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:black">ANÁLISIS PEST</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Análisis PEST</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-9">
+                                            <p>Click en Descargar para obtener la matriz PEST en PDF</p>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            @*@Html.ActionLink("Crear", "", "", null, new { @class = "boton botoninfo" })*@
+                                                    
+                                                <img src="~/Content/Images/simbolopdf.png" title="Descargar PDF" />
+                                                   
+                                        </div>
+                                    </div>
+                                    <br />
+                                    
+
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-red" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #e08e79; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Político</p>
+                        </div>
+                        <div class="panel-body" id="politico">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 5)// el 5 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                        <div style="margin-left:-10px; text-align:justify">
+                                            <b>• @item.Descripcion_Elemento</b>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-green" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #cfeccf; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Económicos</p>
+                        </div>
+                        <div class="panel-body" id="economico">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 6)// el 6 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                        <div style="margin-left:-10px; text-align:justify">
+                                            <b>• @item.Descripcion_Elemento</b>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-danger" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #c1b3d7; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Social</p>
+                        </div>
+                        <div class="panel-body" id="social">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 7)// el 7 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                        <div style="margin-left:-10px; text-align:justify">
+                                            <b>• @item.Descripcion_Elemento</b>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="panel panel-primary" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #b3e2dd; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Tecnológico</p>
+                        </div>
+                        <div class="panel-body" id="tecnologico">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 8)// el 8 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                        <div style="margin-left:-10px; text-align:justify">
+                                            <b>• @item.Descripcion_Elemento</b>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Iconos de descarga en Word o PDF*@
+            <div class="panel-footer" style="border: 0.5px solid lightslategray; border-radius:0px">
+                <div class="row" align="center">
+                    <a href="@Url.Action("ReportePEST_PDF", new { })">
+                        <img src="~/Content/Images/simbolopdf.png" title="Descargar PDF" />
+                    </a>
+                    @*<a href="@Url.Action("ExportData", new { })">
+                        <img src="~/Images/word-icon.png" title="Descargar en Word" width="50" height="50" />
+                    </a>*@
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

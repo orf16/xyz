@@ -1,0 +1,133 @@
+﻿@model SG_SST.Models.EmpleadoOrg
+
+@{
+    ViewBag.Title = "Registrar Cargos Organigrama";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">  
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li class="active">Registrar Cargos Organigrama</li>
+</ol>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">REGISTRO CARGOS ORGANIGRAMA</div>
+        
+        @*Boton Ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Registrar Cargos</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <p>Ingresar Cargo Empleado</p>
+                                        </div>
+                                        <div class="col-xs-6">
+                                           <input type="text" class="form-control" disabled/>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <p>Seleccionar de la lista al Cargo Jefe</p>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <select class="form-control" disabled><option>-- Seleccionar Cargo Jefe --</option> </select>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h6 class="error"><em>* El primer Registro es el Máximo Cargo, luego seleccione de la lista.</em></h6>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Jefe_Inmediato, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Jefe_Inmediato, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Jefe_Inmediato, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Cargo_Empleado, "Cargo Jefe:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-3">
+                    @Html.DropDownList("Fk_Id_EmpleadoOrg", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Fk_Id_EmpleadoOrg, "", new { @class = "text-danger" })
+                </div>
+
+                @Html.LabelFor(model => model.Cargo_Empleado, "Cargo Empleado:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-3">
+                    @Html.EditorFor(model => model.Cargo_Empleado, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Cargo_Empleado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Fk_Id_Organigrama, "Empresa", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Fk_Id_Organigrama", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Fk_Id_Organigrama, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <hr />
+
+            <div class="form-group" align="center">
+                @*<div class="col-sm-3">*@
+
+                <button type="submit" class="boton botonactive" >Guardar Cargo</button>
+
+                <a href="@Url.Action("Index","EmpleadoOrg") " class="boton botoninfo" style="text-decoration:none; margin-left:30px">Listado Cargos</a>
+
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+    @*</div>*@
+
+}
+
+@*<a href="@Url.Action("index", "Organigrama")" class="btn btn-search btn-md" title="Gestión Organigrama">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+</a>*@
+
+@*<a href="@Url.Action("index", "Organigrama") " class="btn btn-default btn-sm" title="Menu Organigrama">Regresar</a>
+<hr />*@

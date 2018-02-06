@@ -1,0 +1,237 @@
+﻿@model SG_SST.Models.Participacion.CrearActaConvivenciaVM
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+ }
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Reportes")
+
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Estimado usuario',
+                text: '@ViewBag.mensaje',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+
+}
+<script>
+    
+    $(document).ready(function () {
+        $("a[title='PDF']").parent().hide();  // Remove from export dropdown.
+        $("a[title='MHTML (web archive)']").parent().hide();
+        $("a[title='TIFF file']").parent().hide();
+    });
+</script>
+
+<style>
+    td {
+        border: 0px;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Medición y Evaluación SG-SST</a></li>
+    <li><a href="javascript:void(0)">Reportes y Estadisticas</a></li>
+    <li class="active">Estadísticas</li>
+</ol>
+<div class="row">
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda </h4>
+                        </div>
+
+                        <div class="modal-body" style="color:black">
+                            @* ayuda*@
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Estadísticas</div>
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <br />
+                    <br />
+                    
+                    <label>Tipo de Estadística:</label>
+                    <select class="form-control" name="Representa" id="TipoReporte" oninput="SeleccionarReporteIndicadorSistema()">
+                        <option value="">
+                            --Seleccionar--
+                        </option>
+
+                        <option value="ReportePresupuesto">Presupuesto</option>
+                        <option value="ReporteCompetencias">Competencias</option>
+                        <option value="IdentificacionPeligro">Identificación de Peligros GTC45</option>
+                        <option value="ReportePlanTrabajo">Plan de Trabajo</option>
+                        <option value="PerfilSocio">Perfil Sociodemográfico</option>
+                        <option value="ReporteDiagnosticoSalud">Diagnóstico Condiciones de Salud</option>
+                        <option value="GestionCambio">Gestión del Cambio</option>
+                        <option value="InspeccionesSeguridad">Inspecciones de Seguridad</option>
+                        <option value="ReporteMetodologiaInsht">Metodología Insht</option>
+                        <option value="AccionesCorrectivas">Acciones Correctivas Preventivas</option>
+                        <option value="Incidentes">Incidentes</option>
+                        <option value="MetodologiaRam">Metodología RAM</option>
+                        <option value="PuestosTrabajo">Estudio Puestos de Trabajo</option>
+                        <option value="PlanEmergenciaAccion">Plan de Emergencia Frente de Acción</option>
+                        <option value="PlanEmergenciaGeneral">Plan de Emergencia Información General</option>
+                        <option value="ActosCondicionesInseguras">Actos y Condiciones Inseguras</option>
+                        @*<option value="AdquisicionesBienes">Adquisiciones de Bienes o Contratación</option>*@
+                        <option value="RelacionesLaborales">Relaciones Laborales</option>
+                        <option value="PlanCapacitacion">Plan de Capacitación</option>
+
+                        @*Nuevos*@
+
+                        @*<option value="ComunicacionesExternas">Comunicaciones Externas</option>
+
+                        <option value="ComunicacionesInternas">Comunicaciones Internas</option>*@
+
+                        @*<option value="MedidasPrevencion">Medidas de Prevencion Y Control </option>*@
+
+                        <option value="PlanesDeAccion">Planes de acción </option>
+
+                        <option value="ReporteEnfermedadLaboral">Reporte de enfermedad laboral </option>
+
+                        <option value="InvestigacionATEL">Incidentes Enfermedad laboral  </option>
+
+                        @*<option value="ComunicacionesAPP">Comunicaciones APP </option>*@
+
+                        <option value="ActividadesComunicaciones">Actividades Comunicaciones</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <br />
+    <br />
+    <br />
+    <div class="row" id="param" hidden="hidden">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="col-md-7"> Parámetros:</label>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <br />
+    <div class="row" >
+
+
+        <div class="col-sm-4" id="divAnio" name="divAnio" hidden="hidden">
+            <div class="form-group">
+                <label class="col-md-7">Periodo:</label>
+                <div class="col-md-10">
+
+                    @{
+                        var anioStr = DateTime.Today.Year.ToString();
+                        var anioStr1 = DateTime.Today.AddYears(-1).Year.ToString();
+                        var anioStr2 = DateTime.Today.AddYears(-2).Year.ToString();
+                        var anioStr3 = DateTime.Today.AddYears(-3).Year.ToString();
+                        var anioStr4 = DateTime.Today.AddYears(-4).Year.ToString();
+                        var anioStr5 = DateTime.Today.AddYears(-5).Year.ToString();
+                        var anioStr6 = DateTime.Today.AddYears(-6).Year.ToString();
+                        var anioStr7 = DateTime.Today.AddYears(-7).Year.ToString();
+                        var anioStr8 = DateTime.Today.AddYears(-8).Year.ToString();
+                        var anioStr9 = DateTime.Today.AddYears(-9).Year.ToString();
+
+                        <select class="form-control" id="anio" name="anio" >
+                            <option value="">--Seleccionar--</option>
+                            <option value=@anioStr>@anioStr</option>
+                            <option value=@anioStr1>@anioStr1</option>
+                            <option value=@anioStr2>@anioStr2</option>
+                            <option value=@anioStr3>@anioStr3</option>
+                            <option value=@anioStr4>@anioStr4</option>
+                            <option value=@anioStr5>@anioStr5</option>
+                            <option value=@anioStr6>@anioStr6</option>
+                            <option value=@anioStr7>@anioStr7</option>
+                            <option value=@anioStr8>@anioStr8</option>
+                            <option value=@anioStr9>@anioStr9</option>
+                        </select>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4" id="SedeInd" hidden="hidden" >
+            <div class="form-group">
+                <label class="col-md-7">Sede:</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("FKSede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-4" id="divEstado" name="divEstado" hidden="hidden">
+            <div class=" form-group">
+                <label class="col-md-7">Estado:</label>
+                <div class="col-md-10">
+
+                    <select class="form-control" name="Estado" id="Estado">
+                        <option value="">
+                            --Seleccionar--
+                        </option>
+                        <option value="Enviado">Enviado</option>
+                        <option value="En Espera">En Espera</option>
+                    
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+    <br />
+
+    <div class="row">
+        <div class="col-md-5">
+            <button type="button" id="mostrarReporteApl" onclick="SeleccionarReporteAplicacion()" class="boton botonactive">Mostrar Estadística</button>
+        </div>
+    </div>
+
+
+
+    <form id="formReportesAplicacion">
+        <div id="IDReportes" class="panel-body">
+            @Html.Partial("VisorDeReportes")
+        </div>
+    </form>
+

@@ -1,0 +1,106 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionModel
+<style>
+
+</style> 
+<div class="panel panel-default">    
+    @using (Html.BeginForm("Index", "Evaluacion", FormMethod.Post, new { @id = "formEvaluacion", @class = "form-horizontal" }))
+    {       
+        <div class="panel-body form-horizontal">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Razón social de la empresa:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBoxFor(x => x.RazonSocial, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Responsable SGSST:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.ResponsableSGSST, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Nit:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.Nit, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Elaborado por:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.ElaboradoPor, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Actividad económica:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @string.Format("{0}", Model.ActividadEconomica)
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Licencia SO/SL:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.LicenciaSOSL, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Centro de trabajo/Sede:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @string.Format("{0}", Model.SedeCentroTrabajo)
+
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Fecha diligenciamiento:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.FechaDiligenciamiento, new { @class = "form-control", Value = "", @placeHolder = string.Format("ej. {0} ", DateTime.Now) })
+                </div>
+            </div>
+        </div>
+        <div id="body_asp" class="aspectos table-responsive" style="display:none;">
+            <table id="tbl_asp" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-xs-4">
+                            Aspectos a evaluar
+                            @*@Html.Label("Aspectos a evaluar")*@
+                        </th>
+                        <th class="col-xs-1">
+                            Cumple
+                            @*@Html.Label(" cumple")*@
+                        </th>
+                        <th class="col-xs-1">
+                            No cumple
+                            @*@Html.Label(" no cumple")*@
+                        </th>
+                        <th class="col-xs-2">
+                            Cumple parcial
+                            @*@Html.Label(" cumple parcial")*@
+                        </th>
+                        <th class="col-xs-4">
+                            Obseervaciones
+                            @*@Html.Label("Obseervaciones")*@
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.NuevoAspecto != null)
+                    {
+                        @Html.Partial("_NuevoAspecto", Model.NuevoAspecto)
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/manejoFechas")
+@Scripts.Render("~/Scripts/Evaluacion/evaluacion.js")

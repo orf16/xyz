@@ -1,0 +1,52 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDServicioProducto
+
+@{
+    ViewBag.Title = "Selección y Evaluación";
+}
+
+@{
+    var isRowSpam = true;
+    foreach (var criterio in Model.CriterioLista)
+    {
+    <tr name="datos" id="datos">
+        @if (isRowSpam)
+        {
+            <td rowspan="@Model.CriterioLista.Count" id="eliminar" name="eliminar"
+                style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center" >
+                <a onclick="eliminarTrProducto(@Model.idServicioProducto)"
+                   title="Remover Tipo de Servicio y Producto para calificar" class="btn btn-md btn-search">
+                    <span class="glyphicon glyphicon-erase" name="iconoEliminar"></span>
+                </a>
+            </td>
+            <td rowspan="@Model.CriterioLista.Count" id="id_servicioProdu" name="id_servicioProdu"
+                style="border-right: 2px solid lightslategray; vertical-align:middle">
+                @Model.DescripcionProducto
+                
+                @*<input name="idServicioProducto" id="idServicioProducto" class=" form-control" type="hidden" value="@Model.idServicioProducto" />*@
+                <input name="idServicioProducto" id="idServicioProducto" class="form-control" type="hidden" value="@Model.idServicioProducto" />
+                <br />
+                <div class="input-group" style="width: 80%; margin-left:10%">
+                    <input class="form-control" type="text" id="califProducto" name="califProducto" readonly @*value="@Model.califProducto"*@ />
+                    <div class="input-group-addon alert-warning">
+                        <span>% </span>
+                    </div>
+                </div>
+            </td>
+            isRowSpam = false;
+        }
+        <input name="idServicioProd" class="form-control" type="hidden" value="@Model.idServicioProducto" />
+        <td name="nameCrit" id="nameCrit"
+            style="border-right: 2px solid lightslategray; vertical-align:middle">
+            @criterio.NombreCriterioSST
+            <input name="IdProductoCriterios" class="form-control" type="hidden" value="@criterio.IdProductoCriterios" />
+        </td>
+        <td id="calificacion" name="calificacion"
+            style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+            <select id="ddlViewBy" name="ddlViewBy" onchange="calificacionProveedor(@Model.idServicioProducto)" class="form-control" style="width: 80%; margin-left:10%">
+                <option value="True">Cumple</option>
+                <option value="False" selected='selected'>No Cumple</option>
+            </select>
+        </td>
+    </tr>       
+    }
+}

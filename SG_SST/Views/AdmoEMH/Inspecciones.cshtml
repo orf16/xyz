@@ -1,0 +1,236 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEHMInspecciones>
+
+@{
+    ViewBag.Title = "Consulta de Inspecciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/ConsultaACAP.js"></script>
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración equipo, maquinaria y herramientas</a></li>
+    <li class="active">Consultar Inspecciones por Elemento</li>
+</ol>
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".paginver");
+        var numItems = items.length;
+        var perPage = 5;
+        items.slice(perPage).hide();
+        $(".paginationver").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    //Exportar Matriz
+    $(function () {
+        $("#DescargarPDF").click(function () {
+
+            var stringArray = new Array();
+            var string = "";
+            $('#Grid3 > tbody').find('tr').each(function () {
+                var row = $(this);
+                var IdEPP = row.attr('name');
+                if (IdEPP != null) {
+                    if (string!="") {
+                        string = string + "$" + IdEPP;
+                    }
+                    else {
+                        string = IdEPP;
+                    }
+                    stringArray.push(IdEPP);
+                }
+            });
+            var postData = { values: stringArray };
+            if (string!="") {
+                window.location.href = '/AdmoEMH/ExportInspeccionPDF?resultado=' + string;
+            }
+        });
+    });
+
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('FechaAntes');
+        ConstruirDatePickerPorElemento('FechaDespues');
+    });
+</script>
+
+
+
+<div class="panel panel-default std-panel-body max-width-700-responsive">
+    <div class="panel-heading panel-heading-custom">CONSULTAR INSPECCIONES POR EQUIPOS, MÁQUINAS O HERRAMIENTAS</div>
+
+
+
+
+
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Consulta de Inspecciones</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botoninfo" style="cursor:default;">CONSULTAR</button> Para consultar las inspecciones que cumplan con las condiciones del filtro de busqueda</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <span>@ViewBag.Mensaje</span>
+        <br />
+    </div>
+    <div class="panel-body">
+        <div class="internal-panel add-bottom-margin-05em">
+
+            @using (Html.BeginForm())
+            {
+
+                    <div class="col-sm-12 form-group">
+                        <label class="control-label col-sm-5">Nombre Elemento</label>
+                        <div class="col-sm-12">
+                            @Html.TextBox("NombreEHM", (string)ViewBag.NombreEHM, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.Hidden("IdEHM_t", (string)ViewBag.IdEHM)
+                        </div>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label col-sm-12">Fecha Incio</label>
+                        <div class="col-sm-12 col-md-5">
+                            @Html.TextBox("FechaAntes", (string)ViewBag.val_fecha1, new { @class = "form-control", @title = "Digite una fecha con formato dd/MM/yyyy" })
+                        </div>
+                    </div>
+                    <div class="col-sm-5 form-group">
+                        <label class="control-label col-sm-12">Fecha Fin</label>
+                        <div class="col-sm-12 col-md-5">
+                            @Html.TextBox("FechaDespues", (string)ViewBag.val_fecha2, new { @class = "form-control", @title = "Digite una fecha con formato dd/MM/yyyy" })
+                        </div>
+                    </div>
+
+                    <div class="row text-center " style="margin-bottom:0.5em;">
+                        <button class="boton botoninfo" href="@Url.Action("ConsultarEHM", "AdmoEMH")">Consultar</button>
+                    </div>
+
+
+
+                    <div class="table-responsive" style="margin:auto;">
+                        <table id="Grid3" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>No</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Descripción</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Elementos Inspeccionados</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Fecha Planeación</span>
+                                    </th>
+
+                                </tr>
+                            </thead>
+
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr class="paginver" name="@item.PK_Id_inspeccion">
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(model => item.IdConsecutivo)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(model => item.EDDescribeinspeccion)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(model => item.EDNombreInspeccion)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                                            @{
+                                                string Fecha_str = "";
+                                                try
+                                                {
+                                                    Fecha_str = item.Fecha.ToString("dd/MM/yyyy");
+                                                }
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                                <span>@Fecha_str</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                                }
+                            }
+
+                        </table>
+                        <center><div class="pagination paginationver" id="paginador1"></div></center>
+
+                    </div>
+
+                
+                                                }
+
+        </div>
+
+
+
+            <div class="row text-center" style="margin-bottom:0.5em;">
+                <button id="DescargarPDF" class="boton botonactive">Exportar Lista PDF</button>
+            </div>
+        <div class="row text-center" style="margin-bottom:0.5em;">
+            <button class="boton botoninfo" onclick="location.href='@Url.Action("ConsultarEHM", "AdmoEMH")';return false;">REGRESAR</button>
+        </div>
+
+        </div>
+</div>
+
+
+
+

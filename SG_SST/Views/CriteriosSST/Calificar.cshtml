@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewBag.Title = "Selección y Evaluación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.guardadoConExito == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Selección y Evaluación Guardado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+@section Scripts {
+
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: blue;
+        }
+    </style>
+
+    @Scripts.Render("~/bundles/Aplicacion")
+
+}
+
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+@section OpcionesEmpresa
+{
+    <ul class="nav nav-tabs">
+        <li><a href="@Url.Action("Create", "CriteriosSST")" style="color:gray">Criterios</a></li>
+        <li class ="active"><a href="@Url.Action("Calificar", "CriteriosSST")" style="color:#ff7500">Selección y Evaluación</a></li>
+        <li><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")" style="color:gray">Visualizar Calificaciones de Proveedores y Contratistas</a></li>
+        <li><a href="@Url.Action("MostrarProveedores", "CriteriosSST")" style="color:gray">Listado de Proveedores y Contratistas</a></li>
+    </ul>
+}
+
+<br />
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Create", "CriteriosSST")">Criterios</a></li>
+    <li class="active"><a href="@Url.Action("Calificar", "CriteriosSST")">Selección y Evaluación</a></li>
+    @*<li class="active"><a href="@Url.Action("VisualizarCalificacion", "CriteriosSST")">Visualizar Calificaciones de Proveedores</a></li>*@
+    @*<li><a href="@Url.Action("MostrarProveedores", "CriteriosSST")">Listado de Proveedores y Contratistas</a></li>*@
+</ol>
+<hr />
+  
+<form method="post" id="grabarSeleccionEvaluacion" enctype="multipart/form-data">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Selección y Evaluación
+        </div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Selección y Evaluación</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:2%;line-height: 200%;"><strong></strong>Por favor ingrese todos los campos.</p>
+                                <p align="justify">Para obtener el resultado de la calificación se suman todos los campos de calificación Tipo de Servicio y Producto y se divide por la cantidad de ellos.</p>
+                                <p align="justify">Para obtener el Porcentaje de la calificación de Tipo de servicio y Producto se suman los criterios calificados en "CUMPLE", se divide por la cantidad de criterios asignados al Tipo de Servicio y Producto y se multiplica por 100.</p>
+                                <p align="justify"><strong>NOTA: </strong>Todos los Criterios del Tipo de Servicio y Producto cuando va a calificar, estan calificados con "NO CUMPLE", por favor Califique con "CUMPLE" los criterios del Tipo de Servicio y Producto que SI los cumple.</p>
+                                <p align="justify">El tamaño del archivo no puede exceder 10 Mb.</p>
+                                <p align="justify">Los formatos de documentos que acepta este módulo son PDF, DOC, DOCX, PPTX, PPT, XLSX, XLS, PNG, y JPG.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <input type="file" class="form-control" disabled /> para adjuntar los anexos que desee.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">En el campo: Tipo de Servicio y Producto, seleccione los Tipos de Servicio y Producto a calificar.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Por favor seleccione 
+                                <select class="form-control" style="width: 80%; margin-left:10%" disabled>
+                                    <option value="True">Cumple</option>
+                                    <option value="False" selected='selected'>No Cumple</option>
+                                </select>
+                                para calificar los criterios de los Tipos de Servicio y Producto seleccionados, con Cumple o no Cumple.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <span class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></span> para remover un Tipo de Servicio y Producto que no desee calificar.</p>
+                                <p style="margin-bottom:2%;line-height:200%;">Presione <button type="button" class="boton botonactive" disabled>GUARDAR</button> para guardar la selección y Evaluación creada.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body form-horizontal">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3" @*style="width:15.5%; text-align:left"*@>
+                        <label>Fecha de la Calificación</label>
+                        <input type="text" class="form-control" name="fechapi" id="fechapi" readonly />
+                        <label for="fechapi" class="error" style="display:none;"></label>
+                    </div>
+                    <div class="col-md-6" @*style="width:15.5%; text-align:left"*@>
+                        @Html.Label("Anexos")
+                        <input id="files" type="file" name="files" multiple data-preview-file-type="any" class="form-control" onchange="validacioCargarAnexos()" />
+                        @*<input class="form-control" type="text" id="anexo" readonly />*@
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="col-md-3" @*style="width:15.5%; text-align:left"*@>
+                        @Html.Label("Proveedor")
+                        <input class="form-control" type="text" id="nameProveedor" name="nameProveedor" />
+                    </div>
+                    <div class="col-md-3" @*style="width:15.5%; text-align:left"*@>
+                        @Html.Label("NIT")
+                        <input class="form-control" type="text" id="nitProveedor" name="nitProveedor" />
+                    </div>
+                    <div class="col-md-5" @*style="width:15.5%; text-align:left"*@>
+                        @Html.Label("Tipo de Servicio y Producto")
+                        @*@Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control", @onchange = "consultarSubProcesos()" }, optionLabel: "Seleccionar")*@
+                        @Html.DropDownList("Pk_Id_Productos", null, htmlAttributes: new { @class = "form-control", @onchange = "consultarProductosPorCriterio()" }, optionLabel: "-- Seleccionar --")
+                        @*@Html.DropDownList("Pk_Id_Criterio1", (SelectList)ViewBag.Pk_Id_Criterios, "-- Seleccione Los Criterios--", new { @class = "form-control selectpicker", @multiple = "multiple" })*@
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-7" @*style="width:15.5%; text-align:left"*@>
+                        @Html.Label("Observaciones")
+                        <input class="form-control" type="text" id="observacion" name="observacion" />
+                    </div>
+
+                    <div class="col-md-3" @*style="width:15.5%; text-align:left"*@>
+                        @Html.Label("Resultado de la Calificación")
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="calif" name="calif" readonly />
+                                <div class="input-group-addon alert-warning">
+                                    <span>% </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="col-md-3">
+                        @Html.Label("Resultado de la Calificación Real")
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="califReal" name="califReal" readonly />
+                                <div class="input-group-addon alert-warning">
+                                    <span>% </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+
+            <br />
+
+            <div id="TablaProcuctoCriter">
+                <div class="table-responsive">
+                    <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaProcuctoCrit">
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                @Html.Label("Acción")
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase" width="15%">
+                                @Html.Label("Tipo de Servicio y Producto")
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                @Html.Label("Criterio en SST")
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                @Html.Label("Calificación de Criterios")
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                <div class="col-md-12" text-center">
+                    <button type="submit" class="boton botonactive" onclick="ValidarGuardarSeleccionEvaluacion()">Guardar</button>
+                    @*<button type="submit" class="boton botonactive" onclick="ValidarCrearProductoCriterio()">Guardar</button>*@
+                </div>
+                @*<div class="col-md-6">
+                    <button type="button" class="boton botonactive" onclick="validarCamposRol()">Guardar</button>
+                </div>
+                <div class="col-md-6">
+                    @Html.ActionLink("Cancelar", "CrearRol", new { }, htmlAttributes: new { @type = " button", @class = "boton botoncancel" })
+                </div>*@
+            </div>
+        </div>
+    </div>
+
+</form>

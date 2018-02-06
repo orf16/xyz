@@ -1,0 +1,57 @@
+﻿
+@model IEnumerable<SG_SST.Models.Empleado.tblEmpleado>
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<table class="table table-condensed table-responsive table-hover table-bordered table-striped table-hover" id="idtblOtrasInteracciones" style="font-size:x-small">
+    <tr>
+        @*<td><input type="checkbox" id="checkAll" /></td>*@
+        <td><b>Tipo de Documento</b></td>
+        <td><b>Número de Documento</b></td>
+        <td><b>Primer Apellido</b></td>
+        <td><b>Segundo Apellido</b></td>
+        <td><b>Primer Nombre</b></td>
+        <td><b>Segundo Nombre</b></td>
+        <td><b>Estado</b></td>
+        <td><b>Tipo Cotizante</b></td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDocumento.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PK_Numero_Documento_Empl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Primer_Apellido_Empl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Segundo_Apellido_Empl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Primer_Nombre_Empl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Segundo_Nombre_Empl)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado_Empleado.EstEmplead)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoCotizante.Descripcion)
+            </td>
+
+        </tr>
+    }
+</table>
+

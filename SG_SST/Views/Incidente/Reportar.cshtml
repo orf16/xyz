@@ -1,0 +1,714 @@
+﻿@model SG_SST.Models.ReporteIncidente.IncidenteModel
+@{
+    ViewBag.Title = "Reporte de Incidentes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ThisController = ViewContext.Controller as SG_SST.Controllers.Empresas.IncidenteController;
+}
+@section HeadStyles{
+    <link rel="stylesheet" href="/Content/css/formularios.css" />
+    <link rel="stylesheet" href="/Content/css/bootstrap-iso.css" />
+    <link rel="stylesheet" href="/Content/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/Content/css/bootstrap-datepicker3.css" />
+
+
+}
+@section HeadScripts{
+    <script type="text/javascript" src="https://formden.com/static/cdn/formden.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+@*===============================================================================*@
+
+<div class="main">
+    <div class="page-header">
+
+        @using (Html.BeginForm("GuardarIncidente", "Incidente", FormMethod.Post, new { @id = "frmIncidente", @class = "form-horizontal" }))
+        {
+            <div class="container name_for">
+                <h2>Formato de Reporte de Incidentes</h2>
+            </div>
+            <div class="container formulario">
+                <div class="row">
+                    <!-- Seccion01 -->
+                    <div class="col-xs-6 col-sm-6 col-md-11 seccion01" style="text-align:center">
+                        <h2 class="note">NOTA: Usted puede reportar incidentes laborales que le hayan ocurrido o aquellos en los que haya sido participe o testigo. Recuerde hacer una descripción muy precisa y completa del evento.</h2>
+                    </div>
+                    <div align="right">
+                        <div id="ayuda" style="text-align:right">
+                            <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </a>
+                            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                </button>
+                                            <h4 class="modal-title title">Ayuda/Incidente de trabajo</h4>
+                                        </div>
+                                        <div class="modal-body " style="color:black; text-align:justify;">
+                                            <p>Conforme al artículo 3 definiciones de la Resolución 1401 de 2007 Incidente de Trabajo es: Suceso acaecido en el curso del trabajo o en relación con este, que tuvo el potencial de ser un accidente, en el que hubo personas involucradas sin que sufrieran lesiones o se presentaran daños a la propiedad y/o pérdida en los procesos. Así mismo se debe investigar todos los incidentes de trabajo dentro de los quince (15) días siguientes a su ocurrencia (artículo 4 Resolución 1401).</p>
+                                            <p>Para reportar un incidente en el sistema debe:</p>
+                                            <p>1. Complementar información de la empresa</p>
+                                            <p>2. Complementar información de quien hace el reporte (usuario logueado)</p>
+                                            <p>3. Complementar información general del incidente (fecha, hora, lugar, categorización, y otros)</p>
+                                            <p>4. Complementar información descriptiva del incidente ocurrido. Ser muy específico y detallado</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-xs-6 col-sm-6 col-md-6 seccion04">
+                            <a href="/Incidente/Ayuda" target="_blank"><i class="fa fa-question-circle"></i></a>
+                        </div>*@
+                    <!-- Seccion02 -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01" style="background-color:#7e8a97; color: white; padding-left: 3px;">
+                            <h2>I. IDENTIFICACIÓN GENERAL DEL EMPLEADOR, CONTRATANTE O COOPERATIVA</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-12 col-md-5 linea02">
+                                <h2>Nombre de la actividad econónomica (Sede Principal)</h2>
+                                @if (string.IsNullOrEmpty(Model.ActividadEconomica))
+                                {
+                                    @Html.TextBoxFor(x => x.ActividadEconomica)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.ActividadEconomica, new { @disabled = "disabled" })
+                                }
+                                @Html.TextBoxFor(x => x.CodActividadEconomica, new { type = "hidden" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Código</h2>
+                                @if (Model.CodActividadEconomica < 1)
+                                {
+                                    @Html.TextBoxFor(x => x.CodActividadEconomica, new { @id = "codactividad", @name = "codactividad" })
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CodActividadEconomica, new { @id = "codactividad", @name = "codactividad", @disabled = "disabled" })
+                                }
+
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-5 linea02">
+                                <h2>Nombre o razón social</h2>
+                                @if (string.IsNullOrEmpty(Model.RazonSocial))
+                                {
+                                    @Html.TextBoxFor(x => x.RazonSocial)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.RazonSocial, new { @disabled = "disabled" })
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Tipo de identificación</h2>
+                                @foreach (var item in Model.TiposDeDocumento.Where(t => !t.Text.Contains("TI")))
+                                {
+                                    <div class="check01">
+                                        @Html.RadioButtonFor(x => Model.IdTipoDocumentoEmpresa, @item.Value, new { @class = "TipoDocumentoEmpresa", @disabled = "disabled" }) @item.Text
+                                    </div>
+                                }
+                                @Html.HiddenFor(x => x.TipoDocumentoEmpresa, new { @id = "TipoDocumentoEmpresa" })
+                                <label for="IdTipoDocumentoEmpresa" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Nº</h2>
+                                @if (string.IsNullOrEmpty(Model.NitEmpresa))
+                                {
+                                    @Html.TextBoxFor(x => x.NitEmpresa)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.NitEmpresa, new { @disabled = "disabled" })
+                                }
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-5 linea02">
+                                <h2>Dirección</h2>
+                                @if (string.IsNullOrEmpty(Model.DireccionEmpresa))
+                                {
+                                    @Html.TextBoxFor(x => x.DireccionEmpresa)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.DireccionEmpresa, new { @disabled = "disabled" })
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Teléfono</h2>
+                                @if (string.IsNullOrEmpty(Model.TelefonoEmpresa))
+                                {
+                                    @Html.TextBoxFor(x => x.TelefonoEmpresa)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.TelefonoEmpresa, new { @disabled = "disabled" })
+                                }
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-2 linea02">
+                                <h2>Correo electrónico (e-mail)</h2>
+                                @if (string.IsNullOrEmpty(Model.CorreoElectronico))
+                                {
+                                    @Html.TextBoxFor(x => x.CorreoElectronico)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.CorreoElectronico, new { @disabled = "disabled" })
+                                }
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Departamento</h2>
+                                @if (string.IsNullOrEmpty(Model.DepartamentoEmp))
+                                {
+                                    @Html.DropDownListFor(x => x.IdDepartamentoEmp, Model.Departamentos, "---Departamentos--", new { @class = "form-control", @Style = "width: 96%;" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.IdDepartamentoEmp, Model.Departamentos, "---Departamentos--", new { @class = "form-control bloqueado", @Style = "width: 96%;", @disabled = "disabled" })
+                                }
+                                @Html.HiddenFor(x => x.DepartamentoEmp, new { @id = "DepartamentoEmp" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Municipio</h2>
+                                @if (string.IsNullOrEmpty(Model.MunicipioEmp))
+                                {
+                                    @Html.DropDownListFor(x => x.IdMunicipioEmp, Model.Municipios, "---Municipios--", new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.IdMunicipioEmp, Model.Municipios, "---Municipios--", new { @class = "form-control bloqueado", @disabled = "disabled" })
+                                }
+                                @Html.HiddenFor(x => x.MunicipioEmp, new { @id = "MunicipioEmp" })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-2 linea02">
+                                <h2>Zona</h2>
+                                @foreach (var item in Model.Zonas)
+                                {
+                                    <div class="check01">
+                                        @if (string.IsNullOrEmpty(Model.ZonaEmpresa))
+                                        {
+                                            @Html.RadioButtonFor(x => Model.IdZonaEmpresa, @item.Value, new { @class = "ZonasEmpresa" }) @item.Text
+                                        }
+                                        else
+                                        {
+                                            @Html.RadioButtonFor(x => Model.IdZonaEmpresa, @item.Value, new { @class = "ZonasEmpresa", @disabled = "disabled" }) @item.Text
+                                        }
+                                    </div>
+                                }
+                                @Html.HiddenFor(x => x.ZonaEmpresa, new { @id = "ZonaEmpresa" })
+                                <label for="IdZonaEmpresa" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Sede donde labora el trabajador</h2>
+                                <p>¿Son los datos de la Sede los mismos de la sede principal?</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-2 linea02">
+                                <h2>&nbsp;</h2>
+                                <div class="check01">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.EsSedePrincipal, "True", new { @class = "sedePrincipal" }) SI
+                                    </label>
+                                </div>
+                                <div class="check01">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.EsSedePrincipal, "False", new { @class = "sedePrincipal" }) NO
+                                    </label>
+                                </div>
+                                <label for="EsSedePrincipal" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>&nbsp;</h2>
+                                <p>Sólo en caso negativo diligenciar la siguientes casillas sobre la sede</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Sede</h2>
+                                @Html.DropDownListFor(x => x.IdSede, Model.Sedes.Select(s => new SelectListItem() { Value = s.IdSede.ToString(), Text = s.NombreSede }).ToList(), "---Sedes--", new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-6 col-md-6 linea02">
+                                <h2>Dirección</h2>
+                                @Html.TextBoxFor(x => x.DireccionSede, new { @class = "form-control ", @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Teléfono</h2>
+                                @Html.TextBoxFor(x => x.TelefonoSede, new { @class = "form-control ", @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Departamento</h2>
+                                @Html.DropDownListFor(x => x.IdDepartamentoSede, Model.Departamentos, "---Departamentos--", new { @class = "form-control", @Style = "width: 96%;", @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Municipio</h2>
+                                @Html.DropDownListFor(x => x.IdMunicipioSede, Model.Municipios, "---Municipios--", new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Zona</h2>
+                                @foreach (var item in Model.Zonas)
+                                {
+                                    <div class="check01">
+                                        @Html.RadioButtonFor(x => Model.IdZonaSede, @item.Value, new { @class = "ZonasSede", @disabled = "disabled" }) @item.Text
+                                    </div>
+                                }
+                                <label for="IdZonaSede" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Seccion03 -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01" style="background-color:#7e8a97; color: white; padding-left: 3px;">
+                            <h2 class="note">II. INFORMACIÓN DE LA PERSONA QUE REPORTA EL INCIDENTE</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea02">
+                            <h2>Tipo de vinculación laboral:</h2>
+                            @foreach (var item in Model.VinculacionLaboral)
+                            {
+                                <div class="check02">
+                                    @Html.RadioButtonFor(x => Model.IdVinculacionLab, @item.Value, new { @class = "vinculacion" }) @item.Text
+                                </div>
+                            }
+                            @Html.HiddenFor(x => x.VinculacionLab, new { @id = "VinculacionLab" })
+                            <label for="IdVinculacionLab" class="error" style="display:none;">Este campo es obligatorio.</label>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Tipo de identificación:</h2>
+                                @foreach (var item in Model.TiposDeDocumento.Where(t => !t.Text.Contains("NI") && !t.Text.Contains("NU")))
+                                {
+                                    <div class="check01">
+                                        @if (string.IsNullOrEmpty(Model.TipoDocumentoEmpleado))
+                                        {
+                                            @Html.RadioButtonFor(x => Model.IdTipoDocumentoEmpleado, @item.Value, new { @class = "TipoDocumentopers" }) @item.Text
+                                        }
+                                        else
+                                        {
+                                            @Html.RadioButtonFor(x => Model.IdTipoDocumentoEmpleado, @item.Value, new { @class = "TipoDocumentopers", @disabled = "disabled" }) @item.Text
+                                        }
+                                    </div>
+                                }
+                                <label for="IdTipoDocumentoEmpleado" class="error" style="display:none;">Este campo es obligatorio.</label>
+                                @Html.HiddenFor(x => x.TipoDocumentoEmpleado, new { @id = "TipoDocumentoEmpleado" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Número</h2>
+                                @if (string.IsNullOrEmpty(Model.DocumentoEmpleado))
+                                {
+                                    @Html.TextBoxFor(x => x.DocumentoEmpleado)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.DocumentoEmpleado, new { @disabled = "disabled" })
+                                }
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Primer Apellido</h2>
+                                @if (string.IsNullOrEmpty(Model.PrimerApellido))
+                                {
+                                    @Html.TextBoxFor(x => x.PrimerApellido)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.PrimerApellido, new { @disabled = "disabled" })
+                                }
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Segundo Apellido</h2>
+                                @Html.TextBoxFor(x => x.SegundoApellido, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Primer Nombre</h2>
+                                @if (string.IsNullOrEmpty(Model.PrimerNombre))
+                                {
+                                    @Html.TextBoxFor(x => x.PrimerNombre)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.PrimerNombre, new { @disabled = "disabled" })
+                                }
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 linea02">
+                                <h2>Segundo Nombre</h2>
+                                @Html.TextBoxFor(x => x.SegundNombre, new { @disabled = "disabled" })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Fecha de nacimiento</h2>
+                                <div class="bootstrap-iso">
+                                    <div class="container-fluid">
+                                        <div class="form-group ">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                @Html.TextBoxFor(x => x.FechaNacimiento, new { Value = Model.FechaNacimiento.Year < 1000 ? "" : Model.FechaNacimiento.ToString("dd/MM/yyyy"), placeholder = "dd/mm/yyyy", @disabled = "disabled", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Género</h2>
+                                @if (!string.IsNullOrEmpty(Model.Genero))
+                                {
+                                    <div class="check01">
+                                        <label>
+                                            @Html.RadioButtonFor(x => Model.Genero, "M", new { @class = "cGenero", @disabled = "disabled" }) M
+                                        </label>
+                                    </div>
+                                    <div class="check01">
+                                        <label>
+                                            @Html.RadioButtonFor(x => Model.Genero, "F", new { @class = "cGenero", @disabled = "disabled" }) F
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="check01">
+                                        <label>
+                                            @Html.RadioButtonFor(x => Model.Genero, "M", new { @class = "cGenero" }) M
+                                        </label>
+                                    </div>
+                                    <div class="check01">
+                                        <label>
+                                            @Html.RadioButtonFor(x => Model.Genero, "F", new { @class = "cGenero" }) F
+                                        </label>
+                                    </div>
+                                    <label for="Genero" class="error" style="display:none;">Este campo es obligatorio.</label>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-6 col-md-6 linea02">
+                                <h2>Dirección</h2>
+                                @if (string.IsNullOrEmpty(Model.DireccionEmpleado))
+                                {
+                                    @Html.TextBoxFor(x => x.DireccionEmpleado)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.DireccionEmpleado, new { @disabled = "disabled" })
+                                }
+
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 linea02">
+                                <h2>Teléfono</h2>
+                                @if (string.IsNullOrEmpty(Model.TelefonoEmpleado))
+                                {
+                                    @Html.TextBoxFor(x => x.TelefonoEmpleado)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.TelefonoEmpleado, new { @disabled = "disabled" })
+                                }
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Departamento</h2>
+                                @if (string.IsNullOrEmpty(Model.DepartamentoEmpleado))
+                                {
+                                    @Html.DropDownListFor(x => x.IdDepartamentoEmpleado, Model.Departamentos, "---Departamentos--", new { @class = "form-control", @Style = "width: 96%;" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.IdDepartamentoEmpleado, Model.Departamentos, "---Departamentos--", new { @class = "form-control bloqueado", @Style = "width: 96%;", @disabled = "disabled" })
+                                }
+
+                                @Html.HiddenFor(x => x.DepartamentoEmpleado, new { @id = "DepartamentoEmpleado" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Municipio</h2>
+                                @if (string.IsNullOrEmpty(Model.DepartamentoEmpleado))
+                                {
+                                    @Html.DropDownListFor(x => x.IdMunicipioEmpleado, Model.Municipios, "---Municipios--", new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(x => x.IdMunicipioEmpleado, Model.Municipios, "---Municipios--", new { @class = "form-control bloqueado", @disabled = "disabled" })
+                                }
+
+                                @Html.HiddenFor(x => x.MunicipioEmpleado, new { @id = "MunicipioEmpleado" })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Zona</h2>
+                                @foreach (var item in Model.Zonas)
+                                {
+                                    <div class="check01">
+                                        @if (Model.IdZonaEmpleado < 1)
+                                        {
+                                            @Html.RadioButtonFor(x => Model.IdZonaEmpleado, @item.Value, new { @class = "ZonaEmpleado" }) @item.Text
+                                        }
+                                        else
+                                        {
+                                            @Html.RadioButtonFor(x => Model.IdZonaEmpleado, @item.Value, new { @class = "ZonaEmpleado", @disabled = "disabled" }) @item.Text
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            <span class="error" id="errorIdZonaEmpleado" style="display:none;">Este campo es obligatorio </span>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-8 linea02">
+                                <h2>Ocupación Habitual</h2>
+                                @if (Model.IdOcupacion < 1)
+                                {
+                                    @Html.TextBoxFor(x => x.Ocupacion)
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(x => x.Ocupacion, new { @disabled = "disabled" })
+                                }
+
+                                @Html.HiddenFor(x => x.IdOcupacion)
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Fecha de ingreso a la empresa</h2>
+                                <div class="bootstrap-iso">
+                                    <div class="container-fluid">
+                                        <div class="form-group ">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                @Html.TextBoxFor(x => x.FechaIngreso, new
+                                           {
+                                               Value = Model.FechaIngreso.Year < 1000 ? "" : Model.FechaIngreso.ToString("dd/MM/yyyy"),
+                                               placeholder = "dd/mm/aaaa",
+                                               @disabled = "disabled",
+                                               @class = "form-control"@*, inputtype = "datepicker"*@ })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <h2>Jornada de trabajo habitual</h2>
+                            @foreach (var item in Model.Jornadas)
+                            {
+                                <div class="check02">
+                                    @Html.RadioButtonFor(x => Model.IdJornadaHabitual, @item.Value, new { @class = "JornadaHabitual" }) @item.Text
+                                </div>
+                            }
+                        </div>
+                        <span class="error" id="errorIdJornadaHabitual" style="display:none;">Este campo es obligatorio </span>
+                    </div>
+                    <!-- Seccion04 -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01" style="background-color:#7e8a97; color: white; padding-left: 3px;">
+                            <h2 class="note">III. INFORMACIÓN DEL INCIDENTE</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-3 linea02">
+                                <h2>Fecha del incidente</h2>
+                                <div class="bootstrap-iso">
+                                    <div class="container-fluid">
+                                        <div class="form-group ">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                @Html.TextBoxFor(x => x.FechaIncidente, new
+                                           {
+                                               Value = Model.FechaIncidente.Year < 1000 ? "" : Model.FechaIncidente.ToString("dd/MM/yyyy"),
+                                               placeholder = "dd/mm/aaaa",
+                                               @class = "form-control"@*, inputtype = "datepicker"*@ })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tip-top col-xs-12 col-sm-12 col-md-2 linea02" data-toggle="tooltip" title="Valor en formato 24 horas (hh:mm)">
+                                <h2>Hora del incidente</h2>
+                                @Html.TextBoxFor(x => x.HoraIncidente, new { style = "padding-left: 4px", placeholder = "hh:mm" })
+                                <span class="error" id="errorHoraIncidente" style="display:none;">El valor no es valido (hh:mm) </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-5 linea02">
+                                <h2>Día de la semana en el que ocurrió el incidente</h2>
+                                @foreach (var item in Model.DiasSemana)
+                                {
+                                    <div class="check03">
+                                        @Html.RadioButtonFor(x => Model.DiaSemanaIncidente, @item.Value, new { @class = "CDiaSemanaIncidente", @disabled = "disabled" }) @item.Text
+                                    </div>
+                                }
+                                <label for="DiaSemanaIncidente" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-2 linea02">
+                                <h2>Jornada en que sucede</h2>
+                                <div class="check02">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.EsJornadaNormal, "True", new { @class = "JornadaNormal" }) Normal
+                                    </label>
+                                </div>
+                                <div class="check02">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.EsJornadaNormal, "False", new { @class = "JornadaNormal" }) Extra
+                                    </label>
+                                </div>
+                                <label for="EsJornadaNormal" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>¿Estaba realizando su labor habitual?</h2>
+                                <div class="check01">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.RealizabaLaborHabitual, "True", new { @class = "laborHabitual" }) SI
+                                    </label>
+                                </div>
+                                <div class="check01">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.RealizabaLaborHabitual, "False", new { @class = "laborHabitual" }) NO
+                                    </label>
+                                </div>
+                                <label for="RealizabaLaborHabitual" class="error" style="display:none;">Este campo es obligatorio.</label>
+                                <p class="ind">¿Cual? - Diligenciar solo en caso negativo</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>&nbsp;</h2>
+                                @Html.TextBoxFor(x => x.DescripcionLabor, new { style = "padding-left: 4px", @disabled = "disabled" })
+                            </div>
+                            <div class="tip-top col-xs-12 col-sm-12 col-md-4 linea02" data-toggle="tooltip" title="Valor en formato 24 horas (hh:mm)">
+                                <h2>Total tiempo laborado previo al incidente</h2>
+                                @Html.TextBoxFor(x => x.Incidente_tiempo_previo_al_incidente_HHMM, new { style = "padding-left: 4px", placeholder = "hh:mm" })
+                                <span class="error" id="errorIncidentetiempoprevio" style="display:none;">El valor debe estar en formato de 24 horas (hh:mm) </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <h2>Tipo de incidente</h2>
+                            @foreach (var item in Model.TiposIncidente)
+                            {
+                                <div class="check02">
+                                    @Html.RadioButtonFor(x => Model.IdTipoIncidente, @item.Value, new { @class = "cTipoIncidente" }) @item.Text
+                                </div>
+                            }
+                        </div>
+                        <span class="error" id="errorIdTipoIncidente" style="display:none;">Este campo es obligatorio </span>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-6 col-md-5 linea02">
+                                <h2>Departamento del incidente</h2>
+                                @Html.DropDownListFor(x => x.IdDepartamentoIncidente, Model.Departamentos, "---Departamentos--", new { @class = "form-control", @Style = "width: 96%;" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-5 linea02">
+                                <h2>Seleccione el municipio</h2>
+                                @Html.DropDownListFor(x => x.IdMunicipioIncidente, Model.Municipios, "---Municipios--", new { @class = "form-control" })
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-2 linea02">
+                                <h2>Zona</h2>
+                                @foreach (var item in Model.Zonas)
+                                {
+                                    <div class="check01">
+                                        @Html.RadioButtonFor(x => Model.IdZonaIncidente, @item.Value, new { @class = "ZonaIncidente" }) @item.Text
+                                    </div>
+                                }
+                            </div>
+                            <span class="error" id="errorIdZonaIncidente" style="display:none;">Este campo es obligatorio </span>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-4 linea02">
+                                <h2>Lugar donde ocurrió el incidente</h2>
+                                <div class="check02">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.EsDentroEmpresa, "True", new { @class = "dondeOcurrAccidente" }) Dentro de la empresa
+                                    </label>
+                                </div>
+                                <div class="check02">
+                                    <label>
+                                        @Html.RadioButtonFor(x => Model.EsDentroEmpresa, "False", new { @class = "dondeOcurrAccidente" }) Fuera de la empresa
+                                    </label>
+                                </div>
+                                <label for="EsDentroEmpresa" class="error" style="display:none;">Este campo es obligatorio.</label>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Indique cual sitio</h2>
+                                @Html.DropDownListFor(x => x.IdSitioIncidente, Model.SitiosIncidente, "---Sitios--", new { @class = "form-control", @Style = "width: 96%;" })
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 linea02">
+                                <h2>Otro (Especifique)</h2>
+                                @Html.TextBoxFor(x => x.OtroSitio, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 seccion01">
+                            <div class="col-xs-12 col-sm-12 col-md-6 linea02">
+                                <h2>Posible consecuencia</h2>
+                                @Html.DropDownListFor(x => x.IdConsecuencia, Model.ConsecuenciasIncidente, "---Consecuencias--", new { @class = "form-control", @Style = "width: 96%;" })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Seccion05 -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion02">
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01" style="background-color:#7e8a97; color: white; padding-left: 3px;">
+                            <h2 class="note">IV. DESCRIPCIÓN DEL INCIDENTE</h2>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <p class="">Describa detalladamente lo ocurrido, al igual lo que originó o causó el incidente laboral. Adicione también información específica del lugar, personas y objetos entre otros. Así mismo incluya sugerencias o recomendaciones relacionadas a la solución del evento.</p>
+                            @Html.TextAreaFor(x => x.DescripcionIncidente, new { @class = "seccion4_comment" })
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 linea01">
+                            <div class="col-xs-12 col-sm-12 col-md-6 linea01">
+                                <h2 class="note">Fecha de diligenciamiento del incidente</h2>
+                                <div class="bootstrap-iso">
+                                    <div class="container-fluid">
+
+                                        <div class="form-group ">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                @Html.TextBoxFor(x => x.FechaCreacionIncidente, new { Value = Model.FechaCreacionIncidente.Year < 1000 ? "" : Model.FechaCreacionIncidente.ToString("dd/MM/yyyy"), placeholder = "dd/mm/aaaa", @class = "form-control", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 linea01"></div>
+                        </div>
+                    </div>
+                    <!-- Seccion06-Botones -->
+                    <div class="col-xs-12 col-sm-12 col-md-12 seccion03">
+                        <button class="boton botoninfo" type="button" id="btnDescargar">Descargar</button>
+                        <button class="boton botonactive" type="button" id="btnguardar">Guardar</button>
+                        <button class="boton botoninfo" type="button" id="Imprimir">Imprimir</button>
+                        <button class="boton botoninfo" type="button" id="Nuevoreporte">Nuevo Reporte</button>
+                    </div>
+                    <div style="text-align:center">
+                        <span class="error" id="errorform" style="display:none;">Aún faltan campos por diligenciar, por favor verifique. </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script src="~/Scripts/Transversal/datepicker.js"></script>
+<script src="~/Scripts/Transversal/datepicker-es.js"></script>
+<script src="~/Scripts/Transversal/generales.js"></script>
+@Scripts.Render("~/Scripts/Transversal/dpto-mcpio.js")
+@Scripts.Render("~/Scripts/Incidente/ReporteIncidente.js")

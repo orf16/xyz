@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Planificacion.EDDxSalud>
+ <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Nombre de la Sede
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Proceso
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Zona o lugar
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Fecha de Diligenciamiento del  Diagnóstico
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Vigencia
+            </th>
+            <th width="210" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+
+                Acciones
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    <input name="IdSede" type="hidden" value="@item.Pk_Id_Sede" />
+                    @Html.DisplayFor(modelItem => item.NombreSede)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @item.nombreProceso
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @item.ZonaLugar
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    <input name="IdMetodologia" type="hidden" value="@item.FechaCreacionDiagnostico" />
+                    @item.FechaCreacionDiagnostico.ToString("dd/MM/yyyy")
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @item.vigencia
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @*@Html.ActionLink("visualizar", "MostrarMatriz", new { idSede = item.IdSede, idMetodologia = item.IdMetodologia }, htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })*@
+                    <a href="@Url.Action("HistoricoDxSedesPorAnio", null, new { idDxSalud = item.IdDxCondicionesDeSalud })" class="btn btn-search btn-md" title="Visualizar" style="margin-right:1%">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </a>
+                    
+                    <a href="@Url.Action("DescargarExcelDxSedesPorAnio", null, new { idDxSalud = item.IdDxCondicionesDeSalud })" style="margin-right:1%; margin-left:1%">
+                        <img src="~/Images/iconExcelp.png" title="Descargar Excel" />
+                    </a>
+                    
+
+                    <a href="@Url.Action("DescargarPDFDxSedesPorAnio", null, new { idDxSalud = item.IdDxCondicionesDeSalud })">
+                        <img src="~/Content/Images/pdf-simbolo-de-formato-de-archivo (1).png" title="Descargar PDF" />
+                    </a>
+                    
+                    <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.IdDxCondicionesDeSalud)" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar" class="btn btn-search btn-md" style="margin-left:1%">
+                        <span class="glyphicon glyphicon-erase"></span>
+                    </a>
+
+                    <div id="@string.Format("modalEliminar{0}", item.IdDxCondicionesDeSalud)" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+
+                                    <h4 class="modal-title title">Eliminar diagnóstico</h4>
+                                </div>
+                                <div class="modal-body" style="text-align:center; color:black">
+                                    <p>¿Seguro desea eliminar el diagnóstico seleccionado?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botonactive" data-dismiss="modal" onclick="EliminarDx(this,@item.IdDxCondicionesDeSalud)">ELIMINAR</button>
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+

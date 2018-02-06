@@ -1,0 +1,123 @@
+﻿@model SG_SST.Models.Ausentismo.AusenciaModel
+
+@{
+    ViewBag.Title = "Cargue Masivo";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Planificación</a></li>
+    <li><a href="javascript:void(0)">Ausentismo Laboral</a></li>
+    <li class="active">Cargue Masivo</li>
+</ol>
+
+@*<div class="row">*@
+    <form enctype="multipart/form-data" id="frmCargueMasimo">
+        @*<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">*@
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:black">Cargue Masivo</div>
+                
+                <div align="right">
+                    <div id="ayuda" style="text-align:right">
+                        <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                        </a>                        
+                    </div>
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Ayuda</h4>
+                                </div>
+                                <div class="modal-body " style="color:black; text-align:justify">
+                                    <p>Esta función le permitirá migrar su data de ausentismo anterior a Alissta, para centralizar la gestión del ausentismo en un solo lugar. Primero descargue la plantilla en Excel dando clic en “descargar plantilla” y registre masivamente en este los datos tal y como se requieren en la plantilla. Una vez tenga el Excel completo por favor súbalo a la plataforma ubicándolo por la opción “seleccionar archivo” y finalizando con un clic en “cargar documento”.</p>
+                                    <p>Alissta validara la información del Excel y cargara la data que este correcta. Le informara los registros agregados y aquellos que no por posibles errores. Recuerde que la plantilla tiene indicaciones de lo que debe registrar.</p>
+                                    <p>Para mayor apoyo en este proceso puede consultar con su gestor o ejecutivo de cuenta asignado por positiva.</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-1">
+                            @Html.Label("Empresa:", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-7" style="line-height:2.5">
+                            @string.Format("{0}", Model.RazonSocial)
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" formmethod="post" id="idDownPlantillaAuMasivo" class="boton botonactive">Descargar Plantilla</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @if (Model.EmpresasUsuarias.Count > 0)
+                        {
+                            <div class="col-md-3">
+                                @Html.Label("Empresas Asociadas:", new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-5" style="margin-left:-70px">
+                                @Html.DropDownListFor(model => model.IdEmpresaUsuaria, Model.EmpresasUsuarias, "Selecciones Empresa asociada...", new { @class = "form-control" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-3">
+                                @Html.Label("Empresas Asociadas:", new { @class = "control-label", @style = "display:none;" })
+                            </div>
+                            <div class="col-md-5" style="margin-left:-70px">
+                                @Html.DropDownListFor(model => model.IdEmpresaUsuaria, Model.EmpresasUsuarias, new { @class = "form-control bloqueado", @style = "display:none;" })
+                            </div>
+                        }                       
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <input type="file" value="Seleccionar Plantilla" id="file" name="file" class="form-control" />
+                        </div>
+                        <div class="col-md-4" style="margin-right:10px">
+                            <button type="button" id="idUpPlantillaAuMasivo" class="boton botoninfo">Cargar Documento</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- AYUDA-->
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p>Información para el módulo</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal" id="idSalirAyuda">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN AYUDA-->
+            </div>
+        @*</div>*@
+    </form>
+@*</div>*@
+@Scripts.Render("~/Scripts/Ausencias/CargueMasivo.js")

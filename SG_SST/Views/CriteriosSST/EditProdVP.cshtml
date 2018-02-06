@@ -1,0 +1,51 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDServicioProducto
+
+@{
+    ViewBag.Title = "Proveedores y Contratistas";
+}
+
+<form method="post" id="grabarProductoCriterio">
+
+    <div class="panel panel-default" name="panel" id="panel" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-body form-horizontal">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="col-md-3" style="line-height:2">Tipo de Servicio y Producto</label>
+                    <div class="col-md-9">
+                        <input type="text" name="Tipo_Servicio" id="Tipo_Servicio" class=" form-control" value="@Model.DescripcionProducto" />
+                        <input name="Pk_Id_Tipo_Servicio" id="Pk_Id_Tipo_Servicio" class=" form-control" value="@Model.idServicioProducto" type="hidden" />
+                        <input name="CritAntes" id="CritAntes" class="form-control" value="@Model.selectProdCrit)" type="hidden" />
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="col-md-3" style="line-height:6.5">Criterio en SST</label>
+                    <div class="col-md-9">
+                        @Html.ListBoxFor(m => m.selectProdCrit, new SelectList(@ViewBag.Pk_Id_Criterios, "Value", "Text", null), htmlAttributes: new { @class = "form-control selectpicker", id = "IdCriterios" })
+                        @*@Html.DropDownList("Pk_Id_Criterios", null, htmlAttributes: new { @class = "form-control selectpicker", @multiple = "multiple", title = "Seleccione ..." })*@
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                @*<div class="col-md-9"></div>*@
+                <div class="col-md-3 col-md-offset-5">
+                    <button type="submit" class="boton botonactive" onclick="EdicionProductoCriterio()">Guardar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+}

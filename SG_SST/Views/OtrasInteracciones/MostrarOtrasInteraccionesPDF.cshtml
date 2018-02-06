@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Mostrar Otras Interacciones PDF";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>Archivo Anexo Otras Intenciones Y Directrices</h2>*@
+
+<style>
+    .pdf-cargar-otras-intenciones {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-cargar-otras-intenciones iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Política</a></li>
+    <li><a href="javascript:void(0)">Otras intenciones y directrices</a></li>
+    <li class="active">Archivo Anexo Otras Intenciones Y Directrices</li>
+</ol>
+
+@*<div class="container">*@
+    <div class="pdf-cargar-otras-intenciones">
+        @*<object data="@Url.Action("OtrasInteraccionesPDF", new { ID_VID_OtrasInteracciones = ViewBag.ID_VID_OtrasInteracciones })" type="application/pdf" width="930" height="500"></object>*@
+        <iframe width="640" height="360" src="@Url.Action("OtrasInteraccionesPDF", new { ID_VID_OtrasInteracciones = ViewBag.ID_VID_OtrasInteracciones })" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <br />
+
+    <div class="row">        
+        <div class="col-md-3" style="margin-bottom:15px">
+            <a href="@Url.Action("Index", "OtrasInteracciones")" class="btn btn-search"> <span class="glyphicon glyphicon-chevron-left"></span></a>
+        </div>
+    </div>
+@*</div>*@

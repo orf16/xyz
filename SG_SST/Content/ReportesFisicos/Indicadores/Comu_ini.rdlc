@@ -1,0 +1,1196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Body>
+    <ReportItems>
+      <Textbox Name="textbox1">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Indicadores Comunicaciones</Value>
+                <Style>
+                  <FontStyle>Normal</FontStyle>
+                  <FontFamily>Segoe UI</FontFamily>
+                  <FontSize>16pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <TextDecoration>None</TextDecoration>
+                  <Color>#ff7500</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>textbox1</rd:DefaultName>
+        <Height>0.33in</Height>
+        <Width>12.98486in</Width>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Image Name="Image1">
+        <Source>Embedded</Source>
+        <Value>person</Value>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.80083in</Top>
+        <Left>7.795in</Left>
+        <Height>0.35417in</Height>
+        <Width>0.30208in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Textbox Name="Textbox3">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Personas </Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Count(Fields!conmes.Value, "uniontotal")
+-
+IIf(CountDistinct(Fields!pk_id_grupo.Value, "DataSet1")&gt;=Count(Fields!conmes.Value, "uniontotal")
+
+,"0"
+
+,CountDistinct(Fields!pk_id_grupo.Value, "DataSet1")
+
+
+)</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                  <Format>0;- 0</Format>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>1.51959in</Top>
+        <Left>7.27021in</Left>
+        <Height>0.58333in</Height>
+        <Width>1.42708in</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Image Name="Image3">
+        <Source>Embedded</Source>
+        <Value>mobilephone</Value>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.67583in</Top>
+        <Left>5.34896in</Left>
+        <Height>0.5in</Height>
+        <Width>0.5in</Width>
+        <ZIndex>3</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Textbox Name="Textbox4">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>APP</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=CountDistinct(Fields!IDComunicadosAPP.Value, "ComunicAPP")</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>1.52583in</Top>
+        <Left>4.91792in</Left>
+        <Height>0.58333in</Height>
+        <Width>1.42708in</Width>
+        <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Chart Name="Chart1">
+        <ChartCategoryHierarchy>
+          <ChartMembers>
+            <ChartMember>
+              <Group Name="Chart1_CategoryGroup1">
+                <GroupExpressions>
+                  <GroupExpression>=Fields!NomMes.Value</GroupExpression>
+                </GroupExpressions>
+              </Group>
+              <SortExpressions>
+                <SortExpression>
+                  <Value>=Fields!NomMes.Value</Value>
+                </SortExpression>
+              </SortExpressions>
+              <Label>=Fields!NomMes.Value</Label>
+            </ChartMember>
+          </ChartMembers>
+        </ChartCategoryHierarchy>
+        <ChartSeriesHierarchy>
+          <ChartMembers>
+            <ChartMember>
+              <Label>mes</Label>
+            </ChartMember>
+          </ChartMembers>
+        </ChartSeriesHierarchy>
+        <ChartData>
+          <ChartSeriesCollection>
+            <ChartSeries Name="mes">
+              <ChartDataPoints>
+                <ChartDataPoint>
+                  <ChartDataPointValues>
+                    <Y>=Count(Fields!mes.Value)</Y>
+                  </ChartDataPointValues>
+                  <ChartDataLabel>
+                    <Style />
+                    <UseValueAsLabel>true</UseValueAsLabel>
+                    <Visible>true</Visible>
+                  </ChartDataLabel>
+                  <Style />
+                  <ChartMarker>
+                    <Style />
+                  </ChartMarker>
+                  <DataElementOutput>Output</DataElementOutput>
+                </ChartDataPoint>
+              </ChartDataPoints>
+              <Style />
+              <ChartEmptyPoints>
+                <Style />
+                <ChartMarker>
+                  <Style />
+                </ChartMarker>
+                <ChartDataLabel>
+                  <Style />
+                </ChartDataLabel>
+              </ChartEmptyPoints>
+              <ValueAxisName>Primary</ValueAxisName>
+              <CategoryAxisName>Primary</CategoryAxisName>
+              <ChartSmartLabel>
+                <CalloutLineColor>Black</CalloutLineColor>
+                <MinMovingDistance>0pt</MinMovingDistance>
+              </ChartSmartLabel>
+            </ChartSeries>
+          </ChartSeriesCollection>
+        </ChartData>
+        <ChartAreas>
+          <ChartArea Name="Default">
+            <ChartCategoryAxes>
+              <ChartAxis Name="Primary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                  <Format>MMMM' de 'yyyy</Format>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Mes</Caption>
+                  <Style>
+                    <FontFamily>Segoe UI</FontFamily>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+              <ChartAxis Name="Secondary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Título del eje</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Enabled>False</Enabled>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Location>Opposite</Location>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+            </ChartCategoryAxes>
+            <ChartValueAxes>
+              <ChartAxis Name="Primary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Total</Caption>
+                  <Style>
+                    <FontFamily>Segoe UI</FontFamily>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+              <ChartAxis Name="Secondary">
+                <Style>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <ChartAxisTitle>
+                  <Caption>Título del eje</Caption>
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                  </Style>
+                </ChartAxisTitle>
+                <ChartMajorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                    </Border>
+                  </Style>
+                </ChartMajorGridLines>
+                <ChartMinorGridLines>
+                  <Style>
+                    <Border>
+                      <Color>Gainsboro</Color>
+                      <Style>Dotted</Style>
+                    </Border>
+                  </Style>
+                </ChartMinorGridLines>
+                <ChartMinorTickMarks>
+                  <Length>0.5</Length>
+                </ChartMinorTickMarks>
+                <CrossAt>NaN</CrossAt>
+                <Location>Opposite</Location>
+                <Minimum>NaN</Minimum>
+                <Maximum>NaN</Maximum>
+                <ChartAxisScaleBreak>
+                  <Style />
+                </ChartAxisScaleBreak>
+              </ChartAxis>
+            </ChartValueAxes>
+            <ChartThreeDProperties>
+              <Enabled>true</Enabled>
+              <Clustered>true</Clustered>
+            </ChartThreeDProperties>
+            <Style>
+              <BackgroundGradientType>None</BackgroundGradientType>
+            </Style>
+          </ChartArea>
+        </ChartAreas>
+        <ChartLegends>
+          <ChartLegend Name="Default">
+            <Style>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <FontFamily>Segoe UI</FontFamily>
+              <FontSize>8pt</FontSize>
+            </Style>
+            <ChartLegendTitle>
+              <Caption />
+              <Style>
+                <FontSize>8pt</FontSize>
+                <FontWeight>Bold</FontWeight>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </ChartLegendTitle>
+            <HeaderSeparatorColor>Black</HeaderSeparatorColor>
+            <ColumnSeparatorColor>Black</ColumnSeparatorColor>
+          </ChartLegend>
+        </ChartLegends>
+        <ChartTitles>
+          <ChartTitle Name="Default">
+            <Caption>Comunicaciones enviadas por Mes</Caption>
+            <Style>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <FontFamily>Segoe UI</FontFamily>
+              <FontWeight>Bold</FontWeight>
+              <TextAlign>General</TextAlign>
+              <VerticalAlign>Top</VerticalAlign>
+            </Style>
+            <DockOutsideChartArea>true</DockOutsideChartArea>
+          </ChartTitle>
+        </ChartTitles>
+        <Palette>BrightPastel</Palette>
+        <ChartBorderSkin>
+          <Style>
+            <BackgroundColor>Gray</BackgroundColor>
+            <BackgroundGradientType>None</BackgroundGradientType>
+            <Color>White</Color>
+          </Style>
+        </ChartBorderSkin>
+        <ChartNoDataMessage Name="NoDataMessage">
+          <Caption>Sin datos disponibles</Caption>
+          <Style>
+            <BackgroundGradientType>None</BackgroundGradientType>
+            <TextAlign>General</TextAlign>
+            <VerticalAlign>Top</VerticalAlign>
+          </Style>
+        </ChartNoDataMessage>
+        <DataSetName>uniontotal</DataSetName>
+        <Top>2.47791in</Top>
+        <Left>1.97792in</Left>
+        <Height>4.52083in</Height>
+        <Width>9.27131in</Width>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <Border>
+            <Color>LightGrey</Color>
+            <Style>Solid</Style>
+          </Border>
+          <BackgroundColor>White</BackgroundColor>
+          <BackgroundGradientType>None</BackgroundGradientType>
+        </Style>
+      </Chart>
+      <Image Name="Image4">
+        <Source>Embedded</Source>
+        <Value>internacomunicacion</Value>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.83208in</Top>
+        <Left>1.01563in</Left>
+        <Height>0.5in</Height>
+        <Width>0.5in</Width>
+        <ZIndex>6</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Textbox Name="Textbox5">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Internos </Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=
+
+CountDistinct(Fields!PK_Id_Comunicado.Value, "Internos")</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>1.55083in</Top>
+        <Left>0.55681in</Left>
+        <Height>0.58333in</Height>
+        <Width>1.42708in</Width>
+        <ZIndex>7</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox7">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!estado.Value</Value>
+                <Style>
+                  <FontSize>16pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>#ff7500</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>0.33208in</Top>
+        <Height>0.25in</Height>
+        <Width>12.98486in</Width>
+        <ZIndex>8</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Image Name="Image6">
+        <Source>Embedded</Source>
+        <Value>mail</Value>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.67583in</Top>
+        <Left>10.04452in</Left>
+        <Height>0.5in</Height>
+        <Width>0.5in</Width>
+        <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Textbox Name="Textbox8">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Efectivos </Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Count(Fields!conmes.Value, "efecticomuni")</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>1.51959in</Top>
+        <Left>9.46007in</Left>
+        <Height>0.58333in</Height>
+        <Width>1.42708in</Width>
+        <ZIndex>10</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Image Name="Image5">
+        <Source>Embedded</Source>
+        <Value>externacomunicacion</Value>
+        <Sizing>FitProportional</Sizing>
+        <Top>0.83208in</Top>
+        <Left>2.95715in</Left>
+        <Height>0.5in</Height>
+        <Width>0.5in</Width>
+        <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Image>
+      <Textbox Name="Textbox6">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Externos </Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=
+
+CountDistinct(Fields!pk_id_comadjunto.Value, "adjuntos")</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style>
+              <TextAlign>Center</TextAlign>
+            </Style>
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox2</rd:DefaultName>
+        <Top>1.51959in</Top>
+        <Left>2.61861in</Left>
+        <Height>0.58333in</Height>
+        <Width>1.42708in</Width>
+        <ZIndex>12</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+    </ReportItems>
+    <Height>9.41541in</Height>
+    <Style />
+  </Body>
+  <Width>13.3518in</Width>
+  <Page>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
+  </Page>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="SGSSTCERT">
+      <DataSourceReference>SGSSTCERT</DataSourceReference>
+      <rd:DataSourceID>0b84ee71-3fbc-422c-b8eb-a5829f8b5739</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet1">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+   
+        <CommandText>SELECT        dbo.Tbl_GruposComunicaciones.NitEmpresa, dbo.Tbl_GruposComunicaciones.pk_id_grupo, dbo.Tbl_GruposComunicaciones.NombreGrupo, 
+                         dbo.Tbl_GrupoUsuariosComunicaciones.nombre_contacto, dbo.Tbl_GrupoUsuariosComunicaciones.email, dbo.Tbl_GrupoUsuariosComunicaciones.Status
+FROM            dbo.Tbl_GrupoUsuariosComunicaciones INNER JOIN
+                         dbo.Tbl_GruposComunicaciones ON dbo.Tbl_GrupoUsuariosComunicaciones.fk_id_grupo_comunicaciones = dbo.Tbl_GruposComunicaciones.pk_id_grupo
+
+</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NombreGrupo">
+          <DataField>NombreGrupo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="pk_id_grupo">
+          <DataField>pk_id_grupo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="nombre_contacto">
+          <DataField>nombre_contacto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="email">
+          <DataField>email</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Status">
+          <DataField>Status</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="uniontotal">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+
+        <CommandText>SELECT        V_uniontotal.PK_Id_Comunicado, V_uniontotal.EstadoComunicado, V_uniontotal.FechaCreacion, V_uniontotal.mes, V_uniontotal.año, V_uniontotal.NomMes, 
+                         V_uniontotal.conmes, V_uniontotal.FechaEnvio, V_uniontotal.NitEmpresa, V_uniontotal.TIPO, V_uniontotal.Titulo, V_uniontotal.Asunto, V_efecticomuni.modulo, 
+                         CASE WHEN V_efecticomuni.enviado_rechazado = '1' THEN 'Enviado' ELSE 'Sin_enviar' END AS efectivo
+FROM            V_uniontotal LEFT OUTER JOIN
+                         V_efecticomuni ON V_uniontotal.TIPO = V_efecticomuni.TIPO AND V_uniontotal.NitEmpresa = V_efecticomuni.NitEmpresa AND 
+                         V_uniontotal.PK_Id_Comunicado = V_efecticomuni.PK_Id_Comunicado
+WHERE       
+                         (V_uniontotal.EstadoComunicado = @estado)</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="PK_Id_Comunicado">
+          <DataField>PK_Id_Comunicado</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="EstadoComunicado">
+          <DataField>EstadoComunicado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaCreacion">
+          <DataField>FechaCreacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="año">
+          <DataField>año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NomMes">
+          <DataField>NomMes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="conmes">
+          <DataField>conmes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaEnvio">
+          <DataField>FechaEnvio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TIPO">
+          <DataField>TIPO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Titulo">
+          <DataField>Titulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Asunto">
+          <DataField>Asunto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="modulo">
+          <DataField>modulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="efectivo">
+          <DataField>efectivo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ComunicAPP">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+    
+        <CommandText>SELECT        IDComunicadosAPP, Estado, FechaCreacion, MONTH(CONVERT(date, CONVERT(varchar(10), FechaCreacion, 101), 103)) AS mes, year(CONVERT(date, 
+                         CONVERT(varchar(10), FechaCreacion, 101), 103)) AS año, CASE month(CONVERT(date, CONVERT(varchar(10), FechaCreacion, 101), 103)) 
+                         WHEN 1 THEN 'Enero' WHEN 2 THEN 'Febrero' WHEN 3 THEN 'Marzo' WHEN 4 THEN 'Abril' WHEN 5 THEN 'Mayo' WHEN 6 THEN 'Junio' WHEN 7 THEN 'Julio' WHEN
+                          8 THEN 'Agosto' WHEN 9 THEN 'Septiembre' WHEN 10 THEN 'Octubre' WHEN 11 THEN 'Noviembre' WHEN 12 THEN 'Diciembre' END AS NomMes, 
+                         CASE month(CONVERT(date, CONVERT(varchar(10), FechaCreacion, 101), 103)) 
+                         WHEN 1 THEN '1' WHEN 2 THEN '1' WHEN 3 THEN '1' WHEN 4 THEN '1' WHEN 5 THEN '1' WHEN 6 THEN '1' WHEN 7 THEN '1' WHEN 8 THEN '1' WHEN 9 THEN '1'
+                          WHEN 10 THEN '1' WHEN 11 THEN '1' WHEN 12 THEN '1' END AS conmes, FechaEnvio, NitEmpresa, 'APP' AS TIPO
+FROM            Tbl_ComunicadosAPP
+</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="IDComunicadosAPP">
+          <DataField>IDComunicadosAPP</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Estado">
+          <DataField>Estado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaCreacion">
+          <DataField>FechaCreacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaEnvio">
+          <DataField>FechaEnvio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="año">
+          <DataField>año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NomMes">
+          <DataField>NomMes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="conmes">
+          <DataField>conmes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TIPO">
+          <DataField>TIPO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="añoscomuni">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+        
+        <CommandText>SELECT DISTINCT año
+FROM            V_añoscomuni
+</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="año">
+          <DataField>año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="estado">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+        <CommandText>SELECT DISTINCT estado
+FROM            V_Comuni_Estado</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="estado">
+          <DataField>estado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="efecticomuni">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+
+        <CommandText>SELECT        PK_Id_Comunicado, EstadoComunicado, FechaCreacion, mes, año, NomMes, conmes, FechaEnvio, NitEmpresa, TIPO, enviado_rechazado, modulo
+FROM            V_efecticomuni
+WHERE        (modulo LIKE '%externo%') </CommandText>
+      </Query>
+      <Fields>
+        <Field Name="PK_Id_Comunicado">
+          <DataField>PK_Id_Comunicado</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="EstadoComunicado">
+          <DataField>EstadoComunicado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaCreacion">
+          <DataField>FechaCreacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="año">
+          <DataField>año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NomMes">
+          <DataField>NomMes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="conmes">
+          <DataField>conmes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaEnvio">
+          <DataField>FechaEnvio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TIPO">
+          <DataField>TIPO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="enviado_rechazado">
+          <DataField>enviado_rechazado</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="modulo">
+          <DataField>modulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="noefecti">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+
+        <CommandText>SELECT        PK_Id_Comunicado, EstadoComunicado, FechaCreacion, mes, año, NomMes, conmes, FechaEnvio, NitEmpresa, TIPO, enviado_rechazado, modulo
+FROM            V_Noefecticomuni
+WHERE        (modulo LIKE '%externo%') </CommandText>
+      </Query>
+      <Fields>
+        <Field Name="PK_Id_Comunicado">
+          <DataField>PK_Id_Comunicado</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="EstadoComunicado">
+          <DataField>EstadoComunicado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaCreacion">
+          <DataField>FechaCreacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="año">
+          <DataField>año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NomMes">
+          <DataField>NomMes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="conmes">
+          <DataField>conmes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaEnvio">
+          <DataField>FechaEnvio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TIPO">
+          <DataField>TIPO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="enviado_rechazado">
+          <DataField>enviado_rechazado</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="modulo">
+          <DataField>modulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="adjuntos">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+
+        <CommandText>SELECT        pk_id_comadjunto, estado, fecha, mes, NomMes, conmes, FechaEnvio, NitEmpresa, TIPO
+FROM            V_externos_comunica
+</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="pk_id_comadjunto">
+          <DataField>pk_id_comadjunto</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="estado">
+          <DataField>estado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fecha">
+          <DataField>fecha</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NomMes">
+          <DataField>NomMes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="conmes">
+          <DataField>conmes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaEnvio">
+          <DataField>FechaEnvio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TIPO">
+          <DataField>TIPO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Internos">
+      <Query>
+        <DataSourceName>SGSSTCERT</DataSourceName>
+   
+        <CommandText>SELECT        V_uniontotal.PK_Id_Comunicado, V_uniontotal.EstadoComunicado, V_uniontotal.FechaCreacion, V_uniontotal.mes, V_uniontotal.año, V_uniontotal.NomMes, 
+                         V_uniontotal.conmes, V_uniontotal.FechaEnvio, V_uniontotal.NitEmpresa, V_uniontotal.TIPO, V_uniontotal.Titulo, V_uniontotal.Asunto, V_efecticomuni.modulo, 
+                         CASE WHEN V_efecticomuni.enviado_rechazado = '1' THEN 'Enviado' ELSE 'Sin_enviar' END AS efectivo
+FROM            V_uniontotal LEFT OUTER JOIN
+                         V_efecticomuni ON V_uniontotal.TIPO = V_efecticomuni.TIPO AND V_uniontotal.NitEmpresa = V_efecticomuni.NitEmpresa AND 
+                         V_uniontotal.PK_Id_Comunicado = V_efecticomuni.PK_Id_Comunicado
+WHERE        V_uniontotal.TIPO='INTERNO'</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="PK_Id_Comunicado">
+          <DataField>PK_Id_Comunicado</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="EstadoComunicado">
+          <DataField>EstadoComunicado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaCreacion">
+          <DataField>FechaCreacion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="mes">
+          <DataField>mes</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="año">
+          <DataField>año</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NomMes">
+          <DataField>NomMes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="conmes">
+          <DataField>conmes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="FechaEnvio">
+          <DataField>FechaEnvio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NitEmpresa">
+          <DataField>NitEmpresa</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TIPO">
+          <DataField>TIPO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Titulo">
+          <DataField>Titulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Asunto">
+          <DataField>Asunto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="modulo">
+          <DataField>modulo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="efectivo">
+          <DataField>efectivo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="estado">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <EmbeddedImages>
+    <EmbeddedImage Name="person">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABX1BMVEUAAAD/dQD/dAD/dQD/dQD/dQD/dQD/dwD/dQD/gAD/dAD/dQD/dgD/dgD/cQD/dQD/dQD/dAD/dgD/dQD/dQD/dQD/dQD/dQD/dQD/dgD/dQD/dQD/cgD/gAD/dQD/dAD/dgD/dQD/dgD/dwD/dQD/dgD/dQD/dgD/dAD/dQD/dAD/dAD/dAD/cgD/dQD/VQD/dwD/dgD/eAD/dwD/dgD/dQD/dQD/dQD/dQD/dQD/dQD/AAD/dQD/dQD/dQD/dQD/dgD/dgD/cwD/dAD/dQD/gAD/dQD/dQD/dQD/bQD/dgD/dQD/dQD/dQD/dwD/dAD/dgD/dAD/dQD/dQD/dAD/dQD/dgD/dQD/dQD/gAD/dAD/dQD/dgD/dAD/dQD/dAD/dQD/dAD/dQD/dgD/dwD/dgD/eQD/dgD/dQD/eQD/dQD/cQD/dgD/dgD/dgD/dQD/dQD/dQD/dQD/dQAAAABEaEkDAAAAc3RSTlMAI3Kyyt/1PM8Ek/6ccxLxgyFfeo6htcnazrqlMQLsihz7mg/jRfxbWLxAoPMdPwMvZiAtQYe/9Ei7gQE758jkjzgzxeAMnf2bDg3HkPgenjR7dKO4uczL3ggWMClEU01XVr6RR+YTbM0VWQlSd8HX7vrYE/1jogAAAAFiS0dEAIgFHUgAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfiAQ8WGgBa3QzWAAACIUlEQVRYw6XXZ1MiQRCA4TYsCCuuGDASVARzgLszR4IJRb0TRT3PnPXU+f9VrlZZ4sy0dGt/Y4v3qV2YHVgAdEpKy8oNh8MoLystAf44K0TBVDiZucttig9jul0soFIoU8npPUIzHnpfZekAq4oM
+VAvtVJMBQw8Y1N4rkPESgRoMqCECtRhQSwTqMKCOCNRjQD0R8GGAjwg0YEADEWjEgEYi0IQBTUSgGQOaiUALBrQQAQ8GUG/oVgxoJQL+gL4P+IkABPVAkNpDqE3Xt4XIALTrgHZ6Dx1htQ93MADojMh9pJPTA0QlIRLl9QBdjsLe0cXt7a21+73vpm6nH6ent++l7uvt+VL+Mv7+gYF+8vornMGh4Vjh69hwnO74f/z8NWKv/NH3Q6P23WGNjTsnCPmke+rto5uOeu0/BS5vdPrtyMzsXJF8PiF9/cmktCAS85/kqfSCKDoLi0tYv5wonr9eGnJXLK/QelvQn0OQ2guR0fWxVTqwuqYBsvReiEXN8glwgIC6pNY5vW6H3+ABmwrwmweov3J/eMCWAuR4wLYCJHnAjgKM8ABL7vO8Xgj58SHEBXYlYI8L7EvAXy4gP0QdcIF/EnDIBY6+ewYHEuA65vXHylNg/sSk5+ZJXt1R4PSM2p+dgnbOMxYltzLngE3q4rLIhZiXFyn4dK6uswaCmEb2+goocxO/vUv77nP/ww+Pjw/hp9y9L313G7/RvfcZNi1cUGQLGu0AAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDEtMTVUMjI6MjY6MDArMDE6MDCF2zDHAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAxLTE1VDIyOjI2OjAwKzAxOjAw9IaIewAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII=</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="people">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="mobilephone">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAXVBMVEUAAAD/cAD/dgD/dQD/dQD/cwD/dQD/cAD/dgD/dQD/dAD/dAD/dQD/dQD/dAD/dQD/dQD/dAD/dQD/dQD/dQD/dAD/dAD/dQD/cwD/dAD/dQD/cwD/dQD/dQAAAAAPS+yVAAAAHXRSTlMAEHXE9h/VGeboiMPL+KDs9EDw8fJlC5Q1btgUpDW4x8kAAAABYktHRACIBR1IAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4gEPFhcs3aseeAAAALtJREFUWMPt19kOgyAQBVDcLUK17hv//5stic1AWhwIr3Mfr9OT6FMvYz9J0ixXf5JnacI8UpTKmbLAf1/VcP+4Ak1doQCH6+bbNdBxFBBwLJ9XJHQCBVp1mxYF5D0gPYDu5UznBfTuhz0BBBBAAAEEEEAAAQQQEAFE/1uP3gtWhiEKGKd5nsYIYNHNEgZYo2vVzRo2uoR5vulmMxt89nHzfD8YO3azwYenOX0/r3ye1kfxmL7R4zt0/r8Bq3NM2TbqnwkAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDEtMTVUMjI6MjM6NDQrMDE6MDAT99FqAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAxLTE1VDIyOjIzOjQ0KzAxOjAwYqpp1gAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII=</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="internacomunicacion">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACRlBMVEUAAAD/gAD/dAD/dQD/dQD/dQD/gAD/eAD/dQD/dAD/dAD/dQD/dQD/AAD/dQD/dQD/dwD/dwD/eAD/dQD/dgD/dQD/dgD/dQD/dAD/gAD/dQD/dQD/cQD/dQD/dQD/bQD/cgD/dQD/dQD/dQD/dAD/dQD/gAD/dwD/dQD/dwD/cQD/dQD/cwD/dgD/dQD/dQD/dAD/dAD/cwD/dQD/dQD/dQD/dgD/dgD/dQD/dQD/dQD/dQD/dAD/dQD/dQD/dQD/dgD/eAD/dgD/dAD/dAD/dQD/dAD/dQD/dQD/dQD/dQD/dgD/dwD/dgD/dQD/dgD/dgD/dAD/dAD/dQD/dQD/dQD/dgD/dgD/dgD/dQD/VQD/bQD/cwD/dAD/dQD/dQD/dgD/dQD/dQD/dgD/gAD/dAD/dQD/dQD/dQD/dQD/dgD/dQD/dQD/cwD/egD/dQD/dQD/dQD/dQD/dQD/dAD/dAD/dgD/dQD/dAD/dgD/dAD/dQD/dQD/dQD/dgD/dAD/gAD/dQD/dAD/dQD/dQD/eAD/dAD/dQD/dQD/cgD/dQD/dQD/dQD/dQD/dAD/dQD/dQD/dQD/dgD/dQD/ZgD/dQD/dQD/dQD/dQD/eQD/dQD/dAD/dQD/dQD/dQD/dQD/dgD/dQD/dgD/dQD/dAD/dAD/dQD/dQD/dQD/cQD/dQD/cAD/dQD/dQD/dgD/dAD/dQD/dgD/dgD/cwD/dgD/dAD/dQD/dQD/dAD/dAD/eQD/dQD/dQD/dgD/dgD/dgD/dQAAAAAxZHqFAAAAwHRSTlMABGWqi1MCEcKrC5bVASP8LzwgbVtrDefbBnZgEvToBzHc0SUWhwwPSEcJhRQakPZWOTNejBhs
+p/2v8WIs/vLAtCR3S55viKPv6qiAOl+ZkVQ3olfJ+zhQNtgDDihyu2mExMqPCE9VdPDuJ8b1SRfssKVM3W5NaM9EqaBG37KNxQrNLjKsIpU9Ox3k1o7lQMiznWHiBXqJ2pcV6X/6eHzLQes03mchvoHjG8cQfu1zQpvM5j5OuNKhw5MTv7ecRYJDXY8zAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB+IBDxcjDrIjxlwAAAOjSURBVFjD1Vf5W9NAEN2CIII98CxHLUWOymELVqgIitYD8FZAqqJYBbxAPABBWkHBRvFWiuBVPFHxvu/509wk2yQk2KbhJ+frl+y+nfe+dDIzu0EomKkiIqdERSPFNjUGsE2LVSwQB4xNVyvka7SsAOgUCsTDJAV0AYEZCgVmBgRmKRSYPVmBOXNZvj5BoQBKZAWSlPJRsoHmzzMqFkApJoDU+YrpaekZmeYFWVOzcxTRcxdawIry8tEiMNgWh88voP9/YQ7YjUvwoGhpuPziEjp+y4zLS2Mt9Ei7IkyBlewbdKyKi2JHq8MUWMPS1paVV7CjdbKp6zeo8HUjS7MzP9o2YVC9eUtofqwBIvAtEkS2FYPbwJAZWqGyKh5fq7eLrIYG7c4doQXUO/+9ljOJBvt/2K4seX47/lEZtbBbnsA02DMhXgd75Qm4YN+E+P56ma0nMylDZlDUKxrS0xs0Sne26MYDbBYfXK1I4tBhvhBiNOHz6y3CUjrSFC6/+ej4YpybHKZAi7icj4UgHD9xUji1gsRahett7adEAh2QKpwWSgXWCted0CkS0HWcFk67pALThesNbl3wENIMZ4EL7HUegDMFJrqxd4cRQuZwY8U3XB09cBZvTtjOBaXMaMoVzHJpQm/feVhW7bWAp89Nz9P49WgvNb70jRtx8069wAMHpDG4yK+e7QeouiQUYDePy1c44KpU4BofIVbezR9AvcSnkkNqpQKN
+3OJ1gtzgEA9BbnLILafkLfLNooxAAxziI8gg/6fMIr62BkkEajnkNkH0gk4jioKPXxkaJtgdDqoMuPGvMkUrpN+9J9iSUgKom4PuE+QB13n8I1BV4Qp4Oh8KX1nCIwI/5qDuchbxcoit0PMEH1M8T139rmc1oo42i8gKNtpsBulB8kw1yri3CaAhOmTllEwB5CjC7qXCZNbcym7Z+nyxzG+bjLT5FS2Nar7ROl4MM0GeMjKwMzT95dirOvoePfzCwQB5Pfh5KGrUh/QAZa9DHEFUifjx+5FvlKLoqOEz0xvmQGij4G0xE5rO4AKdjNOut0DZ6IGdQqUMYkKDFJsN2uZg/GY2vwaoQWRiRr2onX2p5pKxd+xIF0xARzJurMQcKGCSVhfhPcmvD8EEPhCn95hA6u+VuG7p/p/Y9VFMterp42Or2HsElX4SmR/7fYYvYgE3fMVXv9j72sRP6v/2neTMj5/ki+vCr7zQOSK13wD5SnicJez7E8LjL4jrqr99f0RJAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTAxLTE1VDIzOjM1OjE0KzAxOjAwShGpDAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wMS0xNVQyMzozNToxNCswMTowMDtMEbAAAAAZdEVYdFNvZnR3YXJlAHd3dy5pbmtzY2FwZS5vcmeb7jwaAAAAAElFTkSuQmCC</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="internacomunicacion1">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACRlBMVEUAAAD/gAD/dAD/dQD/dQD/dQD/gAD/eAD/dQD/dAD/dAD/dQD/dQD/AAD/dQD/dQD/dwD/dwD/eAD/dQD/dgD/dQD/dgD/dQD/dAD/gAD/dQD/dQD/cQD/dQD/dQD/bQD/cgD/dQD/dQD/dQD/dAD/dQD/gAD/dwD/dQD/dwD/cQD/dQD/cwD/dgD/dQD/dQD/dAD/dAD/cwD/dQD/dQD/dQD/dgD/dgD/dQD/dQD/dQD/dQD/dAD/dQD/dQD/dQD/dgD/eAD/dgD/dAD/dAD/dQD/dAD/dQD/dQD/dQD/dQD/dgD/dwD/dgD/dQD/dgD/dgD/dAD/dAD/dQD/dQD/dQD/dgD/dgD/dgD/dQD/VQD/bQD/cwD/dAD/dQD/dQD/dgD/dQD/dQD/dgD/gAD/dAD/dQD/dQD/dQD/dQD/dgD/dQD/dQD/cwD/egD/dQD/dQD/dQD/dQD/dQD/dAD/dAD/dgD/dQD/dAD/dgD/dAD/dQD/dQD/dQD/dgD/dAD/gAD/dQD/dAD/dQD/dQD/eAD/dAD/dQD/dQD/cgD/dQD/dQD/dQD/dQD/dAD/dQD/dQD/dQD/dgD/dQD/ZgD/dQD/dQD/dQD/dQD/eQD/dQD/dAD/dQD/dQD/dQD/dQD/dgD/dQD/dgD/dQD/dAD/dAD/dQD/dQD/dQD/cQD/dQD/cAD/dQD/dQD/dgD/dAD/dQD/dgD/dgD/cwD/dgD/dAD/dQD/dQD/dAD/dAD/eQD/dQD/dQD/dgD/dgD/dgD/dQAAAAAxZHqFAAAAwHRSTlMABGWqi1MCEcKrC5bVASP8LzwgbVtrDefbBnZgEvToBzHc0SUWhwwPSEcJhRQakPZWOTNejBhs
+p/2v8WIs/vLAtCR3S55viKPv6qiAOl+ZkVQ3olfJ+zhQNtgDDihyu2mExMqPCE9VdPDuJ8b1SRfssKVM3W5NaM9EqaBG37KNxQrNLjKsIpU9Ox3k1o7lQMiznWHiBXqJ2pcV6X/6eHzLQes03mchvoHjG8cQfu1zQpvM5j5OuNKhw5MTv7ecRYJDXY8zAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB+IBDxcjDrIjxlwAAAOjSURBVFjD1Vf5W9NAEN2CIII98CxHLUWOymELVqgIitYD8FZAqqJYBbxAPABBWkHBRvFWiuBVPFHxvu/509wk2yQk2KbhJ+frl+y+nfe+dDIzu0EomKkiIqdERSPFNjUGsE2LVSwQB4xNVyvka7SsAOgUCsTDJAV0AYEZCgVmBgRmKRSYPVmBOXNZvj5BoQBKZAWSlPJRsoHmzzMqFkApJoDU+YrpaekZmeYFWVOzcxTRcxdawIry8tEiMNgWh88voP9/YQ7YjUvwoGhpuPziEjp+y4zLS2Mt9Ei7IkyBlewbdKyKi2JHq8MUWMPS1paVV7CjdbKp6zeo8HUjS7MzP9o2YVC9eUtofqwBIvAtEkS2FYPbwJAZWqGyKh5fq7eLrIYG7c4doQXUO/+9ljOJBvt/2K4seX47/lEZtbBbnsA02DMhXgd75Qm4YN+E+P56ma0nMylDZlDUKxrS0xs0Sne26MYDbBYfXK1I4tBhvhBiNOHz6y3CUjrSFC6/+ej4YpybHKZAi7icj4UgHD9xUji1gsRahett7adEAh2QKpwWSgXWCted0CkS0HWcFk67pALThesNbl3wENIMZ4EL7HUegDMFJrqxd4cRQuZwY8U3XB09cBZvTtjOBaXMaMoVzHJpQm/feVhW7bWAp89Nz9P49WgvNb70jRtx8069wAMHpDG4yK+e7QeouiQUYDePy1c44KpU4BofIVbezR9AvcSnkkNqpQKN
+3OJ1gtzgEA9BbnLILafkLfLNooxAAxziI8gg/6fMIr62BkkEajnkNkH0gk4jioKPXxkaJtgdDqoMuPGvMkUrpN+9J9iSUgKom4PuE+QB13n8I1BV4Qp4Oh8KX1nCIwI/5qDuchbxcoit0PMEH1M8T139rmc1oo42i8gKNtpsBulB8kw1yri3CaAhOmTllEwB5CjC7qXCZNbcym7Z+nyxzG+bjLT5FS2Nar7ROl4MM0GeMjKwMzT95dirOvoePfzCwQB5Pfh5KGrUh/QAZa9DHEFUifjx+5FvlKLoqOEz0xvmQGij4G0xE5rO4AKdjNOut0DZ6IGdQqUMYkKDFJsN2uZg/GY2vwaoQWRiRr2onX2p5pKxd+xIF0xARzJurMQcKGCSVhfhPcmvD8EEPhCn95hA6u+VuG7p/p/Y9VFMterp42Or2HsElX4SmR/7fYYvYgE3fMVXv9j72sRP6v/2neTMj5/ki+vCr7zQOSK13wD5SnicJez7E8LjL4jrqr99f0RJAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE4LTAxLTE1VDIzOjM1OjE0KzAxOjAwShGpDAAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOC0wMS0xNVQyMzozNToxNCswMTowMDtMEbAAAAAZdEVYdFNvZnR3YXJlAHd3dy5pbmtzY2FwZS5vcmeb7jwaAAAAAElFTkSuQmCC</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="externacomunicacion">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACxFBMVEUAAAD/dQD/dQD/dgD/dQD/dgD/dAD/dQD/dQD/dAD/gAD/dAD/dQD/dQD/dQD/dQD/dAD/VQD/dwD/dQD/dQD/dgD/dQD/dQD/dgD/dgD/dQD/bQD/gAD/dQD/dQD/dQD/dgD/gAD/cgD/dQD/dgD/dAD/dwD/dAD/dAD/eAD/AAD/dQD/dQD/dQD/dQD/cQD/gAD/dAD/dQD/dQD/dAD/dQD/dQD/dQD/dAD/dQD/dQD/cwD/dgD/dAD/dQD/gAD/dgD/dQD/dQD/dQD/cgD/dQD/dQD/dgD/dQD/dQD/dgD/dgD/dQD/dQD/dAD/dwD/cAD/dAD/dgD/dQD/dAD/dQD/dQD/cQD/cwD/dgD/dQD/dQD/dAD/dQD/dAD/eQD/dQD/dQD/dQD/dAD/dgD/egD/dQD/dQD/dAD/gAD/dwD/dQD/dgD/dQD/cAD/dgD/dQD/dQD/dgD/eAD/dQD/dAD/dQD/eAD/dQD/dQD/dQD/dAD/dQD/cwD/dAD/dQD/dAD/dQD/dQD/dQD/dQD/dwD/cwD/dQD/dAD/dQD/dQD/dQD/dQD/ZgD/dQD/dAD/dgD/dgD/eAD/dAD/dQD/dgD/dQD/dAD/dAD/dQD/dQD/dQD/dQD/dgD/dAD/dQD/dQD/dQD/dQD/dQD/dAD/dgD/dQD/dgD/dQD/dgD/dQD/dAD/dQD/dQD/dgD/dQD/dgD/dQD/cwD/dgD/dgD/dgD/dAD/dAD/dAD/dgD/dQD/dQD/dQD/cQD/dAD/dwD/dQD/dAD/dgD/dQD/dgD/dgD/dQD/dQD/dAD/dQD/dQD/dgD/dgD/dQD/dQD/dAD/dQD/dAD/dAD/dQD/cwD/cgD/dgD/dQD/
+dQD/dgD/dgD/dQD/dQD/dQD/dQD/dgD/dgD/bQD/eQD/dAD/dAD/dQD/dwD/dQD/dAD/dgD/dQAAAAAyLFJqAAAA6nRSTlMA+HyA742Iuc8uBH/61Pz5ewMrzXg218opd4kHCIz993MCJsfZOTzbwyQBb/b+kAkKk/VrIcDeP0LgvR9o85cMDZvyZB264kVI5LYaYPCeDxCi5kxP6KYSFKnqU1bsrRU7VYNyYRew7loGR+WPXhkc8dJUEclA3CCs67NnSjNL37jd+8h+HjX0UdOhsmIFdjfMkSJNJbTpWIqj7YvVnKC/GOMwacUnbWrCW9aG54FDu1DGSWaaXWUsfWyqxK8bYzqYbl/hpzQjvNC+t4SCnZarsRaV0SgxdZTaecGZy6TYzlIOE0QLtS90XE4injluAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB+IBDxcnJ5T9mzQAAAVzSURBVFjDzZb9W1RVEMdnXVxgQwICUTBgBRUXiRXxbU1FU0Mh2AAJX/ENCdNQAVFJCVTUNAlCAjVfSjOxTHwrlV41xUqLzF7s1bK3+1f0nXN3YeHey15+a55nz+ycOfO559wzZ84lQy+lD3UTqZdi/B8DvPqatMVbzwx8fElDzA/49Qzo5y98DwYEqsYHPSTHimGqgOCQ/vKQ0AHK8MCBBuHzDws3aAJo0MMRYlRklKWbf3C0zI4ZQtQDgGjoMHlg7HB3rzVuhOiNfySBPADINjJejE0cZe1wJo2WqWPGCrNnANG48fJw+wSn79GJcsekyaQLQMlT5ICpj7E1bbpszXjcNdYjgChlphw0K5XSnpD/pmdQLwDkeNKZl3ZZZ2a5jdUDIMqe7Zb5OU9RrwGUO8cVPnde17E6AUTzF4j4hXnOZEhatDjOtGTpMj+9AMpfLkkFT4u/hSsmPeN+nFfqAhCtmvMsq6Ipq7sXhDVrdQGEFIdFqtWUklKdgLQCOWBd
+37QVvvllIVlR6zfIPRtzdQACV8qJEBCElYRkl6c9tymZzJsXihNT4esRkPE8ewqCbYGlKyudc6/asnUbVYsDtn2HB4BjJztecFgXx3RZf8SuAZTNuxy/u0fAi5zJEXuo5iXFK6yqzajrxwVwaE+AdJ7ly7TK4IzialjlQsTUJ++FatimDXiFn59tbex4bBx+TU0ua9/YcC50PuFagOIG0bmffQc4FV7lYQcth9D2286T8z18BCrKBah9ravwo5rodXY19EFztFAA6BhW1BDM3ePzNgG8z0GaV9sGxzFDh/FGUiEDHEGdF9RoaxhakzbguPVNdzPe+euUE8XI0xGHtQCZ5nlom0++peY8+jaaMYV70I7SAiyhLWhPkXm60neCaCPH2nBlvEN0WiEt8NZvQmPHCg9IUuWZs8ZzMCtrB54vh75A9C7usVDG+DlUTkEJXjK9h5EXUYzwlL3OzToIlQvdCH0JryT1rDwdhSDT0+kynLhfDkvOGuQEkJcktULthl3+PpqRKscI3R8MQu6ugfEhb4g7IBSpBJUkbNAWKgG8+s0T0HxUVlb2MfQn0GXQ61lj3ZGssT3e1CxJ0UrAfIytqZY8yxqyS9IVJYC3t/6MDsBsuipJBiXgInyfLtIBGEY41HOVgLXwZV1Dc91oNLbyy4I2QrexbsP+scZWxRKqTZsSwA+/YENzCcY46FXuu3BDko5ATa5iP26cz5SAayKTZ+BA4kulCMbn7gBc/zegUmB/EY69vqkEhI/gzbmFESjdVpSPL90Ak6HPQZugQ1ag2aOSiV+hnLXzI76GgTXfJkr4BuauIgvdgf4WNiaSaf0Ohsp3oUjTtEKc9qp6kfR+JQ3O9+5XyeUYN0KAwOOT6nuVeMrDURtNP3DuFcddUW7f9dOpU1HVJ5Ti/341AN2FJ8XGtUT1bkUwfrXEhXmIKoDX72Mt7wy4+yOf7p9MP4/v6FrdvkPiiaoLNltaRuJLJ9FHrgBiF5LXIY1K
+uDsiK+EXPjMagGrUz8Q7tl95tiYsI/43AbByXl4Wl24w5fA7Ii1h74z8aa5bWZoYxICtHQs4J96xYbAm4B5KodRy73d7x8Hhmuiq6/5RNJ8/7s+TttTxDd483Fzb9TIQsiDFujVecwtdUsqfdAV/0B3vbuGJJzPur+c/syw9Aug0X6L+N4vo1FWvzvDmsFTL+Qr+92cyeZC/xKZHNraTeWyfW63Rh3L6Hq8jS9ZtQWq0eIonar8shkbE/l3v7LmfnT5X9EX+4zkcYi7PdM7cUNHSOn3nAtdC5lzTFQ+xBSg+VJG/1XrDWYrTWhPdo/ubanoTLiTh37Ame3+vmaHLby1V5t5/KCOIHKiA+TkAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDEtMTVUMjM6Mzk6MzkrMDE6MDBz3y8/AAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAxLTE1VDIzOjM5OjM5KzAxOjAwAoKXgwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII=</ImageData>
+    </EmbeddedImage>
+    <EmbeddedImage Name="mail">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB7FBMVEUAAAD/cwD/dQD/dQD/dQD/dQD/cQD/dQD/dgD/dgD/dwD/dQD/dQD/dgD/dQD/dQD/dQD/ZgD/dQD/dQD/dgD/dAD/dQD/dQD/dwD/dQD/dQD/dQD/gAD/dAD/dQD/dQD/dQD/dAD/dQD/cgD/cAD/dgD/eQD/dgD/dQD/dQD/dAD/dQD/AAD/dQD/dQD/dQD/dAD/dQD/cgD/dAD/dQD/dQD/dAD/dgD/dQD/dQD/dQD/dQD/bQD/dQD/dQD/dQD/dgD/dQD/dQD/bQD/dgD/dgD/dQD/dAD/dQD/dQD/dQD/dQD/dwD/dQD/cwD/egD/dQD/gAD/dQD/dQD/cwD/dgD/dQD/dQD/dAD/gAD/dQD/dQD/dQD/dgD/dQD/dQD/dQD/dQD/dgD/dAD/dgD/dgD/dQD/cAD/cwD/dAD/dQD/dgD/dQD/dQD/dQD/dQD/gAD/dAD/dQD/dQD/dgD/dQD/dQD/dQD/dQD/cQD/dQD/dQD/eQD/dwD/dwD/dAD/dgD/dgD/dQD/dAD/dgD/dQD/gAD/dgD/dQD/VQD/dQD/gAD/dAD/dQD/dQD/dQD/dQD/dAD/dQD/dQD/dQD/dQD/dgD/dQD/dgD/eAD/dQD/dQD/dQD/dAD/dgD/dwD/cgD/dQD/dQAAAADN9ZoUAAAAonRSTlMANbfsdPwJpBzMPOj9ZvrwSgWX2CcWwrUPMuKHAlr29VeK4TEQwRUp2pZN8gF8/ukLrB0h0qVCdW/770gHn9YlGsizDjjmhUv4VWTgL+oUF3YEGM8zjd/duAyS7WBf07wju3fQNI+OGUlP5KfuYju+Bn/593nE0WnxG69TEx4tlVKCpq3Oegq2nQOLCJ54o67c
+LOXJ9EZs1VskPTDjxdkrJrCL7uk5AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB+IBDxYYJFToioUAAAOWSURBVFjDpZZnQxpBEIbH3kDFXlCs2BCxK3ZBxS72FjGaxGiMsff0aqommp6o+0tz3CxyyFUyX7idmec9bndndgHEzM8/IMDfD3y2wCDCWFCgj3hwCKEWEuwLHxpGriwsVDkfHsGiKhX7ExGulFdHsmBUdHQU+xCpVoRrYvCvx8YBxMXic4xGPh+fgExiknOUlIijhHi5fHIKEqlaHGtTcZySLI9PS2fTdRluV4aOdaWnycC1mfi6rGyuNzsLvZlaKT7HHzNz9Z5+fS76/XPE+bx8zCvwmnJNAUby88T4wiKRRadbo6hQEDcUG9mUEoFtF17Cho3FBv64qZRu/DKhN5TR8ig18UXLKzBaKVJ6wZWYU1HuHasKwOKpFp/laiyugKrrgZpaNmCuAwmrM7OJtTUe3voG/GuNTVI8QFMj5jbUu33NLehrtUjzAJZWzG5pdnmsbehpl9ynaNp2zG+z4rjDhsXTKQ93WicWl63DOejC6evukc8D9HTjVHYx/6cXP6hPCQ/Qh9PWq4V+/J70AbsS3l6NTYP0w6CrdQ8Ny+eHh1zUoFuABI2Y5OGmkSDCJ0DIqOQ+dFrdKAehAmO0jZJKvRSudx14KWMcgfGJSSwSMjUtzt/AmiOqyYlxrgCzHWeosmNWGJ+9SZNmmE14TQA0xTa6onMCK2ofoGtnK3a2zOsCzCFGOy+Z571T3HKtXW4cO/YWAIPaTL/wtteKmu7QtTOraUvkEQBYoH2RZEV78ne7aaB0weXiFQBYXKKZ9zhnqZ72QrK06HYKCIClAJs7Wb7vck1PocdYwO04QgIAK7RpkQdsh5t10GHjikeasACsrq0jsrGpsc/RtVtfWwW5AswZuUXfWrFNH7a8zkRRATDs7HJKhuzueB9n4gIA
+e/tufn+PJ0FKAOCAduu2A96wtAAktc8bjfPtSaBQwHrofo7nXs0ePpIjoH1MnvC/Ep6qdqQFNM/I83oBgfgX5KWUwKvX5M0RCJkll4wYRAVytshbELF3reT9kYjA4Db5AKJm/0g+1QsKlB+rJC/lhknimBAQOPm8LueEXiNfDnkFrMunZzJ4gK/Gb3s8Ameny1ZZPMD32tEfXgKd620nMnnmTpIe0XNNQK06LpfNA/yMMq94CGyS7UEFPMCvEt1vjsAG+ZOjiGdue9jnr473v/NKLYUKaGzkP8zGHJKO/xFwMB9zrvOd1507p+Pistc3vPfyAuAfoFko2AuYL7kAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDEtMTVUMjI6MjQ6MzYrMDE6MDBscdIjAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTAxLTE1VDIyOjI0OjM2KzAxOjAwHSxqnwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAAASUVORK5CYII=</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
+  <Language>es-ES</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>10d74fde-5b8c-4fe0-a16b-cadd597e781c</rd:ReportID>
+</Report>

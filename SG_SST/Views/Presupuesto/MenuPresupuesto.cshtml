@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "MenuPresupuesto";
+}
+
+
+
+<p> Liderazgo Gerencial/ Presupuesto</p>
+<hr />
+<!-- Panel principal para seleccionar el tipo de operacion, seleccionar,consultar, editar y eliminar -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">PRESUPUESTO</div>
+                <div class="panel-body">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="row ">
+                            @Html.ActionLink("Crear Presupuesto", "CrearPresupuesto", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @Html.ActionLink("Consultar", "BuscarPresupuestos", new {}, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @Html.ActionLink("Informe de presupuesto disponible", "BuscarPresupuestoInforme", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,274 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Planificacion.EDPerfilSocioDemografico>
+
+@{
+    ViewBag.Title = "Listado Perfil Sociodemográfico";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .pag {
+        width: 50%;
+        margin: 0 auto;
+    }
+</style>
+
+@if (ViewBag.MensajeExitoso != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: 'Información Almacenada Correctamente',
+
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+@if (ViewBag.MensajeExitosoE != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: 'Información actualizada correctamente',
+
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+@if (ViewBag.MensajeExitoEliminar != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: 'El perfil fué eliminado correctamente',
+
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+
+@if (ViewBag.MensajeError != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: 'No se pudo Almacenar por favor intente de nuevo',
+
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+@if (ViewBag.MensajeErrorE != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: 'No se pudo actualizar por favor intente de nuevo',
+
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+
+@if (ViewBag.MensajeErrorEliminar != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: "Se presentó un error, por favor intente más tarde",
+
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="@Url.Action("Listado", "PerfilSocioDemoGrafico")">Perfil Sociodemográfico</a></li>
+    <li class="active">Modificar Perfil Sociodemográfico</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202, 196, 0.1)">
+    <div class="panel-heading" style="color:white">Modificar Perfil sociodemográfico</div>
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda / Listado Perfil Sociodemográfico</h4>
+                        </div>
+                        <div class="modal-body" style="color:black; text-align:justify">
+                            
+                            De acuerdo al Decreto 1072 de 2015 Artículo 2.2.4.6.2. Definición #13 y Artículo 2.2.4.6.12. Documentación. No. 4; ALISSTA le permite registrar los perfiles sociodemográficos de los colaboradores de su empresa.  Así mismo consolidar la información de manera sistemática y a la mano a la hora de construir sus programas de gestión y programas de vigilancia epidemiológica en pro de la salud laboral de su población trabajadora.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body form-horizontal">
+        <div style="background-color:transparent">
+            <div class="row" id="center">
+                <div class="col-sm-6">
+                    <div class="form-group" style="margin-left: 0px">
+                        <div class="col-md-12">
+                            @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Index", null, htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+                        <input type="text" id="buscar" value="" placeholder="Buscar Perfil" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table id="select_perfil" class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Número Documento Empleado </th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Sede</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Proceso</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Zona/Lugar</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Departamento de residencia</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Ciudad de residencia</th>
+                            <th width="150" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform: uppercase;">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model)
+                    {
+                        var nombreProceso = "";
+                        if (item.nombreProceso != null)
+                        {
+                            nombreProceso = item.nombreProceso;
+                        }
+                        else
+                        {
+                            nombreProceso = "NA";
+                        }
+                        <tbody>
+                            <tr name="temPer">
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.PK_Numero_Documento_Empl)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.nombreSede)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @nombreProceso
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.ZonaLugar)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.departamento)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.municipio)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    <a name="Editar Perfil" href="@Url.Action("Edit", null, new { id = item.IDEmpleado_PerfilSocioDemoGrafico })" title="Editar Perfil" class="btn btn-search btn-md">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    |
+                                    @*<a name="eliminarPerfil" href="@Url.Action("DeleteConfirmed", null, new { id = item.IDEmpleado_PerfilSocioDemoGrafico })" title="Eliminar Perfil" class="btn btn-search btn-md">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </a>*@
+
+                                    <a href="@Url.Action("DescargarPerfilEnExcel", null, new { id = item.IDEmpleado_PerfilSocioDemoGrafico})">
+                                        <img src="~/Images/iconExcelp.png" title="Descargar Excel" />
+                                    </a>
+                                    |
+                                    <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.IDEmpleado_PerfilSocioDemoGrafico)" title="Eliminar Perfil" @*value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar"*@ class="btn btn-search btn-md">
+                                        <span class="glyphicon glyphicon-erase"></span>
+                                    </a>
+
+                                    <div id="@string.Format("modalEliminar{0}", item.IDEmpleado_PerfilSocioDemoGrafico)" class=" modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        @*<span aria-hidden="true">&times;</span>*@
+                                                    </button>
+                                                    <h4 class="modal-title title">Eliminar perfil</h4>
+                                                </div>
+                                                <div class="modal-body" style="color:black">
+                                                    <center><p>¿Seguro desea eliminar el perfil Sociodemográfico?</p></center>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.IDEmpleado_PerfilSocioDemoGrafico },
+                                                    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>*@
+                                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+
+                </table>
+                <div class="pag" style="margin-left:40%;">
+                    <div class="pagination-page" id="paginador"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/1.7/themes/redmond/jquery-ui.css" rel="stylesheet" />*@
+
+    @Scripts.Render("~/bundles/Planificacion")
+  @*  @Scripts.Render("~/bundles/Organizacion")*@
+    @Scripts.Render("~/bundles/simplePagination")
+
+    <script>
+        $(document).ready(function () {
+            paginador("#select_perfil", "tr[name = temPer]", "#paginador");
+        });
+    </script>
+}

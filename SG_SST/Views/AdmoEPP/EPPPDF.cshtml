@@ -1,0 +1,331 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDEPP
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+        .titulo_epp {
+            font-size: 25px;
+            
+        }
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+
+        .imagenEHM {
+            page-break-inside: avoid !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>1. Información del Elemento</b>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft100" style="text-align:center;">
+                <div class="titulo_epp">
+                    @Html.DisplayFor(m => m.NombreEPP)
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft100" style="text-align:center">
+                <div class="form-group imagenEHM" id="ContImg1" style="@ViewBag.Imagen1E;">
+                    <img id="img-act1" class="firma-EHM-estilo imagenEHM" src="@ViewBag.Imagen1R" alt="" style="cursor:pointer;border:0.5px solid black;max-height:200px;" />
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div>
+                    <b>PARTE DEL CUERPO A PROTEGER</b>
+                    <div>
+                        @Html.DisplayFor(m => m.ParteCuerpo)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>RIESGO CONTROLADO</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Clasificacion_De_Peligro)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>ESPECIFICACIÓN TÉCNICA</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.EspecificacionTecnica)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>USO</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Uso)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>MANTENIMIENTO</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Mantenimiento)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>VIDA ÚTIL</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.VidaUtil)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>REPOSICIÓN</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Reposicion)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>DISPOSICIÓN FINAL</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.DisposicionFinal)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    @{
+        if (Model.Cargos.Count > 0)
+        {
+            <p class="breakhere"></p>
+            <div class="Doslinea">
+                <div class="SubTitulo">
+                    <b>2. Cargos Asociados</b>
+                </div>
+
+                <div>
+                    @{
+                            <div class="datagrid">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="width:80%;">
+                                                <p>Cargo</p>
+                                            </th>
+                                            <th style="width:20%;">
+                                                <p>Número de Trabajadores</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in Model.Cargos)
+                                            {
+                                                <tr>
+                                                    <td style="text-align:center">
+                                                        <span>@item.Nombre</span>
+                                                        
+                                                    </td>
+                                                    <td  style="text-align:center">
+                                                        @Html.DisplayFor(modelItem => item.Cantidad)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                                            
+                    }
+                </div>
+            </div>
+                                            }
+    }
+    
+</body>
+</html>
+
+

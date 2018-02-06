@@ -1,0 +1,83 @@
+﻿@model SG_SST.Models.Metodologia.GenerarPeligroModel
+@{
+    ViewBag.Title = "Generar Metodología";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Identificación de peligros, evaluación y valoración riesgos</a></li>
+    <li class="active">Generar Metodología</li>
+</ol>
+
+<form method="post" id="GenerarMetodologia">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        @*<div class="row">
+            <div class="col-md-11 col-md-offset-0">
+                *@
+        <div class="panel-heading" style="color:white">
+            @*@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_panel_peligros_seleccionar*@
+            GENERAR METODOLOGÍA
+        </div>
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-xs-1">
+                        <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                    </div>
+                    <div class="col-xs-5">
+                        @*@Html.DropDownListFor(x => x.id_sedeSeleccionada, Model.Sedes, "Seleccionar", new { @class = "form-control" })*@
+                        @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                    <div class="col-xs-2">
+                        <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_metodologia:</b></h5>
+                    </div>
+                    <div class="col-xs-4">
+                        @*@Html.DropDownListFor(x => x.id_metodologiaSeleccionada, Model.Metodologias, "Seleccionar", new { @class = "form-control" })*@
+                    @Html.DropDownList("PK_Metodologia", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+        <br />
+
+        <div class="modal-footer">
+            <div class="row" align="center">
+                @*<div class="col-md-3 col-md-offset-4">*@
+                    @*@Html.ActionLink(SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar, "GenerarMetodologia", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })*@
+                    @*<input id="btnGenerarMetodología" type="button" class="form-control btn btn-warning btn-md tbr" value="@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar" onclick="CargarFormularioMetodologias()" />*@
+                    <button id="btnGenerarMetodología" type="button" class="boton botoninfo" onclick="CargarFormularioMetodologias()">@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_btn_modal_generar</button>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div id="formulariosMetodologias">
+
+</div>
+
+@Html.Partial("AyudasPlanificacion")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+
+    <script>
+        $(document).ready(function () {
+            if ($idTipoDeMetodologia.val() != "" && $idSede.val() != "") {
+                $("#btnGenerarMetodología").click();
+            }
+
+        });
+    </script>
+}

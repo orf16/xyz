@@ -1,0 +1,931 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDEPP
+@{
+    ViewBag.Title = "Editar EPP";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/Aplicacion/EPPEditar.js")"></script>
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración de Elementos de Protección Personal</a></li>
+    <li><a href="javascript:void(0)">Matriz EPP</a></li>
+    <li class="active">Editar EPP</li>
+</ol>
+@Html.AntiForgeryToken()
+
+
+<script>
+    //Guardar EPP
+    $(function () {
+        $("#GuardarEPP").bind("click", function () {
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var stringArray = new Array();
+            var ListaEPPCargos = new Array();
+
+            
+
+            $('#Tabla_0 > tbody').find('tr').each(function () {
+                var table_cargos_tr = $(this);
+                var cargoid = table_cargos_tr.attr('id');
+                var cont1 = 0;
+                var stringArrayCargos = new Array();
+                table_cargos_tr.find('td').each(function () {
+
+                    var cargos_td = $(this);
+                    if (cont1 == 0) {
+                        stringArrayCargos[0] = cargoid;
+                    }
+                    if (cont1 == 1) {
+                        stringArrayCargos[1] = cargos_td[0].innerText;
+                    }
+                    cont1++;
+                });
+                var CargoEPP = {
+                    Fk_Id_Cargo: stringArrayCargos[0],
+                    Cantidad: stringArrayCargos[1]
+                };
+                ListaEPPCargos.push(CargoEPP);
+            });
+            stringArray[0] = $("#NombreEPP").val();
+            stringArray[1] = $("#ParteCuerpo").val();
+            stringArray[2] = $("#Pk_Id_Clasif_Peligro").val();
+            stringArray[3] = $("#Imagen_0").val();
+            stringArray[4] = $("#Imagen_D_0").val();
+            if ($("#EspecificacionTecnica").val() != null) {
+                if ($("#EspecificacionTecnica").val() != "") {
+                    stringArray[5] = $("#EspecificacionTecnica").val();
+                }
+                else {
+                    stringArray[5] = "-- Información no Disponible --";
+                }
+            }
+            else {
+                stringArray[5] = "-- Información no Disponible --";
+            }
+            if ($("#Uso").val() != null) {
+                if ($("#Uso").val() != "") {
+                    stringArray[6] = $("#Uso").val();
+                }
+                else {
+                    stringArray[6] = "-- Información no Disponible --";
+                }
+            }
+            else {
+                stringArray[6] = "-- Información no Disponible --";
+            }
+            if ($("#Mantenimiento").val() != null) {
+                if ($("#Mantenimiento").val() != "") {
+                    stringArray[7] = $("#Mantenimiento").val();
+                }
+                else {
+                    stringArray[7] = "-- Información no Disponible --";
+                }
+            }
+            else {
+                stringArray[7] = "-- Información no Disponible --";
+            }
+            if ($("#VidaUtil").val() != null) {
+                if ($("#VidaUtil").val() != "") {
+                    stringArray[8] = $("#VidaUtil").val();
+                }
+                else {
+                    stringArray[8] = "-- Información no Disponible --";
+                }
+            }
+            else {
+                stringArray[8] = "-- Información no Disponible --";
+            }
+            if ($("#Reposicion").val() != null) {
+                if ($("#Reposicion").val() != "") {
+                    stringArray[9] = $("#Reposicion").val();
+                }
+                else {
+                    stringArray[9] = "-- Información no Disponible --";
+                }
+            }
+            else {
+                stringArray[9] = "-- Información no Disponible --";
+            }
+            if ($("#DisposicionFinal").val() != null) {
+                if ($("#DisposicionFinal").val() != "") {
+                    stringArray[10] = $("#DisposicionFinal").val();
+                }
+                else {
+                    stringArray[10] = "-- Información no Disponible --";
+                }
+            }
+            else {
+                stringArray[10] = "-- Información no Disponible --";
+            }
+
+            stringArray[11] = $("#Archivo_0").val();
+            stringArray[12] = $("#Archivo_D_0").val();
+            stringArray[13] = $("#Pk_Id_EPP").val();
+            var GuardarEPP1 = {
+                Pk_Id_EPP: stringArray[13],
+                NombreEPP: stringArray[0],
+                ParteCuerpo: stringArray[1],
+                Fk_Id_Clasificacion_De_Peligro: stringArray[2],
+                EspecificacionTecnica: stringArray[5],
+                Uso: stringArray[6],
+                Mantenimiento: stringArray[7],
+                VidaUtil: stringArray[8],
+                Reposicion: stringArray[9],
+                DisposicionFinal: stringArray[10],
+                ArchivoImagen: stringArray[3],
+                ArchivoImagen_download: stringArray[4],
+                NombreArchivo: stringArray[11],
+                NombreArchivo_download: stringArray[12],
+                Cargos: ListaEPPCargos
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/AdmoEPP/GuardarEditarEPP',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ GuardarEPP: GuardarEPP1 }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    $("#val-Especificacion").css("display", "none");
+                    $("#val-Especificacion").text('');
+                    $("#val-Uso").css("display", "none");
+                    $("#val-Uso").text('');
+                    $("#val-Mantenimiento").css("display", "none");
+                    $("#val-Mantenimiento").text('');
+                    $("#val-VidaUtil").css("display", "none");
+                    $("#val-VidaUtil").text('');
+                    $("#val-Reposicion").css("display", "none");
+                    $("#val-Reposicion").text('');
+                    $("#val-Disposicion").css("display", "none");
+                    $("#val-Disposicion").text('');
+                    $("#val-Riesgo").css("display", "none");
+                    $("#val-Riesgo").text('');
+                    $("#val-ParteCuerpo").css("display", "none");
+                    $("#val-ParteCuerpo").text('');
+                    $("#val-NombreEPP").css("display", "none");
+                    $("#val-NombreEPP").text('');
+                    if (data.Probar == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        if (data.Validacion[0] == true) {
+                            $("#val-NombreEPP").css("display", "block");
+                            $("#val-NombreEPP").text(data.ValidacionStr[0]);
+                        }
+                        if (data.Validacion[1] == true) {
+                            $("#val-ParteCuerpo").css("display", "block");
+                            $("#val-ParteCuerpo").text(data.ValidacionStr[1]);
+                        }
+                        if (data.Validacion[2] == true) {
+                            $("#val-Especificacion").css("display", "block");
+                            $("#val-Especificacion").text(data.ValidacionStr[2]);
+                        }
+                        if (data.Validacion[3] == true) {
+                            $("#val-Uso").css("display", "block");
+                            $("#val-Uso").text(data.ValidacionStr[3]);
+                        }
+                        if (data.Validacion[4] == true) {
+                            $("#val-Mantenimiento").css("display", "block");
+                            $("#val-Mantenimiento").text(data.ValidacionStr[4]);
+                        }
+                        if (data.Validacion[5] == true) {
+                            $("#val-VidaUtil").css("display", "block");
+                            $("#val-VidaUtil").text(data.ValidacionStr[5]);
+                        }
+                        if (data.Validacion[6] == true) {
+                            $("#val-Reposicion").css("display", "block");
+                            $("#val-Reposicion").text(data.ValidacionStr[6]);
+                        }
+                        if (data.Validacion[7] == true) {
+                            $("#val-Disposicion").css("display", "block");
+                            $("#val-Disposicion").text(data.ValidacionStr[7]);
+                        }
+                        if (data.Validacion[12] == true) {
+                            $("#val-Riesgo").css("display", "block");
+                            $("#val-Riesgo").text(data.ValidacionStr[12]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "error");
+                    }
+                    else {
+
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "El elemento de proteccion personal se ha editado exitosamente",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location.href = "/AdmoEPP/MatrizEPP";
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Cargar Imagenes
+    $(function () {
+        $('#btn-adj-img').click(function () {
+            var LimiteMb = $('#MB_limit').val();
+            var Img = "#Imagen_0";
+            var ImgD = "#Imagen_D_0";
+            var ImgContainer = "#Imagen_C_0"
+            var LabelImagen = $(Img);
+
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-img").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $(Img).val());
+                    fileData.append('extraParam2', $(ImgD).val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/AdmoEPP/UploadImg',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        OcultarPopupposition();
+                        fileUpload.value = "";
+                        $("#val-error-imagen").css("display", "none");
+                        $("#val-error-imagen").text('');
+                        if (result.probar == false) {
+                            $("#val-error-imagen").text(result.resultado);
+                            $("#val-error-imagen").css("display", "block");
+                        }
+                        else {
+
+                            $(ImgContainer).attr("src", result.Thumbnails);
+
+                            $(Img).val(result.NombreArchivos);
+                            $(ImgD).val(result.NombreArchivos_short);
+                            LabelImagen = result.NombreArchivos;
+                            if (result.display == true) {
+                                $(ImgContainer).css("display", "block");
+                                $("#EliminarImagen").css("display", "block");
+                            }
+                            else {
+                                $(ImgContainer).css("display", "none");
+                                $("#EliminarImagen").css("display", "none");
+                            }
+
+                            $("#val-error-imagen").css("display", "none");
+                            $("#val-error-imagen").text('');
+
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen del EPP adjuntada correctamente",
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                        }
+
+                    }
+                    ,
+                    error: function (err) {
+                        var Error_response = err.responseText;
+                        if (Error_response.indexOf("la longitud de solicitud") >= 0) {
+                            $("#val-error-imagen").text("Error al cargar el archivo, la imagen debe tener un tamaño máximo de " + LimiteMb + "MB");
+                            $("#val-error-imagen").css("display", "block");
+                        }
+                        else {
+                            $("#val-error-imagen").text("Error al cargar el archivo");
+                            $("#val-error-imagen").css("display", "block");
+                        }
+                        fileUpload.value = "";
+
+                        OcultarPopupposition();
+                    }
+                });
+            }
+            else {
+            }
+        });
+    });
+    //Eliminar Imagenes
+    $(function () {
+        $("#EliminarImagen").click(function () {
+
+            var Img = "#Imagen_0";
+            var ImgD = "#Imagen_D_0"
+            var ImgContainer = "#Imagen_C_0"
+            var LabelImagen = $(Img).val();
+
+            $(ImgContainer).css("display", "none");
+            $("#EliminarImagen").css("display", "none");
+            $(Img).val(null);
+            $(ImgD).val(null);
+            $(ImgContainer).attr("src", null);
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEPP/EliminarImg",
+                data: '{ruta: "' + LabelImagen + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            $("#val-error-imagen").css("display", "none");
+            $("#val-error-imagen").text('');
+
+        });
+
+    });
+    //Cargar Archivos
+    $(function () {
+        $('#btn-adj-arch').click(function () {
+            var LimiteMb = $('#MB_limit').val();
+            var arch = "#Archivo_0";
+            var archD = "#Archivo_D_0";
+            var ArchContainer = "#Archivo_C_0";
+
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-arch").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $(arch).val());
+                    fileData.append('extraParam2', $(archD).val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/AdmoEPP/UploadArchivo',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        OcultarPopupposition();
+                        fileUpload.value = "";
+                        $("#val-error-archivo").css("display", "none");
+                        $("#val-error-archivo").text('');
+                        if (result.probar == false) {
+                            $("#val-error-archivo").text(result.resultado);
+                            $("#val-error-archivo").css("display", "block");
+                        }
+                        else {
+                            var ArchivoShort = result.NombreArchivos_short;
+
+                            if (ArchivoShort.length > 50) {
+                                var res = result.NombreArchivos_short.substring(0, 50) + "...";
+                                $(ArchContainer).empty();
+                                $(ArchContainer).append("Archivo Cargado: "+res);
+                            }
+                            else {
+                                $(ArchContainer).empty();
+                                $(ArchContainer).append(ArchivoShort);
+                            }
+
+                            $(arch).val(result.NombreArchivos);
+                            $(archD).val(result.NombreArchivos_short);
+
+                            if (result.display == true) {
+                                $(ArchContainer).css("display", "block");
+                                $("#EliminarArchivo").css("display", "block");
+                            }
+                            else {
+                                $(ArchContainer).css("display", "none");
+                                $("#EliminarArchivo").css("display", "none");
+                            }
+
+                            $("#val-error-archivo").css("display", "none");
+                            $("#val-error-archivo").text('');
+                            swal("Estimado Usuario", "Archivo Adjuntado Exitosamente", "success");
+                        }
+
+                    }
+                    ,
+                    error: function (err) {
+                        OcultarPopupposition();
+                        var Error_response = err.responseText;
+                        if (Error_response.indexOf("la longitud de solicitud") >= 0) {
+                            $("#val-error-archivo").text("Error al cargar el archivo, el archivo debe tener un tamaño máximo de " + LimiteMb + "MB");
+                            $("#val-error-archivo").css("display", "block");
+                        }
+                        else {
+                            $("#val-error-archivo").text("Error al cargar el archivo");
+                            $("#val-error-archivo").css("display", "block");
+                        }
+                        fileUpload.value = "";
+
+                    }
+                });
+            }
+            else {
+            }
+        });
+    });
+    //Eliminar Archivos
+    $(function () {
+        $("#EliminarArchivo").click(function () {
+
+            var arch = "#Archivo_0";
+            var archD = "#Archivo_D_0";
+            var ArchContainer = "#Archivo_C_0";
+            var LabelArchivo = $(arch).val();
+
+            $(ArchContainer).css("display", "none");
+            $("#EliminarArchivo").css("display", "none");
+            $(arch).val(null);
+            $(archD).val(null);
+            $(ArchContainer).val(null);
+
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEPP/EliminarArchivo",
+                data: '{ruta: "' + LabelArchivo + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            $("#val-error-archivo").css("display", "none");
+            $("#val-error-archivo").text('');
+
+        });
+
+    });
+    //Agregar Cargo
+    $(function () {
+        $('#Agregar_Cargo').click(function () {
+            var NombreCargo = $('#Pk_Id_Cargo1').val();
+            var NombreCargoText = $("#Pk_Id_Cargo1 option:selected").text();
+            var NumeroTrabajadores = $('#NumeroTrabajadores').val();
+            var TextoError = "";
+            $("#val-error").css("display", "none");
+            $("#val-error").text('');
+
+            var probar_numero = false;
+            var probar_cargo = false;
+
+            if (NumeroTrabajadores == null) {
+                probar_numero = true;
+            }
+            else {
+                if (NumeroTrabajadores == "") {
+                    probar_numero = true;
+                }
+                else {
+                    if (isNaN(NumeroTrabajadores)) {
+                        probar_numero = true;
+                    }
+                }
+            }
+            if (NombreCargo == null) {
+                probar_cargo = true;
+            }
+            else {
+                if (NombreCargo == "") {
+                    probar_cargo = true;
+                }
+            }
+            if (probar_cargo && probar_numero == false) {
+                TextoError = "No ha elegido un cargo";
+                $("#val-error").css("display", "block");
+                $("#val-error").text(TextoError);
+            }
+            if (probar_cargo == false && probar_numero) {
+                TextoError = "No ha digitado el número de trabajadores";
+                $("#val-error").css("display", "block");
+                $("#val-error").text(TextoError);
+            }
+            if (probar_cargo && probar_numero) {
+                TextoError = "No ha elegido un cargo y tampoco ha digitado el número de trabajadores";
+                $("#val-error").css("display", "block");
+                $("#val-error").text(TextoError);
+            }
+
+            if (probar_cargo == false && probar_numero == false) {
+                var location = "#Tabla_0 > tbody";
+                var location1 = "#Tabla_0 tbody";
+                var location2 = "#TbodyCargos_0";
+                var tableBody = $(location);
+                var probar_repetido = false;
+                tableBody.find('tr').each(function () {
+                    var row = $(this);
+                    if (row.attr('id') == NombreCargo) {
+                        probar_repetido = true;
+                    }
+                });
+
+                if (probar_repetido) {
+                    TextoError = "El cargo ya se encuentra en la lista, si desea editarlo retirelo de la lista y vuelva a asignarlo";
+                    $("#val-error").css("display", "block");
+                    $("#val-error").text(TextoError);
+                }
+                else {
+                    var html = "<tr id=\"" + NombreCargo + "\"><td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:center\"  name=\"" + NombreCargo + "\">" + NombreCargoText + "</td>";
+                    html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:center\">" + NumeroTrabajadores + "</td>";
+                    html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:center\">" + "<a name=\"" + NombreCargo + "\" class=\"btn btn-search btn-md btnEliminarlista\" location=\"" + location2 + "\"  title=\"Eliminar Cargo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                    $(location1).append(html);
+                    $('#NumeroTrabajadores').val('');
+                    $('#Pk_Id_Cargo1 option')[0].selected = true;
+                }
+            }
+        });
+    });
+    //Eliminar cargos de lista a guardar
+    $(document).on("click", ".btnEliminarlista", function () {
+        var Id_Elm = $(this).attr('name');
+        var Location = $(this).attr('location');
+        var tableBody = $(Location);
+        var Location1 = Location + "> tr";
+
+
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar este elemento de la lista?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+            var ElementoEliminar;
+            var cont = 0;
+
+            tableBody.find('tr').each(function () {
+                var row = $(this);
+                if (row.attr('id') == Id_Elm) {
+                    row.remove();
+                    cont = cont + 1;
+                }
+            });
+            if (cont > 0) {
+                swal("Estimado Usuario", "Cargo eliminado de la lista", "success");
+            }
+            else {
+                swal("Estimado Usuario", "El Cargo no se ha eliminado, por favor vuelva a intentar", "error");
+            }
+
+        });
+    });
+</script>
+
+
+@{
+    string MB_limit = ViewBag.LimiteMB.ToString();
+    @Html.Hidden("MB_limit", @MB_limit);
+    @Html.HiddenFor(m => m.Pk_Id_EPP)
+}
+
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">EDITAR ELEMENTO DE PROTECCIÓN PERSONAL</div>
+    <div class="panel-body">
+
+
+
+
+
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Editar EPP</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>*</strong> Indica que el campo es obligatorio</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>OBJETIVO DE EDITAR EPP</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> En esta función del módulo de elementos de protección personal, el usuario puede editar un elemento de protección personal ya creado</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar Imagen:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para agregar una imagen, seleccione una imagen y haga click en 'ADJUNTAR'</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para eliminar una imagen adjunta presione  <button type="button" class="boton botonactive" style="cursor:default;">ELIMINAR IMAGEN</button></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar Archivo:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para agregar una ficha técnica, seleccione un archivo y haga click en 'ADJUNTAR'</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para eliminar una ficha técnica adjunta presione  <button type="button" class="boton botonactive" style="cursor:default;">ELIMINAR ARCHIVO</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para descargar una ficha técnica adjunta presione  <button type="button" class="boton botonactive" style="cursor:default;">DESCARGAR ARCHIVO</button></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar un Cargo:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para agregar un cargo asociado complete los campos 'CARGO' y 'NUMERO DE TRABAJADORES POR CARGO' a continuación presione  <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR CARGO</button></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> - Para eliminar un cargo de la lista haga click  <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> en el cargo deseado</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Editar elemento de protección personal:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para editar el registro los campos que tienen asterisco(<b>*</b>) deben ser registrados</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Cuando la información este diligenciada, haga click en  <button type="button" class="boton botonactive" style="cursor:default;">EDITAR EPP</button></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Ir a matriz de elementos de protección guardados:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Para ir a la matriz de EPP, haga click en  <button type="button" class="boton botoninfo" style="cursor:default;">REGRESAR A MATRIZ EPP</button></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+
+                    <div class="col-sm-12 col-md-3 col-lg-4">
+                        <label>*Nombre del EPP</label>
+                        @Html.EditorFor(m => m.NombreEPP, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-NombreEPP" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-4">
+                        <label>*Parte del Cuerpo a Proteger</label>
+                        @Html.EditorFor(m => m.ParteCuerpo, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-ParteCuerpo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 add-bottom-margin-05em">
+                        <label>*Riesgo Asociado</label>
+                        @Html.DropDownList("Pk_Id_Clasif_Peligro", null, "-- Seleccione un Riesgo --", htmlAttributes: new { @class = "form-control form-width-100", onChange = "jsFunction_121()" })
+                        <span id="val-Riesgo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 add-bottom-margin-05em add-top-margin-05em">
+
+                        <div class="input-group" style="min-width: 100%;width:100%">
+
+                            <center>
+                                <label><b>IMAGEN DEL ELEMENTO</b></label>
+
+                                <div style="max-width:300px;">
+                                    <img id="Imagen_C_0" class="firma-EHM-estilo" src="@ViewBag.Imagen1R" alt="" style="@ViewBag.Imagen1E" />
+                                </div>
+
+                                <button id="EliminarImagen" style="@ViewBag.Imagen1E" class="boton botonactive col-margin add-bottom-margin-05em add-top-margin-05em">ELIMINAR IMAGEN</button>
+
+                                @{
+                                    if (Model.ArchivoImagen != null)
+                                    {
+                                        string Img0 = Model.ArchivoImagen;
+                                        @Html.Hidden("Imagen_0", Img0)
+                                    }
+                                    else
+                                    {
+                                        <label style="display:none" id="Imagen_0"></label>
+                                    }
+                                    if (Model.ArchivoImagen_download != null)
+                                    {
+                                        string Img0D = Model.ArchivoImagen_download;
+                                        @Html.Hidden("Imagen_D_0", Img0D)
+                                    }
+                                    else
+                                    {
+                                        <label style="display:none" id="Imagen_D_0"></label>
+                                    }
+                                }
+                                
+                                
+                            </center>
+                            <span id="val-error-imagen" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;"></span>
+
+                        </div>
+                        @*<div class="input-group">
+                            <input type="file" name="File1" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-img" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-positiva-invert" id="btn-adj-img" type="button">ADJUNTAR</button>
+                            </span>
+                        </div>*@
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 add-top-margin-05em remove-left-padding">
+                        <div class="form-group">
+                            <div class="col-sm-6"><input type="file" name="File1" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-img" /></div>
+                            <div class="col-sm-6"><button class="boton botonactive" id="btn-adj-img" type="button">ADJUNTAR</button></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 add-bottom-margin-05em">
+                        <div class="form-group">
+                            <div class="col-sm-12"><h6>Estimado usuario, recuerde respetar los derechos de autor y propiedad intelectual al intentar subir una imagen</h6></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 add-top-margin-05em">
+                        <label>Cargo Asociado</label>
+                        @Html.DropDownList("Pk_Id_Cargo1", (SelectList)ViewBag.Pk_Id_Cargo, "-- Seleccione un Cargo --", new { @class = "form-control" })
+
+                    </div>
+                    <div class="col-sm-12 col-md-4 add-top-margin-05em">
+                        <label>Número de Trabajadores en el cargo</label>
+                        @Html.TextBox("NumeroTrabajadores", null, new { @class = "form-control col-sm-10", @type = "number", @min = "1" })
+                    </div>
+                    <div class="col-sm-12 add-top-margin-05em">
+                        <button id="Agregar_Cargo" class="boton botonactive col-margin">AGREGAR CARGO</button>
+                    </div>
+                    <span id="val-error" class="text-danger field-validation-error val-message col-sm-12" style="display:none;"></span>
+                    <div class="Tabla-Programa table-responsive col-sm-12 add-bottom-margin-05em add-top-margin-05em" style="max-height:250px;overflow:scroll;">
+                        <table id="Tabla_0" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Cargo</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Número de Trabajadores</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="TbodyCargos_0">
+
+                                @{
+                                    if (Model.Cargos.Count > 0)
+                                    {
+                                        foreach (var item in Model.Cargos)
+                                        {
+                                            <tr id="@item.Fk_Id_Cargo">
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center" name="@item.Fk_Id_Cargo">@item.Nombre</td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">@item.Cantidad</td>                            
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <a name="@item.Fk_Id_Cargo" location="#TbodyCargos_0" class="btn btn-search btn-md btnEliminarlista" title="Eliminar Cargo"><span class="glyphicon glyphicon-erase"></span></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-05em">
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-12 add-bottom-margin-05em">
+                        <label>Especificación Técnica</label>
+                        @Html.TextAreaFor(m => m.EspecificacionTecnica, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 2000 })
+                        <span id="val-Especificacion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 add-bottom-margin-05em">
+                        <label>Uso</label>
+                        @Html.TextAreaFor(m => m.Uso, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 2000 })
+                        <span id="val-Uso" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 add-bottom-margin-05em">
+                        <label>Mantenimiento</label>
+                        @Html.TextAreaFor(m => m.Mantenimiento, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 2000 })
+                        <span id="val-Mantenimiento" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-6 add-bottom-margin-05em">
+                        <label>Vida Útil</label>
+                        @Html.EditorFor(m => m.VidaUtil, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-VidaUtil" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-6 add-bottom-margin-05em">
+                        <label>Reposición</label>
+                        @Html.EditorFor(m => m.Reposicion, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-Reposicion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 add-bottom-margin-05em">
+                        <label>Disposición Final</label>
+                        @Html.TextAreaFor(m => m.DisposicionFinal, htmlAttributes: new { @class = "form-control form-width-100", rows = 3, maxlength = 2000 })
+                        <span id="val-Disposicion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 add-top-margin-05em remove-left-padding">
+                        <div class="form-group">
+                            <div class="col-sm-12"><label for="File1">Adjuntar Ficha Técnica</label></div>
+                            <div class="col-sm-6"><input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-arch" /></div>
+                            <div class="col-sm-6"><button class="boton botonactive" id="btn-adj-arch" type="submit">ADJUNTAR</button></div>
+                            <div class="col-sm-12"><span id="val-error-archivo" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;"></span></div>
+
+                            @*<label for="File1">Adjuntar Ficha Técnica</label>
+                            <div class="input-group">
+                                <input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-arch" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-positiva-invert" id="btn-adj-arch" type="submit">ADJUNTAR</button>
+                                </span>
+                            </div>*@
+                        </div>
+                        @*<span id="val-error-archivo" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;"></span>*@
+                        
+                        
+                        
+
+                        @{
+                            if (Model.NombreArchivo != null)
+                            {
+                                string Arch0 = Model.NombreArchivo;
+                                @Html.Hidden("Archivo_0", Arch0)
+                            }
+                            else
+                            {
+                                @Html.Hidden("Archivo_0", null)
+                                <label style="display:none" id="Archivo_0"></label>
+                            }
+                            if (Model.NombreArchivo_download != null)
+                            {
+                                string Arch0D = Model.NombreArchivo_download;
+                                @Html.Hidden("Archivo_D_0", Arch0D)
+                                <label class="col-sm-12" id="Archivo_C_0">@Arch0D</label>
+                            }
+                            else
+                            {
+                                @Html.Hidden("Archivo_D_0", null)
+                                <label class="col-sm-12" id="Archivo_C_0"></label>
+                            }
+                        }
+
+                        @{
+                            bool probar = (bool)ViewBag.ArchivosE;
+                            if (probar)
+                            {
+                                <div class="col-sm-12"><button id="EliminarArchivo" style="display:block;" class="boton botonactive col-margin add-bottom-margin-05em add-top-margin-05em">ELIMINAR ARCHIVO</button></div>
+                                
+                                    @*<button id="DescargarArchivo" href="javascript:{}" onclick="document.getElementById('@IdArchivoD').submit();" style="display:block;" class="boton botonactive col-margin add-bottom-margin-05em add-top-margin-05em">DESCARGAR ARCHIVO</button>*@
+                                    string ruta_arch = "";
+                                    try
+                                    {
+                                    ruta_arch = (string)ViewBag.Archivo1R;
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                    }
+                                    @Html.Hidden("ruta", @ruta_arch);
+                            }
+                            else
+                            {
+                                <div class="col-sm-12"><button id="EliminarArchivo" style="display:none;" class="boton botonactive col-margin add-bottom-margin-05em add-top-margin-05em">ELIMINAR ARCHIVO</button></div>
+                                    
+                                    @*<button id="DescargarArchivo" style="display:none;" class="boton botonactive col-margin add-bottom-margin-05em add-top-margin-05em">DESCARGAR ARCHIVO</button>*@
+                                    @Html.Hidden("ruta", null);
+                                    }
+                                    }
+
+                                </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-6" style="margin-bottom:5px;">
+                <button id="GuardarEPP" class="boton botonactive col-margin">EDITAR EPP</button>
+            </div>
+            <div class="col-md-6">
+                <button class="boton botoninfo" onclick="location.href='@Url.Action("MatrizEPP", "AdmoEPP")';return false;">REGRESAR A MATRIZ EPP</button>
+            </div>
+
+        </div>
+    </div>
+</div>

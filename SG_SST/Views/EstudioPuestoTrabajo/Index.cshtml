@@ -1,0 +1,238 @@
+﻿@{
+    ViewBag.Title = "Estudio Puesto de Trabajo";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@model SG_SST.Models.EstudioPuestoTrabajo.EstudioPuestoTrabajoModel
+@if (Model != null)
+{
+    
+    <div>
+        <ol class="breadcrumb">
+            <li><a href="javascript:void(0)">Reporte e Investigación</a></li>
+            <li class="active">Estudio de Puestos de Trabajo</li>
+        </ol>
+        
+    </div>
+	
+    <form id="form_reg_busqueda">
+
+    <div class="internal-panel-body add-top-margin-05em collapse" id="buscarInfo">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">
+                CAMPOS DE BUSQUEDA
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Nro. Documento Trabajador:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.TextBox("txtDocumento", null, new { @class = "form-control", @placeholder = "Nro. Doc. Trabajador" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Cargo:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="txtCargo" />
+                    <input type="hidden" class="form-control" id="IdCargo" name="IdCargo" />
+                    <span class="error" id="errorcargo" style="display:none;">Debe seleccionar un cargo válido </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row text-center">
+                    <button type="button" formmethod="post" id="btnBuscar" class="boton botonactive col-margin">BUSCAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <br />
+    <button class="boton botoninfo" data-toggle="collapse" data-target="#buscarInfo" id="btnRealizarBusqueda"><span class="glyphicon glyphicon-search"></span> Realizar Búsqueda</button>
+    <br />
+    <br />
+    <form id="form_reg_estudio">
+        <div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">
+                DATOS GENERALES
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+            
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black; text-align:justify">
+                            <p>Este módulo le permite registrar los diferentes estudios de puestos de trabajo relacionados con la enfermedad laboral sospechada o calificada. En datos generales digite el número de documento del trabajador, de clic o enter, y se traerá la información del trabajador como nombre, cargo, fecha de análisis (automática). Seleccione manualmente la sede y proceso al que pertenece el trabajador.</p>
+                            <p>En datos del estudio, escriba el código del diagnóstico conforme al código CIE10, seleccione luego el objetivo del análisis entre (definición de origen, recomendación promoción y prevención, reincorporación) y finalmente seleccione el tipo de análisis entre (biomecánico, psicosocial, ambiental, fonoaudiológico).</p>
+                            <p>De clic en “guardar” y luego clic en “agregar informe APT”, use el explorador de archivos para adjuntar el soporte del estudio y luego clic en “agregar archivo”. El informe de APT se guardara y podrá tenerlo disponible cada vez que lo consulte.</p>
+                            <p>Así mismo agregar seguimientos o recomendaciones por caso de APT (análisis de puesto de trabajo), ingresando actividades, fecha y responsable.</p>
+                            <p>Recuerde usar la búsqueda superior para encontrar con número de documento los registros de sus colaboradores con soportes de estudios de puesto de trabajo y añadir seguimientos.</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+            
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Nro. Documento Trabajador:", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.Documento, new { @class = "form-control", @placeholder = "Nro. Doc. Trabajador", required = "required" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Nombre Trabajador: ", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(x => x.Apellido1, new { @class = "form-control bloqueado", disabled = "disabled" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(x => x.Apellido2, new { @class = "form-control bloqueado", disabled = "disabled" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.TextBoxFor(x => x.Nombre1, new { @class = "form-control bloqueado", disabled = "disabled" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.Nombre2, new { @class = "form-control bloqueado", disabled = "disabled" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Cargo: ", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.TextBoxFor(x => x.Cargo, new { @class = "form-control bloqueado", disabled = "disabled" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Fecha Análisis: ", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(x => x.FechaAnalisis, new { Value = Model.FechaAnalisis.Year < 1000 ? "" : Model.FechaAnalisis.ToString("dd/MM/yyyy"), placeholder = "dd/mm/yyyy", @disabled = "disabled", @class = "form-control bloqueado" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        @Html.Label("Sede: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownListFor(model => model.idSede, Model.Sedes, "Seleccione sede...", new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        @Html.Label("Proceso: ", new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(x => x.idProceso, Model.Procesos, "Seleccione proceso...", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">
+                DATOS DEL ESTUDIO
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    <label class="control-label" id="labelDiag">Diagnóstico</label>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="Diagnostico" />
+                    <input type="hidden" class="form-control" id="IdDiagnostico" name="IdDiagnostico" />
+                    <span class="error" id="errordiagnostico" style="display:none;">Debe seleccionar un diagnóstico válido </span>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Objetivo del Análisis: ", new { @class = "control-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(x => x.idObjetivo, Model.ObjetivosAnalisis, "Seleccione Objetivo del Análisis...", new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    @Html.Label("Tipo de Análisis: ", new { @class = "control-label" })
+                </div>
+                <div class="col-md-4">
+                    @Html.DropDownListFor(x => x.idTipoAnalisisPT, Model.TipoAnalisisPT, "Seleccione Tipo de Análisis...", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="panel-footer">
+        @Html.Hidden("IdEstudioPT", (object)ViewBag.IdEstudioPuestoTrabajo)
+        @Html.Hidden("RegistroPT", 0)
+        @Html.Hidden("NumRegistrosPT", 100)
+        <div class="row">
+            <div class="row text-center">
+                <button type="button" formmethod="post" id="btnGuardar" class="boton botonactive col-margin">GUARDAR</button>
+            </div>
+        </div>
+    </div>
+    <br />
+    <button class="boton botoninfo" id="btnArchivos" data-toggle="collapse" data-target="#informeAPT" style="display:none;">Agregar Informe APT</button>
+    <br />
+    <br />
+    <div class="internal-panel-body add-top-margin-05em collapse" id="informeAPT">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:black">
+                INFORME APT
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+            <div class="form-group">
+                <div class="col-md-5 col-md-offset-2">
+                    <input type="file" id="UploadFile" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" accept=".pdf" />
+                </div>
+                <div class="col-md-4" style="margin-right:10px">
+                    <button type="button" id="AgregarArchivo" class="boton botonactive">Agregar Archivo</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="panel-body form-horizontal">
+        <section id="GridArchivos"></section>
+    </div>
+    <br />
+    <button class="boton botoninfo" type="button" id="AgregarSeguimiento" data-toggle="collapse" data-target="#pnlSeguimiento" style="display:none;">Agregar Seguimiento</button>
+    <br />
+    <div class="panel-body form-horizontal collapse" id="pnlSeguimiento">
+        <section id="datosSeguimiento"></section>
+    </div>
+    <div class="panel-body form-horizontal">
+        <section id="GridSeguimiento"></section>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="row text-center">
+                <button type="button" formmethod="post" id="btnAnterior" class="boton botonactive col-margin" style="display:none;"><span class="glyphicon glyphicon-circle-arrow-left"></span> Anterior</button>
+                <button type="button" formmethod="post" id="btnSiguiente" class="boton botonactive col-margin" style="display:none;"><span class="glyphicon glyphicon-circle-arrow-right"></span> Siguiente</button>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/Scripts/EstudioPuestoTrabajo/EstudioPuesto.js")
+ }

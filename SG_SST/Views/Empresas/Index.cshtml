@@ -1,0 +1,169 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.Empresa>
+
+@{
+    ViewBag.Title = "Listado Empresas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html xmlns=”http://www.w3.org/1999/xhtml”>
+<meta http-equiv=”Content-Type” content=”text/html; charset=ISO-8859-1“ />
+
+@section Scripts {
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/1.7/themes/redmond/jquery-ui.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/Empresas")
+
+}
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Mensaje del Sistema:',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+@if (ViewBag.mensaje1 != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Mensaje del Sistema:',
+            text: '@ViewBag.mensaje1',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@*<ul class="nav nav-pills" role="tablist">
+        <li class=""><a id="tab3" href="#step3" role="tab" data-toggle="tab" class="titulo-crear-recursos">Listado Empresas</a></li>
+    </ul>
+    <hr />*@
+</hr>
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="javascript:void(0);">Datos generales de la empresa</a></li>
+    <li class="active">Listado Empresas</li>
+</ol>
+
+@*<p align="center" style="margin-bottom:20px">
+        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+    </p>*@
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">NIT</th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Razón Social </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Email </th>
+            @*<th>Sitio Web</th>*@
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Teléfono</th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Vigencia Actual</th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Estado</th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Editar</th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">Eliminar</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr class="titulos_filas">
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                    @Html.DisplayFor(modelItem => item.Nit_Empresa)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Razon_Social)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Sitio_Web)
+                    </td>*@
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Fecha_Vigencia_Actual)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.Flg_Estado)
+                </td>
+
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                    @*@Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.Pk_Id_Empresa },
+                        htmlAttributes: new { @type = "button", @class = "btn btn-editar" })*@
+                    <a href="@Url.Action("Edit", new { id = item.Pk_Id_Empresa })" class="btn btn-search btn-md" title="Editar">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    @*<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Empresa)">
+                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                        </button>*@
+                    <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Empresa)" value="@SG_SST.Recursos.GeneralApp.General.btn_Eliminar" class="btn btn-search btn-md" title="Eliminar">
+                        <span class="glyphicon glyphicon-erase"></span>
+                    </a>
+
+                    <div id="@string.Format("modalEliminar{0}", item.Pk_Id_Empresa)" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Eliminar Empresa</h4>
+                                </div>
+                                <div class="modal-body ">
+                                    <center><p>¿Desea eliminar la Empresa y sus Datos?</p></center>
+                                </div>
+                                <div class="modal-footer">
+                                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Pk_Id_Empresa },
+                                        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>*@
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>

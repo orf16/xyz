@@ -1,0 +1,51 @@
+﻿@model SG_SST.Models.Planificacion.TipoMetodologia
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>Delete</h2>*@
+
+<link rel="stylesheet" href="~/Content/Site.css" />
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet" href="~/Content/miga-de-pan.css" />
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css" />
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Maestros</a></li>
+    <li><a href="javascript:void(0)">Tipos de Peligros</a></li>
+    <li class="active">Delete</li>
+</ol>
+
+<h3>¿Esta seguro que desea eliminar esto?</h3>
+<br />
+
+<div>
+    <h4>Tipo de Metodología</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt style="width:200px; margin-right:20px">
+            @Html.DisplayNameFor(model => model.Descripcion_Metodologia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion_Metodologia)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @*<input type="submit" value="Delete" class="btn btn-default" />*@
+            <button type="submit" class="boton botonactive">Delete</button> |
+            @*@Html.ActionLink("Back to List", "Index")*@
+            <a href="@Url.Action("Index")" class="boton botoninfo">
+                Volver a la Lista
+            </a>
+        </div>
+    }
+</div>

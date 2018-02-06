@@ -1,0 +1,362 @@
+﻿@model SG_SST.Models.Ausentismo.ConfiguracionModel
+<form id="frmConfiguracion">
+    <div class="form-group">
+        <div class="col-xs-1">
+            @Html.Label("Año:", new { @class = "control-label col-xs-3" })
+        </div>
+        <div class="col-xs-3">
+            @Html.TextBoxFor(x => x.Anio, new { @class = "form-control", @disabled = "disabled" })
+        </div>
+        <div class="col-xs-1">
+            @Html.Label("Mes:", new { @class = "control-label col-xs-3" })
+        </div>
+        <div class="col-xs-3">
+            @Html.DropDownListFor(x => x.MesSeleccionado, Model.Meses, "Mes...", new { @class = "form-control" })
+            @Html.Hidden("Messelect", Model.Mes, new { @id = "Messelect" })
+        </div>
+    </div>
+    <div class="panel panel-default col-xs-6">
+        <div class="panel-heading" style="font-size:10px; color:white">Número de trabajadores </div>
+        <div class="panel-body">
+            <div class="col-xs-2">
+                <label class="control-label">XT: </label>
+            </div>
+            <div class="col-xs-8">
+                @Html.TextBoxFor(x => x.XT, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default col-xs-6">
+        <div class="panel-heading" style="font-size:10px; color:white">Días Trabajados en el periodo</div>
+        <div class="panel-body">
+            <div class="col-xs-2">
+                <label class="control-label">DTM: </label>
+            </div>
+            <div class="col-xs-8">
+                @Html.TextBoxFor(x => x.DTM, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default col-xs-6">
+        <div class="panel-heading" style="font-size:10px; color:white">Número de horas hombre trabajadas al día</div>
+        <div class="panel-body">
+            <div class="col-xs-2">
+                <label class="control-label">HTD: </label>
+            </div>
+            <div class="col-xs-8">
+                @Html.TextBoxFor(x => x.HTD, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default col-xs-6">
+        <div class="panel-heading" style="font-size:10px; color:white">Número total de horas extras labores durante el periodo</div>
+        <div class="panel-body">
+            <div class="col-xs-2">
+                <label class="control-label">NHE: </label>
+            </div>
+            <div class="col-xs-8">
+                @Html.TextBoxFor(x => x.NHE, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default col-xs-6" id="contentnha">
+        <div class="panel-heading" style="font-size:10px; color:white">Número total de horas de ausentismo durante el periodo</div>
+        <div class="panel-body">
+            <div class="col-xs-2">
+                <label class="control-label">NHA: </label>
+            </div>
+            <div class="col-xs-8">
+                @Html.TextBoxFor(x => x.NHA, new { @class = "form-control bloqueado", @disabled = "true" })
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default col-xs-6">
+        <div class="panel-heading" style="font-size:10px; color:white">(XT * HTD * DTM) + NHE – NHA </div>
+        <div class="panel-body">
+            <div class="col-xs-4">
+                <label class="control-label">Total HHT: </label>
+            </div>
+            <div class="col-xs-6">
+                @Html.TextBoxFor(x => x.Total, new { @class = "form-control bloqueado", @disabled = "true" })
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12">
+        <div class="modal-footer col-xs-6">
+            <div style="font-size:small;"> “Basado en la NTC3701 1995-03-15 INCONTEC”</div>
+        </div>
+        <div class="modal-footer col-xs-6">
+            <button type="button" id="guardarConfiguracion" class="boton botonactive">Guardar</button>
+        </div>
+    </div>
+</form>
+
+@{
+    <script>
+        $(document).ready(function () {
+            console.log('aaa')
+            var conf = $("#frmConfiguracion");
+            //conf.validate({
+            //    rules: {
+            //        MesSeleccionado: { required: true },
+            //        XT: { required: true, min: 1, digits: true },
+            //        DTM: { required: true, min: 1, digits: true },
+            //        HTD: { required: true, min: 1, digits: true },
+            //        NHE: { required: true, digits: true },
+            //    }, messages: {
+            //        MesSeleccionado: { required: "Este Campo es Obligatorio" },
+            //        XT: {
+            //            required: "Este Campo es Obligatorio",
+            //            min: "Este Campo es Obligatorio",
+            //            digits: "Este Campo debe ser numérico"
+            //        },
+            //        DTM: {
+            //            required: "Este Campo es Obligatorio",
+            //            min: "Este Campo es Obligatorio",
+            //            digits: "Este Campo debe ser numérico"
+            //        },
+            //        HTD: {
+            //            required: "Este Campo es Obligatorio",
+            //            min: "Este Campo es Obligatorio",
+            //            digits: "Este Campo debe ser numérico"
+            //        },
+            //        NHE: { required: "Este Campo es Obligatorio", digits: "Este Campo debe ser numérico" },
+            //    }
+            //});
+
+            $('#contentnha').tooltip({ title: "<h5 width:80px><em>Este valor es cambiante y afecta automáticamente al total HHT, depende de los ausentismos registrados.</em></h5>", html: true, placement: "top" });
+
+
+            $("#XT").focusout(function () {
+                var total = 0;
+                var xt = parseInt($("#XT").val())
+                var dmt = parseInt($("#DTM").val())
+                var htd = parseInt($("#HTD").val())
+                var nhe = parseInt($("#NHE").val())
+                var nha = parseInt($("#NHA").val())
+                if (xt > 0 && dmt > 0 && htd > 0) {
+                    total = (xt * htd * dmt)
+                    total = total + nhe
+                    total = total - nha
+                }
+                $("#Total").val(total);
+            });
+
+            $("#DTM").focusout(function () {
+                var total = 0;
+                var xt = parseInt($("#XT").val())
+                var dmt = parseInt($("#DTM").val())
+                var htd = parseInt($("#HTD").val())
+                var nhe = parseInt($("#NHE").val())
+                var nha = parseInt($("#NHA").val())
+                if (xt > 0 && dmt > 0 && htd > 0) {
+                    total = (xt * htd * dmt)
+                    total = total + nhe
+                    total = total - nha
+                }
+                $("#Total").val(total);
+            });
+
+            $("#HTD").focusout(function () {
+                var total = 0;
+                var xt = parseInt($("#XT").val())
+                var dmt = parseInt($("#DTM").val())
+                var htd = parseInt($("#HTD").val())
+                var nhe = parseInt($("#NHE").val())
+                var nha = parseInt($("#NHA").val())
+                if (xt > 0 && dmt > 0 && htd > 0) {
+                    total = (xt * htd * dmt)
+                    total = total + nhe
+                    total = total - nha
+                }
+                $("#Total").val(total);
+            });
+
+            $("#NHE").focusout(function () {
+                var total = 0;
+                var xt = parseInt($("#XT").val())
+                var dmt = parseInt($("#DTM").val())
+                var htd = parseInt($("#HTD").val())
+                var nhe = parseInt($("#NHE").val())
+                var nha = parseInt($("#NHA").val())
+                if (xt > 0 && dmt > 0 && htd > 0) {
+                    total = ((xt * htd * dmt) + nhe) - nha
+                }
+                $("#Total").val(total);
+            });
+
+            $("#guardarConfiguracion").click(function () {
+                //if (conf.valid() != false) {
+                GuardarConfiguracion();
+                //}
+            });
+
+            $("#XT").keypress(function (tecla) {
+                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+            });
+
+            $(document).on("input", "#XT", function () {
+                var limite = 20;
+                var textreal = $(this).val();
+                var text;
+
+                if ($(this).val().length > limite) {
+                    text = textreal.substr(0, limite);
+                    $(this).val(text);
+                }
+            });
+
+            $("#DTM").keypress(function (tecla) {
+                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+            });
+
+            $(document).on("input", "#DTM", function () {
+                var limite = 20;
+                var textreal = $(this).val();
+                var text;
+
+                if ($(this).val().length > limite) {
+                    text = textreal.substr(0, limite);
+                    $(this).val(text);
+                }
+            });
+
+            $("#HTD").keypress(function (tecla) {
+                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+            });
+
+            $(document).on("input", "#HTD", function () {
+                var limite = 20;
+                var textreal = $(this).val();
+                var text;
+
+                if ($(this).val().length > limite) {
+                    text = textreal.substr(0, limite);
+                    $(this).val(text);
+                }
+            });
+
+            $("#NHE").keypress(function (tecla) {
+                if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+            });
+
+            $(document).on("input", "#NHE", function () {
+                var limite = 20;
+                var textreal = $(this).val();
+                var text;
+
+                if ($(this).val().length > limite) {
+                    text = textreal.substr(0, limite);
+                    $(this).val(text);
+                }
+            });
+
+            $("#MesSeleccionado").change(function () {
+                if (!$("#Anio").valid()) {
+                    validacion = false;
+                    return false;
+                }
+
+                var mes = $("#MesSeleccionado").val()
+                var ano = $("#Anio").val()
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    data: { mes: mes, ano: ano },
+                    url: urlBase + '/Configuracion_HHT/AusenciasMes'
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.Mensaje == 'Success') {
+                        var nha = response.Data
+                        $("#NHA").val(nha);
+                        OcultarPopupposition();
+                    }
+                }).fail(function (response) {
+                    console.log("Error en la peticion: " + response);
+                    OcultarPopupposition();
+                });
+            })
+
+            var mes = $("#Messelect").val();
+
+            $('#MesSeleccionado').find('option').each(function () {
+                var mesIterator = $.trim($(this).text());
+                var mesObtenido = $.trim(mes);
+                if (mesIterator == mesObtenido) {
+                    $(this).prop('selected', true);
+                }
+            });
+
+
+
+
+            //$("#Anio").change(function () {
+            //    var mes = $("#MesSeleccionado").val()
+            //    var ano = $("#Anio").val()
+            //    if (mes != "") {
+            //        PopupPosition();
+            //        $.ajax({
+            //            type: "POST",
+            //            data: { mes: mes, ano: ano },
+            //            url: urlBase + '/Configuracion_HHT/AusenciasMes'
+            //        }).done(function (response) {
+            //            if (response != undefined && response != '' && response.Mensaje == 'Success') {
+            //                var nha = response.Data
+            //                $("#NHA").val(nha);
+            //                OcultarPopupposition();
+            //            }
+            //        }).fail(function (response) {
+            //            console.log("Error en la peticion: " + response);
+            //            OcultarPopupposition();
+            //        });
+            //    }
+            //})
+
+
+            function GuardarConfiguracion() {
+                if (!$("#XT").valid()) {
+                    validacion = false;
+                    return false;
+                }
+
+                var objConfiguracion = {
+                    IdEmpresaSeleccionada: $("#IdEmpresaSeleccionada").val(),
+                    "Anio": $("#Anio").val(),
+                    "MesSeleccionado": $("#MesSeleccionado").val(),
+                    "XT": $("#XT").val(),
+                    "DTM": $("#DTM").val(),
+                    "HTD": $("#HTD").val(),
+                    "NHE": $("#NHE").val(),
+                    "NHA": $("#NHA").val(),
+                    "Total": $("#Total").val()
+                };
+                PopupPosition();
+                $.ajax({
+                    type: "post",
+                    url: urlBase + '/Configuracion_HHT/ConfiguracionHHT',
+                    data: objConfiguracion
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.Mensaje == 'OK') {
+                        swal({
+                            title: 'Atención',
+                            text: 'Se ha registrado exitosamente la configuración HHT',
+                            type: 'success',
+                            html: true
+                        }, function () {
+                            window.location.href = urlBase + '/Configuracion_HHT/ConfiguracionHHT';
+                        });
+                    } else if (response != undefined && response != '' && response.Mensaje == 'FAILD') {
+                        swal("Registro configuración HHT", "No se pudo registrar la congiguración. Intente más tarde.");
+                    }
+                    OcultarPopupposition();
+                }).fail(function (response) {
+                    OcultarPopupposition();
+                    swal("Registro configuración HHT", "No se pudo registrar la congiguración. Intente más tarde.");
+                });
+            }
+
+        });
+    </script>
+}

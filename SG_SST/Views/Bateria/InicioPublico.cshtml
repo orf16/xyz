@@ -1,0 +1,210 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Confirmacion Cuestionario</title>
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+    <!-- Referencia a botones -->
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @Scripts.Render("~/bundles/Utilidades")
+
+</head>
+<body style="background-color:none; color:black; font-family:Arial; padding: 0px 20px 3px 20px">
+
+    <script>
+        $(document).ready(function () {
+            $("#continuar").click(function () {
+
+                $("#val-documento").css("display", "none");
+                $("#val-documento").text('');
+                $("#val-Nombre").css("display", "none");
+                $("#val-Nombre").text('');
+                $("#val-nit").css("display", "none");
+                $("#val-nit").text('');
+
+                var stringArray = new Array();
+                stringArray[0] = $("#form").val();
+                stringArray[1] = $("#key").val();
+                stringArray[2] = $("#Documento").val();
+                stringArray[3] = $("#Nombre").val();
+                stringArray[4] = $("#NIT").val();
+                var postData = { values: stringArray };
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/Bateria/ComprobarIdentidadPublico",
+                    data: postData,
+                    dataType: "json",
+                    traditional: true,
+                    success: function (data) {
+                        OcultarPopupposition();
+
+                        if (data.Probar) {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.Estado,
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: true
+                            },
+                        function () {
+                            var url = data.url;
+                            window.location.href = url;
+                        }
+                        );
+                        }
+                        else {
+
+                            if (!data.boolValidacion[0]) {
+                                $("#val-documento").css("display", "block");
+                                $("#val-documento").text(data.Validacion[0]);
+                            }
+                            if (!data.boolValidacion[1]) {
+                                $("#val-Nombre").css("display", "block");
+                                $("#val-Nombre").text(data.Validacion[1]);
+                            }
+                            if (!data.boolValidacion[2]) {
+                                $("#val-nit").css("display", "block");
+                                $("#val-nit").text(data.Validacion[2]);
+                            }
+                            else {
+                                if (!data.boolValidacion[3]) {
+                                    $("#val-nit").css("display", "block");
+                                    $("#val-nit").text(data.Validacion[3]);
+                                }
+                            }
+
+
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.Estado,
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        OcultarPopupposition();
+                    }
+                });
+       });
+     });
+
+
+
+    </script>
+
+
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+
+            <div class="col-md-2 logo-empresa col-xs-6">
+                <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block">
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta">
+            </div>
+        </div>
+
+    </div>
+
+    @{
+        @Html.Hidden("key", (string)ViewBag.key)
+        @Html.Hidden("form", (string)ViewBag.form)
+
+    }
+
+    @{
+        string Titulo = (string)ViewBag.formT;
+
+    }
+
+
+    <div class="panel panel-default std-panel-body" style="margin-top:6em; padding:10px 10px 10px 10px;">
+        <div class="panel-body">
+            <div class="form-group row add-bottom-margin-10em">
+                <div class="row add-top-margin-10em add-side-padding" style="text-align:justify">
+                    <h4 style="color:black">Este es el ingreso al @Titulo, por favor llene el siguiente formulario y haga click en CONTINUAR</h4>
+                </div>
+            </div>
+
+            <div class="form-group row add-bottom-margin-10em">
+                <center>
+                    <div class="row">
+                        <div class="add-top-margin-10em add-side-padding col-sm-12 col-md-12 " style="text-align:justify">
+                            <h4 style="color:black">Escriba su documento de identidad</h4>
+                        </div>
+                        <div class="add-side-padding col-sm-12 col-md-3 " style="text-align:justify">
+                            @Html.TextBox("Documento", null, new { @class = "form-control", @autocomplete = "off" })
+                            <span id="val-documento" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="add-top-margin-10em add-side-padding col-sm-12 col-md-12" style="text-align:justify">
+                            <h4 style="color:black">Escriba su nombre completo</h4>
+                        </div>
+                        <div class="add-side-padding col-sm-12 col-md-5" style="text-align:justify">
+                            @Html.TextBox("Nombre", null, new { @class = "form-control", @autocomplete = "off" })
+                            <span id="val-Nombre" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="add-top-margin-10em add-side-padding col-sm-12 col-md-12" style="text-align:justify">
+                            <h4 style="color:black">Escriba el número de NIT sin digito de verificación de la empresa que la ha invitado a participar</h4>
+                        </div>
+                        <div class="add-side-padding col-sm-12 col-md-3" style="text-align:justify">
+                            @Html.TextBox("NIT", null, new { @class = "form-control", @autocomplete = "off" })
+                            <span id="val-nit" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                        </div>
+
+                    </div>
+                </center>
+                <div class="row add-top-margin-10em">
+                    <div class="col-md-12">
+                        <button id="continuar" class="boton botonactive">CONTINUAR</button>
+                    </div>
+                </div>
+                
+            </div>
+
+
+                
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
+
+
+

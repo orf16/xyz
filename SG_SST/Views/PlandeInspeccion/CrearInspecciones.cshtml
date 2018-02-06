@@ -1,0 +1,324 @@
+﻿@{@model SG_SST.Models.Aplicacion.CrearInspeccionModel
+
+    ViewBag.Title = "Registrar Planeacion Inspección";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    TempData.Keep("CrearInspecciones");
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+
+
+
+@if (ViewBag.mensaje != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Mensaje del Sistema:',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+
+
+}
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Inspecciones de Seguridad</a></li>
+    <li class="active">Registrar Inspeccion</li>
+</ol>
+<hr />
+<form method="post" action="@Url.Action("CrearPlaneacionInspeccion")" id="grabarinspeccion">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:black">Registrar Inspección</div>
+
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+                   style="border: 1px solid lightslategray; border-radius:0px">
+                    <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Información de Ayuda/Registrar Inspección</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p><em>*Ayuda</em></p>
+                                <p><em>*Ayuda</em></p>
+                                <p><em>*Ayuda</em></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent" class="well">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-7">Razón Social:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control", disabled = "disabled", @style = "background-color: #ddd;color:black" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-8">Nit Empresa:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.idempresa, new { @class = "form-control", disabled = "disabled", @style = "background-color: #ddd;color:black" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-7">ID. Consecutivo:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.idplaninspeccion, new { @class = "form-control", disabled = "disabled", @style = "background-color: #ddd;color:black" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-7">Sede:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.idSede, Model.Sedes, "--Seleccione Sede--", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-7">Proceso:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.idProceso, Model.Procesos, "--Seleccione Proceso--", new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <div class="col-sm-5">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-7">Inspección:</label>
+                            <div class="col-md-10">
+
+                                @*@Html.DropDownListFor(model => model.IdTipoInspeccion, Model.tiposinspeccion, "--Seleccione Tipo--", new { @class = "form-control" })*@
+                                @Html.TextBoxFor(model => Model.descripcion, new { @class = "form-control", disabled = "disabled", @style = "background-color: #ddd;color:black" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label>Responsable Inspección:</label>
+                            <div class="input-group input-append date" id="">
+                                @Html.TextBoxFor(model => Model.responsableplaninspeccion, new { @class = "form-control", disabled = "disabled", @style = "background-color: #ddd;color:black" })
+                                <span class="input-group-addon add-on alert-link"><span class="glyphicon glyphicon-user"></span></span>
+                            </div>
+                            <label for="responsable" class="error" style="display:none;"></label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label>Fecha:</label>
+                            <div class="input-group input-append date" id="">
+                                <input type="date" id="Fecha" name="Fecha" class="form-control" value="@Model.fechaplaninspeccion.ToString("yyyy-MM-dd")"disabled style="background-color: #ddd;color:black"/>
+                                @*@Html.TextBoxFor(model => model.fechaplaninspeccion, new { @class = "form-control", disabled = "disabled", @style = "background-color: #ddd;color:black" })*@
+                                <span class="input-group-addon add-on alert-link"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <label for="fecha" class="error" style="display:none;"></label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label>Hora:</label>
+                            @{
+                                DateTime hora = DateTime.Now;
+                            }
+                            <div class="input-group input-append date" id="">
+                                <input type="time" class="form-control" value="@hora.ToString("HH:mm")" />
+                                <span class="input-group-addon add-on alert-link"><span class="glyphicon glyphicon-time"></span></span>
+                            </div>
+                            <label for="fecha" class="error" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group" style="margin-left: 10px">
+                            <label class="col-md-8">Area/Lugar:</label>
+                            <div class="col-md-10">
+                                <input type="text" id="area" name="area" class="form-control" style="width: 137px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group" style="margin-left: 10px">
+                         <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="col-md-10">
+                                    <h5><b>Responsable Area ó Lugar:</b></h5>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="col-md-12">
+                                <div class="col-md-10">
+                                    <h5 style="margin-left:-15px"><b>Otros Asistentes Inspección:</b></h5>
+                                </div>
+                                <div class="col-md-2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <input type="text" name="responsable" id="responsable" class="form-control" />
+                        </div>  
+                        <div class="col-md-4" id="divSupRes" name="divSupRes">
+                            <div class="input-group" id="divv" name="divv">
+                                <div class="col-md-10" id="divasistente">
+                                    <input type="text" name="asistente" id="asistente" class="form-control" />
+                                </div>
+                                <div class="col-md-2" id="divIconRes">
+                                    <a href="javascript:void(0);" onclick="agregarasistentes(this)"
+                                       title="Agregar Asistente" id="agregarasistente" name="agregarasistente"
+                                       class="btn btn-link-1-google-plus btn-circle btn-lg">
+                                        <i class="glyphicon glyphicon-plus" name="icono" style="color: #FF7500"></i>
+                                    </a>
+                                </div>
+                                <br />
+                                <br />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" id="divasistentes">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+                
+
+
+            <div id="modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <h4 class="modal-title title">Configuracion Tipos de Prioridades</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table  table-responsive uk-table-condensed" style="border:hidden">
+                                <tr>
+                                  
+                                    <th colspan="3" style="border:hidden">
+                                        <p>Prioridad</p>
+                                    </th>
+                                    <th style="border:hidden">
+                                        <p>Dias Desde</p>
+                                    </th>
+                                    <th style="border:hidden">
+                                        <p>Dias Hasta</p>
+                                    </th>
+                                    <th></th>
+                                </tr>
+
+                                @foreach (var item in Model.Configuraciones)
+                                {
+                                    <tr>
+                                        <td colspan="3" style="border:hidden">
+                                            @Html.TextBoxFor(modelItem => item.Descripcionconfiguracion, new { @class = "form-control", @style = "background-color:  white;color:black" })
+                                           
+                                        </td>
+                                        <td style="border:hidden">
+                                           @Html.TextBoxFor(modelItem => item.diasdesde, new { @class = "form-control", @style = "background-color: white;color:black" })
+                                        </td>
+                                        <td style="border:hidden">
+                                            @Html.TextBoxFor(modelItem => item.diashasta, new { @class = "form-control", @style = "background-color:  white;color:black" })
+                                        </td>
+                                       
+
+                                    </tr>
+                                }
+                      
+                            </table>
+                            <p><b class="mensajeconfiguracion"> * Tenga en cuenta que la calificación del grado de peligrosidad de la condición insegura debe realizarce en cantidad de dias.</b></p>
+
+                            <div class="modal-footer" style="border:hidden">
+                                <button type="button" name="Guardar" id="Guardar" class="boton botonactive" onclick="GuardarC">Guardar</button>
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+
+
+                    <div class="col-lg-6">
+                        <button type="button" class="boton botoninfo" data-toggle="modal" data-target="#modal">Configurar Prioridades</button>
+                    </div>
+
+                    <div class="col-lg-6 col-md-offset-8">
+                        <button type="submit" class="boton botonactive" id="btnEnviar" onclick="">Generar</button>
+                    </div>
+
+
+
+                </div>
+</div>
+            </div>
+        </div>
+    </div>
+</form>

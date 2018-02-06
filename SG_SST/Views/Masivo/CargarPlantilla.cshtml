@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "CargarPlantilla";
+}
+
+<h2>Cargar Plantilla</h2>
+@using (Html.BeginForm("CargarPlantilla", "Masivo", FormMethod.Post, new { @id = "FrmCargarPlanilla", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <label class="control-label col-xs-3">Empresa:</label>
+        <div class="col-xs-9">
+            <input type="text" class="form-control" id="inputEmpresa" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-3">Empresa Usuaria:</label>
+        <div class="col-xs-9">
+            <select class="form-control">
+                <option>--Seleccione--</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Seleccione la Pantilla</label>
+        <input id="ArchivoExcel" name="input7[]" multiple type="file" class="file file-loading" data-allowed-file-extensions='["xls", "xlsx"]'>
+    </div>
+}
+
+

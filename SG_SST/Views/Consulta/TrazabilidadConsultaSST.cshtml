@@ -1,0 +1,928 @@
+﻿@model SG_SST.EntidadesDominio.Participacion.EDConsultaSST
+
+@{
+    ViewBag.Title = "Trazabilidad Consulta SST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {    
+    @Scripts.Render("~/bundles/Participacion")
+}
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/Participacion/Trazabilidad.js")"></script>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+@Html.AntiForgeryToken()
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('Fecha_Fab');
+    });
+    //Cargar Archivos
+    $(function () {
+        $('#btn-add-file').click(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-file").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $("#Archivo1").val());
+                    fileData.append('extraParam2', $("#Archivo2").val());
+                    fileData.append('extraParam3', $("#Archivo3").val());
+                    fileData.append('extraParam4', $("#Archivo_s1").val());
+                    fileData.append('extraParam5', $("#Archivo_s2").val());
+                    fileData.append('extraParam6', $("#Archivo_s3").val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/Consulta/UploadFiles',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        $("#msj_novedad_archivo").text('');
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                        if (result.probar == false) {
+                            $("#msj_novedad_archivo").text(result.resultado);
+                            $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        }
+                        else {
+                            $("#Grid2 > tbody").html("");
+                            var table_id = document.getElementById('Grid2');
+                            table_id.style.display = "none";
+
+
+
+
+                            if (result.display[0] == true) {
+                                $("#Archivo1").val(result.NuevoNombreArchivos[0]);
+                                $("#Archivo_s1").val(result.NuevoNombreArchivos_short[0]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfile1\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[0] + "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a onclick=\"jsFunction1();\" id=\"delete-file1\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                                $("#Grid2 tbody").append(html);
+                            }
+                            else {
+                                $("#Archivo1").val(null);
+                                $("#Archivo_s1").val(null);
+                            }
+                            if (result.display[1] == true) {
+                                $("#Archivo2").val(result.NuevoNombreArchivos[1]);
+                                $("#Archivo_s2").val(result.NuevoNombreArchivos_short[1]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfile2\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[1] + "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a onclick=\"jsFunction2();\" id=\"delete-file2\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                                $("#Grid2 tbody").append(html);
+                            }
+                            else {
+                                $("#Archivo2").val(null);
+                                $("#Archivo_s2").val(null);
+                            }
+                            if (result.display[2] == true) {
+                                $("#Archivo3").val(result.NuevoNombreArchivos[2]);
+                                $("#Archivo_s3").val(result.NuevoNombreArchivos_short[2]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfile3\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[2] + "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a onclick=\"jsFunction3();\" id=\"delete-file3\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                                $("#Grid2 tbody").append(html);
+                            }
+                            else {
+                                $("#Archivo3").val(null);
+                                $("#Archivo_s3").val(null);
+                            }
+
+                        }
+                        OcultarPopupposition();
+                    }
+                    ,
+                    error: function (err) {
+                        $("#msj_novedad_archivo").text("Error al cargar el archivo");
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        OcultarPopupposition();
+                    }
+                });
+
+            }
+            else {
+
+            }
+        });
+    });
+    //Eliminar Archivos
+    function jsFunction1() {
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/Consulta/EliminarArchivo",
+            data: '{ruta: "' + $("#Archivo1").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#Archivo1").val(null);
+                    $("#Archivo_s1").val(null);
+                    $("#csfile1").remove();
+                    if ($("#Archivo1").val().length === 0) {
+                        if ($("#Archivo2").val().length === 0) {
+                            if ($("#Archivo3").val().length === 0) {
+                                var table_id = document.getElementById('Grid2');
+                                table_id.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunction2() {
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/Consulta/EliminarArchivo",
+            data: '{ruta: "' + $("#Archivo2").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#Archivo2").val(null);
+                    $("#Archivo_s2").val(null);
+                    $("#csfile2").remove();
+                    if ($("#Archivo1").val().length === 0) {
+                        if ($("#Archivo2").val().length === 0) {
+                            if ($("#Archivo3").val().length === 0) {
+                                var table_id = document.getElementById('Grid2');
+                                table_id.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunction3() {
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/Consulta/EliminarArchivo",
+            data: '{ruta: "' + $("#Archivo3").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#Archivo3").val(null);
+                    $("#Archivo_s3").val(null);
+                    $("#csfile3").remove();
+                    if ($("#Archivo1").val() == null) {
+                        if ($("#Archivo2").val().length == null) {
+                            if ($("#Archivo3").val().length == null) {
+                                var table_id = document.getElementById('Grid2');
+                                table_id.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+
+    //Eliminar Archivos Editados
+    function jsFunctionE1() {
+        PopupPosition();
+        var dato = 1;
+        $.ajax({
+            type: "POST",
+            url: "/Consulta/EliminarArchivoEdit",
+            data: '{ruta: "' + $("#ArchivoE1").val() + '", id: "' + $("#PkConsultaED").val() + '", dato:"' + dato + '"}',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#ArchivoE1").val(null);
+                    $("#Archivo_Es1").val(null);
+                    $("#csfileE1").remove();
+                    //if ($("#ArchivoE1").val().length == null) {
+                    //    if ($("#ArchivoE2").val().length == null) {
+                    //        if ($("#ArchivoE3").val().length == null) {
+                    //            var table_id = document.getElementById('Grid2');
+                    //            table_id.style.display = "none";
+                    //        }
+                    //    }
+                    //}
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunctionE2() {
+        PopupPosition();
+        var dato = 2;
+        $.ajax({
+            type: "POST",
+            url: "/Consulta/EliminarArchivoEdit",
+            data: '{ruta: "' + $("#ArchivoE2").val() + '", id: "' + $("#PkConsultaED").val() + '", dato:"' + dato + '"}',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#ArchivoE2").val(null);
+                    $("#Archivo_Es2").val(null);
+                    $("#csfileE2").remove();
+                    //if ($("#ArchivoE1").val().length == null) {
+                    //    if ($("#ArchivoE2").val().length == null) {
+                    //        if ($("#ArchivoE3").val().length == null) {
+                    //            var table_id = document.getElementById('Grid2');
+                    //            table_id.style.display = "none";
+                    //        }
+                    //    }
+                    //}
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunctionE3() {
+        PopupPosition();
+        var dato = 3;
+        $.ajax({
+            type: "POST",
+            url: "/Consulta/EliminarArchivoEdit",
+            data: '{ruta: "' + $("#ArchivoE3").val() + '", id: "' + $("#PkConsultaED").val() + '", dato:"' + dato + '"}',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#ArchivoE3").val(null);
+                    $("#Archivo_Es3").val(null);
+                    $("#csfileE3").remove();
+                    //if ($("#ArchivoE1").val() == null) {
+                    //    if ($("#ArchivoE2").val().length == null) {
+                    //        if ($("#ArchivoE3").val().length == null) {
+                    //            var table_id = document.getElementById('Grid2');
+                    //            table_id.style.display = "none";
+                    //        }
+                    //    }
+                    //}
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+
+    //Guardar Gestion
+    $(function () {
+        $("#GuardarTZB").bind("click", function () {
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var fechaGestion = $("#Fecha_Fab").val();
+            var hoy = new Date();
+            dia = hoy.getDate();
+            mes = hoy.getMonth() + 1;
+            anio = hoy.getFullYear();
+
+            if (mes < 10) {
+                fecha_actual = String(dia + "/" + "0" + mes + "/" + anio);
+            } else {
+
+                fecha_actual = String(dia + "/" + mes + "/" + anio);
+            }
+
+            if ($.datepicker.parseDate('dd/mm/yy', fecha_actual) < $.datepicker.parseDate('dd/mm/yy', fechaGestion)) {
+                swal("Estimado Usuario", 'La Fecha de la gestión,  no puede ser superior a la Fecha Actual', "warning");
+                return false;
+            }
+            var stringArray = new Array();
+            stringArray[0] = $("#Fecha_Fab").val();
+            stringArray[1] = $("#ObservacionesED").val();           
+            stringArray[2] = $("#Archivo1").val();
+            stringArray[3] = $("#Archivo2").val();
+            stringArray[4] = $("#Archivo3").val();
+            stringArray[5] = $("#Archivo_s1").val();
+            stringArray[6] = $("#Archivo_s2").val();
+            stringArray[7] = $("#Archivo_s3").val();          
+            stringArray[8] = $("#PkConsultaED").val()
+            // Construir objeto JSON
+            var AdmonCTZB = {
+
+                Fecha_Fab: stringArray[0],
+                ObservacionesED: stringArray[1],
+                NombreArchivo1: stringArray[2],
+                NombreArchivo2: stringArray[3],
+                NombreArchivo3: stringArray[4],
+                NombreArchivo1_download: stringArray[5],
+                NombreArchivo2_download: stringArray[6],
+                NombreArchivo3_download: stringArray[7],
+                PkConsultaED: stringArray[8]
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/Consulta/GuardarConsultasSST',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ GuardarAdmonCTZB: AdmonCTZB }),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    $("#val-Fecha_Fab").css("display", "none");
+                    $("#val-Fecha_Fab").text('');
+                    $("#val-Observaciones").css("display", "none");
+                    $("#val-Observaciones").text('');
+
+
+                    if (data.Probar == false) {
+
+                        if (data.Validacion[0] == true) {
+                            $("#val-Fecha_Fab").css("display", "block");
+                            $("#val-Fecha_Fab").text(data.ValidacionStr[0]);
+                        }
+                        if (data.Validacion[1] == true) {
+                            $("#val-Observaciones").css("display", "block");
+                            $("#val-Observaciones").text(data.ValidacionStr[1]);
+                        }
+
+                        swal("Advertencia", data.Estado);
+                    }
+                    else {
+                        swal({
+                            title: "Mensaje",
+                            text: "La Gestión de la consulta se ha guardado exitosamente",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location.href = "/Consulta/MostrarConsultasSST"
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+
+    //Guardar Gestion Trazabilidad
+    $(function () {
+        $("#GuardarTZBEdit").bind("click", function () {
+            var onEventLaunchGuardarEdit = new postGuardarEdit();
+            onEventLaunchGuardarEdit.launchGuardar();
+        });
+    });
+    function postGuardarEdit() {
+        this.launchGuardar = function () {
+            var fechaGestion = $("#Fecha_Fab").val();
+            var hoy = new Date();
+            dia = hoy.getDate();
+            mes = hoy.getMonth() + 1;
+            anio = hoy.getFullYear();
+
+            if (mes < 10) {
+                fecha_actual = String(dia + "/" + "0" + mes + "/" + anio);
+            } else {
+
+                fecha_actual = String(dia + "/" + mes + "/" + anio);
+            }
+
+            if ($.datepicker.parseDate('dd/mm/yy', fecha_actual) < $.datepicker.parseDate('dd/mm/yy', fechaGestion)) {
+                swal("Estimado Usuario", 'La Fecha de la gestión,  no puede ser superior a la Fecha Actual', "warning");
+                return false;
+            }
+            var stringArray = new Array();
+            stringArray[0] = $("#Fecha_Fab").val();
+            stringArray[1] = $("#ObservacionesED").val();            
+            stringArray[2] = $("#ArchivoE1").val();
+            stringArray[3] = $("#ArchivoE2").val();
+            stringArray[4] = $("#ArchivoE3").val();
+            stringArray[5] = $("#Archivo_Es1").val();
+            stringArray[6] = $("#Archivo_Es2").val();
+            stringArray[7] = $("#Archivo_Es3").val();         
+            stringArray[8] = $("#PkConsultaED").val()
+            // Construir objeto JSON
+            var AdmonCTZB = {
+
+                Fecha_Fab: stringArray[0],
+                ObservacionesED: stringArray[1],
+                NombreArchivo1: stringArray[2],
+                NombreArchivo2: stringArray[3],
+                NombreArchivo3: stringArray[4],
+                NombreArchivo1_download: stringArray[5],
+                NombreArchivo2_download: stringArray[6],
+                NombreArchivo3_download: stringArray[7],
+                PkConsultaED: stringArray[8]
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/Consulta/GuardarConsultasSST',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ GuardarAdmonCTZB: AdmonCTZB }),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    $("#val-Fecha_Fab").css("display", "none");
+                    $("#val-Fecha_Fab").text('');
+                    $("#val-Observaciones").css("display", "none");
+                    $("#val-Observaciones").text('');
+
+
+                    if (data.Probar == false) {
+
+                        if (data.Validacion[0] == true) {
+                            $("#val-Fecha_Fab").css("display", "block");
+                            $("#val-Fecha_Fab").text(data.ValidacionStr[0]);
+                        }
+                        if (data.Validacion[1] == true) {
+                            $("#val-Observaciones").css("display", "block");
+                            $("#val-Observaciones").text(data.ValidacionStr[1]);
+                        }
+
+                        swal("Advertencia", data.Estado);
+                    }
+                    else {
+                        swal({
+                            title: "Mensaje",
+                            text: "La Gestión de la consulta se ha guardado exitosamente",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location.href = "/Consulta/MostrarConsultasSST"
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+
+    //Cargar Archivos en la Edición
+    $(function () {
+        $('#btn-add-file-edit').click(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-file").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $("#ArchivoE1").val());
+                    fileData.append('extraParam2', $("#ArchivoE2").val());
+                    fileData.append('extraParam3', $("#ArchivoE3").val());
+                    fileData.append('extraParam4', $("#Archivo_Es1").val());
+                    fileData.append('extraParam5', $("#Archivo_Es2").val());
+                    fileData.append('extraParam6', $("#Archivo_Es3").val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/Consulta/UploadFilesEditar',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        $("#msj_novedad_archivo").text('');
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                        if (result.probar == false) {
+                            $("#msj_novedad_archivo").text(result.resultado);
+                            $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        }
+                        else {
+                            $("#Grid3 > tbody").html("");
+                            var table_id = document.getElementById('Grid3');
+                            table_id.style.display = "none";
+
+
+
+
+                            if (result.display[0] == true) {
+                                //$("#ArchivoE1").val(result.NuevoNombreArchivos[0]);
+                                //$("#Archivo_Es1").val(result.NuevoNombreArchivos_short[0]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfileE1\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[0];
+                                html += "<input name='ArchivoE1' id='ArchivoE1' class='form-control' type='hidden' value='"+result.NuevoNombreArchivos[0]+"' />";
+                                html += '<input name="Archivo_Es1" id="Archivo_Es1" class="form-control" type="hidden" value="'+result.NuevoNombreArchivos_short[0]+'" />';
+                                html += "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a onclick=\"jsFunctionE1();\" id=\"delete-file1\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                                $("#Grid3 tbody").append(html);
+                            }
+                            else {
+                                $("#ArchivoE1").val(null);
+                                $("#Archivo_Es1").val(null);
+                            }
+                            if (result.display[1] == true) {
+                               // $("#ArchivoE2").val(result.NuevoNombreArchivos[1]);
+                               // $("#Archivo_Es2").val(result.NuevoNombreArchivos_short[1]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfileE2\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[1];
+                                html += "<input name='ArchivoE2' id='ArchivoE2' class='form-control' type='hidden' value='" + result.NuevoNombreArchivos[1] + "' />";
+                                html += '<input name="Archivo_Es2" id="Archivo_Es2" class="form-control" type="hidden" value="' + result.NuevoNombreArchivos_short[1] + '" />';
+                                html += "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a onclick=\"jsFunctionE2();\" id=\"delete-file2\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                                $("#Grid3 tbody").append(html);
+                            }
+                            else {
+                                $("#ArchivoE2").val(null);
+                                $("#Archivo_Es2").val(null);
+                            }
+                            if (result.display[2] == true) {
+                               // $("#ArchivoE3").val(result.NuevoNombreArchivos[2]);
+                                //$("#Archivo_Es3").val(result.NuevoNombreArchivos_short[2]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfileE3\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[2];
+                                html += "<input name='ArchivoE3' id='ArchivoE3' class='form-control' type='hidden' value='" + result.NuevoNombreArchivos[2] + "' />";
+                                html += '<input name="Archivo_Es3" id="Archivo_Es3" class="form-control" type="hidden" value="' + result.NuevoNombreArchivos_short[2] + '" />';
+                                html += "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a onclick=\"jsFunctionE3();\" id=\"delete-file3\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "</td>";
+                                $("#Grid3 tbody").append(html);
+                            }
+                            else {
+                                $("#ArchivoE3").val(null);
+                                $("#Archivo_Es3").val(null);
+                            }
+
+                        }
+                        OcultarPopupposition();
+                    }
+                    ,
+                    error: function (err) {
+                        $("#msj_novedad_archivo").text("Error al cargar el archivo");
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        OcultarPopupposition();
+                    }
+                });
+
+            }
+            else {
+
+            }
+        });
+    });
+</script>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Buzón Consulta SST</a></li>
+    <li class="active">Trazabilidad Consulta SST</li>
+</ol>
+
+<div class="panel panel-default" style="border: transparent; background-color:transparent">
+    <div class="panel-heading" style="color:white">
+        Trazabilidad Consulta SST
+    </div>
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda / Trazabilidad Consulta SST</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <p style="margin-bottom:2%;line-height: 200%;"><strong>*</strong> Indica que el campo es obligatorio</p>
+                            <p style="margin-bottom:2%;line-height: 200%;">Presione <button type="button" class="boton botonactive" disabled>GUARDAR GESTIÓN</button> para guardar la gestión de una consulta SST</p>
+                            <p style="margin-bottom:2%;line-height: 200%;">Presione <button type="button" class="boton botoncancel" disabled>CANCELAR</button> para regresar a la vista de mostrar consultas SST</p>
+                            <p style="margin-bottom:2%;line-height: 200%;">El tamaño del archivo no puede exceder los 10 Mb</p>
+                            <p style="margin-bottom:2%;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar un archivo adjunto </p>                           
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                @Html.Label("Fecha de la Consulta")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                @Html.Label("Tipo de Consulta SST")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                @Html.Label("Descripción")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                @Html.Label("Nombre del trabajador que realiza la consulta")
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                @Html.Label("Documento del trabajador que realiza la consulta")
+            </th>
+        </tr>
+        <tr>
+            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                @Model.FechaConsultaED.ToString("dd/MM/yyyy")
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                @Html.DisplayFor(modelItem => Model.TipoConsultaED)
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                @Html.DisplayFor(modelItem => Model.DescripcionConsultaED)
+                <input name="PkConsultaED" id="PkConsultaED" class="form-control" type="hidden" value="@Model.PkConsultaED" />
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                @Html.DisplayFor(modelItem => Model.Nombre)
+                @Html.DisplayFor(modelItem => Model.Apellidos)
+            </td>
+            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                @Html.DisplayFor(modelItem => Model.Documento)
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">GESTIÓN</div>
+
+    <div class="panel-body form-horizontal">
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label class="col-md-8">* Fecha de Gestión</label>
+                    <div class="col-sm-6">
+                        @if (Model.FechaRevisionED.ToString("dd/MM/yyyy") != "01/01/1900")
+                        {
+                            <input type="text" class="form-control" name="Fecha_Fab" id="Fecha_Fab" readonly value="@Model.FechaRevisionED.ToString("dd/MM/yyyy")" />
+                            <label for="Fecha_Fab" class="error" style="display:none;"></label>
+                            <span id="val-Fecha_Fab" class="text-danger field-validation-error val-message" style="display:none;"></span>
+
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" name="Fecha_Fab" id="Fecha_Fab" readonly />
+                            <label for="Fecha_Fab" class="error" style="display:none;"></label>
+                            <span id="val-Fecha_Fab" class="text-danger field-validation-error val-message" style="display:none;"></span>
+
+                        }
+                        @*@Html.EditorFor(m => m.FechaRevisionED, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                            <span id="val-Fecha_Fab" class="text-danger field-validation-error val-message" style="display:none;"></span>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-md-8">* Observaciones</label>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(m => m.ObservacionesED, htmlAttributes: new { @class = "form-control", rows = 4, maxlength = 2000, style = "resize:none" })
+                        <span id="val-Observaciones" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>Evidencia (Agregue máximo 3 archivos)</h4>
+        <hr style="border-top-color:lightslategray; width:100%; margin-top:-5px" />
+
+        @if (Model.NombreArchivo1_download != null || Model.NombreArchivo2_download != null || Model.NombreArchivo3_download != null)
+        {
+            @*<div class="internal-panel-body">*@
+
+                    @*@Html.Hidden("ArchivoE1", null)
+                    @Html.Hidden("ArchivoE2", null)
+                    @Html.Hidden("ArchivoE3", null)
+
+                    @Html.Hidden("Archivo_Es1", null)
+                    @Html.Hidden("Archivo_Es2", null)
+                    @Html.Hidden("Archivo_Es3", null)*@
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-8" for="File1">Adjuntar Archivos <span class="glyphicon glyphicon-question-sign" title="Puede agregar máximo 3 Evidencias y máximo de 10 MB de tamaño cada uno"></span></label>
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input type="file" name="File1" class="form-control" id="input-file" onchange="validaciontamañodocumento()" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-positiva-invert" id="btn-add-file-edit" type="button">ADJUNTAR</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="table-responsive">
+                                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray" id="Grid3">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                <span>Nombre del Archivo</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                <span>Acciones</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="TbodyArchvivos">
+                                        @if (Model.NombreArchivo1_download != null)
+                                        {
+                                            <tr id="csfileE1">
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">
+                                                    @Html.DisplayFor(modelItem => Model.NombreArchivo1_download)
+                                                    <input name="ArchivoE1" id="ArchivoE1" class="form-control" type="hidden" value="@Model.NombreArchivo1" />
+                                                    <input name="Archivo_Es1" id="Archivo_Es1" class="form-control" type="hidden" value="@Model.NombreArchivo1_download" />
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <a onclick="jsFunctionE1()" id="delete-file1" class="btn btn-md btn-search" title="Eliminar Archivo">
+                                                        <span class="glyphicon glyphicon-erase"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        @if (Model.NombreArchivo2_download != null)
+                                        {
+                                            <tr id="csfileE2">
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">
+                                                    @Html.DisplayFor(modelItem => Model.NombreArchivo2_download)
+                                                    <input name="ArchivoE2" id="ArchivoE2" class="form-control" type="hidden" value="@Model.NombreArchivo2" />
+                                                    <input name="Archivo_Es2" id="Archivo_Es2" class="form-control" type="hidden" value="@Model.NombreArchivo2_download" />
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <a onclick="jsFunctionE2()" id="delete-file2" class="btn btn-md btn-search" title="Eliminar Archivo">
+                                                        <span class="glyphicon glyphicon-erase"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        @if (Model.NombreArchivo3_download != null)
+                                        {
+                                            <tr id="csfileE3">
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">
+                                                    @Html.DisplayFor(modelItem => Model.NombreArchivo3_download)
+                                                    <input name="ArchivoE3" id="ArchivoE3" class="form-control" type="hidden" value="@Model.NombreArchivo3" />
+                                                    <input name="Archivo_Es3" id="Archivo_Es3" class="form-control" type="hidden" value="@Model.NombreArchivo3_download" />
+                                                </td>
+                                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                    <a onclick="jsFunctionE3()" id="delete-file3" class="btn btn-md btn-search" title="Eliminar Archivo">
+                                                        <span class="glyphicon glyphicon-erase"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div class="col-sm-12 form-group">
+                                <div id="div_novedad_archivo">
+                                    <span id="msj_novedad_archivo"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @*</div>*@
+        }
+        else
+        {
+            @*<div class="internal-panel-body">*@
+
+                @Html.Hidden("Archivo1", null)
+                @Html.Hidden("Archivo2", null)
+                @Html.Hidden("Archivo3", null)
+
+                @Html.Hidden("Archivo_s1", null)
+                @Html.Hidden("Archivo_s2", null)
+                @Html.Hidden("Archivo_s3", null)
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-8" for="File1">Adjuntar Archivos <span class="glyphicon glyphicon-question-sign" title="Puede agregar máximo 3 Evidencias y máximo de 10 MB de tamaño cada uno"></span></label>
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input type="file" name="File1" class="form-control" id="input-file" onchange="validaciontamañodocumento()" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-positiva-invert" id="btn-add-file" type="button">ADJUNTAR</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="table-responsive">
+                                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray; display:none;" id="Grid2">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                <span>Nombre del Archivo</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                <span>Acciones</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="TbodyArchvivos"></tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-12 form-group">
+                                <div id="div_novedad_archivo">
+                                    <span id="msj_novedad_archivo"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @*</div>*@
+        }
+    </div>
+
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="boton botoncancel" onclick="location.href='@Url.Action("MostrarConsultasSST", "Consulta")';return false;">CANCELAR</button>
+            </div>
+            @if (Model.NombreArchivo1_download != null || Model.NombreArchivo2_download != null || Model.NombreArchivo3_download != null)
+            {
+                <div class="col-md-5" style="margin-left:25%">
+                    <button id="GuardarTZBEdit" class="boton botonactive">GUARDAR GESTIÓN</button>
+                </div>
+            }
+            else
+            {
+            <div class="col-md-5" style="margin-left:25%">
+                <button id="GuardarTZB" class="boton botonactive">GUARDAR GESTIÓN</button>
+            </div>            
+            }
+        </div>
+    </div>
+ 
+</div>

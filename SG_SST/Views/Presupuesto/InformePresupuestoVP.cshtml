@@ -1,0 +1,211 @@
+﻿@model IEnumerable<SG_SST.Models.LiderazgoGerencial.ActividadPresupuesto>
+<div class="row" align="right" style="margin-bottom:15px">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+        <label>
+            Descargar Informe
+        </label>
+        <a href="@Url.Action("ExpotarInformeExcel", null, new { IDPresupuestoAnio = ViewBag.IDPresupuestoAnio, fecha = ViewBag.fecha, intervaloDeTiempo = ViewBag.intervaloDeTiempo,nombreIntervaloTiempo=ViewBag.nombreIntervaloTiempo })" title="Informe">
+            <img src="~/Images/iconExcelp.png" />
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div id="TablaPresupuesto">
+            <div class="table-responsive" style="overflow-x:scroll">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th colspan="4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                DESAGREGADO
+                            </th>
+                        </tr>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                Actividades
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                            </th>
+                            <th id="NombreColumna" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="actividades">
+                        @{
+                            int principales = 0;
+
+                            foreach (var actividad in Model)
+                            {
+
+                                if (actividad.actividadesPresupuesto != null)
+                                {
+
+                                    int secundarias = 0;
+
+                                    <tr name="@principales">
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <a data-toggle="collapse" onclick="habilitarFilas(@principales)">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </a>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <label>@actividad.DescripcionActividad</label>
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                                        </th>
+                                        <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                                        </th>
+                                    </tr>
+
+                                    foreach (var actividadSecudaria in actividad.actividadesPresupuesto)
+                                    {
+
+                                        <tr name="@principales">
+                                            <td rowspan="3" style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                                            <td rowspan="3" style="border-right: 2px solid lightslategray; vertical-align:middle">@actividadSecudaria.DescripcionActividad</td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">Planeado</td>
+                                            <td name="presupuestoinforme" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                @actividadSecudaria.presupuestosPorMes.FirstOrDefault().PresupuestoMes
+                                            </td>
+                                        </tr>
+                                        <tr name="@principales">
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">Ejecutado</td>
+                                            <td name="presupuestoinforme" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                @actividadSecudaria.presupuestosPorMes.FirstOrDefault().PresupuestoEjecutadoPorMes
+                                            </td>
+                                        </tr>
+                                        <tr name="@principales">
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">Saldo</td>
+                                            <td name="presupuestoinforme" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                @{
+                                        var sumaDisponible = actividadSecudaria.presupuestosPorMes.FirstOrDefault().PresupuestoMes - actividadSecudaria.presupuestosPorMes.FirstOrDefault().PresupuestoEjecutadoPorMes;
+                                                }
+                                                @sumaDisponible
+
+                                            </td>
+
+
+                                        </tr>
+
+                                        secundarias = secundarias + 1;
+
+                                    }
+                                }
+                                else
+                                {
+
+                                    <tr name="@principales">
+                                        <td rowspan="3" style="border-right: 2px solid lightslategray; vertical-align:middle"></td>
+                                        <td rowspan="3" style="border-right: 2px solid lightslategray; vertical-align:middle"><label>@actividad.DescripcionActividad</label></td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">Planeado</td>
+                                        <td name="presupuestoinforme" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @actividad.presupuestosPorMes.FirstOrDefault().PresupuestoMes
+                                        </td>
+                                    </tr>
+                                    <tr name="@principales">
+
+
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">Ejecutado</td>
+                                        <td name="presupuestoinforme" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @actividad.presupuestosPorMes.FirstOrDefault().PresupuestoEjecutadoPorMes
+                                        </td>
+
+
+                                    </tr>
+                                    <tr name="@principales">
+
+
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">Saldo</td>
+                                        <td name="presupuestoinforme" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @{
+                                                 var sumaDisponible = actividad.presupuestosPorMes.FirstOrDefault().PresupuestoMes - actividad.presupuestosPorMes.FirstOrDefault().PresupuestoEjecutadoPorMes;
+                                            }
+                                            @sumaDisponible
+
+                                        </td>
+
+
+                                    </tr>
+                                }
+                                principales = principales + 1;
+                            }
+
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <thead>
+                    <tr class="titulos_tabla">
+
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            CONSOLIDADO
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            <canvas id="canvas" height="30" width="30"></canvas>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <thead>
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            Total Ejecutado
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            Total Planeado
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                            Saldo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th id="thTotalEjecutado" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                            
+                        </th>
+                        <th id="thToltalPlaneado" style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        </th>
+                        <th id="thSaldo" style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+
+    </div>
+</div>
+
+

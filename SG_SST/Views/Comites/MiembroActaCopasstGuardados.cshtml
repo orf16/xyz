@@ -1,0 +1,360 @@
+﻿@{@model SG_SST.Models.Participacion.CrearActaCopasstVM
+
+    ViewBag.Title = "Acta Copasst";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Mensaje del Sistema:',
+                text: '@ViewBag.mensaje',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+
+}
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".trMiembros");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Comites en SST</a></li>
+    <li><a href="javascript:void(0)">Copasst</a></li>
+    <li class="active">Miembros Acta Copasst</li>
+</ol>
+<hr />
+
+<style>
+    body {
+        background: transparent;
+    }
+
+    #container-main {
+        margin: 40px auto;
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    }
+
+        #container-main h1 {
+            font-size: 40px;
+            text-shadow: 4px 4px 5px #16a085;
+        }
+
+    .accordion-container {
+        width: 100%;
+        margin: 0 0 10px;
+        clear: both;
+        background-color: white;
+    }
+
+    .accordion-titulo {
+        position: relative;
+        display: block;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        background: #7E8A97;
+        color: orange;
+        text-decoration: none;
+    }
+
+        .accordion-titulo.open {
+            background: #7E8A97;
+            color: orange;
+        }
+
+        .accordion-titulo:hover {
+            background: #7E8A97;
+            color: orange;
+        }
+
+        .accordion-titulo span.toggle-icon:before {
+            content: "+";
+        }
+
+        .accordion-titulo.open span.toggle-icon:before {
+            content: "-";
+        }
+
+        .accordion-titulo span.toggle-icon {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+    .accordion-content {
+        display: none;
+        padding: 20px;
+        overflow: auto;
+    }
+
+        .accordion-content p {
+            margin: 0;
+        }
+
+        .accordion-content img {
+            display: block;
+            float: left;
+            margin: 0 15px 10px 0;
+            width: 50%;
+            height: auto;
+        }
+</style>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Miembros Acta Copasst</div>
+    <!-- Botón Ayuda -->
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Información de Ayuda/Acta Copasst</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"> <img src="~/Images/DigDocumento.png" /> Digite el número de identificación del trabajador que es miembro del comité y que desee adicionar al acta.</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><strong>ELEGIDO COMO:</strong> Este ítem permite identificar al trabajador como fue elegido en la elección “Principal” o “Suplente” dentro del comité.</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><strong>REPRESENTA A:</strong> Este ítem identifica al miembro del comité como representante del “Empleador” o “Trabajador”.</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><strong>ROL EN EL COMITÉ:</strong> Permite definir el rol del trabajador dentro del comité.</p>
+                            <p style="margin-bottom:20px;line-height: 200%;text-align:left;"><button type="button" id="AdicionarMiembro" class="boton botoninfo">ADICIONAR</button> Esta opción registra los datos diligenciados en el acta copasst.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="CrearActa" action="@Url.Action("DatosActaCopasst")">
+        <div class=" panel-body form-horizontal">
+            <div style="background-color:transparent">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-6">Documento:</label>
+                            <div class="col-md-8">
+                                <div>@Html.TextBoxFor(model => Model.Numero_Documento, new { @class = "form-control", @style = "color:black;font-size:15px", @id = "Numero_Documento", @name = "Numero_Documento", @maxlength = "15" })</div>
+                                <label for="Numero_Documento" class="error" style="display:none"></label>
+                           </div>
+                            <div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <button type="button" class="btn-search" data-toggle="modal" onclick="DatosTrabajador()" title="Buscar">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Nombre Asistente:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.Nombre, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD", @id = "Nombre", @name = "Nombre" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Consecutivo Acta:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.Consecutivo_Acta, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD", @id = "Consecutivo_Acta", @name = "Consecutivo_Acta" })
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="IdSede" id="IdSede" value="@Model.Fk_Id_Sede" />
+                    <input type="hidden" name="PK_Id_Acta" id="PK_Id_Acta" value="@Model.PK_Id_Acta" />
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Elegido como:</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="TiposPrioridadMiembros" id="TiposPrioridadMiembros">
+                                    <option value="">--Seleccionar--</option>
+                                    @foreach (var c in Model.TiposPrioridadMiembros)
+                                    {
+                                        <option value="@c.Value">@c.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Representa a:</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="Representa" id="Representa">
+                                    <option value="">--Seleccionar--</option>
+                                    <option value="Trabajador">Trabajador</option>
+                                    <option value="Empleador">Empleador</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Rol en el comité:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.Fk_Id_TipoPrincipal, Model.TiposPrincipales, "--Seleccionar--", new { @class = "form-control", @id = "Principal", @name = "Principal" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="class=" col-md-4" style="margin-left:40%">
+                            <button type="button" id="AdicionarMiembro" class="boton botoninfo" onclick="CamposAdicionar()">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+                <hr style="border-top-color:lightslategray; width:100%" />
+            </div>
+
+            <div class="table-responsive" style="margin:auto;">
+                <table class="table table-responsive table-bordered" id="tMiembros11" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Documento
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Nombre Asistente
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Elegido como
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Representa a
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Rol en el comité
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.MiembrosActaCopasst != null)
+                        {
+                            foreach (var item in Model.MiembrosActaCopasst)
+                            {
+
+                                <tr class="trMiembros" id="trMiembros">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.Numero_Documento)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Des_TipoPrioridadMiembro)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.TipoRepresentante)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Des_TipoPrincipal, new { @class = "form-control" })
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn-search" data-toggle="modal" onclick="EliminarMiembrosCopasst(@string.Format("{0}", item.Fk_Id_Acta), @string.Format("{0}", item.Numero_Documento))" title="Eliminar">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    <tbody id="tMiembros"></tbody>
+                </table>
+                <div class="pagination" id="paginadorMiembros" style="margin-left:45%"></div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="col-md-1">
+                                <a id="AtrasMiembro" href="@Url.Action("HistoricoActaCopasst", new { IdSede = @Model.Fk_Id_Sede })" class="boton botonactive" style="text-align:center">ATRAS</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-11">
+                                <button type="submit" id="ContinuarMiembro" class=" boton botonactive">CONTINUAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+

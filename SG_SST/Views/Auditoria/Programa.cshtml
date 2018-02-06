@@ -1,0 +1,175 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaPrograma>
+@{
+    ViewBag.Title = "Programas de Auditoría";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/MedicionyEvaluacion/Programa.js")"></script>
+<link href="~/Content/Acciones/Auditorias.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Auditorias SG-SST</a></li>
+    <li class="active">Consultar Programa de Auditorias</li>
+</ol>
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">PROGRAMAS DE AUDITORÍA</div>
+    <div class="panel-body">
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Programa de auditorias</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoninfo" style="cursor:default;">CONSULTAR...</button> Para consultar los programas que cumplan con las condiciones del filtro de busqueda</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/simbolopdf.png" style="width:40px;" /></button> para exportar el programa de auditorias en PDF</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar el programa de auditorias</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar el programa de auditorias, es importante que no existan auditorias guardadas en al momento de eliminar el programa</p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Auditorias</i> para gestionar las auditorias de este programa</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+  
+
+            <div class="form-horizontal add-side-padding">
+                <div class="form-group row">
+                        <label class="control-label col-sm-5">AÑO</label>
+                        <div class="col-sm-3">
+                            @{
+                                DateTime Hoy = DateTime.Today;
+                                int year = Hoy.Year;
+                                List<SelectListItem> ListaAños = new List<SelectListItem>();
+                                for (int i = 2010; i < 2051; i++)
+                                {
+                                    if (i == year)
+                                    {
+                                        ListaAños.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString(), Selected = true });
+                                    }
+                                    else
+                                    {
+                                        ListaAños.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString() });
+                                    }
+                                }
+                                @Html.DropDownList("SelectAnio1", ListaAños, null, htmlAttributes: new { @class = "form-control form-width-100" })
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-5">NOMBRE DEL PROGRAMA</label>
+                        <div class="col-sm-7">
+                            @Html.TextBox("NombreProg", null, new { @class = "form-control", maxlength = 500 })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-sm-5">SEDE</label>
+                        <div class="col-sm-5">
+                            @Html.DropDownList("Pk_Id_Sede1", (SelectList)ViewBag.Pk_Id_Sede, "-- Seleccione una Sede--", new { @class = "form-control form-width-100" })
+                        </div>
+                    </div>
+
+                <div class="row text-center" style="margin-bottom:0.5em;">
+                    
+                    <button class="boton botoninfo" id="Consultar-Programa">CONSULTAR</button>
+                </div>
+                <br />
+                <div class="Tabla-Programa table-responsive">
+
+                    <table class="table table-bordered" style="border: 2px solid lightslategray">
+                        <thead>
+                            <tr class="titulos_tabla">
+
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Nombre del Programa</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Año</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <span>Fecha</span>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;min-width:250px;">
+
+                                </th>
+                            </tr>
+                            </thead>
+                        <tbody>
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @Html.DisplayFor(model => item.Titulo)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            @Html.DisplayFor(model => item.Año)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle;min-width:250px; text-align:center">
+                                            @{
+                                                string Fecha_str = "";
+                                                try
+                                                {
+                                                    Fecha_str = item.Fecha_Programacion.ToString("dd/MM/yyyy");
+                                                }
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                                <span>@Fecha_str</span>
+                                            }
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <a id="@item.Pk_Id_Programa.ToString()" href="@Url.Action("Auditoria", "Auditoria", new { IdPrograma = item.Pk_Id_Programa })" class="btn btn-search btn-md" title="Auditoria">
+                                                <span>Auditorias</span>
+                                            </a>
+                                            |
+                                            <a id="@item.Pk_Id_Programa.ToString()" href="@Url.Action("ReportePrograma", "Auditoria", new { IdPrograma = item.Pk_Id_Programa })" class="btn btn-search btn-md btnEliminarArchivo" title="Exportar" style="height:32px;">
+                                                <img src="~/Content/Images/simbolopdf.png" style="max-height:120%" />
+                                            </a>
+                                            |
+                                            <a id="@item.Pk_Id_Programa.ToString()" class="btn btn-search btn-md Eliminar-Programa" title="Eliminar">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+                                            |
+                                            <a id="@item.Pk_Id_Programa.ToString()" href="@Url.Action("EditarPrograma", "Auditoria", new { IdPrograma = item.Pk_Id_Programa })" class="btn btn-search btn-md" title="Editar">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                                }
+                            }
+                        </tbody>
+</table>
+                    <center><div class="pagination" id="paginador1"></div></center>
+                </div>
+            </div>         
+    </div>
+</div>
+
+
+<a id="Prueba" style="display:none" href="@Url.Action("PruebaAuditoria", "Auditoria")" class="btn btn-search btn-md" title="Editar">
+    llevar
+</a>

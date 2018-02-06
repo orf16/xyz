@@ -1,0 +1,246 @@
+﻿@{@model SG_SST.Models.Aplicacion.CrearInspeccionModel
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+
+
+}
+
+<form id="" enctype="multipart/form-data">
+    <hr />
+    @*<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">*@
+    <div class="panel-heading titulos_tabla" style="color:black;">Agregar Condición Insegura</div>
+
+
+
+    <div class="panel-body form-horizontal" method="post">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-md-12">
+                </div>
+
+                <div class="col-lg-12" id="divSupRes" name="divSupRes">
+                    <div class="input-group" id="divc" name="divc">
+                        <div class="col-md-12" id="divIconRes">
+                            <a href="javascript:void(0);" onclick="agregarcondicion(this)"
+                               title="Agregar Condicion Insegura" id="agregarcondicion" name="agregarcondicion"
+                               class="btn btn-link-1-google-plus btn-circle btn-lg">
+                                <label>Condición Insegura </label>  <i class="glyphicon glyphicon-plus btn btn-default" name="icono" style="color: #FF7500"></i>
+                            </a>
+                        </div>
+                        <div class="panel-body form-horizontal" id="condicionInsegura">
+                            <div class="row col-lg-12">
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Descripción Condición Insegura</label>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Configuracion Prioridad</label>
+                                        <select class="form-control" name="DescripcionConfig" id="DescripcionConfig">
+                                            <option value="">--Seleccionar Prioridad--</option>
+                                            @foreach (var c in Model.ConfiguracionesI)
+                                            {
+
+                                                <option value="@c.idconfiguracionViewModel">@c.DescripcionViewModel</option>
+
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Ubicacion Especifica Inspeccion</label>
+                                      
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+
+                        </div>
+                        @*<table class="table  table-responsive table-striped table-hover" style="border:hidden" align="center">
+                            <tr>
+
+
+
+                                <th style="border:hidden">
+                                    <strong>Descripción Riesgo Peligro Identificado</strong>
+                                </th>
+
+
+                                <th style="border:hidden">
+                                    <strong>Ubicación Especifica Inspección</strong>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td rowspan="2" style="border:hidden"></td>
+                                <td rowspan="2" style="border:hidden"><textarea class="form-control" rows="5" id="DesRPI" name="DesRPI"></textarea></td>
+                                <td rowspan="2" style="border:hidden"><textarea class="form-control" rows="5" id="Ubicacion" name="Ubicacion"></textarea></td>
+
+                            </tr>
+
+                        </table>*@
+                        <div class="row" id="inputOtro" hidden="hidden">
+                            <div class="col-md-2">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_cual:</b></h5>
+                            </div>
+                            <div class="col-md-10">
+                                <input name="Otro" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" id="inputClasificacion">
+                            <div class="col-md-2">
+                                <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_step_descripcion:</b></h5>
+                            </div>
+                            <div class="col-md-10">
+                                <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>
+                            </div>
+                        </div>
+                        <table class="table  table-responsive table-striped table-hover" style="border:hidden">
+                            <tr>
+                                <th style="border:hidden">
+                                    <p>Riesgo ó Peligro identificado</p>
+                                </th>
+                                <th style="border:hidden">
+                                    <p>Grado de Peligrosidad de la Condicion Insegura</p>
+                                </th>
+
+                                <th style="border:hidden">
+                                    <p>Cargar Evidencia Inspección<p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="border:hidden">
+
+                                    @*<select class="form-control" name="TipoPeligro" id="TipoPeligro" onchange="ConsultarClasesPeligros()">
+                                            <option value="">--Seleccionar Tipo Peligro--</option>
+                                            @foreach (var c in Model.TiposPeligro)
+                                            {
+
+                                                <option value="@c.idpeligro">@c.Descripcionpeligro</option>
+
+                                            }
+                                        </select>*@
+                                </td>
+                                <td style="border:hidden"></td>
+
+
+                                <td style="border:hidden">
+                                    <input type="file" class="form-control" id="evidencia" name="evidencia" />
+                                </td>
+                            </tr>
+                        </table>
+                        <hr />
+
+
+
+
+                    </div>
+                    <br />
+
+                </div>
+                <div>
+                    <div class="col-md-12" id="condicioninsegura">
+
+
+                    </div>
+
+
+                </div>
+
+                @* Div para mostrar el Formulario para Registro de un plan de accion *@
+
+
+                @*<div class="col-md-12" id="divSupRes" name="divSupRes">
+                        <div class="panel-heading titulos_tabla" style="color:black;">Agregar Plan de Acción</div>
+                        <div class="input-group" id="diva" name="diva">
+                            <div class="col-md-12 panel-heading" id="divIconRes">
+                                <a href="javascript:void(0);" onclick="agregarplanaccion(this)"
+                                   title="Agregar Plan de Accion" id="agregarplanaccion" name="agregarplanaccion"
+                                   class="btn btn-link-1-google-plus btn-circle btn-lg">
+                                    <label>Plan de Acción </label>  <i class="glyphicon glyphicon-plus btn btn-default" name="icono" style="color: #FF7500"></i>
+                                </a>
+                            </div>
+                            <table class="table  table-responsive table-striped table-hover" style="border:hidden" align="center" id="planaccions">
+
+                                    <tr>
+                                        <th style="border:hidden">
+                                            <strong>Actividad</strong>
+                                        </th>
+                                        <th style="border:hidden">
+                                            <strong>Responsable Actividad</strong>
+                                        </th>
+                                        <th style="border:hidden">
+                                            <strong>Fecha Finalizacion</strong>
+                                        </th>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td rowspan="2" style="border:hidden"><input type="text" class="form-control input-lg" id="" name="" /></td>
+                                        <td rowspan="2" style="border:hidden"><input type="text" class="form-control input-lg" id="" name="" /></td>
+                                        <td rowspan="2" style="border:hidden">
+                                            <div class="input-group input-append date" id="dateRangePicker">
+                                                <input type="text" class="form-control input-lg" name="fechafin" id="fechafin" />
+                                                <span class="input-group-addon add-on alert-link"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                            </table>
+
+
+                            <hr />
+
+
+
+
+                        </div>
+                        <br />
+
+                    </div>*@
+
+                <div>
+
+                    @*<div class="col-md-12" id="planaccion">
+
+
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*</div>*@
+    <div class="panel-footer" style="background-color:transparent">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+                <button type="submit" class="boton botonactive" id="btnguardarpycondicion" onclick="GrabarPlanYCondicion()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</form>

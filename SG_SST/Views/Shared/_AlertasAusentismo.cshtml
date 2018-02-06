@@ -1,0 +1,52 @@
+﻿@model List<SG_SST.Models.Ausentismo.AlertasModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <h2>Alertas</h2>
+    <div class="row form-group">
+        <table class="table table-hover" style="font-size:x-small">
+            <thead>
+                <tr>
+                    <th>Fecha Registro</th>
+                    <th>Documento</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    <th>Contingencia</th>
+                    <th>Diagnostico</th>
+                    <th>Dias Ausencia</th>
+                    <th>Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var datos in Model)
+                {
+                    if (datos.Dias_Ausencia > 120)
+                    {
+                        <tr class="danger" style="color:red">
+                            <td>@string.Format("{0}", datos.FechaRegistro.ToString())</td>
+                            <td>@string.Format("{0}", datos.Documento.ToString())</td>
+                            <td>@string.Format("{0}", datos.Departamento)</td>
+                            <td>@string.Format("{0}", datos.Municipio)</td>
+                            <td>@string.Format("{0}", datos.Contingencia)</td>
+                            <td>@string.Format("{0}", datos.Diagnostico)</td>
+                            <td>@string.Format("{0}", datos.Dias_Ausencia.ToString())</td>
+                            <td>@string.Format("{0}", datos.Costo.ToString())</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="warning" style="color:yellow">
+                            <td>@string.Format("{0}", datos.FechaRegistro.ToString())</td>
+                            <td>@string.Format("{0}", datos.Documento.ToString())</td>
+                            <td>@string.Format("{0}", datos.Departamento)</td>
+                            <td>@string.Format("{0}", datos.Municipio)</td>
+                            <td>@string.Format("{0}", datos.Contingencia)</td>
+                            <td>@string.Format("{0}", datos.Diagnostico)</td>
+                            <td>@string.Format("{0}", datos.Dias_Ausencia.ToString())</td>
+                            <td>@string.Format("{0}", datos.Costo.ToString())</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

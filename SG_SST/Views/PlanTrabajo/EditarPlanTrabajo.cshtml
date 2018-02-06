@@ -1,0 +1,2989 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDAplicacionPlanTrabajo
+
+@{
+    ViewBag.Title = "Editar Plan de Trabajo";
+}
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Medidas de Prevención y Control</a></li>
+    <li><a href="@Url.Action("GestionarPlanesTrabajo", "PlanTrabajo")">Plan de Trabajo</a></li>
+    <li class="active">Editar Plan de Trabajo</li>
+</ol>
+<script>
+
+    //Hour Picker
+    $(document).ready(function(){
+        $('#ActHora').timepicker({
+            useCurrent: false,
+            step: 15,
+            timeFormat:'h:i A',
+            format: 'HH:mm:ss',
+            minuteStep: 1,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: true,
+            useSelect: true,
+            icons: {
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down'
+            }
+        }).on('focus', function() {
+            $('#ActHora').timepicker('showWidget');
+
+        }).next().on(ace.click_event, function() {
+            $(this).prev().focus();
+        });
+    });
+    $(document).ready(function () {
+        $("#ActHoraDiv > select").addClass("form-control");
+
+    });
+    $(document).ready(function () {
+        $('#ActHoraUp').timepicker({
+            useCurrent: false,
+            step: 15,
+            timeFormat: 'h:i A',
+            format: 'HH:mm:ss',
+            minuteStep: 1,
+            showSeconds: true,
+            showMeridian: false,
+            disableFocus: true,
+            useSelect: true,
+            icons: {
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down'
+            }
+        }).on('focus', function () {
+            $('#ActHoraUp').timepicker('showWidget');
+
+        }).next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        });
+    });
+    $(document).ready(function () {
+        $("#reprogramacion1 > select").addClass("form-control");
+
+    });
+    //Mostrar Modal crear Programa
+    $(function () {
+        $(".NuevoPrograma").click(function () {
+            var modal = document.getElementById('myModal6');
+            var valrow = $(this).attr('name');
+            $('#IdActividadProg').val(valrow.toString());
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal crear Programa
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal6');
+        var span = document.getElementById("close_modal6");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+    //Crear Programa
+    $(function () {
+        $("#crearprograma").bind("click", function () {
+            $("#val-ActFecha").css("display", "none");
+            $("#val-ActFecha").text('');
+            var onEventLaunchGuardar5 = new postGuardar5();
+            onEventLaunchGuardar5.launchGuardar5();
+        });
+    });
+    function postGuardar5() {
+        this.launchGuardar5 = function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#ActFecha").val();
+            stringArray[1] = $("#IdActividadProg").val();
+            stringArray[2] = $("#IdPlanTrabajo").val();
+            stringArray[3] = $("#ActHora").val();
+            var EDAplicacionPlanTrabajoProgramacion = {
+                FechaProgramacionIncial: stringArray[0],
+                Fk_Id_PlanTrabajoActividad: stringArray[1],
+                Pk_Id_AplicacionPlanTrabajoProgramacion: stringArray[2],
+                Horas: stringArray[3]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/CrearPrograma',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ Programa: EDAplicacionPlanTrabajoProgramacion }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-ActFecha").css("display", "block");
+                            $("#val-ActFecha").text(data.Validacion[0]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Mostrar Modal actualizar Programa
+    $(function () {
+        $(".actualizarprograma").click(function () {
+            var modal = document.getElementById('myModal7');
+
+            $('#IdProgUp').val(null);
+            $('#IdProgUp').text(null);
+
+            var valrow = $(this).attr('name');
+            var valrow1 = $(this).attr('name1');
+            $('#IdProgUp').val(valrow.toString());
+
+            $('#CheckEjecutado').attr('checked', false);
+            $('input[type=checkbox]').each(function() 
+            { 
+                this.checked = false; 
+            });
+                     
+            $('#ActFechaUp').val(null);
+            $('#ActFechaActual').val(null);
+            $('#ActFechaInicial').val(null);
+
+            $('#ActFechaUp').text(null);
+            $('#ActFechaActual').text(null);
+            $('#ActFechaInicial').text(null);
+
+            $("#val-ActFechaUp").css("display", "none");
+            $("#val-ActFechaUp").text('');
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/ConsultarPrograma",
+                data: '{IdPrograma: "' + valrow + '",IdPlanTrabajo: "' + $("#IdPlanTrabajo").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta==false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                    }
+                    else {
+                        $('#ActFechaActual').val(data.Fecha);
+                        $('#ActFechaInicial').val(data.Fecha1);
+                        $('#IdActividadProgUp').val(valrow1);
+                        $('#ActFechaActual').text(data.Fecha);
+                        $('#ActFechaInicial').text(data.Fecha1);
+                        $('#ActEstado').text(data.Estado);
+
+                        $('#reprogramacion').css("display", "");
+                        $('#reprogramacion1').css("display", "");
+                        if (data.Estado=="Ejecutada") {
+                            $('#CheckEjecutado').attr('checked', true);
+                            $('input[type=checkbox]').each(function() 
+                            { 
+                                this.checked = true; 
+                            });
+                            $('#reprogramacion').css("display", "none");
+                            $('#reprogramacion1').css("display", "none");
+                        }
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal actualizar Programa
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal7');
+        var span = document.getElementById("close_modal7");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+    //Actualizar Actividad
+    $(function () {
+        $("#actualizarprograma").bind("click", function () {
+            $("#val-ActFechaUp").css("display", "none");
+            $("#val-ActFechaUp").text('');
+            var onEventLaunchGuardar6 = new postGuardar6();
+            onEventLaunchGuardar6.launchGuardar6();
+        });
+    });
+    function postGuardar6() {
+        this.launchGuardar6 = function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#ActFechaUp").val();
+            stringArray[1] = $("#IdActividadProgUp").val();
+            stringArray[2] = $("#IdProgUp").val();
+            stringArray[4] = $("#ActHoraUp").val();
+
+            if ($('#CheckEjecutado').is(":checked")) {
+                stringArray[3] = "3";
+            }
+            else {
+                stringArray[3] = "5";
+            }
+
+            var EDAplicacionPlanTrabajoProgramacion = {
+                FechaProgramacionIncial: stringArray[0],
+                Fk_Id_PlanTrabajoActividad: stringArray[1],
+                Pk_Id_AplicacionPlanTrabajoProgramacion: stringArray[2],
+                Estado: stringArray[3],
+                Horas: stringArray[4]
+            };
+            var EDControl = {
+                Pk_Id_AplicacionPlanTrabajoProgramacion: $("#IdPlanTrabajo").val()
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/ActualizarPrograma',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajoProgramacion: EDAplicacionPlanTrabajoProgramacion, Control: EDControl }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-ActFechaUp").css("display", "block");
+                            $("#val-ActFechaUp").text(data.Validacion[4]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+
+
+    //Actualizar Actividad
+    $(function () {
+        $("#actualizaractividad").bind("click", function () {
+            $("#val-ActDescripcionUp").css("display", "none");
+            $("#val-ActDescripcionUp").text('');
+            $("#val-ActIdentidadUp").css("display", "none");
+            $("#val-ActIdentidadUp").text('');
+            $("#val-ActNombreUp").css("display", "none");
+            $("#val-ActNombreUp").text('');
+            $("#val-ActObservacionesUp").css("display", "none");
+            $("#val-ActObservacionesUp").text('');
+            //$("#val-ActFechaUp").css("display", "none");
+            //$("#val-ActFechaUp").text('');
+            var onEventLaunchGuardar3 = new postGuardar3();
+            onEventLaunchGuardar3.launchGuardar3();
+        });
+    });
+    function postGuardar3() {
+        this.launchGuardar3 = function () {
+            var stringArray = new Array();
+
+            var atLeastOneIsChecked = $('#checkArray:checkbox:checked').length > 0;
+
+            if ($('#CheckEjecutado').is(":checked")) {
+                
+            }
+
+            stringArray[0] = $("#ActDescripcionUp").val();
+            stringArray[1] = $("#ActIdentidadUp").val();
+            stringArray[2] = $("#ActNombreUp").val();
+            stringArray[3] = $("#ActObservacionesUp").val();
+            //stringArray[4] = $("#ActFechaUp").val();
+            stringArray[5] = $("#IdObjetivoActUp").val();
+            stringArray[6] = $("#IdActUp").val();
+            //stringArray[8] = $("#ActHoraUp").val();
+
+            //if ($('#CheckEjecutado').is(":checked")) {
+            //    stringArray[7] = "3";
+            //}
+            //else {
+            //    stringArray[7] = "5";
+            //}
+
+
+            var EDAplicacionPlanTrabajoActividad = {
+                Descripcion: stringArray[0],
+                ResponsableDocumento: stringArray[1],
+                ResponsableNombre: stringArray[2],
+                Observaciones: stringArray[3],
+                //FechaProgramacionIncial: stringArray[4],
+                Fk_Id_PlanTrabajoDetalle: stringArray[5],
+                Pk_Id_PlanTrabajoActividad: stringArray[6]
+                //Estado: stringArray[7],
+                //Horas: stringArray[8]
+            };
+            var EDControl = {
+                Pk_Id_PlanTrabajoActividad: $("#IdPlanTrabajo").val()
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/ActualizarActividad',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajoActividad: EDAplicacionPlanTrabajoActividad, Control: EDControl }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-ActDescripcionUp").css("display", "block");
+                            $("#val-ActDescripcionUp").text(data.Validacion[0]);
+                        }
+                        if (data.boolValidacion[1] == true) {
+                            $("#val-ActIdentidadUp").css("display", "block");
+                            $("#val-ActIdentidadUp").text(data.Validacion[1]);
+                        }
+                        if (data.boolValidacion[2] == true) {
+                            $("#val-ActNombreUp").css("display", "block");
+                            $("#val-ActNombreUp").text(data.Validacion[2]);
+                        }
+                        if (data.boolValidacion[3] == true) {
+                            $("#val-ActObservacionesUp").css("display", "block");
+                            $("#val-ActObservacionesUp").text(data.Validacion[3]);
+                        }
+                        //if (data.boolValidacion[4] == true) {
+                        //    $("#val-ActFechaUp").css("display", "block");
+                        //    $("#val-ActFechaUp").text(data.Validacion[4]);
+                        //}
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Crear Actividad
+    $(function () {
+        $("#crearactividad").bind("click", function () {
+            $("#val-ActDescripcion").css("display", "none");
+            $("#val-ActDescripcion").text('');
+            $("#val-ActIdentidad").css("display", "none");
+            $("#val-ActIdentidad").text('');
+            $("#val-ActNombre").css("display", "none");
+            $("#val-ActNombre").text('');
+            $("#val-ActObservaciones").css("display", "none");
+            $("#val-ActObservaciones").text('');
+            //$("#val-ActFecha").css("display", "none");
+            //$("#val-ActFecha").text('');
+            var onEventLaunchGuardar2 = new postGuardar2();
+            onEventLaunchGuardar2.launchGuardar2();
+        });
+    });
+    function postGuardar2() {
+        this.launchGuardar2 = function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#ActDescripcion").val();
+            stringArray[1] = $("#ActIdentidad").val();
+            stringArray[2] = $("#ActNombre").val();
+            stringArray[3] = $("#ActObservaciones").val();
+            //stringArray[4] = $("#ActFecha").val();
+            stringArray[5] = $("#IdObjetivoAct").val();
+            stringArray[6] = $("#IdPlanTrabajo").val();
+            //stringArray[7] = $("#ActHora").val();
+            var EDAplicacionPlanTrabajoActividad = {
+                Descripcion: stringArray[0],
+                ResponsableDocumento: stringArray[1],
+                ResponsableNombre: stringArray[2],
+                Observaciones: stringArray[3],
+                //FechaProgramacionIncial: stringArray[4],
+                Fk_Id_PlanTrabajoDetalle: stringArray[5],
+                Pk_Id_PlanTrabajoActividad: stringArray[6]
+                //Horas: stringArray[7]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/CrearActividad',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajoActividad: EDAplicacionPlanTrabajoActividad }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-ActDescripcion").css("display", "block");
+                            $("#val-ActDescripcion").text(data.Validacion[0]);
+                        }
+                        if (data.boolValidacion[1] == true) {
+                            $("#val-ActIdentidad").css("display", "block");
+                            $("#val-ActIdentidad").text(data.Validacion[1]);
+                        }
+                        if (data.boolValidacion[2] == true) {
+                            $("#val-ActNombre").css("display", "block");
+                            $("#val-ActNombre").text(data.Validacion[2]);
+                        }
+                        if (data.boolValidacion[3] == true) {
+                            $("#val-ActObservaciones").css("display", "block");
+                            $("#val-ActObservaciones").text(data.Validacion[3]);
+                        }
+                        //if (data.boolValidacion[4] == true) {
+                        //    $("#val-ActFecha").css("display", "block");
+                        //    $("#val-ActFecha").text(data.Validacion[4]);
+                        //}
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+
+
+    //Mostrar Modal crear objetivo
+    $(function () {
+        $("#CrearObjetivo").click(function () {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal crear objetivo
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal');
+        var span = document.getElementById("close_modal");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    //Mostrar Modal actualizar objetivo
+    $(function () {
+        $("#CrearObjetivoUp").click(function () {
+            var modal = document.getElementById('myModal2');
+
+            var valrow = $(this).attr('name');
+            $('#IdObjetivoUp').val(valrow.toString());
+
+            $('#DescripcionUp').val(null);
+            $('#MetasUp').val(null);
+            $('#RecursosHumanosUp').val(null);
+            $('#RecursosTecnologicoUp').val(null);
+            $('#RecursosFinaniceroUp').val(null);
+
+            $('#DescripcionUp').text(null);
+            $('#MetasUp').text(null);
+            $('#RecursosHumanosUp').text(null);
+            $('#RecursosTecnologicoUp').text(null);
+            $('#RecursosFinaniceroUp').text(null);
+
+            $("#val-descripcionUp").css("display", "none");
+            $("#val-descripcionUp").text('');
+            $("#val-metasUp").css("display", "none");
+            $("#val-metasUp").text('');
+            $("#val-recursoshumanosUp").css("display", "none");
+            $("#val-recursoshumanosUp").text('');
+            $("#val-recursostecnologicoUp").css("display", "none");
+            $("#val-recursostecnologicoUp").text('');
+            $("#val-recursosfinancieroUp").css("display", "none");
+            $("#val-recursosfinancieroUp").text('');
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/ConsultarObjetivo",
+                data: '{IdObjetivo: "' + valrow + '",IdPlanTrabajo: "' + $("#IdPlanTrabajo").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta==false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+
+
+
+                    }
+                    else {
+                        
+                        var Descripcion = data.Model.Objetivo;
+                        var Metas = data.Model.Metas;
+                        var RecursosHumanos = data.Model.RecursoHumano;
+                        var RecursosTecnologico = data.Model.RecursoTec;
+                        var RecursosFinanicero = data.Model.RecursoFinanciero;
+
+                        JSON.stringify(Descripcion);
+                        JSON.stringify(Metas);
+                        JSON.stringify(RecursosHumanos);
+                        JSON.stringify(RecursosTecnologico);
+                        JSON.stringify(RecursosFinanicero);
+
+                        $('#DescripcionUp').val(Descripcion);
+                        $('#MetasUp').val(Metas);
+                        $('#RecursosHumanosUp').val(RecursosHumanos);
+                        $('#RecursosTecnologicoUp').val(RecursosTecnologico);
+                        $('#RecursosFinaniceroUp').val(RecursosFinanicero);
+
+                        $('#DescripcionUp').text(Descripcion);
+                        $('#MetasUp').text(Metas);
+                        $('#RecursosHumanosUp').text(RecursosHumanos);
+                        $('#RecursosTecnologicoUp').text(RecursosTecnologico);
+                        $('#RecursosFinaniceroUp').text(RecursosFinanicero);
+                        
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+            modal.style.display = "block";
+
+            
+
+        });
+    });
+    //Funciones del Modal crear objetivo
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal2');
+        var span = document.getElementById("close_modal2");
+        span.onclick = function () {
+            modal.style.display = "none";
+
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    //Mostrar Modal crear actividad
+    $(function () {
+        $(".NuevaActividad").click(function () {
+            var modal = document.getElementById('myModal1');
+
+            var valrow = $(this).attr('name');
+            $('#IdObjetivoAct').val(valrow.toString());
+
+
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal crear actividad
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal1');
+        var span = document.getElementById("close_modal1");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    //Mostrar Modal actualizar actividad
+    $(function () {
+        $(".actualizaractividadbtn").click(function () {
+            var modal = document.getElementById('myModal3');
+
+            $('#IdActUp').val(null);
+            $('#IdActUp').text(null);
+
+            var valrow = $(this).attr('name');
+            var valrow1 = $(this).attr('name1');
+            $('#IdActUp').val(valrow.toString());
+
+            //$('#CheckEjecutado').attr('checked', false);
+            //$('input[type=checkbox]').each(function() 
+            //{ 
+            //    this.checked = false; 
+            //});
+            
+            $('#ActDescripcionUp').val(null);
+            $('#ActIdentidadUp').val(null);
+            $('#ActNombreUp').val(null);
+            $('#ActObservacionesUp').val(null);
+            $('#ActFechaUp').val(null);
+            //$('#ActFechaActual').val(null);
+            //$('#ActFechaInicial').val(null);
+
+            $('#ActDescripcionUp').text(null);
+            $('#ActIdentidadUp').text(null);
+            $('#ActNombreUp').text(null);
+            $('#ActObservacionesUp').text(null);
+            //$('#ActFechaUp').text(null);
+            //$('#ActFechaActual').text(null);
+            //$('#ActFechaInicial').text(null);
+
+            $("#val-ActDescripcionUp").css("display", "none");
+            $("#val-ActDescripcionUp").text('');
+            $("#val-ActIdentidadUp").css("display", "none");
+            $("#val-ActIdentidadUp").text('');
+            $("#val-ActNombreUp").css("display", "none");
+            $("#val-ActNombreUp").text('');
+            $("#val-ActObservacionesUp").css("display", "none");
+            $("#val-ActObservacionesUp").text('');
+            //$("#val-ActFechaUp").css("display", "none");
+            //$("#val-ActFechaUp").text('');
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/ConsultarActividad",
+                data: '{IdActividad: "' + valrow + '",IdPlanTrabajo: "' + $("#IdPlanTrabajo").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta==false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                    }
+                    else {
+                        
+                        var Descripcion = data.Model.Descripcion;
+                        var Observaciones = data.Model.Observaciones;
+                        var ResponsableNombre = data.Model.ResponsableNombre;
+                        var ResponsableDocumento = data.Model.ResponsableDocumento;
+
+
+                        JSON.stringify(Descripcion);
+                        JSON.stringify(Observaciones);
+                        JSON.stringify(ResponsableNombre);
+                        JSON.stringify(ResponsableDocumento);
+
+
+                        $('#ActDescripcionUp').val(Descripcion);
+                        $('#ActObservacionesUp').val(Observaciones);
+                        $('#ActNombreUp').val(ResponsableNombre);
+                        $('#ActIdentidadUp').val(ResponsableDocumento);
+                        //$('#ActFechaActual').val(data.Fecha);
+                        //$('#ActFechaInicial').val(data.Fecha1);
+                        $('#IdObjetivoActUp').val(valrow1);
+
+                        $('#ActDescripcionUp').text(Descripcion);
+                        $('#ActObservacionesUp').text(Observaciones);
+                        $('#ActNombreUp').text(ResponsableNombre);
+                        $('#ActIdentidadUp').text(ResponsableDocumento);
+                        //$('#ActFechaActual').text(data.Fecha);
+                        //$('#ActFechaInicial').text(data.Fecha1);
+                        //$('#ActEstado').text(data.Estado);
+                        $('#IdObjetivoActUp').text(valrow1);
+                        
+                        //$('#reprogramacion').css("display", "");
+                        //$('#reprogramacion1').css("display", "");
+                        //if (data.Estado=="Ejecutada") {
+                        //    $('#CheckEjecutado').attr('checked', true);
+                        //    $('input[type=checkbox]').each(function() 
+                        //    { 
+                        //        this.checked = true; 
+                        //    });
+                        //    $('#reprogramacion').css("display", "none");
+                        //    $('#reprogramacion1').css("display", "none");
+                            
+                            
+                        //}
+                        
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal actualizar actividad
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal3');
+        var span = document.getElementById("close_modal3");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    //Mostrar Modal ver actividad
+    $(function () {
+        $(".veractividad").click(function () {
+            var modal = document.getElementById('myModal4');
+
+            $('#IdActVer').val(null);
+            $('#IdActVer').text(null);
+
+            var valrow = $(this).attr('name');
+            var valrow1 = $(this).attr('name1');
+            $('#IdActVer').val(valrow.toString());
+
+
+
+            $('#ActDescripcionVer').val(null);
+            $('#ActIdentidadVer').val(null);
+            $('#ActNombreVer').val(null);
+            $('#ActObservacionesVer').val(null);
+            //$('#ActFechaActualVer').val(null);
+            //$('#ActFechaInicialVer').val(null);
+
+            $('#ActDescripcionVer').text(null);
+            $('#ActIdentidadVer').text(null);
+            $('#ActNombreVer').text(null);
+            $('#ActObservacionesVer').text(null);
+            //$('#ActFechaActualVer').text(null);
+            //$('#ActFechaInicialVer').text(null);
+
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/ConsultarActividad",
+                data: '{IdActividad: "' + valrow + '",IdPlanTrabajo: "' + $("#IdPlanTrabajo").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                    }
+                    else {
+
+                        var Descripcion = data.Model.Descripcion;
+                        var Observaciones = data.Model.Observaciones;
+                        var ResponsableNombre = data.Model.ResponsableNombre;
+                        var ResponsableDocumento = data.Model.ResponsableDocumento;
+
+
+                        JSON.stringify(Descripcion);
+                        JSON.stringify(Observaciones);
+                        JSON.stringify(ResponsableNombre);
+                        JSON.stringify(ResponsableDocumento);
+
+
+                        $('#ActDescripcionVer').val(Descripcion);
+                        $('#ActObservacionesVer').val(Observaciones);
+                        $('#ActNombreVer').val(ResponsableNombre);
+                        $('#ActIdentidadVer').val(ResponsableDocumento);
+                        //$('#ActFechaActualVer').val(data.Fecha);
+                        //$('#ActFechaInicialVer').val(data.Fecha1);
+                        $('#IdObjetivoActVer').val(valrow1);
+
+                        $('#ActDescripcionVer').text(Descripcion);
+                        $('#ActObservacionesVer').text(Observaciones);
+                        $('#ActNombreVer').text(ResponsableNombre);
+                        $('#ActIdentidadVer').text(ResponsableDocumento);
+                        //$('#ActFechaActualVer').text(data.Fecha);
+                        //$('#ActFechaInicialVer').text(data.Fecha1);
+                        $('#ActEstadoVer').text(data.Estado);
+                        $('#IdObjetivoActVer').text(valrow1);
+
+
+
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal ver actividad
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal4');
+        var span = document.getElementById("close_modal4");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    //Mostrar Modal FIRMAS
+    $(function () {
+        $("#firmas").click(function () {
+            var modal = document.getElementById('myModal5');
+            modal.style.display = "block";
+        });
+    });
+    //Funciones del Modal FIRMAS
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal5');
+        var span = document.getElementById("close_modal5");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    //Crear Objetivo
+    $(function () {
+        $("#crearobjetivo").bind("click", function () {
+            $("#val-descripcion").css("display", "none");
+            $("#val-descripcion").text('');
+            $("#val-metas").css("display", "none");
+            $("#val-metas").text('');
+            $("#val-recursoshumanos").css("display", "none");
+            $("#val-recursoshumanos").text('');
+            $("#val-recursostecnologico").css("display", "none");
+            $("#val-recursostecnologico").text('');
+            $("#val-recursosfinanciero").css("display", "none");
+            $("#val-recursosfinanciero").text('');
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Descripcion").val();
+            stringArray[1] = $("#Metas").val();
+            stringArray[2] = $("#RecursosHumanos").val();
+            stringArray[3] = $("#RecursosTecnologico").val();
+            stringArray[4] = $("#RecursosFinanicero").val();
+            stringArray[5] = $("#IdPlanTrabajo").val();
+            var EDAplicacionPlanTrabajoDetalle = {
+                Objetivo: stringArray[0],
+                Metas: stringArray[1],
+                RecursoHumano: stringArray[2],
+                RecursoTec: stringArray[3],
+                RecursoFinanciero: stringArray[4],
+                Fk_Id_PlanTrabajo: stringArray[5]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/CrearObjetivo',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajoDetalle: EDAplicacionPlanTrabajoDetalle }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-descripcion").css("display", "block");
+                            $("#val-descripcion").text(data.Validacion[0]);
+                        }
+                        if (data.boolValidacion[1] == true) {
+                            $("#val-metas").css("display", "block");
+                            $("#val-metas").text(data.Validacion[1]);
+                        }
+                        if (data.boolValidacion[2] == true) {
+                            $("#val-recursoshumanos").css("display", "block");
+                            $("#val-recursoshumanos").text(data.Validacion[2]);
+                        }
+                        if (data.boolValidacion[3] == true) {
+                            $("#val-recursostecnologico").css("display", "block");
+                            $("#val-recursostecnologico").text(data.Validacion[3]);
+                        }
+                        if (data.boolValidacion[4] == true) {
+                            $("#val-recursosfinanciero").css("display", "block");
+                            $("#val-recursosfinanciero").text(data.Validacion[4]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Actualizar Objetivo
+    $(function () {
+        $("#actualizarobjetivo").bind("click", function () {
+            $("#val-descripcionUp").css("display", "none");
+            $("#val-descripcionUp").text('');
+            $("#val-metasUp").css("display", "none");
+            $("#val-metasUp").text('');
+            $("#val-recursoshumanosUp").css("display", "none");
+            $("#val-recursoshumanosUp").text('');
+            $("#val-recursostecnologicoUp").css("display", "none");
+            $("#val-recursostecnologicoUp").text('');
+            $("#val-recursosfinancieroUp").css("display", "none");
+            $("#val-recursosfinancieroUp").text('');
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+    function postGuardar1() {
+        this.launchGuardar1 = function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#DescripcionUp").val();
+            stringArray[1] = $("#MetasUp").val();
+            stringArray[2] = $("#RecursosHumanosUp").val();
+            stringArray[3] = $("#RecursosTecnologicoUp").val();
+            stringArray[4] = $("#RecursosFinaniceroUp").val();
+            stringArray[5] = $("#IdPlanTrabajo").val();
+            stringArray[6] = $("#IdObjetivoUp").val();
+
+            var EDAplicacionPlanTrabajoDetalle = {
+                Pk_Id_PlanTrabajoDetalle: stringArray[6],
+                Objetivo: stringArray[0],
+                Metas: stringArray[1],
+                RecursoHumano: stringArray[2],
+                RecursoTec: stringArray[3],
+                RecursoFinanciero: stringArray[4],
+                Fk_Id_PlanTrabajo: stringArray[5]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/ActualizarObjetivo',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajoDetalle: EDAplicacionPlanTrabajoDetalle }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.respuesta == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        if (data.boolValidacion[0] == true) {
+                            $("#val-descripcionUp").css("display", "block");
+                            $("#val-descripcionUp").text(data.Validacion[0]);
+                        }
+                        if (data.boolValidacion[1] == true) {
+                            $("#val-metasUp").css("display", "block");
+                            $("#val-metasUp").text(data.Validacion[1]);
+                        }
+                        if (data.boolValidacion[2] == true) {
+                            $("#val-recursoshumanosUp").css("display", "block");
+                            $("#val-recursoshumanosUp").text(data.Validacion[2]);
+                        }
+                        if (data.boolValidacion[3] == true) {
+                            $("#val-recursostecnologicoUp").css("display", "block");
+                            $("#val-recursostecnologicoUp").text(data.Validacion[3]);
+                        }
+                        if (data.boolValidacion[4] == true) {
+                            $("#val-recursosfinancieroUp").css("display", "block");
+                            $("#val-recursosfinancieroUp").text(data.Validacion[4]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Datepicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('ActFecha');
+        ConstruirDatePickerPorElemento('ActFechaUp');
+    });
+    // Buscar por Cédula Crear Actividad
+    $(document).ready(function () {
+        $("#ActIdentidad").on('keyup', function () {
+
+            $("#ActNombre").val(null);
+            $("#ActNombre").text(null);
+
+            if ($(this).val().length > 5) {
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/PlanTrabajo/BuscarPersonaDocumentoCargo1",
+                    data: '{documento: "' + $("#ActIdentidad").val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        OcultarPopupposition();
+                        var PersonaArray = new Array();
+                        var PersonaArray1 = new Array();
+                        var array = [];
+                        if (response.RelacionLaboral != null) {
+                            PersonaArray = response.RelacionLaboral;
+
+                            for (var i in PersonaArray) {
+                                if (PersonaArray.hasOwnProperty(i) && !isNaN(+i)) {
+                                    array[+i] = PersonaArray[i];
+                                }
+                            }
+                        }
+                        $.each(array, function (array1, group) {
+                            var NombreS = group.Nombre1;
+                            $("#ActNombre").val(NombreS);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        OcultarPopupposition();
+                        var value = "";
+                        $("#ActNombre").val(value);
+                    }
+                });
+
+
+            }
+
+
+        });
+    });
+    // Buscar por Cédula Actualizar Actividad
+    $(document).ready(function () {
+        $("#ActIdentidadUp").on('keyup', function () {
+            if ($(this).val().length > 5) {
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/PlanTrabajo/BuscarPersonaDocumentoCargo1",
+                    data: '{documento: "' + $("#ActIdentidadUp").val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        OcultarPopupposition();
+                        var PersonaArray = new Array();
+                        var PersonaArray1 = new Array();
+                        var array = [];
+                        if (response.RelacionLaboral != null) {
+                            PersonaArray = response.RelacionLaboral;
+
+                            for (var i in PersonaArray) {
+                                if (PersonaArray.hasOwnProperty(i) && !isNaN(+i)) {
+                                    array[+i] = PersonaArray[i];
+                                }
+                            }
+                        }
+                        $.each(array, function (array1, group) {
+                            var NombreS = group.Nombre1;
+                            $("#ActNombreUp").val(NombreS);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        OcultarPopupposition();
+                        var value = "";
+                        $("#ActNombreUp").val(value);
+                    }
+                });
+
+
+            }
+
+
+        });
+    });
+    // Buscar por Cédula Rep Legal
+    $(document).ready(function () {
+        $("#RepLegalDocumento").on('keyup', function () {
+            if ($(this).val().length > 5) {
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/PlanTrabajo/BuscarPersonaDocumentoCargo1",
+                    data: '{documento: "' + $("#RepLegalDocumento").val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        OcultarPopupposition();
+                        var PersonaArray = new Array();
+                        var PersonaArray1 = new Array();
+                        var array = [];
+                        if (response.RelacionLaboral != null) {
+                            PersonaArray = response.RelacionLaboral;
+
+                            for (var i in PersonaArray) {
+                                if (PersonaArray.hasOwnProperty(i) && !isNaN(+i)) {
+                                    array[+i] = PersonaArray[i];
+                                }
+                            }
+                        }
+                        $.each(array, function (array1, group) {
+                            var NombreS = group.Nombre1;
+                            $("#RepLegalNombre").val(NombreS);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        OcultarPopupposition();
+                        var value = "";
+                        $("#RepLegalNombre").val(value);
+                    }
+                });
+
+
+            }
+
+
+        });
+    });
+    // Buscar por Cédula SGSST
+    $(document).ready(function () {
+        $("#RepSGSSTDocumento").on('keyup', function () {
+            if ($(this).val().length > 5) {
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/PlanTrabajo/BuscarPersonaDocumentoCargo1",
+                    data: '{documento: "' + $("#RepSGSSTDocumento").val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        OcultarPopupposition();
+                        var PersonaArray = new Array();
+                        var PersonaArray1 = new Array();
+                        var array = [];
+                        if (response.RelacionLaboral != null) {
+                            PersonaArray = response.RelacionLaboral;
+
+                            for (var i in PersonaArray) {
+                                if (PersonaArray.hasOwnProperty(i) && !isNaN(+i)) {
+                                    array[+i] = PersonaArray[i];
+                                }
+                            }
+                        }
+                        $.each(array, function (array1, group) {
+                            var NombreS = group.Nombre1;
+                            $("#RepSGSSTNombre").val(NombreS);
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        OcultarPopupposition();
+                        var value = "";
+                        $("#RepSGSSTNombre").val(value);
+                    }
+                });
+
+
+            }
+
+
+        });
+    });
+    
+
+
+    //Cargar Imagenes Replegal
+    $(function () {
+        $('#AgregarFirmaRes').click(function () {
+            var LimiteMb = $('#MB_limit').val();
+            var Img = "#Imagen_0";
+            var ImgD = "#Imagen_D_0";
+            var ImgContainer = "#Imagen_C_0"
+            var LabelImagen = $(Img);
+
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#UploadPhotoRes").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $(Img).val());
+                    fileData.append('extraParam2', $(ImgD).val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/PlanTrabajo/UploadImg',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        OcultarPopupposition();
+                        fileUpload.value = "";
+                        $("#val-error-imagen").css("display", "none");
+                        $("#val-error-imagen").text('');
+                        if (result.probar == false) {
+
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen de la firma no pudo ser adjuntada",
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+
+                            $("#val-error-imagen").text(result.resultado);
+                            $("#val-error-imagen").css("display", "block");
+
+                            
+                        }
+                        else {
+
+                            $(ImgContainer).attr("src", result.Thumbnails);
+
+                            $(Img).val(result.NombreArchivos);
+                            $(ImgD).val(result.NombreArchivos_short);
+                            LabelImagen = result.NombreArchivos;
+                            if (result.display == true) {
+                                $(ImgContainer).css("display", "");
+                                $("#EliminarImagen").css("display", "");
+                            }
+                            else {
+                                $(ImgContainer).css("display", "none");
+                                $("#EliminarImagen").css("display", "none");
+                            }
+
+                            $("#val-error-imagen").css("display", "none");
+                            $("#val-error-imagen").text('');
+
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen de la firma adjuntada correctamente",
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                        }
+                        
+                    }
+                    ,
+                    error: function (err) {
+                        var Error_response = err.responseText;
+                        if (Error_response.indexOf("la longitud de solicitud") >= 0) {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen de la firma no pudo ser adjuntada",
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                            $("#val-error-imagen").text("Error al cargar el archivo, la imagen debe tener un tamaño máximo de " + LimiteMb + "MB");
+                            $("#val-error-imagen").css("display", "block");
+                        }
+                        else {
+                            $("#val-error-imagen").text("Error al cargar el archivo");
+                            $("#val-error-imagen").css("display", "block");
+                        }
+                        fileUpload.value = "";
+
+                        OcultarPopupposition();
+                    }
+                });
+            }
+            else {
+            }
+        });
+    });
+    //Eliminar Imagenes
+    $(function () {
+        $("#EliminarImagen").click(function () {
+
+            var Img = "#Imagen_0";
+            var ImgD = "#Imagen_D_0"
+            var ImgContainer = "#Imagen_C_0"
+            var LabelImagen = $(Img).val();
+
+            $(ImgContainer).css("display", "none");
+            $("#EliminarImagen").css("display", "none");
+            $(Img).val(null);
+            $(ImgD).val(null);
+            $(ImgContainer).attr("src", null);
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/EliminarImg",
+                data: '{ruta: "' + LabelImagen + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            $("#val-error-imagen").css("display", "none");
+            $("#val-error-imagen").text('');
+
+        });
+
+    });
+    //Cargar Imagenes Sgsst
+    $(function () {
+        $('#AgregarFirmasggst').click(function () {
+            var LimiteMb = $('#MB_limit').val();
+            var Img = "#Imagen_1";
+            var ImgD = "#Imagen_D_1";
+            var ImgContainer = "#Imagen_C_1"
+            var LabelImagen = $(Img);
+
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#UploadPhotosgsst").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $(Img).val());
+                    fileData.append('extraParam2', $(ImgD).val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/PlanTrabajo/UploadImg',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        OcultarPopupposition();
+                        fileUpload.value = "";
+                        $("#val-error-imagen1").css("display", "none");
+                        $("#val-error-imagen1").text('');
+                        if (result.probar == false) {
+
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen de la firma no pudo ser adjuntada",
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+
+                            $("#val-error-imagen1").text(result.resultado);
+                            $("#val-error-imagen1").css("display", "block");
+
+                            
+                        }
+                        else {
+
+                            alert(result.Thumbnails);
+
+
+                            $(ImgContainer).attr("src", result.Thumbnails);
+
+                            $(Img).val(result.NombreArchivos);
+                            $(ImgD).val(result.NombreArchivos_short);
+                            LabelImagen = result.NombreArchivos;
+                            if (result.display == true) {
+                                $(ImgContainer).css("display", "");
+                                $("#EliminarImagen1").css("display", "");
+                            }
+                            else {
+                                $(ImgContainer).css("display", "none");
+                                $("#EliminarImagen1").css("display", "none");
+                            }
+
+                            $("#val-error-imagen1").css("display", "none");
+                            $("#val-error-imagen1").text('');
+
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen de la firma adjuntada correctamente",
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                        }
+                        
+                    }
+                    ,
+                    error: function (err) {
+                        var Error_response = err.responseText;
+                        if (Error_response.indexOf("la longitud de solicitud") >= 0) {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: "Imagen de la firma no pudo ser adjuntada",
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                            $("#val-error-imagen1").text("Error al cargar el archivo, la imagen debe tener un tamaño máximo de " + LimiteMb + "MB");
+                            $("#val-error-imagen1").css("display", "block");
+                        }
+                        else {
+                            $("#val-error-imagen1").text("Error al cargar el archivo");
+                            $("#val-error-imagen1").css("display", "block");
+                        }
+                        fileUpload.value = "";
+
+                        OcultarPopupposition();
+                    }
+                });
+            }
+            else {
+            }
+        });
+    });
+    //Eliminar Imagenes
+    $(function () {
+        $("#EliminarImagen1").click(function () {
+
+            var Img = "#Imagen_1";
+            var ImgD = "#Imagen_D_1"
+            var ImgContainer = "#Imagen_C_1"
+            var LabelImagen = $(Img).val();
+
+            $(ImgContainer).css("display", "none");
+            $("#EliminarImagen1").css("display", "none");
+            $(Img).val(null);
+            $(ImgD).val(null);
+            $(ImgContainer).attr("src", null);
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/EliminarImg",
+                data: '{ruta: "' + LabelImagen + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+            $("#val-error-imagen1").css("display", "none");
+            $("#val-error-imagen1").text('');
+
+        });
+
+    });
+    //Guardar Firmas
+    $(function () {
+        $("#guardarfirmas").bind("click", function () {
+            var onEventLaunchGuardar4 = new postGuardar4();
+            onEventLaunchGuardar4.launchGuardar4();
+        });
+    });
+    function postGuardar4() {
+        this.launchGuardar4 = function () {
+            var stringArray = new Array();
+            var ListaEPPCargos = new Array();
+
+
+            stringArray[0] = $("#RepLegalNombre").val();
+            stringArray[1] = $("#RepLegalDocumento").val();
+            stringArray[2] = $("#RepSGSSTNombre").val();
+            stringArray[3] = $("#RepSGSSTDocumento").val();
+
+
+            stringArray[4] = $("#Imagen_0").val();
+            stringArray[5] = $("#Imagen_D_0").val();
+            stringArray[6] = $("#Imagen_1").val();
+            stringArray[7] = $("#Imagen_D_1").val();
+
+            stringArray[7] = $("#IdPlanTrabajo").val();
+
+            
+            var Guardar = {
+                RepLegalNombre: stringArray[0],
+                RepLegalDocumento: stringArray[1],
+                RepSGSSTNombre: stringArray[2],
+                RepSGSSTDocumento: stringArray[3],
+                RepLegalImagen: stringArray[4],
+                RepSGSSTImagen: stringArray[6],
+                Pk_Id_PlanTrabajo: stringArray[7]
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PlanTrabajo/GuardarEditarPlanTrabajo',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ EDAplicacionPlanTrabajo: Guardar }),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    if (data.Probar == false) {
+                        if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        swal("Estimado Usuario", data.Estado, "error");
+                    }
+                    else {
+
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "Se ha modificado la información del representante legal y del representante del SGSST",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location.href = "/PlanTrabajo/EditarPlanTrabajo?Pk_Id_PlanTrabajo=" + data.url + ""
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+
+
+    function eliminarObjetivoPlanTrabajo(elemeneto, idObjetivoPlanTrabajo) {    
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar el objetivo del plan de trabajo ?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/EliminarObjetivoPlanDeTrabajo",
+                data: '{Pk_Id_ObjetivoPlanTrabajo: "' + idObjetivoPlanTrabajo + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.probar == false) {
+                        if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                        function () {
+                            location.reload(true);
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+        });
+    };
+    function EliminarActividadPlanDeTrabajo() {    
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar la actividad el objetivo del plan de trabajo ?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/EliminarActividadPlanDeTrabajo",
+                data: '{Pk_Id_ActividadPlanTrabajo: "' + $("#IdActUp").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.probar == false) {
+                        if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+
+                            location.reload(true);
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                        function () {
+                            location.reload(true);
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+        });
+    };
+    function EliminarProgramaPlanDeTrabajo() {    
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar el programa de la actividad?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/PlanTrabajo/EliminarProgramaPlanDeTrabajo",
+                data: '{Pk_Id_ProgramaPlanTrabajo: "' + $("#IdProgUp").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    if (response.probar == false) {
+                        if (response.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: response.resultado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                        function () {
+                            location.reload(true);
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+        });
+    };
+</script>
+@{
+    string MB_limit = ViewBag.LimiteMB.ToString();
+    @Html.Hidden("MB_limit", @MB_limit);
+}
+@Html.Hidden("IdPlanTrabajo",Model.Pk_Id_PlanTrabajo)
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">MODIFICAR PLAN DE TRABAJO</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / MODIFICAR PLAN DE TRABAJO</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para crear un objetivo del plan de trabajo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Presione <button type="button" class="boton botonactive" style="cursor:default;">CREAR OBJETIVO</button> </p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Diligencie el formulario completo y presione  <button type="button" class="boton botonactive" style="cursor:default;">CREAR OBJETIVO</button> para guardar el objetivo </p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para editar un objetivo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija un objetivo (fila) en la tabla principal y presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para desplegar un formulario que le permitirá editar el objetivo </p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Diligencie el formulario completo y presione  <button type="button" class="boton botonactive" style="cursor:default;">ACTUALIZAR OBJETIVO</button> para modificar el objetivo </p>
+
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para crear una actividad dentro de un objetivo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija un objetivo (fila) en la tabla principal y presione <i class="glyphicon glyphicon-plus" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para desplegar un formulario que le permitirá crear una actividad</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Diligencie el formulario, en este formulario todos los campos son obligatorios salvo <strong>Observaciones</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3. presione  <button type="button" class="boton botonactive" style="cursor:default;">CREAR ACTIVIDAD</button> para crear la actividad dentro del objetivo elegido</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para editar una actividad</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija una actividad en la tabla principal y presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para desplegar un formulario que le permitirá editar una actividad</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Diligencie el formulario, en este formulario todos los campos son obligatorios salvo <strong>Observaciones</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3. presione  <button type="button" class="boton botonactive" style="cursor:default;">ACTUALIZAR ACTIVIDAD</button> para actualizar la actividad seleccionada</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para agregar programación a una actividad</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija una actividad y presione <i class="glyphicon glyphicon-calendar" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para desplegar un formulario que le permitirá agregar un registro al cronograma</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. La <strong>fecha de programación</strong> debe estar dentro del rango de fechas establecidas en la creación del plan de trabajo.</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo 1:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:60%;" src="~/Content/Plantrabajo/Imagenes/plantrab3.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo 2:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:60%;" src="~/Content/Plantrabajo/Imagenes/plantrab4.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3. presione  <button type="button" class="boton botonactive" style="cursor:default;">CREAR PROGRAMA</button> para agregar un registro al cronograma</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para editar un registro del cronograma</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija un registro del cronograma y presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para desplegar un formulario que le permitirá editar el registro</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:60%;" src="~/Content/Plantrabajo/Imagenes/plantrab1.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Si desea reprogramar la actividad el campo <strong>fecha de programación</strong> debe estar dentro del rango de fechas establecidas en la creación del plan de trabajo.</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo 1:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:60%;" src="~/Content/Plantrabajo/Imagenes/plantrab5.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo 2:</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:60%;" src="~/Content/Plantrabajo/Imagenes/plantrab6.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3. Para cambiar el estado de una actividad a <strong>Ejecutada</strong>, el usuario debe selecionar en la pregunta <strong>Ejecutada?</strong> dentro del mismo formulario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo 1 (actividad no ejecutada):</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:50%;" src="~/Content/Plantrabajo/Imagenes/plantrab8.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Ejemplo 2 (actividad ejecutada):</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:50%;" src="~/Content/Plantrabajo/Imagenes/plantrab7.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">4. presione  <button type="button" class="boton botonactive" style="cursor:default;">ACTUALIZAR PROGRAMA</button> para actualizar el registro del cronograma</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para agregar firmas del representante legal y del representante de SGSST</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Presione <button type="button" class="boton botonactive" style="cursor:default;">FIRMAS</button> que es un botón que se encuentra en la parte inferior de la presente página</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. En el formulario que aparece digite nombre y número de documento del <strong>representante legal</strong> y <strong>representante de SGSST</strong> si es necesario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">3. Para adjuntar la imagen de la firma de los representantes seleccione la imagen de su equipo y presione  <button type="button" class="boton botonactive" style="cursor:default;">ADJUNTAR FIRMA</button> para adjuntar la imagen</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">4. Para eliminar la imagen de la firma de los representantes presione  <button type="button" class="boton botonactive" style="cursor:default;">QUITAR FIRMA</button> para eliminar la imagen</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">5. Cuando termine de diligenciar el formulario presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR</button> para actualizar el plan de trabajo con la información de los representantes</p>
+
+
+
+
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones exportar a hoja de cálculo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Presione <button type="button" class="boton botonactive" style="cursor:default;">EXPORTAR</button> que es un botón que se encuentra en la parte inferior de la presente página</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para eliminar un objetivo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija un objetivo (fila) en la tabla principal y presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para elimininar un objetivo. Si el objetivo del plan de trabajo tiene actividades no se permite la eliminación hasta que el usuario no elimine primero las actividades de este objetivo</p>
+                                
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones para eliminar una actividad</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">1. Elija una actividad en la tabla principal y presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i> para desplegar un formulario que le permitirá eliminar una actividad</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">2. Presione <button type="button" class="boton botonactive" style="cursor:default;">ELIMINAR ACTIVIDAD</button></p>
+                                
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Estado de un registro del cronograma</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:40%;" src="~/Content/Plantrabajo/Imagenes/plantrab11.png" /> Estado: Actividad programada</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:40%;" src="~/Content/Plantrabajo/Imagenes/plantrab9.png" /> Estado: Actividad reprogramada</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:40%;" src="~/Content/Plantrabajo/Imagenes/plantrab10.png" /> Estado: Actividad Ejecutada</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><img style="max-width:40%;" src="~/Content/Plantrabajo/Imagenes/plantrab12.png" /> Estado: Actividad no se ejecutó en la fecha programada o reprogramada según sea el caso; es necesario reprogramar</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="col-xs-3">
+                    <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                    <input id="Fk_Id_Sede" name="Fk_Id_Sede" value="@Model.NombreSede" class="form-control" readonly />
+                </div>
+                <div class="col-xs-3">
+                    <h5><b>Fecha inicio período:</b></h5>
+                    <input type="date" name="FechaInicio" id="FechaInicio" class=" form-control" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="col-xs-3">
+                    <h5><b>Fecha fin período:</b></h5>
+                    <input type="date" name="FechaFinal" id="FechaFinal" class=" form-control" value="@Model.FechaFinal.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="col-xs-3">
+                    <h5><b>Vigencia:</b></h5>
+                    <input type="text" name="FechaFinal" id="FechaFinal" class=" form-control" value="@Model.Vigencia" readonly />
+                </div>
+                <div class="col-xs-6">
+                    <h5><b>Origen:</b></h5>
+                    <input id="origen" name="origen" value="@Model.Tipo" class="form-control" readonly />
+                </div>
+
+            </div>
+        </div>
+        <div class="row add-top-margin-10em">
+            <div class="col-xs-12">
+                <center><button id="CrearObjetivo"  class="boton botonactive col-margin">CREAR OBJETIVO</button></center>
+            </div>
+        </div>
+        @{ 
+            int numeromeses = Model.ListaMeses.Count();
+            int span = numeromeses + 7+10;
+
+        }
+        <div class="row add-top-margin-10em add-side-padding">
+            <div class="col-xs-12 " style="overflow:scroll; max-height:500px">
+                <table id="Grid3" class="table  table-responsive" style="border-right: 2px solid lightslategray;border-top: 2px solid lightslategray;border-bottom: 2px solid lightslategray">
+
+                    <thead style="border-left:2px solid lightslategray;">
+                        <tr class="titulos_tabla" style="font-size:12px;">
+                            <th colspan="@span.ToString()" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>LISTADO OBJETIVOS DEL PLAN DE TRABAJO</span>
+                            </th>
+                        </tr>
+                        <tr class="titulos_tabla" style="font-size:12px;">
+
+                            <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:300px">
+                                <span>OBJETIVO</span>
+                            </th>
+                            <th colspan="3" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:300px">
+                                <span>RECURSOS</span>
+                            </th>
+                            <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:300px">
+                                <span></span>
+                            </th>
+                            <th colspan="@Model.ListaMeses.Count()" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>CRONOGRAMA</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:150px">
+                                <span></span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;min-width:140px">
+                                <span></span>
+                            </th>
+                        </tr>
+                        <tr class="titulos_tabla" style="font-size:12px;">
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>DESCRIPCIÓN</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>METAS</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>HUMANO</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>TECNOLÓGICO</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>FINANCIERO</span>
+                            </th>
+                            <th colspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>ACTIVIDAD</span>
+                            </th>
+
+                            @{
+                                foreach (var item in Model.ListaMeses)
+                                {
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        <span>@item.mes.ToUpper()</span>
+                                    </th>
+                                }
+                            }
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>PORCENTAJE DE EJECUCIÓN</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>ACCIONES</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-left:2px solid lightslategray;">
+                        @{
+
+                            foreach (var item in Model.ListaDetalles)
+                            {
+                                var numeroactividades = item.ListaActividades.Count();
+                                int contfilas = 0;
+                                foreach (var item1 in item.ListaActividades)
+                                {
+                                    int numeroAct1 = 0;
+                                    int numeroEjec1 = 0;
+                                    <tr>
+                                        @if (contfilas == 0)
+                                        {
+                                            
+                                        <td rowspan="@numeroactividades" style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.Objetivo</span>
+                                        </td>
+                                        <td rowspan="@numeroactividades" style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.Metas</span>
+                                        </td>
+                                        <td rowspan="@numeroactividades" style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.RecursoHumano</span>
+                                        </td>
+                                        <td rowspan="@numeroactividades" style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.RecursoTec</span>
+                                        </td>
+                                        <td rowspan="@numeroactividades" style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.RecursoFinanciero</span>
+                                        </td>
+
+                                        }
+                                        <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item1.Descripcion</span>
+                                        </td>
+                                        <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                            <a name="@item1.Pk_Id_PlanTrabajoActividad.ToString()" href="#" class="btn btn-sm btn-positiva NuevoPrograma" title="Nueva Programacion" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </a>
+                                            <a name="@item1.Pk_Id_PlanTrabajoActividad.ToString()" name1="@item.Pk_Id_PlanTrabajoDetalle.ToString()" href="#" class="btn btn-sm btn-positiva actualizaractividadbtn" title="Editar Actividad" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                        </td>
+                                        @foreach (var item2 in Model.ListaMeses)
+                                        {
+                                            var ListaActividades = item1.ListaProgramacion.Where(s => s.FechaProgramacionIncial >= item2.fecha_inicio && s.FechaProgramacionIncial <= item2.fecha_despues).ToList();
+                                            <td style="border: 2px solid lightslategray;  text-align:left;">
+                                                @{
+                                                    if (ListaActividades != null)
+                                                    {
+                                                        <ul class="list-inline" id="ul_masivo" style="padding-left:5px;display:inline-block">
+                                                            @{
+                                                                foreach (var item3 in ListaActividades)
+                                                                {
+                                                                    numeroAct1++;
+                                                                    string title = "";
+                                                                    if (item3.Observaciones!=null)
+                                                                    {
+                                                                        if (item3.Observaciones != "")
+                                                                        {
+                                                                            title = "OBSERVACIONES: " + item3.Observaciones;
+                                                                        }
+                                                                    }
+                                                                    string tamaño = "135px";
+                                                                    if (DateTime.Now > item3.FechaEstado && item3.Estado!=3) {
+
+                                                                        if (item3.Observaciones != null)
+                                                                        {
+                                                                            if (item3.Observaciones != "")
+                                                                            {
+                                                                                title += " - ";
+                                                                            }
+                                                                        }
+                                                                        title += "No se ejecutó en la fecha programada, por favor reprograme la fecha de esta actividad";
+                                                                        tamaño = "165px";
+                                                                    }
+
+                                                                    if (item3.Estado == 1)
+                                                                    {
+
+                                                                        <li class="list-inline-item" style="text-align:left;background-color:#1ea8be;height:auto;color:white;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;display:inline-block;float: left;min-width:@tamaño;" title="@title">
+                                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                                            <span>@item3.FechaEstado.ToShortDateString()</span>
+                                                                            <a name="@item3.Pk_Id_AplicacionPlanTrabajoProgramacion" name1="@item1.Pk_Id_PlanTrabajoActividad" style="border:none;" class="btn btn-search btn-md actualizarprograma" title="Editar Programa"><span class="glyphicon glyphicon-pencil" style="color:black;"></span></a>
+                                                                            @if (DateTime.Now > item3.FechaEstado)
+                                                                {
+                                                                                <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
+                                                                            }
+
+                                                                            @*<a name="@item3.Pk_Id_AplicacionPlanTrabajoProgramacion" style="border:none;" class="btn btn-search btn-md veractividad" title="Ver Actividad"><span class="glyphicon glyphicon-search" style="color:black;"></span></a>*@
+                                                                        </li>
+                                                                    }
+                                                                    if (item3.Estado == 2)
+                                                                    {
+                                                                        <li class="list-inline-item" style="text-align:left;background-color:#db943d;height:auto;color:white;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;display:inline-block;float: left;min-width:@tamaño;" title="@title">
+                                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                                            <span>@item3.FechaEstado.ToShortDateString()</span>
+                                                                            <a name="@item3.Pk_Id_AplicacionPlanTrabajoProgramacion" name1="@item1.Pk_Id_PlanTrabajoActividad" style="border:none;" class="btn btn-search btn-md actualizarprograma" title="Editar Programa"><span class="glyphicon glyphicon-pencil" style="color:black;"></span></a>
+                                                                            @*<a name="@item3.Pk_Id_AplicacionPlanTrabajoProgramacion" style="border:none;" class="btn btn-search btn-md veractividad" title="Ver Actividad"><span class="glyphicon glyphicon-search" style="color:black;"></span></a>*@
+                                                                        @if (DateTime.Now > item3.FechaEstado)
+                                                                        {
+                                                                            <span style="color:red" class="glyphicon glyphicon-exclamation-sign"></span>
+                                                                        }
+                                                                        </li>
+                                                                    }
+                                                                    if (item3.Estado == 3)
+                                                                    {
+                                                                        numeroEjec1++;
+                                                                        <li class="list-inline-item" style="text-align:left;background-color:#7ac851;height:auto;color:white;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;display:inline-block;float: left;min-width:@tamaño;" title="@title">
+                                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                                            <span>@item3.FechaEstado.ToShortDateString()</span>
+                                                                            <a name="@item3.Pk_Id_AplicacionPlanTrabajoProgramacion" name1="@item1.Pk_Id_PlanTrabajoActividad" style="border:none;" class="btn btn-search btn-md actualizarprograma" title="Editar Programa"><span class="glyphicon glyphicon-pencil" style="color:black;"></span></a>
+                                                                            @*<a name="@item3.Pk_Id_AplicacionPlanTrabajoProgramacion" style="border:none;" class="btn btn-search btn-md veractividad" title="Ver Actividad"><span class="glyphicon glyphicon-search" style="color:black;"></span></a>*@
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </ul>
+                                                                }
+                                                }
+                                            </td>
+                                                                }
+
+                                        <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                            @{
+                                                if (numeroAct1 > 0)
+                                                {
+                                                    decimal porcentaje = (decimal)numeroEjec1 / (decimal)numeroAct1;
+                                                    string decimalstr = String.Format("{0:P1}", porcentaje);
+                                                    <span>@decimalstr</span>
+                                                }
+                                                else
+                                                {
+                                                    <span></span>
+                                                }
+                                            }
+                                        </td>
+                                        @if (contfilas == 0)
+                                        {
+                                            <td rowspan="@numeroactividades" style="border: 2px solid lightslategray;border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                                <a id="@item.Pk_Id_PlanTrabajoDetalle.ToString()" onclick="eliminarObjetivoPlanTrabajo(this, @item.Pk_Id_PlanTrabajoDetalle)" name="" class="btn btn-sm btn-positiva eliminarobjetivo" title="Eliminar Objetivo" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                <a id="CrearObjetivoUp" name="@item.Pk_Id_PlanTrabajoDetalle.ToString()" href="#" class="btn btn-sm btn-positiva" title="Editar Objetivo" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </a>
+                                                <a name="@item.Pk_Id_PlanTrabajoDetalle.ToString()" href="#" class="btn btn-sm btn-positiva NuevaActividad" title="Nueva Actividad" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </a>
+                                            </td>
+                                        }
+                                        
+                                    </tr>
+                                    contfilas++;
+                                }
+                                if (numeroactividades == 0)
+                                {
+                                    <tr>
+                                        <td  style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.Objetivo</span>
+                                        </td>
+                                        <td  style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.Metas</span>
+                                        </td>
+                                        <td  style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.RecursoHumano</span>
+                                        </td>
+                                        <td  style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.RecursoTec</span>
+                                        </td>
+                                        <td  style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span>@item.RecursoFinanciero</span>
+                                        </td>
+                                        <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span></span>
+                                        </td>
+                                        <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span></span>
+                                        </td>
+                                        @foreach (var item1 in Model.ListaMeses)
+                                        {
+                                            <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                                <span></span>
+                                            </td>
+                                        }
+                                        <td style="border: 2px solid lightslategray; vertical-align:middle; text-align:justify;">
+                                            <span></span>
+                                        </td>
+                                        <td  style="border: 2px solid lightslategray;border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                            <a id="@item.Pk_Id_PlanTrabajoDetalle.ToString()" onclick="eliminarObjetivoPlanTrabajo(this, @item.Pk_Id_PlanTrabajoDetalle)" name="" class="btn btn-sm btn-positiva eliminarobjetivo" title="Eliminar Objetivo" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+                                            <a id="CrearObjetivoUp" name="@item.Pk_Id_PlanTrabajoDetalle.ToString()" href="#" class="btn btn-sm btn-positiva" title="Editar Objetivo" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                            <a name="@item.Pk_Id_PlanTrabajoDetalle.ToString()" href="#" class="btn btn-sm btn-positiva NuevaActividad" title="Nueva Actividad" style="height:35px;margin-bottom:5px">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+                        }
+
+                        @{
+                            if (Model.ListaDetalles.Count() == 0)
+                            {
+                                <tr>
+                                    <td colspan="@span.ToString()" style="border: 2px solid lightslategray; vertical-align:middle; text-align:center;">
+                                        <span>No existen registros</span>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+                        
+                    </tbody>
+                    <thead style="background-color:none;color:black;">
+                        <tr  style="font-size:12px;background-color:none;">
+                            <th colspan="6" style="border-top:2px solid lightslategray;border-bottom:2px solid #f9faf9;border-right:2px solid #f9faf9;background-color:none; text-align:right;vertical-align:middle;">
+
+                            </th>
+                            <th  style="border-left:2px solid #f9faf9;border-top:2px solid lightslategray;border-bottom:2px solid lightslategray;border-right:2px solid lightslategray;background-color:none; text-align:right;vertical-align:middle;">
+
+                            </th>
+                            @{ 
+
+                            }
+                            @{
+                                foreach (var item in Model.ListaMeses)
+                                {
+                                    <th style="background-color:lightgray;border-top:2px solid lightslategray;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        <span>@item.mes.ToUpper()</span>
+                                    </th>
+                                }
+                            }
+                            <th  style="background-color:lightgray;border-top:2px solid lightslategray;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>TOTAL</span>
+                            </th>
+                        </tr>
+                        
+
+                    </thead>
+                    <tbody style="color:black">
+                        <tr style="font-size:12px;background-color:none;">
+                            <th colspan="6" style="border-top:2px solid lightslategray;border-bottom:2px solid #f9faf9;border-right:2px solid lightslategray;background-color:none; text-align:right;vertical-align:middle;">
+
+                            </th>
+                            <th style="background-color:lightgray;border:2px solid lightslategray;border-top:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>TOTAL ACTIVIDADES PROGRAMADAS</span>
+                            </th>
+                            @{
+                                int total1 = 0;
+                                int numeroActividades = 0;
+                                foreach (var item in Model.ListaMeses)
+                                {
+                                    int numact = 0;
+                                    foreach (var item1 in Model.ListaDetalles)
+                                    {
+                                        foreach (var item2 in item1.ListaActividades)
+                                        {
+                                            var ListaActividades1 = item2.ListaProgramacion.Where(s => s.FechaProgramacionIncial >= item.fecha_inicio && s.FechaProgramacionIncial <= item.fecha_despues).ToList();
+                                            if (ListaActividades1 != null)
+                                            {
+                                                numact += ListaActividades1.Count();
+                                                total1 += ListaActividades1.Count();
+                                            }
+                                        }
+                                    }
+
+                                    <th style="border:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        @{
+                                        if (numact > 0)
+                                        {
+                                                <span>@numact</span>
+                                            }
+                                        else
+                                        {
+                                                <span></span>
+                                            }
+                                    }
+
+
+                                    </th>
+                                }
+                            }
+                            <th style="border:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>@total1</span>
+                            </th>
+                        </tr>
+                        <tr style="font-size:12px;background-color:none;">
+                            <th colspan="6" style="border-top:2px solid lightslategray;border-bottom:2px solid #f9faf9;border-right:2px solid lightslategray;background-color:none; text-align:right;vertical-align:middle;">
+
+                            </th>
+                            <th style="background-color:lightgray;border:2px solid lightslategray;border-top:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>TOTAL ACTIVIDADES EJECUTADAS</span>
+                            </th>
+                            @{
+                                int total2 = 0;
+                                foreach (var item in Model.ListaMeses)
+                                {
+                                    int numact = 0;
+                                    foreach (var item1 in Model.ListaDetalles)
+                                    {
+                                        foreach (var item2 in item1.ListaActividades)
+                                        {
+                                            var ListaActividades1 = item2.ListaProgramacion.Where(s => s.FechaProgramacionIncial >= item.fecha_inicio && s.FechaProgramacionIncial <= item.fecha_despues && s.Estado == 3).ToList();
+                                            if (ListaActividades1 != null)
+                                            {
+                                                numact += ListaActividades1.Count();
+                                                total2 += ListaActividades1.Count();
+                                            }
+                                        }
+
+
+                                    }
+
+                                    <th style="border:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        @{
+                                            if (numact > 0)
+                                            {
+                                                <span>@numact</span>
+                                            }
+                                            else
+                                            {
+                                                <span></span>
+                                            }
+                                        }
+
+
+                                    </th>
+                                            }
+                            }
+                            <th style="border:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>@total2</span>
+                            </th>
+                        </tr>
+                        <tr style="font-size:12px;background-color:none;">
+                            <th colspan="6" style="border-top:2px solid lightslategray;border-bottom:2px solid #f9faf9;border-right:2px solid lightslategray;background-color:none; text-align:right;vertical-align:middle;">
+
+                            </th>
+                            <th style="background-color:lightgray;border:2px solid lightslategray;border-top:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>PORCENTAJE DE EJECUCIÓN MES</span>
+                            </th>
+                            @{
+                                int total3 = 0;
+                                int total4 = 0;
+                                foreach (var item in Model.ListaMeses)
+                                {
+                                    int numact = 0;
+                                    int numact1 = 0;
+                                    foreach (var item1 in Model.ListaDetalles)
+                                    {
+                                        foreach (var item2 in item1.ListaActividades)
+                                        {
+                                            var ListaActividades1 = item2.ListaProgramacion.Where(s => s.FechaProgramacionIncial >= item.fecha_inicio && s.FechaProgramacionIncial <= item.fecha_despues).ToList();
+                                            if (ListaActividades1 != null)
+                                            {
+                                                numact += ListaActividades1.Count();
+                                                total3 += ListaActividades1.Count();
+                                            }
+                                        }
+
+
+                                    }
+                                    foreach (var item1 in Model.ListaDetalles)
+                                    {
+                                        foreach (var item2 in item1.ListaActividades)
+                                        {
+                                            var ListaActividades1 = item2.ListaProgramacion.Where(s => s.FechaProgramacionIncial >= item.fecha_inicio && s.FechaProgramacionIncial <= item.fecha_despues && s.Estado == 3).ToList();
+                                            if (ListaActividades1 != null)
+                                            {
+                                                numact1 += ListaActividades1.Count();
+                                                total4 += ListaActividades1.Count();
+                                            }
+                                        }
+
+
+                                    }
+
+                                    <th style="border:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                        @{
+                                            if (numact > 0)
+                                            {
+                                                decimal porcentaje = (decimal)numact1 / (decimal)numact;
+                                                string decimalstr = String.Format("{0:P1}", porcentaje);
+                                                <span>@decimalstr</span>
+                                            }
+                                            else
+                                            {
+                                                <span></span>
+                                            }
+                                        }
+
+
+                                    </th>
+                                            }
+                            }
+                            <th style="border:2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                @{
+                                    if (total3 > 0)
+                                    {
+                                        decimal porcentaje = (decimal)total4 / (decimal)total3;
+                                        string decimalstr = String.Format("{0:P1}", porcentaje);
+                                        <span>@decimalstr</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@total2</span>
+                                    }
+                                }
+                                
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel-footer add-top-margin-10em">
+                <div class="row">
+                    
+                    <div class="col-md-4" style="margin-bottom:5px;">
+                        <button id="excel" onclick="location.href='@Url.Action("ExportarExcel", "PlanTrabajo", new { id = Model.Pk_Id_PlanTrabajo})';return false;"  class="boton botonactive col-margin">EXPORTAR</button>
+                    </div>
+                    <div class="col-md-4" style="margin-bottom:5px;">
+                        <button id="firmas"  class="boton botonactive col-margin">FIRMAS</button>
+                    </div>
+                    <div class="col-md-4" style="margin-bottom:5px;">
+                        <button id="regresar" onclick="location.href='@Url.Action("GestionarPlanesTrabajo", "PlanTrabajo")';return false;" class="boton botoninfo col-margin">REGRESAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div id="myModal" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <CENTER><H3>CREAR OBJETIVO</H3></CENTER>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Descripción del Objetivo</label>
+                @Html.TextArea("Descripcion", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-descripcion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Metas</label>
+                @Html.TextArea("Metas", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-metas" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Recursos Humanos</label>
+                @Html.TextArea("RecursosHumanos", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-recursoshumanos" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Recursos Tecnológicos</label>
+                @Html.TextArea("RecursosTecnologico", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-recursostecnologico" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Recursos Financieros</label>
+                @Html.TextArea("RecursosFinanicero", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-recursosfinanciero" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+        </div>
+            <div class="panel-footer add-top-margin-10em" style="background:none">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button id="crearobjetivo" class="boton botonactive col-margin">CREAR OBJETIVO</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button id="close_modal" class="boton botoncancel col-margin">CERRAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div id="myModal2" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <input id="IdObjetivoUp" type="text" style="display:none" />
+            <CENTER><H3>ACTUALIZAR OBJETIVO</H3></CENTER>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Descripción del Objetivo</label>
+                @Html.TextArea("DescripcionUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-descripcionUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Metas</label>
+                @Html.TextArea("MetasUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-metasUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Recursos Humanos</label>
+                @Html.TextArea("RecursosHumanosUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-recursoshumanosUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Recursos Tecnológicos</label>
+                @Html.TextArea("RecursosTecnologicoUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-recursostecnologicoUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Recursos Financieros</label>
+                @Html.TextArea("RecursosFinaniceroUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-recursosfinancieroUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+        </div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-6">
+                    <button id="actualizarobjetivo" class="boton botonactive col-margin">ACTUALIZAR OBJETIVO</button>
+                </div>
+                <div class="col-sm-6">
+                    <button id="close_modal2" class="boton botoncancel col-margin">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal1" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <input id="IdObjetivoAct" type="text" style="display:none" />
+            <CENTER><H3>CREAR ACTIVIDAD</H3></CENTER>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Descripción de la Actividad</label>
+                @Html.TextArea("ActDescripcion", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-ActDescripcion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-5" style="margin-bottom:5px;">
+                <label>Número de identidad del Responsable</label>
+                @Html.TextBox("ActIdentidad", null, new { @class = "form-control form-width-100", @placeholder="Escriba el documento para buscar la persona..." })
+                <span id="val-ActIdentidad" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Nombre del Responsable</label>
+                @Html.TextBox("ActNombre", null, new { @class = "form-control form-width-100" })
+                <span id="val-ActNombre" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Observaciones</label>
+                @Html.TextArea("ActObservaciones", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-ActObservaciones" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            @*<div class="col-md-3" style="margin-bottom:5px;">
+                <label>Fecha de Programación</label>
+                @Html.TextBox("ActFecha", null, new { @class = "form-control form-width-100" })
+                <span id="val-ActFecha" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-3" id="ActHoraDiv" style="margin-bottom:5px;">
+                <label>Hora de Programación</label>
+                @Html.TextBox("ActHora", null, new { @class = "form-control form-width-100" })
+                <span id="val-ActHora" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>*@
+
+
+            
+        </div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-6">
+                    <button id="crearactividad" class="boton botonactive col-margin">CREAR ACTIVIDAD</button>
+                </div>
+                <div class="col-sm-6">
+
+                    <button id="close_modal1" class="boton botoncancel col-margin">CERRAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div id="myModal3" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <input id="IdObjetivoActUp" type="text" style="display:none" />
+            <input id="IdActUp" type="text" style="display:none" />
+            <CENTER><H3>ACTUALIZAR ACTIVIDAD</H3></CENTER>
+
+            @*<div class="col-md-12" style="margin-bottom:5px;">
+                <label>Estado</label>
+                <span id="ActEstado"></span>
+            </div>*@
+
+
+
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Descripción de la Actividad</label>
+                @Html.TextArea("ActDescripcionUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-ActDescripcionUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-5" style="margin-bottom:5px;">
+                <label>Número de identidad del Responsable</label>
+                @Html.TextBox("ActIdentidadUp", null, new { @class = "form-control form-width-100", @placeholder = "Escriba el documento para buscar la persona..." })
+                <span id="val-ActIdentidadUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Nombre del Responsable</label>
+                @Html.TextBox("ActNombreUp", null, new { @class = "form-control form-width-100" })
+                <span id="val-ActNombreUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Observaciones</label>
+                @Html.TextArea("ActObservacionesUp", null, new { @class = "form-control form-width-100", @rows = "4" })
+                <span id="val-ActObservacionesUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            @*<div class="col-md-12 add-top-margin-05em" style="margin-bottom:5px;">
+                <label>Fecha de Programación Inicial</label>
+                <span id="ActFechaInicial"></span>
+            </div>
+            <div class="col-md-12 add-top-margin-05em" style="margin-bottom:5px;">
+                <label>Fecha de Programación Actual</label>
+                <span id="ActFechaActual"></span>
+            </div>*@
+            @*<div class="col-md-3" style="margin-bottom:5px;" id="reprogramacion">
+                <label>Fecha de Reprogramación</label>
+                @Html.TextBox("ActFechaUp", null, new { @class = "form-control form-width-100" })
+                <span id="val-ActFechaUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-3"  style="margin-bottom:5px;" id="reprogramacion1">
+                <label>Hora de Reprogramación</label>
+                @Html.TextBox("ActHoraUp", null, new { @class = "form-control form-width-100" })
+                <span id="val-ActHoraUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Ejecutada?</label>
+                <input class="checkejecucion" id="CheckEjecutado" type="checkbox"  value="1">
+            </div>*@
+        </div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-4">
+                    <button id="actualizaractividad" class="boton botonactive col-margin">ACTUALIZAR ACTIVIDAD</button>
+                </div>
+                <div class="col-sm-4">
+                    <button id="eliminaractividad" class="boton botonactive col-margin" onclick="EliminarActividadPlanDeTrabajo()">ELIMINAR ACTIVIDAD</button>
+                </div>
+                <div class="col-sm-4">
+
+                    <button id="close_modal3" class="boton botoncancel col-margin">CERRAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div id="myModal4" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <input id="IdObjetivoActVer" type="text" style="display:none" />
+            <input id="IdActVer" type="text" style="display:none" />
+            <CENTER><H3>VER INFORMACIÓN DE LA ACTIVIDAD</H3></CENTER>
+
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Estado</label>
+                <span id="ActEstadoVer"></span>
+            </div>
+
+
+
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Descripción de la Actividad</label>
+                @Html.TextArea("ActDescripcionVer", null, new { @class = "form-control form-width-100", @rows = "4", @disabled="disabled" })
+
+            </div>
+            <div class="col-md-5" style="margin-bottom:5px;">
+                <label>Número de identidad del Responsable</label>
+                @Html.TextBox("ActIdentidadVer", null, new { @class = "form-control form-width-100",  @disabled = "disabled" })
+
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Nombre del Responsable</label>
+                @Html.TextBox("ActNombreVer", null, new { @class = "form-control form-width-100", @disabled = "disabled" })
+ 
+            </div>
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Observaciones</label>
+                @Html.TextArea("ActObservacionesVer", null, new { @class = "form-control form-width-100", @rows = "4", @disabled = "disabled" })
+
+            </div>
+            <div class="col-md-12 add-top-margin-05em" style="margin-bottom:5px;">
+                <label>Fecha de Programación Inicial</label>
+                <span id="ActFechaInicialVer"></span>
+            </div>
+            <div class="col-md-12 add-top-margin-05em" style="margin-bottom:5px;">
+                <label>Fecha de Programación Actual</label>
+                <span id="ActFechaActualVer" disabled = "disabled"></span>
+            </div>
+
+        </div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-12">
+                    <button id="close_modal4" class="boton botoncancel col-margin">CERRAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div id="myModal5" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+
+            <CENTER><H3>FIRMAS DEL PLAN DE TRABAJO</H3></CENTER>
+
+            <div class="form-group row internal-panel-body">
+                <div class="col-md-6">
+                    <div class="height-38px">
+                        <b>Firma del representante legal</b>
+                    </div>
+                    <div class="col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                        <b>Nombre:</b>
+                        @Html.TextBoxFor(m => m.RepLegalNombre, new { @class = "form-control form-width-100" })
+                        
+                    </div>
+                    <div class="col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                        <b>Documento:</b>
+                        @Html.TextBoxFor(m => m.RepLegalDocumento, new { @class = "form-control form-width-100",@placeholder="Escriba el documento para buscar el nombre..." })
+
+                    </div>
+                    <div class="text-left">
+                        <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                            <img id="Imagen_C_0" class="firma-EHM-estilo"  alt=""  src="@ViewBag.Imagen1R"  style="@ViewBag.Imagen1E"/>
+                            @{
+                                if (Model.RepLegalImagen != null)
+                                {
+                                    string Img0 = Model.RepLegalImagen;
+                                    @Html.Hidden("Imagen_0", Img0)
+                                }
+                                else
+                                {
+                                    <label style="display:none" id="Imagen_0"></label>
+                                }
+                                if (Model.RepLegalImagen != null)
+                                {
+                                    string Img0D = Model.RepLegalImagen;
+                                    @Html.Hidden("Imagen_D_0", Img0D)
+                                }
+                                else
+                                {
+                                    <label style="display:none" id="Imagen_D_0"></label>
+                                }
+                            }
+                            @*<label style="display:none" id="Imagen_0"></label>
+                            <label style="display:none" id="Imagen_D_0"></label>*@
+                            <span id="val-error-imagen" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;"></span>
+                        </div>
+                        <div class="col-md-12 add-bottom-margin-05em">
+                            <input type="file" id="UploadPhotoRes" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                        </div>
+                        <div class="row text-center ">
+                            <a href="#" id="AgregarFirmaRes" class="boton botonactive" style="margin-bottom:5px;">
+                                Adjuntar Firma
+                            </a>
+                            <a href="#" class="boton botonactive" style="@ViewBag.Imagen1D" id="EliminarImagen">
+                                Quitar Firma
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="height-38px">
+                        <b>Firma del representante de SGSST</b>
+                    </div>
+                    <div class="col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                        <b>Nombre:</b>
+                        @Html.TextBoxFor(m => m.RepSGSSTNombre, new { @class = "form-control form-width-100" })
+
+                    </div>
+                    <div class="col-md-12 add-bottom-margin-05em add-top-margin-05em">
+                        <b>Documento:</b>
+                        @Html.TextBoxFor(m => m.RepSGSSTDocumento, new { @class = "form-control form-width-100", @placeholder = "Escriba el documento para buscar el nombre..." })
+
+                    </div>
+                    <div class="text-left">
+                        <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em">
+                            <img id="Imagen_C_1" class="firma-EHM-estilo"  alt=""  src="@ViewBag.Imagen2R"  style="@ViewBag.Imagen2E"/>
+                            @{
+                                if (Model.RepSGSSTImagen != null)
+                                {
+                                    string Img0 = Model.RepSGSSTImagen;
+                                    @Html.Hidden("Imagen_1", Img0)
+                                }
+                                else
+                                {
+                                    <label style="display:none" id="Imagen_1"></label>
+                                }
+                                if (Model.RepSGSSTImagen != null)
+                                {
+                                    string Img0D = Model.RepSGSSTImagen;
+                                    @Html.Hidden("Imagen_D_1", Img0D)
+                                }
+                                else
+                                {
+                                    <label style="display:none" id="Imagen_D_1"></label>
+                                }
+                            }
+                            @*<label style="display:none" id="Imagen_1"></label>
+                            <label style="display:none" id="Imagen_D_1"></label>*@
+                            <span id="val-error-imagen1" class="text-danger field-validation-error val-message col-sm-12" style="display:none;margin-bottom:5px;" ></span>
+                        </div>
+                        <div class="col-md-12 add-bottom-margin-05em">
+                            <input type="file" id="UploadPhotosgsst" name="file" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" />
+                        </div>
+                        <div class="row text-center ">
+                            <a href="#" id="AgregarFirmasggst" class="boton botonactive" style="margin-bottom:5px;">
+                                Adjuntar Firma
+                            </a>
+                            <a href="#" class="boton botonactive" style="@ViewBag.Imagen2D" id="EliminarImagen1">
+                                Quitar Firma
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-6">
+                    <button id="guardarfirmas" class="boton botonactive col-margin">GUARDAR</button>
+                </div>
+                <div class="col-sm-6">
+                    <button id="close_modal5" class="boton botoncancel col-margin">CERRAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div id="myModal6" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <input id="IdActividadProg" type="text" style="display:none" />
+            <CENTER ><H3>CREAR PROGRAMACIÓN DE ACTIVIDAD</H3></CENTER>
+
+            
+                <div class="col-md-3 add-top-margin-10em" style="margin-bottom:5px;">
+                    <label>Fecha de Programación</label>
+                    @Html.TextBox("ActFecha", null, new { @class = "form-control form-width-100" })
+                    <span id="val-ActFecha" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-md-3 add-top-margin-10em" id="ActHoraDiv" style="margin-bottom:5px;">
+                    <label>Hora de Programación</label>
+                    @Html.TextBox("ActHora", null, new { @class = "form-control form-width-100" })
+                    <span id="val-ActHora" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+            
+</div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-6">
+                    <button id="crearprograma" class="boton botonactive col-margin">CREAR PROGRAMA</button>
+                </div>
+                <div class="col-sm-6">
+
+                    <button id="close_modal6" class="boton botoncancel col-margin">CERRAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div id="myModal7" class="modalAnalisis">
+    <div class="modal_table col-md-offset-2 col-md-8" style="background-color:white;min-height:400px;border-radius: 3px;">
+        <div class="panel-body">
+            <input id="IdActividadProgUp" type="text" style="display:none" />
+            <input id="IdProgUp" type="text" style="display:none" />
+            <CENTER><H3>ACTUALIZAR PROGRAMACIÓN DE ACTIVIDAD</H3></CENTER>
+
+            <div class="col-md-12" style="margin-bottom:5px;">
+                <label>Estado</label>
+                <span id="ActEstado"></span>
+            </div>
+
+            <div class="col-md-12 add-top-margin-05em" style="margin-bottom:5px;">
+                <label>Fecha de Programación Inicial</label>
+                <span id="ActFechaInicial"></span>
+            </div>
+            <div class="col-md-12 add-top-margin-05em" style="margin-bottom:5px;">
+                <label>Fecha de Programación Actual</label>
+                <span id="ActFechaActual"></span>
+            </div>
+            <div class="col-md-3" style="margin-bottom:5px;" id="reprogramacion">
+                    <label>Fecha de Reprogramación</label>
+                    @Html.TextBox("ActFechaUp", null, new { @class = "form-control form-width-100" })
+                    <span id="val-ActFechaUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-md-3"  style="margin-bottom:5px;" id="reprogramacion1">
+                    <label>Hora de Reprogramación</label>
+                    @Html.TextBox("ActHoraUp", null, new { @class = "form-control form-width-100" })
+                    <span id="val-ActHoraUp" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                </div>
+                <div class="col-md-12" style="margin-bottom:5px;">
+                    <label>Ejecutada?</label>
+                    <input class="checkejecucion" id="CheckEjecutado" type="checkbox"  value="1">
+                </div>
+        </div>
+        <div class="panel-footer add-top-margin-10em" style="background:none">
+            <div class="row">
+                <div class="col-sm-4">
+                    <button id="actualizarprograma" class="boton botonactive col-margin">ACTUALIZAR PROGRAMA</button>
+                </div>
+                <div class="col-sm-4">
+                    <button id="eliminarprograma" class="boton botonactive col-margin" onclick="EliminarProgramaPlanDeTrabajo()">ELIMINAR PROGRAMA</button>
+                </div>
+                <div class="col-sm-4">
+                    <button id="close_modal7" class="boton botoncancel col-margin">CERRAR</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

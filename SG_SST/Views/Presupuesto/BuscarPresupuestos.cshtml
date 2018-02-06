@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "Consultar Presupuesto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.respuestaEliminado == true) {
+    @*<div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Presupuesto Eliminado con Exito
+    </div>*@
+    <script type="text/javascript">
+    swal(
+    'Estimado Usuario',
+    'Presupuesto Eliminado satisfactoriamente',
+    'success'
+    )
+    </script>
+}
+
+@if (ViewBag.respuestaEliminado == false) {
+    @*<div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        No fue posible Eliminar el presupuesto
+    </div>*@
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'No fue posible Eliminar el presupuesto',
+        'error'
+        )
+    </script>
+}
+
+@*mensaje que viene desde crear el presupuesto*@
+@if (ViewBag.respuestaGuardado == true)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'Presupuesto grabado satisfactoriamente',
+        'success'
+        )
+    </script>
+}
+
+@if (ViewBag.respuestaGuardado == false)
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        'No fue posible grabar el presupuesto',
+        'error'
+        )
+    </script>
+}
+@*fin del mensaje que viene desde crear el presupuesto*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css"> 
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li><a href="javascript:void(0)">Presupuesto</a></li>
+    <li class="active">Consultar Presupuesto</li>
+</ol>
+
+<form method="post" id="Presupuesto">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">CONSULTAR PRESUPUESTO</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign" ></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Consultar Presupuesto</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+
+                                <div style="text-align:justify">
+                                    Utilizando los filtros de Sede y Período el sistema le permite visualizar los distintos informes de prepuestos.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    En la opción “ Generar Informe” el sistema le desagrega el informe de presupuesto por Mes, Trimestre, Semestre o Año respectivamente.
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+
+                    <div class="col-md-1">
+                        <h5><b>@SG_SST.Recursos.Planificacion.PlanificacionMod.nombre_lbl_modal_sede:</b></h5>
+                    </div>
+                    <div class="col-md-5">
+                        @Html.DropDownList("FK_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                    <div class="col-md-1">
+                        <h5><b>Período:</b></h5>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.DropDownList("Periodo", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5">
+                    @*<input id="btnGenerarMetodología" type="button" class="form-control btn btn-warning btn-md tbr" value="Buscar" onclick="CargarFormularioBusquedaPrespuestoPorAnio(false)" />*@
+                    <button id="btnGenerarMetodología" type="button" class="boton botoninfo" onclick="validarCamposPresupuestoBuscar(false)">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div id="TablaPresupuesto">
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/liderazgoGerencial")
+}

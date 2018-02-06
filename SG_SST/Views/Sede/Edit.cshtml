@@ -1,0 +1,370 @@
+﻿@model SG_SST.Models.Empresas.Sede
+
+@{
+    ViewBag.Title = "Editar Datos Sede";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+    @Scripts.Render("~/bundles/simplePagination")
+
+
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            ObtenerSiarpCentro($("#nitCentro").val());
+            $(".accordion-titulo").click(function () {
+                PopupPosition();
+                var contenido = $(this).next(".accordion-content");
+                if (contenido.css("display") == "none") { //open
+                    contenido.slideDown("show", function () {
+                    });
+                    $(this).addClass("open");
+                    OcultarPopupposition();
+                }
+                else { //close
+                    contenido.slideUp("show");
+                    $(this).removeClass("open", function () {
+
+                    });
+                    OcultarPopupposition();
+                }
+            });
+
+        });
+
+        //$(function () {
+        //    $("#accordion").accordion({ header: "h2", navigation: true });
+        //});
+        //$("#accordion").accordion("activate", '<%= Request.QueryString["id"] %>');
+    </script>
+    
+    <style>
+        body {
+            background: white;
+        }
+
+        #container-main {
+            margin: 40px auto;
+            width: 100%;
+            min-width: 320px;
+            max-width: 100%;
+        }
+
+        .accordion-container {
+            width: 100%;
+            margin: 0 0 20px;
+            clear: both;
+        }
+
+        .accordion-titulo {
+            position: relative;
+            display: block;
+            padding: 20px;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: 100;
+            background: #7E8A97;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+            .accordion-titulo.open {
+                background: #7E8A97;
+                color: white;
+                text-decoration: none;
+            }
+
+            .accordion-titulo:hover {
+                background: #7E8A97;
+                color: white;
+            }
+
+            .accordion-titulo:active {
+                background: #7E8A97;
+                color: white;
+            }
+
+            .accordion-titulo:visited {
+                background: #7E8A97;
+                color: white;
+                text-decoration: none;
+            }
+
+            .accordion-titulo:link {
+                background: #7E8A97;
+                color: white;
+                text-decoration: none;
+            }
+
+            .accordion-titulo span.toggle-icon:before {
+                font-family: FontAwesome;
+                content: "\f067";
+                color: white;
+            }
+
+            .accordion-titulo.open span.toggle-icon:before {
+                font-family: FontAwesome;
+                content: "\f00d";
+                color: white;
+            }
+
+            .accordion-titulo span.toggle-icon {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 20px;
+                font-weight: normal;
+            }
+
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            overflow: auto;
+        }
+
+            .accordion-content p {
+                margin: 0;
+            }
+    </style>
+}
+
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Datos generales de la empresa</a></li>
+    <li><a href="@Url.Action("SedesPorMunicipios", "Sede")">Sedes</a></li>
+    <li class="active">Editar Datos Sede</li>
+</ol>
+
+<form method="post" action="@Url.Action("Edit")" id="grabarsede">
+
+    @*<div id="accordion">
+
+            <div>
+                <h2><a href="#services">Services</a></h2>
+                <p>More information about all of these services</p>
+            </div>
+
+            <div>
+                <h2><a href="#about">About</a></h2>
+                <p>About us</p>
+            </div>
+
+        </div>*@
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Pk_Id_Sede)
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">EDITAR DATOS SEDE</div>
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Editar Sedes</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div style="text-align:justify">
+                                    Recuerde seleccionar como minimo una actividad económica del listado actividades de la Empresa.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    Presione <a class="btn btn-search btn-md"><span class="glyphicon glyphicon-erase"></span></a> para eliminar la Actividad Economica que se encuentre registrada.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button type="button" class="boton botonactive" disabled>Grabar</button> Almacena la informacion de la Sede Editada y las actividades economicas seleccionadas.
+                                </div>
+                                <br />
+                                <div style="text-align:justify">
+                                    <button type="button" class="boton botoninfo" disabled>Listado Sedes</button> Regresa al listado de todas las sedes registradas de la Empresa.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Cierre Modal Ayuda*@
+
+        <div class="panel-body form-horizontal">
+            <div class="row ">
+                <div class="col-md-6">
+                    <label>Nombre Sede:</label>
+                    @Html.EditorFor(model => model.Nombre_Sede, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre_Sede, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    <label class="control-label">Dirección:</label>
+                    @Html.EditorFor(model => model.Direccion_Sede, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Direccion_Sede, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Departamento:</label>
+                    @Html.DropDownList("Fk_Id_Departamento", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarMunicipios()" }, optionLabel: "-- Seleccionar --")
+                </div>
+                <div class="col-md-4">
+                    <label>Municipio:</label>
+                    @Html.DropDownList("Fk_Id_Municipio", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                </div>
+                <label class="control-label col-md-1">Sector:</label>
+                <div class="col-md-2">
+                    @if (ViewBag.Urbano)
+                    {
+                        <div class="radio">
+                            <label><input type="radio" value="Urbano" id="Tipo_De_Calificacion" name="Sector" onchange="ConsultarNivlesDeDeficiencia(this)" checked><b>Urbano</b></label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" value="Rural" id="Tipo_De_Calificacion" name="Sector" onchange="ConsultarNivlesDeDeficiencia(this)"><b>Rural</b></label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="radio">
+                            <label><input type="radio" value="Urbano" id="Tipo_De_Calificacion" name="Sector"><b>Urbano</b></label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" value="Rural" id="Tipo_De_Calificacion" name="Sector" checked><b>Rural</b></label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="panelactividadesreg">
+                <div class="panel-heading" style="color:white">Actividades Economicas Registradas Sede</div>
+                <div class="panel-body form-horizontal">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="border: 2px solid lightslategray; background-color:white" id="">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        Código Actividad
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        Actividad Económica
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                        Eliminar
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.CentrosTrabajo != null)
+                                {
+                                    var contador = 0;
+                                    foreach (var item in Model.CentrosTrabajo)
+                                    {
+
+                                        <tr id="@contador">
+                                            @Html.HiddenFor(modelItem => item.Pk_Id_Centro_de_Trabajo, new { id = "Pk_Id_Centro_de_Trabajo" + @contador })
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                @Html.DisplayFor(modelItem => item.Codigo_Actividad, new { id = "Codigo_Actividad_" + @contador })
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                @Html.DisplayFor(modelItem => item.Descripcion_Actividad, new { id = "Codigo_Actividad_" + @contador })
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <a onclick="EliminarActividadEconomica(@item.Pk_Id_Centro_de_Trabajo)" id="Actividad" title="Actividad @item.Codigo_Actividad" class="btn btn-search btn-md" data-toggle="tooltip"> <span class="glyphicon glyphicon-erase"></span></a>
+                                            </td>
+                                        </tr>
+                                        contador++;
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="panel panel-danger" id="aviso" style="text-align:center">
+                                                <p style="color:#FF7500">La Sede <b>@Model.Nombre_Sede</b> no tiene registro de actividades económicas, seleccione del siguiente listado y almacene la información.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <input type="hidden" id="nitCentro" value="@ViewBag.nitEmpresa" />
+                    <div id="container-main">
+                        <div class="accordion-container">
+                            @*<h4 class="panel panel-default accordion-titulo " style="background-color:#7E8A97;color:white;height:30px;padding-top:5px;text-align:initial;text-align:center">Listado Actividades Economicas <span class="toggle-icon"></span></h4>*@
+                            <a href="#" class="accordion-titulo" title="Presiona para Agregar Actividades Económicas a la Sede">Agregar Actividades Económicas a  <b>@Model.Nombre_Sede</b> <span class="toggle-icon"></span></a>
+                            <div class="accordion-content">
+                                <p>
+                                    <div class="panel-body form-horizontal">
+                                        <div class="table-responsive" id="listadoActividadesC">
+                                            <table class="table table-bordered" style="border:2px solid lightslategray; background-color:white" id="" name="">
+                                                <thead>
+                                                    <tr class="titulos_tabla">
+                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Seleccionar
+                                                        </th>
+                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Actividad Económica
+                                                        </th>
+                                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                            Código Actividad
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tablacentros"></tbody>
+                                            </table>
+                                            <label for="centros" class="error"></label>
+                                            <div class="pagination-page" id="paginador1" style="margin-left:45%"></div>
+                                        </div>
+                                      
+                                    </div>
+                                </p>
+
+                            </div>
+                            <div class="panel-footer">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <input type="hidden" value="@Model.Pk_Id_Sede" name="pksede" />
+                                    <button type="submit" class="boton botonactive" id="btnEnviar" onclick="ValidarCentrosCheck()">Guardar Actualización</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+    </div>
+    <div>
+        <a href="@Url.Action("SedesPorMunicipios", "Sede") " class="boton botoninfo" style="text-decoration:none">
+            Listado Sedes
+        </a>
+    </div>
+</form>

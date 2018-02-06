@@ -1,0 +1,541 @@
+﻿@model SG_SST.EntidadesDominio.Participacion.EDReporte
+
+@{
+    ViewBag.Title = "Editar Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.MensajeGuardar != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: "El Reporte de Incidentes fue actualiizado satisfactoramiente",
+           
+            confirmButtonColor: '#7E8A97'
+        });
+
+    </script>
+}
+
+@if (ViewBag.MensajeError != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.MensajeError',
+   
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+<!-- Site reference -->
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+<!-- Miga de pan que se utiliza para ubicar al usuario donde se encuentra en el sistema -->
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="">Reporte de Actos y Condiciones Inseguras</a></li>
+    <li class="active">Editar Reporte</li>
+</ol>
+
+<!-- Vista con el formulario de Reporte -->
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Editar Reporte</div>
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>*@
+                            <h4 class="modal-title title">Ayuda / Editar Reporte</h4>
+
+
+                        </div>
+
+                        <div class="modal-body" style="color:black; text-align:justify">
+
+                            Esta opción le permitirá editar el registro del reporte de acto o condición insegura registrado anteriormente.
+                            Los campos que se le permiten editar son:
+                            <br /><br />
+                            <b>Información general:</b> Sede, tipo, proceso, área o lugar y fecha de ocurrencia del evento
+                            <br /><br />
+                            <b>Descripción de condición o acto inseguro:</b> Descripción, causa, sugerencias, agregar, mostrar y eliminar imágenes
+                            <br /><br />
+                            <b>Plan de acción:</b> Se debe llenar todos, como son la actividad el  responsable  y la  fecha de ejecución.
+                          <br /><br />
+                              Dar Clic en el botón “Actualizar condición o acto inseguro”.
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body form-horizontal">
+        @using (Html.BeginForm("GuardarReporteEditado", "Reporte", FormMethod.Post, new { @id = "ReporteCondicionesInseguras", @class = "form-horizontal", @enctype = "multipart/form-data" }))
+        {
+        <!-- well para la primera parte de la creación del reporte -->
+        <div class="well" style="background-color:transparent">
+
+
+        <input type="text" id="acceso" name="acceso" value="@(ViewBag.MedioAcceso)"  hidden="hidden"/>
+
+        <input type="text" id="IdReportes" name="IdReportes" value="@(ViewBag.idReporte)" hidden="hidden" />
+
+        <div class="row">
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label class="col-md-4">ID</label>
+                    <div class="col-md-12">
+                        <input type="text" id="ConsecutivoReporte" name="ConsecutivoReporte" value="@(ViewBag.Consecutivo)" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Nombre Empresa</label>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.RazonSocialEmpresa, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">NIT</label>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.nitEmpresa, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="col-md-8">Fecha</label>
+                    <div class="col-md-10">
+                        
+                        <input type="text" class="form-control left" id="fechaSistena" name="fechaSistena" value="@(ViewBag.fechaSistena)" readonly>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Sede</label>
+                    <div class="col-md-12">
+                        @Html.DropDownList("FKSede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-md-8">Tipo</label>
+                    <div class="col-md-12">
+                       @Html.DropDownList("FKTipoReporte", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Proceso</label>
+                    <div class="col-md-12">
+                        @Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control", @onchange = "consultarSubProcesos()" }, optionLabel: "-- Seleccionar --")
+                    </div>
+                </div>
+            </div>
+
+
+            @*<div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">SubProceso</label>
+                    <div class="col-md-12">
+                     @if (ViewBag.FK_Proceso!=null)
+                     { 
+                     @Html.DropDownList("FK_Proceso", null, htmlAttributes: new { @class = "form-control" })
+                     }
+                     else
+                     {
+                        <select id="FK_Proceso" name="FK_Proceso" class="form-control"></select>
+
+                     }  
+                    </div>
+                </div>
+            </div>*@
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label class="col-md-8">Área o Lugar</label>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.AreaLugar, new { htmlAttributes = new { @class = "form-control", @maxlength = "100" } })
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-4">
+                <div class="form-group  has-feedback">
+                    <label class="col-md-8">Fecha de ocurrencia del evento</label>
+                    <div class="col-md-12">
+
+                        <input type="text" class="form-control left" id="FechaOcurrencia" name="FechaOcurrencia" value="@(ViewBag.FechaOcurrencia)" readonly>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <label class="col-md-7" style="font-size:larger">Datos de quién reporta</label>
+        <hr style="border-top-color:lightslategray; width:99%" />
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-8" >Cédula</label>
+                    <div class="col-md-6" hidden="hidden">
+                        @Html.EditorFor(model => model.CedulaQuienReporta, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @maxlength = "15" } })
+
+
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <input type="text" id="Cedula" name="Cedula" class="form-control" value="@(ViewBag.Cedula)" maxlength="15" readonly />
+                    </div>
+                    @*<div class="col-md-2">
+                            <button type="button" id="buscarSiarp" title="Buscar" class="glyphicon glyphicon-search" name="buscarSiarp" onclick="ObtenerSiarp()" style='width:35px; height:35px' />
+                        </div>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Nombre</label>
+                    <div class="col-md-12">
+                       
+                        <input type="text" id="NombreQuienReporta" name="NombreQuienReporta" value="@(ViewBag.Nombre)" class="form-control" readonly />
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Ocupación del CIUO</label>
+                    <div class="col-md-12">
+                        <input type="text" id="CargoQuienReporta" name="CargoQuienReporta" value="@(ViewBag.Cargo)" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <label class="col-md-7" style="font-size:larger">Descripción de Condición o Acto Inseguro</label>
+        <hr style="border-top-color:lightslategray; width:99%" />
+
+
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Descripción</label>
+                    <div class="col-md-12">
+
+                        <textarea id="DescripcionReporte" name="DescripcionReporte" class="form-control" rows="4" cols="3" style="resize:none" maxlength="1000" >  @ViewBag.Descripcion  </textarea>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-md-8">Causa</label>
+                    <div class="col-md-12">
+                        <textarea id="CausaReporte" name="CausaReporte" class="form-control" rows="4" cols="3" style="resize:none" maxlength="1000">@ViewBag.Causa</textarea>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-md-8">Sugerencias</label>
+                    <div class="col-md-12">
+                        <textarea id="SugerenciasReporte" name="SugerenciasReporte" class="form-control" rows="6" cols="6" style="resize:none" maxlength="1000" >@ViewBag.Sugerencia </textarea>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+
+                    <a data-toggle="modal" title="Mostrar Imágenes" class="btn btn-search btn-md" onclick="mostrarImagenes()" style="margin-left:1.5%">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                    </a>
+                    <b> Mostrar Imágenes</b>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label class="col-md-8">Agregar nuevas imágenes</label>
+                    <div class="col-md-12">
+                        <input id="imagenesCargar" type="file" accept="image/*" name="files" multiple data-preview-file-type="any" class="form-control" onchange="validaciontamañodocumentoRepCIns()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*//Prueba de editar imagenes*@
+        <div class="table-responsive" id="tbl_Imagenes" hidden="hidden">
+            <table class="table table-bordered" style="border: 2px solid lightslategray">
+                <tr class="titulos_tabla">
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Imagen
+                    </th>
+                
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                     Eliminar
+                    </th>
+                </tr>
+
+          @foreach (var item in Model.imagenesReporte)
+          {
+              string ruta = @ViewBag.ruta + item.rutaArchivo;
+                    <tr>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle" align="center">
+                            @*<img src="@Url.Content(@ruta)" class="img-responsive img-rounded" width="100" height="100"  alt="@item.rutaArchivo"/>
+
+                            @*<center><img src="@Request.Url.Scheme://@Request.Url.Host@Url.Action("GetImagen", "Reporte", new { nombre = item.rutaArchivo})" class="img-responsive img-rounded" /></center>*@
+                            <img src="@Url.Action("MostrarImagen", new { nombre = item.rutaArchivo })" type="image" />
+                        </td>
+                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                            <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}",item.IDImagenesReportes)" class="btn btn-search btn-md" title="Eliminar Imagen">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </a>
+
+                            <div id="@string.Format("modalEliminar{0}", item.IDImagenesReportes)" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+
+                                            <h4 class="modal-title title">Eliminar la Imagen</h4>
+                                        </div>
+                                        <div class="modal-body" style="text-align:center; color:black">
+                                            <p>¿Está seguro de eliminar la imagen del reporte?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="boton botonactive" data-dismiss="modal" onclick="EliminarImagenSelec(this,@item.IDImagenesReportes)">ELIMINAR</button>
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+
+                    <a data-toggle="modal" title="Mostrar Actividades" class="btn btn-search btn-md" onclick="mostrarActividadesEdit()" style="margin-left:1.5%">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                    </a>
+                    <b> Mostrar Actividades</b>
+                </div>
+            </div>
+        </div>
+        @{
+            bool validarActividad = false;
+
+            foreach (var item in Model.actividades)
+            {
+                if (item.nombreActividad != null)
+                {
+                    validarActividad = true;
+                }
+            }
+        }
+
+        @if(validarActividad)
+        {
+        <div id="actividadesEditadas" hidden="hidden" class="table-responsive">
+            <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaActividades">
+
+                <thead>
+
+                    <tr class="titulos_tabla">
+
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Actividad</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Responsable</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de ejecución</th>
+                       
+                    </tr>
+
+                </thead>
+
+                <tbody id="actividades">
+                    @foreach (var item in Model.actividades)
+                    {
+                        if (item.nombreActividad != null)
+                        {
+                            string FecEjecucion = item.FecEjecucion.ToString("dd/MM/yyyy");
+                                     
+                            <tr name="temPer">
+
+                              
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.nombreActividad)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.RespActividad)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @FecEjecucion
+                                </td>
+
+                            </tr>
+
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+        }
+
+        @if(validarActividad==false)
+        {
+        <div class="well" id="planAccion">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaActividades">
+                    <thead>
+                        <tr class="titulos_tabla">
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Actividad</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Responsable</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de ejecución</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="actividades">
+                        <tr id="filaActividad" name="filaActividad">
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input type="text" name="nombreActividad" id="nombreActividad" class="form-control" />
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input type="text" id="RespActividad" name="RespActividad" class="form-control" />
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                                <input type="text" class="datepicker form-control" id="FecEjecucion" name="FecEjecucion" readonly>
+
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @*<input type="button" id="eliminarFila" value="Eliminar" onclick="eliminarActividad(this)">*@
+                                <a data-toggle="modal" title="Borrar Actividad" class="btn btn-search btn-md" onclick="eliminarActividad(this)">
+                                    <span class="glyphicon glyphicon-erase"></span>
+                                </a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4" style="margin-left:45%">
+                    <button type="button" class="boton botonactive" id="agregarFila">Agregar</button>
+                </div>
+            </div>
+        </div>
+
+        }
+          
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-5" id="reporte">
+                <button type="submit" id="generarReporteEditado" onclick="validarReporte()" class="boton botonactive">Actualizar condición o acto inseguro</button>
+            </div>
+        </div>
+      
+        }
+    </div>
+</div>
+
+<div id="modalesEliminados"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}

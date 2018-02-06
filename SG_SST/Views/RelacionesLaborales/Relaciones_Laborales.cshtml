@@ -1,0 +1,101 @@
+﻿@model IEnumerable<SG_SST.Models.Empleado.tblEmpleado>
+@{
+    ViewBag.Title = "Relaciones_Laborales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Relaciones_Laborales</h2>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<p>Empresa/Relaciones laborales</p>
+<hr />
+
+
+
+<form method="post" action="@Url.Action("BusquedaRelacionesLaborales", "RelacionesLaborales")" id="idRelacionesLaborales">
+    <div class="row">
+        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <div class="panel panel-yellow">
+                <div class="panel-heading"><p class="text-center"><h4>Relaciones Laborales</h4></p></div>
+                <div class="panel-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2">
+                                @Html.DropDownList("PK_IDEmpleadoEst", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                            </div>
+                            <div class="col-md-2">
+                                @Html.DropDownList("Pk_Id_Cotizante", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "Seleccionar")
+                            </div>
+                            <div class="col-md-1">
+                                <input type="submit" value="Buscar" class="btn btn-warning btn-md tbr pull-right" />
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" value="Descargar" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="overflow:scroll;height:300px" id="IDscBusqueda">
+                    <table class="table table-condensed table-responsive table-hover table-bordered table-striped table-hover" id="idtblOtrasInteracciones" style="font-size:x-small">
+                        <tr>
+                            @*<td><input type="checkbox" id="checkAll" /></td>*@
+                            <td><b>Tipo de Documento</b></td>
+                            <td><b>Número de Documento</b></td>
+                            <td><b>Primer Apellido</b></td>
+                            <td><b>Segundo Apellido</b></td>
+                            <td><b>Primer Nombre</b></td>
+                            <td><b>Segundo Nombre</b></td>
+                            <td><b>Estado</b></td>
+                            <td><b>Tipo Cotizante</b></td>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoDocumento.Descripcion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PK_Numero_Documento_Empl)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Primer_Apellido_Empl)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Segundo_Apellido_Empl)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Primer_Nombre_Empl)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Segundo_Nombre_Empl)
+                                </td>
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Estado_Empleado.EstEmplead)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TipoCotizante.Descripcion)
+                                </td>
+
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div>
+                    <hr />
+                    <center>
+                        <ul class="pagination">
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                        </ul>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

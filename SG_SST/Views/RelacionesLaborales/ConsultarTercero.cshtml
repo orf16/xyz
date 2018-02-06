@@ -1,0 +1,83 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Empresas.EDEmpleadoTercero>
+
+@{
+    ViewBag.Title = "Consultar relaciones laborales de terceros";
+}
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+            'Estimado Usuario',
+            ' @ViewBag.Messages',
+            'success'
+            )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Empresa</a></li>
+    <li><a href="javascript:void(0)">Relaciones Laborales</a></li>
+    <li class="active">Consultar Relaciones Laborales de Terceros</li>
+</ol>
+
+@using (Html.BeginForm("BuscarTerceroRelLab", "RelacionesLaborales", FormMethod.Post, new { id = "idBuscarRelacionesLaborales" }))
+{
+    @*<h2>Consultar Relaciones Laborales de Terceros</h2>*@
+
+    <div class="panel panel-default" style="overflow-x:scroll;background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:black">
+            CONSULTA DE TRABAJADORES DE TERCEROS NIT - @ViewBag.Documento_Empresa - @ViewBag.Nombre_Empresa 
+        </div>
+        <div class="row" align="center">
+            @*<div class="col-md-10">
+                <h4>Razón Social Empresa: @ViewBag.Nombre_Empresa - NIT: @ViewBag.Documento_Empresa</h4>
+            </div>*@
+        </div>
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                @*<a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+                   style="border: 1px solid lightslategray; border-radius:0px">
+                    <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+                </a>*@
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black; text-align:justify">
+                                <p>Una vez cargada la información de las relaciones laborales de terceros al sistema, la puede consultar utilizando los filtros de razón social y tipo de tercero. Así mismo si lo desea puede descargar la información en Excel.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="idConsFiltros" align="right">
+            @Html.Partial("ConsultarTerceroFiltros", Model)
+        </div>
+        <div id="list-items" align="right">
+            @Html.Partial("ConsultaTerceroRelacionesLaborales", Model)
+        </div>
+    </div>
+}

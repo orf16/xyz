@@ -1,0 +1,278 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionModel
+
+@{
+    ViewBag.Title = "Evaluación Inicial";
+}
+
+@*<h2>Evaluación inicial</h2>*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+
+
+@section OpcionesEvaluacion
+{
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:void(0);" style="color:#ff7500">Evaluación Inicial SGSST</a></li>
+        <li><a href="@Url.Action("Index", "EvaluacionEstandarMinimo")" style="color:gray">Estándares Mínimos SGSST</a></li>
+        <li><a href="@Url.Action("EvaluacionPositiva", "EvaluacionEstandarMinimo")" style="color:gray">Evaluación SST Positiva</a></li>
+    </ul>
+
+  
+}
+
+<br />
+
+<div class="panel panel-default" id="contenido">
+    <div class="panel-heading" style="color:black">
+        DATOS GENERALES
+    </div>
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#modalAyuda" title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            @*<a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-link-1-google-plus btn-circle btn-md"
+               style="border: 1px solid lightslategray; border-radius:0px">
+                <i class="glyphicon glyphicon-question-sign" style="color:black"></i>
+            </a>*@
+            <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black; text-align:justify">
+
+                            <p>La siguiente evaluación inicial está basada en el  “Artículo 2.2.4.6.16. Evaluación inicial del sistema de gestión de la seguridad y salud en el trabajo SG-SST decreto 1072 de 2015”, por favor complete los campos de:</p>
+                            <p>1. Centro de trabajo/sede: seleccione uno de la lista desplegable o el centro o sede principal.</p>
+                            <p>2. Elaborador por: digite el nombre de la persona que realizo la evaluación inicial.</p>
+                            <p>3. Licencia SST: digite el número de la licencia en salud ocupacional o seguridad y salud en el trabajo del que realizo la evaluación.</p>
+                            <p>4. Fecha de diligenciamiento: seleccione la fecha de realización.</p>
+                            <p>
+                                Luego lea cada una de las 8 preguntas estándares de la evaluación y seleccione su respuesta a la derecha (cumple, no cumple, cumple parcial). Si así lo considera registre sus observaciones por cada pregunta.
+                                Una vez finalizada la evaluación de clic en el botón de “guardar formulario”.
+                            </p>
+
+                            <p>Si por alguna razón requiere agregar más ítems o preguntas, puede hacerlo dando clic en la opción “crear nuevo aspecto” y siga las instrucciones de registro. Una vez guarde, este aparecerá en el formulario para que sea evaluado.</p>
+                            <p>También puede descargar el formulario de la evaluación inicial en Excel, dando clic en la opción “descargar formulario"</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Index", "Evaluacion", FormMethod.Post, new { @id = "formEvaluacion", @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel-body form-horizontal">
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Razón social de la empresa:", new { @class = "control-label" })
+                </div>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(x => x.RazonSocial, new { @class = "form-control bloqueado", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Responsable SGSST:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(x => x.ResponsableSGSST, new { @class = "form-control bloqueado", disabled = "disabled" })
+                </div>
+                <div class="col-md-1">
+                    @Html.Label("Nit:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-4">
+                    @Html.TextBoxFor(x => x.Nit, new { @class = "form-control bloqueado", disabled = "disabled" })
+                </div>                
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Actividad económica:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-2">
+                    @Html.TextBoxFor(x => x.CodActividadeEconomica, new { @class = "form-control bloqueado", disabled = "disabled" })
+                </div>
+                <div class="col-xs-7" style="text-align:justify">
+                    @string.Format("{0}", Model.ActividadEconomica)
+                    @Html.HiddenFor(x => x.ActividadEconomica)
+                    @*@Html.TextBoxFor(x => x.ActividadEconomica, new { @class = "form-control bloqueado", disabled = "disabled" })*@
+                </div>                
+            </div>
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Centro de trabajo/Sede:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.DropDownListFor(x => x.SedeCentroTrabajo, Model.CentrosDeTrabajo, "Seleccione una opción...", new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Elaborado por:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.ElaboradoPor, new { @class = "form-control" })
+                </div>
+            </div>            
+            <div class="row form-group">
+                <div class="col-md-3">
+                    @Html.Label("Licencia SST:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.LicenciaSOSL, new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    @Html.Label("Fecha diligenciamiento:", new { @class = "control-label" })
+                </div>
+                <div class="col-xs-3">
+                    @Html.TextBoxFor(x => x.FechaDiligenciamiento, new { @class = "form-control", Value = "", @placeHolder = string.Format("ej. {0} ", DateTime.Now.ToString("dd/MM/yyyy")) })
+                </div>
+            </div>            
+        </div>
+        <div id="body_asp" class="aspectos table-responsive">
+            <table id="tbl_asp" class="table table-bordered table-striped" style="border: 2px solid lightslategray">
+                <thead>
+                    <tr class="titulos_tabla">
+                        <th class="col-xs-4" style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            Aspectos a Evaluar
+                            @*@Html.Label("Aspectos a evaluar")*@
+                        </th>
+                        <th class="col-xs-1" style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            Cumple
+                            @*@Html.Label(" cumple")*@
+                        </th>
+                        <th class="col-xs-2" style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            No Cumple
+                            @*@Html.Label(" no cumple")*@
+                        </th>
+                        <th class="col-xs-2" style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            Cumple parcial
+                            @*@Html.Label(" cumple parcial")*@
+                        </th>
+                        <th class="col-xs-4" style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                            Observaciones
+                            @*@Html.Label("Obseervaciones")*@
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.AspectosBase != null && Model.AspectosBase.Count > 0)
+                    {
+                        foreach (var aspecto in Model.AspectosBase)
+                        {
+                            @Html.Partial("_NuevoAspecto", aspecto)
+                        }
+                    }
+                    @if (Model.NuevoAspecto != null)
+                    {
+                        @Html.Partial("_NuevoAspecto", Model.NuevoAspecto)
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row row-centered form-group">
+            <div class="col-xs-4">
+                @*<button id="_guardarFormEvaluacion" type="submit" class="submit btn btn-default">
+                    Guardar formulario
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>
+                </button>*@
+                <button id="_guardarFormEvaluacion" type="submit" class="submit boton botonactive">Guardar Formulario</button>
+            </div>
+            <div class="col-xs-4">
+                @*<button id="agr_asp" type="button" class="agr_aspec btn btn-default">
+                    Crear Nuevo Aspecto
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                </button>*@
+                <button id="agr_asp" type="button" class="agr_aspec boton botoninfo">Crear Nuevo Aspecto</button>
+            </div>
+            <div class="col-xs-4">
+                @*<button id="_FormularioPdf" type="button" class="crearPdf btn btn-default">
+                    Descargar formulario
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                </button>*@
+                <button id="_FormularioPdf" type="button" class="crearPdf boton botoninfo">Descargar formulario</button>
+            </div>
+            <div class="col-xs-12" style="width:100%; text-align:center;">
+                <div id="cal_eval_ini" class="calificacion_eval_ini alert alert-success" role="alert" style="display:none;">
+                    <strong>Total porcentaje de la Evaluación Inicial</strong>
+                    <input id="val_eva_ini" type="text" disabled="disabled" />
+                    <span>%</span>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <label class="texto-sgsst control-label">
+                    Basado en el artículo 2.2.4.6.16. Evaluación inicial del sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST Decreto 1072 de 2015.
+                </label>
+            </div>
+        </div>
+    }
+</div>
+
+<a href="#nuev_asp" id="ins_asp"></a>
+<div id="nuev_asp" style="display:none;">
+    <div class="inner-nuevo-asp container-fluid">
+        <form id="form_agr_asp">
+            <div class="row">
+                <div class="col-xs-10"> 
+                    <h4 class="lbl-activ"><strong>Agrega un nuevo aspecto:</strong></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2">
+                    <label class="lbl-activ">Aspecto:</label>
+                </div>
+                <div class="col-xs-6">
+                    <input type="text" id="Aspecto" name="Actividad" class="nueva-activ int_nuev_asp form-control" placeholder="Aspecto...">
+                    <span class="msg-validacion">Este campo es obligatorio</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @*<button id="btn_nuev_asp" type="submit" class="btn btn-default btn-lg btn-info">
+                        Guardar
+                    </button>*@
+                    <button id="btn_nuev_asp" type="submit" class="boton botonactive">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@{
+    if (ViewBag.Mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                title: 'Atención',
+                text: '@ViewBag.Mensaje',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    window.location.href = '../Home/Login';
+                }
+            });
+        </script>
+    }
+}
+@Scripts.Render("~/Scripts/Evaluacion/evaluacion.js")

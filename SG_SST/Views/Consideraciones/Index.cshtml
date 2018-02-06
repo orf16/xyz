@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = " : Consideraciones I E :";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<p>Empresa - Consideraciones Internas y Externas</p>
+<hr />
+<div id="rootwizard">
+
+    <ul class="nav nav-tabs role=" tablist">
+        <li class="active col"><a id="tab1" href="#step1" role="tab" data-toggle="tab" class="link"><h3>DOFA</h3></a></li>
+        
+    </ul>
+    <hr />
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="step1" name="step1">
+
+            <div class="row">
+                <div class="col-md-11 col-md-offset-0">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading"><p class="text-center"><h3>ANALISIS DOFA</h3></p></div>
+                        <div class="panel-body">
+                            <p><em>Empresa / <b>Análisis DOFA</b></em> </p>
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-sm-4 col-md-offset-2">
+                                    <p><b>DESCRIPCION DEL ELEMENTO</b></p><textarea rows="4" cols="50" id="descripcion" class="form-control" placeholder="Describe Elemento DOFA"></textarea>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p><b>TIPO ELEMENTO</b></p>
+                                    <select class="form-control" id="elementosDofa">
+                                        <option>Seleccionar Elemento DOFA</option>
+                                        <option value="Oportunidades">Oportunidades</option>
+                                        <option value="Amenazas">Amenazas</option>
+                                        <option value="Fortalezas"> Fortalezas</option>
+                                        <option value="Debilidades">Debilidades</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="insertarItemDofa()"><i class="glyphicon glyphicon-plus"></i> Agregar</button>
+                                        <button type="button" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i> Modificar</button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-erase"></i> Eliminar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <p class="text-center">OPORTUNIDADES</p>
+                                        </div>
+                                        <div class="panel-body" id="opotunidades">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <p class="text-center">AMENAZAS</p>
+                                        </div>
+                                        <div class="panel-body" id="amenazas">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-yellow">
+                                        <div class="panel-heading">
+                                            <p class="text-center">FORTALEZAS</p>
+                                        </div>
+                                        <div class="panel-body" id="fortalezas">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            <p class="text-center">DEBILIDADES</p>
+                                        </div>
+                                        <div class="panel-body" id="debilidades">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>/****/
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+</div>
+
+<div id="rootwizard">
+
+    <ul class="nav nav-tabs role=" tablist">
+        <li class="active col"><a id="tab1" href="#step1" role="tab" data-toggle="tab" class="link"><h3>PEST</h3></a></li>
+
+    </ul>
+    <hr />
+
+    <div class="tab-content">
+
+        <div class="tab-pane active" id="step1" name="step1">
+
+            <div class="row">
+                <div class="col-md-11 col-md-offset-0">
+                    <div class="panel panel-green">
+                        <div class="panel-heading"><p class="text-center"><h3>ANALISIS PEST</h3></p></div>
+                        <div class="panel-body">
+                            <p><em>Empresa / <b>Análisis Pest</b></em> </p>
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-sm-4 col-md-offset-2">
+                                    <p><b>DESCRIPCION DEL ELEMENTO</b></p><textarea rows="4" cols="50" id="descripcionp" class="form-control" placeholder="Describe Elemento PEST"></textarea>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p><b>TIPO ELEMENTO</b></p>
+                                    <select class="form-control" id="elementosPest">
+                                        <option>Seleccionar Elemento PEST</option>
+                                        <option value="Politico">Político</option>
+                                        <option value="Economico">Económico</option>
+                                        <option value="Social">Social</option>
+                                        <option value="Tecnologico">Tecnológico</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="insertarItemPEST()"><i class="glyphicon glyphicon-plus"></i> Agregar</button>
+                                        <button type="button" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-check"></i> Modificar</button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-erase"></i> Eliminar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-red">
+                                        <div class="panel-heading">
+                                            <p class="text-center">POLITICO</p>
+                                        </div>
+                                        <div class="panel-body" id="politico">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="panel panel-green">
+                                        <div class="panel-heading">
+                                            <p class="text-center">ECONOMICO</p>
+                                        </div>
+                                        <div class="panel-body" id="economico">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            <p class="text-center">SOCIAL</p>
+                                        </div>
+                                        <div class="panel-body" id="social">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <p class="text-center">TECNOLOGICO</p>
+                                        </div>
+                                        <div class="panel-body" id="tecnologico">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+</div>
+    <hr />
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/Empresas")
+
+    }

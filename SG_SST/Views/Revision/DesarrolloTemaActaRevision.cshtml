@@ -1,0 +1,303 @@
+﻿@model SG_SST.Models.Revision.AgendaRevisionVM
+@{
+    ViewBag.Title = "DesarrolloTemaActaRevision";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+
+<!-- Referencia a alertas -->
+<link rel="stylesheet" href="~/Content/css/sweetalert.css">
+
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/js/sweetalert.min.js"></script>
+
+@section Scripts {
+    @*<script src="~/Scripts/Revision/Revision.js"></script>*@
+    @Scripts.Render("~/bundles/Revision")
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+}
+
+
+<style>
+    #mdialTamanio {
+        width: 80% !important;
+    }
+
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal-dialog {
+        width: 50%;
+        height: 60%;
+        margin: 30px auto;
+    }
+
+    body {
+        background: transparent;
+    }
+
+    #container-main {
+        margin: 40px auto;
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    }
+
+    #container-main h1 {
+        font-size: 40px;
+        text-shadow: 4px 4px 5px #16a085;
+    }
+
+    .accordion-container {
+        width: 100%;
+        margin: 0 0 10px;
+        clear: both;
+        background-color: white;
+    }
+
+    .accordion-titulo {
+        position: relative;
+        display: block;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        background: #7E8A97;
+        color: orange;
+        text-decoration: none;
+    }
+
+    .accordion-titulo.open {
+        background: #7E8A97;
+        color: orange;
+    }
+
+    .accordion-titulo:hover {
+        background: #7E8A97;
+        color: orange;
+    }
+
+    .accordion-titulo span.toggle-icon:before {
+        content: "+";
+    }
+
+    .accordion-titulo.open span.toggle-icon:before {
+        content: "-";
+    }
+
+    .accordion-titulo span.toggle-icon {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 38px;
+        font-weight: bold;
+    }
+
+    .accordion-content {
+        display: none;
+        padding: 20px;
+        overflow: auto;
+    }
+
+    .accordion-content p {
+        margin: 0;
+    }
+
+    .accordion-content img {
+        display: block;
+        float: left;
+        margin: 0 15px 10px 0;
+        width: 50%;
+        height: auto;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Revisión por la Dirección</a></li>
+    <li><a href="javascript:void(0)">Nueva Revisión</a></li>
+    <li><a href="javascript:void(0)">Temas Agenda</a></li>
+    <li class="active">Desarrollo Tema</li>
+</ol>
+<hr />
+
+<body>
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Desarrollo Tema Acta Revisión</div>
+        <!-- Botón Ayuda -->
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Información de Ayuda/Acta Revisión</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para desarrollar un tema del <strong>ACTA DE REVISIÓN</strong>, digite el contenido y presione <button class="boton botonactive">GUARDAR</button> </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para adjuntar archivos al tema del <strong>ACTA DE REVISIÓN</strong>, seleccione el archivo y presione <button class="boton botonactive">ADJUNTAR</button></p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Recuerde que puede adjuntar máximo 3 archivos por tema, en los siguientes formatos JPG, PNG, PDF, XLS o XLSX cada uno de máximo 10 MB.</p></li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">SALIR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="formDesarrollo" method="post" >
+            <div class=" panel-body form-horizontal">
+                <div style="background-color:transparent">
+                    <div class="form-group row internal-panel-body">
+                        <input type="hidden" name="IdActa" id="IdActa" value="@Model.FKActaRevision" />
+                        <input type="hidden" name="IdAgenda" id="IdAgenda" value="@Model.PKIdAgenda" />
+
+                        <div class="row internal-panel-body">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(model => Model.TituloAgenda, new { @id = "TituloAgenda", @readonly = "readonly", @class = "form-control", @style = "color:black;text-align:center" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row internal-panel-body">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-md-7">Desarrollo:</label>
+                                <div class="col-md-12" align="center">
+                                    @Html.TextAreaFor(model => Model.DesarrolloAgenda, new { @value = Model.DesarrolloAgenda, @class = "form-control", @id = "DesarrolloAgenda" })
+
+                                    <script type="text/javascript">
+                                        setTimeout(function () {
+                                            CKEDITOR.replace('DesarrolloAgenda');
+                                        }, 20);
+                                    </script>
+
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row internal-panel-body">
+                        <div class="col-sm-12">
+                            <div class="form-group" style="text-align:right">
+                                <a href="@Url.Action("Index", "ReportesAplicacion")">Ir al módulo de Reportes y Estadísticas</a>
+                                @*@Html.ActionLink("Ir al módulo de Reportes y Estadísticas", "ReportesEstadisticas", new { @class = "btn btn-link", @target = "_blank" })*@
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <h4>Adjuntos (Agregue máximo 3 archivos)</h4>
+                <hr style="border-top-color:lightslategray; width:100%; margin-top:-5px" />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-8" for="File1">Adjuntar Archivos <span class="glyphicon glyphicon-question-sign" title="Puede agregar máximo 3 Evidencias y máximo de 10 MB de tamaño cada uno"></span></label>
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input type="file" name="archivo" class="form-control" id="archivo" onchange="ValidarTamañoDocumento()" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-positiva-invert" id="btn-add-file-edit" type="button" onclick="AdjuntarArchivo()">ADJUNTAR</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="table-responsive" id="divTadjunto" style="margin:auto;">
+                    <table class="table table-responsive table-bordered" id="tAdjuntos1" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla" id="trAdjuntos">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                Adjunto
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                Acción
+                            </th>
+                        </tr>
+                        @foreach (var adj in Model.AdjuntosAgenda)
+                        {
+                            <tr>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    @Html.DisplayFor(modelItem => @adj.NombreArchivo)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <a id="botonBorrar" onclick="EliminarAdjuntoTemaActaRevision(@adj.PKAdjuntoAgendaRevision,@adj.FKAgendaRevision)" class="btn btn-search btn-md"><span class="glyphicon  glyphicon-erase"></span></a>
+                                </td>
+                            </tr>
+                        }
+                        <tbody id="tAdjuntos"></tbody>
+                    </table>
+                    <center><div class="pagination" id="paginadorAdjuntos"></div></center>
+                </div>
+            </div>
+        </form>
+        <div class="panel-footer">
+            @*<div class="col-sm-4">
+                <div class="form-group">
+                    <div class="col-lg-5 col-md-offset-5">*@
+                        <a id="AtrasActa" href="@Url.Action("TemasActaRevision", new { IdActa = Model.FKActaRevision })" class="boton botonactive">ATRAS</a>
+                    @*</div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="col-lg-5 col-md-offset-8">*@
+                    <button type="button" class="boton botoninfo" onclick="AdicionarDesarrolloTemaAgendaRevision()">GUARDAR</button>
+                @*</div>
+            </div>*@
+        </div>
+
+    </div>
+</body>

@@ -1,0 +1,27 @@
+﻿@model List<SG_SST.Models.Planificacion.ActividadModel>
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="row form-group">
+        <h3>Plan de Acción para los Estándares Mínimos SGSST</h3>
+        <table class="table table-bordered table-striped" id="tblausentismos" style="font-size:smaller;">
+            <thead>
+                <tr>
+                    <th  class="col-md-7" style="text-align:center">Actividad</th>
+                    <th  class="col-md-3" style="text-align:center">Responsable</th>
+                    <th  class="col-md-2" style="text-align:center">Fecha Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td class="col-md-7" style="text-align:justify">@Html.Label( a.Descripcion)</td>
+                        <td class="col-md-3" style="text-align:center">@string.Format("{0}", a.Responsable)</td>
+                        <td class="col-md-2" style="text-align:center">@string.Format("{0}", a.strFechaFin)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+

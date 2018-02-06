@@ -1,0 +1,128 @@
+﻿@model SG_SST.Models.Organizacion.RecursoporSede
+
+@{
+    ViewBag.Title = "Modificar Recursos Asignados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<script src="~/Scripts/Organizacion/ValidacionCrearRecursos.js"></script>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Recursos en SST</a></li>
+    <li class="active">Modificar Recursos Asignados</li>
+</ol>
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">DATOS RECURSO ASIGNADO</div>
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Modificar Recurso Asignado</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="text-align:justify">Seleccione una Sede para actualizar el recurso.@Html.DropDownList("Fk_Id_Sede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Sede --") </p></li>
+                                    <li><p style="text-align:justify">Seleccione un Periodo de asignación para el recurso a Editar.<select class="form-control"><option>--Seleccionar Periodo--</option>><option>@DateTime.Now.Year</option></select></p></li>
+                                    <li><p style="text-align:justify">Nombre Recurso <input type="text" class="form-control" placeholder="Modifique el nombre del Recurso" /></li>
+                                    <li><p style="text-align:justify">Seleccione el tipo de recurso para modificar.@Html.DropDownList("Fk_Id_TipoRecurso", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Tipo --") </p></li>
+                                    <li><p style="text-align:justify">Seleccione la fase del recurso para modificar.@Html.DropDownList("Fk_Id_Fase", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar Fase --") </p></li>
+                                    <li><p style="text-align:justify"><button type="submit" class="boton botonactive">Grabar Actualizacion</button> Click Para almacenar en el sistema el recurso editado.</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+        <form method="post" action="@Url.Action("GrabarRecursosEditados", "Recursos")" id="grabarrecurso">
+            <input type="hidden" name="Pk_Id_Recurso" value="@Model.Recurso.Pk_Id_Recurso">
+            <input type="hidden" name="Fk_Id_Recurso" value="@Model.Recurso.RecursosFase.First().Fk_Id_Recurso" />
+            <input type="hidden" name="Pk_Id_Sede" value="@Model.Sede.Pk_Id_Sede" />
+            <input type="hidden" name="Fk_Id_Sede" value="@Model.Fk_Id_Sede" />
+            <input type="hidden" name="Pk_Id_RecursoporSede" value="@Model.Recurso.RecursosporSede.First().Pk_Id_RecursoporSede" />
+            <input type="hidden" name="Pk_Id_Fase" value="@Model.Recurso.RecursosFase.FirstOrDefault().Pk_Id_RecursoFase" />
+            <input type="hidden" name="Pk_Id_TipoRecurso" value="@Model.Fk_Id_Recurso" />
+            <input type="hidden" name="Pk_Id_RecursoTipoRecurso" value="@Model.Recurso.RecursosTipoRecursos.FirstOrDefault().Pk_Id_RecursoTipoRecurso" />
+            <input type="hidden" name="Pk_Id_RecursoFase" value="@Model.Recurso.RecursosFase.First().Pk_Id_RecursoFase" />
+            <input type="hidden" name="Fk_Id_RecursoFase" value="@Model.Recurso.RecursosFase.First().Fk_Id_Fase" />
+            <div class="panel-body form-horizontal">
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-8">Sede Recurso:</label>
+                                <div class="col-md-12">
+                                    <input type="text" disabled value="@Model.Sede.Nombre_Sede" class="form-control" style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-8">Nombre Recurso:</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="Nombre_Recurso" class="form-control" value="@Model.Recurso.Nombre_Recurso" style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-8">Periodo:</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Periodo", null, htmlAttributes: new { @class = "form-control", @style = "color:black;background-color:#ddd" }, optionLabel: "-- Seleccionar --")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Fase Recurso:</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Fk_Id_Fase", null, htmlAttributes: new { @class = "form-control", @style = "color:black;background-color:#ddd" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Tipo Recurso:</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Fk_Id_TipoRecurso", null, htmlAttributes: new { @class = "form-control", @style = "color:black;background-color:#ddd" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="panel-footer" align="center">
+                        <button type="submit" class="boton botonactive" onclick="ValidacionCrearRecursos()">Grabar Actualización</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion")
+}

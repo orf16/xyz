@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SG_SST.Models.Organizacion.RecursoporSede>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Recursos-Asignados-Sede</title>
+    <style>
+        .table{
+            width:100%;
+        }
+    </style>
+</head>
+<body>
+    <center>
+        <table class="table  table-responsive table-bordered" style="border: 2px solid lightslategray; border-collapse:collapse">
+            <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                    <p>NOMBRE RECURSO</p>
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                    <p>TIPO RECURSO</p>
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                    <p>FASE RECURSO</p>
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr class="titulos_filas">
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:left">
+                        @Html.DisplayFor(modelItem => item.Recurso.Nombre_Recurso)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:left">
+                        @Html.DisplayFor(modelItem => item.Recurso.RecursosTipoRecursos.FirstOrDefault().TipoRecurso.Descripcion_Tipo_Recurso)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:left">
+                        @Html.DisplayFor(modelItem => item.Recurso.RecursosFase.First().Fase.Descripcion_Fase)
+                    </td>
+                </tr>
+            }
+        </table>
+    </center>
+    
+    <b>Total Asignados año @ViewBag.periodo</b> : @ViewBag.total Recursos
+    
+</body>
+</html>

@@ -1,0 +1,313 @@
+﻿@model SG_SST.Models.Revision.RevisionVM
+
+@{ 
+    ViewBag.Title = "Nueva Revisión";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="~/Scripts/Revision/Revision.js"></script>
+    @*@Scripts.Render("~/bundles/Revision")*@
+}
+
+
+@*@Scripts.Render("~/bundles/simplePagination")*@
+
+@*@if (ViewBag.mensaje != null) {
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        })
+    </script>
+}*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: transparent;
+    }
+
+    #container-main {
+        margin: 40px auto;
+        width: 100%;
+        min-width: 320px;
+        max-width: 90%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+    }
+
+    #container-main h1 {
+        font-size: 40px;
+        text-shadow: 4px 4px 5px #16a085;
+    }
+
+    .accordion-container {
+        width: 100%;
+        margin: 0 0 10px;
+        clear: both;
+        background-color: white;
+    }
+
+    .accordion-titulo {
+        position: relative;
+        display: block;
+        padding: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        background: #7E8A97;
+        color: orange;
+        text-decoration: none;
+    }
+
+    .accordion-titulo.open {
+        background: #7E8A97;
+        color: orange;
+    }
+
+    .accordion-titulo:hover {
+        background: #7E8A97;
+        color: orange;
+    }
+
+    .accordion-titulo span.toggle-icon:before {
+        content: "+";
+    }
+
+    .accordion-titulo.open span.toggle-icon:before {
+        content: "-";
+    }
+
+    .accordion-titulo span.toggle-icon {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 38px;
+        font-weight: bold;
+    }
+
+    .accordion-content {
+        display: none;
+        padding: 20px;
+        overflow: auto;
+    }
+
+    .accordion-content p {
+        margin: 0;
+    }
+
+    .accordion-content img {
+        display: block;
+        float: left;
+        margin: 0 15px 10px 0;
+        width: 50%;
+        height: auto;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Revisión por la Dirección</a></li>
+    <li><a href="javascript:void(0)">Revisión del SG-SST</a></li>
+    <li class="active">Nueva revisión</li>
+</ol>
+
+<body onload="ObtenerActa()">
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Participantes Acta Revisión
+        </div>
+        <!-- Botón Ayuda -->
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda / Acta Revisión</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para agregar un participante al <strong>ACTA DE REVISIÓN</strong>, diligencie los datos completos incluidos el documento, nombre y cargo del participante y presione <button class="boton botoninfo">ADICIONAR</button> o diligencie los datos completos incluido el documento, busque los demás datos del participante presionando <a title="Editar" class="btn btn-search btn-md"><span class="glyphicon glyphicon-search"></span></a> y presione <button class="boton botoninfo">ADICIONAR</button></p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;"><a title="Eliminar" class="btn btn-search btn-md"><span class="glyphicon glyphicon-erase"></span></a> Permite eliminar un participante agregado previamente. </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;">Para ir a los temas del <strong>ACTA DE REVISIÓN</strong>, diligencie los datos completos, agregue al menos un participante y presione <button class="boton botonactive">CONTINUAR</button> </p></li>
+                                    <li><p style="margin-bottom:20px;line-height: 200%;text-align:left;"><strong>ACTA DE REUNIÓN:</strong> Recuerde que el artículo 2.2.4.6.31 del Decreto 1072 de 2015 solicita adelantar al menos una (1) vez al año la revisión del SG-SST.</p></li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <form id="formParticipantes" action="@Url.Action("TemasActaRevision")">
+            <div class="panel-body form-horizontal">
+
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Consecutivo Acta</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.NumActa, new { @class = "form-control", @style = "color:black;background-color:#DDD", @readonly = "readonly", @id = "NumActa", @name = "NumActa" })
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="IdSede" id="IdSede" value="@Model.PKSede" />
+                    <input type="hidden" name="IdActa" id="IdActa" value="@Model.FKActa" />
+                    <input type="hidden" name="IdEmpresa" id="IdSede" value="@Model.IdEmpresa" />
+
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <label class="col-md-7">Nombre Acta</label>
+                            <div class="col-md-11">
+                                @Html.TextBoxFor(model => Model.NombreActa, new { @class = "form-control", @style = "color:black", @id = "NombreActa", @name = "NombreActa" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Fecha Creación Acta</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.FechaCreacionActa, new { @class = "form-control", @style = "color:black;background-color:#DDD;font-size:15px", @id = "FechaCreacionActa", @name = "FechaCreacionActa", @readonly = "readonly", Value = DateTime.Now.ToString("dd/MM/yyyy") })
+                                @*<input type="date" id="FechaCreacionActa" name="FechaCreacionActa" class="form-control" value="@Model.FechaCreacionActa.ToString("dd/MM/yyyy")" readonly style="color:black;background-color:#DDD;font-size:15px" />*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-12">Fecha Inicial Revisión</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.FechaInicialRevision, new { @class = "form-control", @style = "color:black", @id = "FechaInicialRevision", @name = "FechaInicialRevision", Value = "", @placeHolder = string.Format("ej. {0} ", DateTime.Now.ToString("dd/MM/yyyy")) })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-12">Fecha Final Revisión</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.FechaFinalRevision, new { @class = "form-control", @style = "color:black", @id = "FechaFinalRevision", @name = "FechaFinalRevision", Value = "", @placeHolder = string.Format("ej. {0} ", DateTime.Now.ToString("dd/MM/yyyy")) })
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Razón Social</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.NombreEmpresa, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD", @id = "NombreEmpresa", @name = "NombreEmpresa" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-7">NIT:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.NitEmpresa, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD", @id = "NitEmpresa", @name = "NitEmpresa" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Sede:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.FKSede, Model.Sedes, "---Seleccionar Sede---", new { @value = "", @id = "sedes", @name = "sedes", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-6">Documento:</label>
+                            <div class="col-md-8">
+                                <div>@Html.TextBoxFor(model => Model.DocumentoParticipante, new { @class = "form-control", @style = "color:black;font-size:15px", @id = "Documento", @type = "search", @name = "Documento" })</div>
+                            </div>
+                            <div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <button type="button" class="btn-search" data-toggle="modal" onclick="DatosTrabajador()" title="Buscar">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Nombre Participante:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.NombreParticipante, new { @class = "form-control", @style = "color:black", @id = "NombreParticipante", @name = "NombreParticipante" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-7">Cargo Participante:</label>
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => Model.CargoParticipante, new { @class = "form-control", @style = "color:black", @id = "CargoParticipante", @name = "CargoParticipante" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-md-offset-8">
+                            <button type="button" id="AdicionarParticipante" class="boton botoninfo" onclick="CamposAdicionar(this)">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <hr style="border-top-color:lightslategray; width:98%" />
+
+                
+                <div class="table-responsive" id="divTparticipante">
+                    <table class="table table-bordered" id="tParticipantes1" style="border: 2px solid lightslategray">
+                        <tr class="titulos_tabla" id="trParticipantes">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Documento
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nombres y Apellidos
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Cargo
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Acción
+                            </th>
+                        </tr>
+                        <tbody id="tParticipantes"></tbody>
+                    </table>
+                    <div class="pagination-page" id="paginadorParticipantes" style="margin-left:45%"></div>
+                </div>
+            </div>
+        </form>
+        
+        <div class="panel-footer">
+            <button type="button" id="ContinuarParticipante" class="boton botonactive">CONTINUAR</button>
+        </div>
+
+    </div>
+</body>

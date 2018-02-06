@@ -1,0 +1,297 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Participacion.EDConsultaSST>
+
+@{
+    ViewBag.Title = "Buzón Consulta SST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}
+
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('Fecha_ini');
+    });
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('Fecha_Fin');
+    });
+    $(document).ready(function () {
+        paginador("#select_consultas", "tr[name = consult]", "#paginador1");
+    });
+</script>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@if (ViewBag.fechaInicio == "01/01/0001")
+{
+    ViewBag.fechaInicio = "";
+}
+@if (ViewBag.fechaFinal == "01/01/0001")
+{
+    ViewBag.fechaFinal = "";
+}
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Liderazgo Gerencial</a></li>
+    <li class="active">Buzón Consulta SST</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        Buzón Consulta SST
+    </div>
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda / Buzón Consulta SST</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <p style="margin-bottom:2%;line-height:200%;">Presione <button type="button" class="boton botonactive" disabled>CONSULTAR</button> para hacer una búsqueda de consultas SST después de ingresar los filtros</p>
+                            <p style="margin-bottom:2%;line-height:200%;">Presione <img src="~/Images/iconExcelp.png" style="width: 5%" /> para descargar las consultas SST</p>
+                            <p style="margin-bottom:2%;line-height:200%;">Presione <span class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></span> para descargar una evidencia de una consulta SST</p>
+                            <p style="margin-bottom:2%;line-height:200%;">Presione <span class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></span> para gestionar una consulta SST</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="panel-body form-horizontal">
+        <form method="post" id="consultarSST">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-md-12">Tipo de consulta SST</label>
+                        <div class="col-md-12">
+                            @if(ViewBag.tipoconsulta == "Seleccione")
+                            {
+                                <select id="tipoConsult" name="tipoConsult" class="form-control">
+                                    <option selected='selected'>Seleccione</option>
+                                    <option value="Felicitación">Felicitación</option>
+                                    <option value="Petición">Petición</option>
+                                    <option value="Reclamo">Reclamo</option>
+                                    <option value="Queja">Queja</option>
+                                    <option value="Otra Solicitud">Otra Solicitud</option>
+                                </select>
+                            }
+                            else if (ViewBag.tipoconsulta == "Felicitación")
+                            {
+                                <select id="tipoConsult" name="tipoConsult" class="form-control">
+                                    <option>Seleccione</option>
+                                    <option selected='selected' value="Felicitación">Felicitación</option>
+                                    <option value="Petición">Petición</option>
+                                    <option value="Reclamo">Reclamo</option>
+                                    <option value="Queja">Queja</option>
+                                    <option value="Otra Solicitud">Otra Solicitud</option>
+                                </select>
+                            }
+                            else if(ViewBag.tipoconsulta == "Petición")
+                            {
+                                <select id="tipoConsult" name="tipoConsult" class="form-control">
+                                    <option>Seleccione</option>
+                                    <option value="Felicitación">Felicitación</option>
+                                    <option selected='selected' value="Petición">Petición</option>
+                                    <option value="Reclamo">Reclamo</option>
+                                    <option value="Queja">Queja</option>
+                                    <option value="Otra Solicitud">Otra Solicitud</option>
+                                </select>
+                            }
+                            else if(ViewBag.tipoconsulta == "Reclamo")
+                            {
+                                <select id="tipoConsult" name="tipoConsult" class="form-control">
+                                    <option>Seleccione</option>
+                                    <option value="Felicitación">Felicitación</option>
+                                    <option value="Petición">Petición</option>
+                                    <option selected='selected' value="Reclamo">Reclamo</option>
+                                    <option value="Queja">Queja</option>
+                                    <option value="Otra Solicitud">Otra Solicitud</option>
+                                </select>
+                            }
+                            else if (ViewBag.tipoconsulta == "Queja")
+                            {
+                                <select id="tipoConsult" name="tipoConsult" class="form-control">
+                                    <option>Seleccione</option>
+                                    <option value="Felicitación">Felicitación</option>
+                                    <option value="Petición">Petición</option>
+                                    <option value="Reclamo">Reclamo</option>
+                                    <option selected='selected' value="Queja">Queja</option>
+                                    <option value="Otra Solicitud">Otra Solicitud</option>
+                                </select>
+                            }
+                            else if (ViewBag.tipoconsulta == "Otra Solicitud")
+                            {
+                                <select id="tipoConsult" name="tipoConsult" class="form-control">
+                                    <option>Seleccione</option>
+                                    <option value="Felicitación">Felicitación</option>
+                                    <option value="Petición">Petición</option>
+                                    <option value="Reclamo">Reclamo</option>
+                                    <option value="Queja">Queja</option>
+                                    <option selected='selected' value="Otra Solicitud">Otra Solicitud</option>
+                                </select>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="col-md-12">Fecha Inicial</label>
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="Fecha_ini" id="Fecha_ini" value="@ViewBag.fechaInicio" />
+                            <label for="Fecha_ini" class="error" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="col-md-12">Fecha Final</label>
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="Fecha_Fin" id="Fecha_Fin" value="@ViewBag.fechaFinal" />
+                            <label for="Fecha_Fin" class="error" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label class="col-md-8">Exportar</label>
+                        <div class="col-md-12">
+                            <a href="@Url.Action("ExportarExcel", null, new { })">
+                                <img src="~/Images/iconExcelp.png" title="Exportar a Excel" class="img img-responsive" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer" style="border:1px dotted lightslategray">
+                <div class="form-group">
+                    <div class="col-md-4" style="margin-left:40%">
+                        <button type="button" class="boton botonactive" onclick="ValidarConsulta()">Consultar</button>
+                        @*<button type="submit" class="boton botonactive" onclick="ValidarCrearProductoCriterio()">Guardar</button>*@
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <br />
+        <div class="table-responsive">
+            <table id="select_consultas" class="table table-bordered table-responsive" style="border: 2px solid lightslategray">
+                <tr class="titulos_tabla">
+                    <th rowspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Fecha de la Consulta")
+                    </th>
+                    <th rowspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Tipo de Consulta SST")
+                    </th>
+                    <th rowspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Descripción")
+                    </th>
+                    <th colspan="4" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("GESTIÓN")
+                    </th>
+                </tr>
+                <tr class="titulos_tabla">
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Fecha")
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Observaciones")
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Evidencia")
+                    </th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                        @Html.Label("Acciones")
+                    </th>
+                </tr>
+                @{
+                    foreach (var item in Model)
+                    {
+                        <tr name="consult" id="consult">
+                            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                @item.FechaConsultaED.ToString("dd/MM/yyyy")
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.TipoConsultaED)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.DescripcionConsultaED)
+                            </td>
+                            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                @if (item.FechaRevisionED.ToString("dd/MM/yyyy") != "01/01/1900")
+                                {
+                                    @item.FechaRevisionED.ToString("dd/MM/yyyy")
+                                }
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.ObservacionesED)
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @if (item.NombreArchivo1 != null)
+                                {
+                                    @Html.DisplayFor(modelItem => item.NombreArchivo1_download)
+                                    <a href="@Url.Action("DescargarEvidencia", null, new { nombEvide = item.NombreArchivo1, nombReal = item.NombreArchivo1_download })" class="btn btn-search btn-md" title="Descargar">
+                                        <span class="glyphicon glyphicon-download-alt"></span>
+                                    </a>
+                                    <br />
+                                }
+                                @if (item.NombreArchivo2 != null)
+                                {
+                                    @Html.DisplayFor(modelItem => item.NombreArchivo2_download)
+                                    <a href="@Url.Action("DescargarEvidencia", null, new { nombEvide = item.NombreArchivo2, nombReal = item.NombreArchivo2_download })" class="btn btn-search btn-md" title="Descargar">
+                                        <span class="glyphicon glyphicon-download-alt"></span>
+                                    </a>
+                                    <br />
+                                }
+                                @if (item.NombreArchivo3 != null)
+                                {
+                                    @Html.DisplayFor(modelItem => item.NombreArchivo3_download)
+                                    <a href="@Url.Action("DescargarEvidencia", null, new { nombEvide = item.NombreArchivo3, nombReal =item.NombreArchivo3_download })" class="btn btn-search btn-md" title="Descargar">
+                                        <span class="glyphicon glyphicon-download-alt"></span>
+                                    </a>
+                                    <br />
+                                }
+                            </td>
+                            <td style="text-align:center; border-right: 2px solid lightslategray; vertical-align:middle">
+                                <a href="@Url.Action("TrazabilidadConsultaSST", new { idConsulta = item.PkConsultaED })"
+                                    title="Trazabilidad Consulta SST" class="btn btn-md btn-search img-trazabilidad" style="height:32px; width:32px">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+            <div class="pagination-page" id="paginador1" style="margin-left:45%"></div>
+        </div>
+    </div>
+</div>

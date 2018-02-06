@@ -1,0 +1,71 @@
+﻿<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@model SG_SST.EntidadesDominio.EstudioPuestoTrabajo.EDEstudioPuestoTrabajo
+@if (Model != null)
+{
+    {
+        if (Model.listaArchivos.Count > 0)
+        {
+            <div class="Tabla-Programa table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Nombre del Archivo</span>
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                <span>Archivo Adjunto</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    @{
+                        foreach (var item in Model.listaArchivos)
+                        {
+                            <tr>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.NombreArchivo)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    <button type="button" class="btn-search" data-toggle="modal" data-target="#@string.Format("modal{0}", item.IdEstudioPuestoTrabajo)" title="Consultar">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                    <div id="@string.Format("modal{0}", item.IdEstudioPuestoTrabajo)" class=" modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                                    <h4 class="modal-title title">  </h4>
+                                                </div>
+                                                <div class="modal-body ">
+
+                                                    <div class="pdf-modales">
+                                                        <iframe src="@Url.Action("MostrarOtInteraccionesPDF", new { item.RutaArchivo })" type="application/pdf" width="575" height="500"></iframe>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer alert-dismissable">
+                                                    @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        }
+                    }
+                </table>
+                <center><div class="pagination" id="paginador1"></div></center>
+            </div>
+                                }
+
+                            }
+                        }
+

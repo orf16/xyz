@@ -1,0 +1,175 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="panel panel-default">
+        <div class="panel-heading" style="color:black">
+            Datos Generales
+        </div>
+        <div class="panel-body form-horizontal">
+            <table>
+                <tr>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Razón social de la empresa:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:400px">
+                            @string.Format("{0}", Model.RazonSocial)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Nit:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @string.Format("{0}", Model.Nit)
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Responsable SGSST:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @string.Format("{0}", Model.ResponsableSGSST)
+                        </div>
+                    </td>                    
+                </tr>
+            </table>           
+            <table>
+                <tr>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Centro de trabajo/Sede:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @string.Format("{0}", Model.SedeCentroTrabajo)
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Elaborado por:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @string.Format("{0}", Model.ElaboradoPor)
+                        </div>
+                    </td>                   
+                </tr>
+                <tr>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Licencia SO/SL:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @string.Format("{0}", Model.LicenciaSOSL)
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Fecha diligenciamiento:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:250px">
+                            @string.Format("{0}", Model.strFechaDiligenciamiento)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+                        <div style="width:250px">
+                            @Html.Label("Actividad económica:", new { @class = "control-label" })
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:100px">
+                            @string.Format("{0}", Model.CodActividadeEconomica)
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            @string.Format("{0}", Model.ActividadEconomica)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="body_asp">
+            <table id="tbl_asp" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="col-md-4" style="text-align:center">
+                            Aspectos a Evaluar                            
+                        </th>
+                        <th class="col-md-1" style="text-align:center">
+                            Cumple                            
+                        </th>
+                        <th class="col-md-2" style="text-align:center">
+                            No Cumple                            
+                        </th>
+                        <th class="col-md-2" style="text-align:center">
+                            Cumple parcial                            
+                        </th>
+                        <th class="col-md-3" style="text-align:center">
+                            Observaciones                            
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.AspectosCreados != null && Model.AspectosCreados.Count > 0)
+                    {
+                        var i = 1;
+                        foreach (var item in Model.AspectosCreados)
+                        {
+                            <tr>
+                                <td>@string.Format("{0}", item.AspectoEvaluar)</td>
+                                <td>@Html.RadioButton("Cumple", item.Cumple, item.Cumple, new { @Name = "aspecto_" + i })</td>
+                                <td>@Html.RadioButton("No cumple", item.NoCumple, item.NoCumple, new { @Name = "aspecto_" + i })</td>
+                                <td>@Html.RadioButton("Cumple parcial", item.CumpleParcial, item.CumpleParcial, new { @Name = "aspecto_" + i })</td>
+                                <td>@string.Format("{0}", item.Observaciones)</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <br />
+            <hr />
+            <div class="panel-footer">
+                <p align="left">
+                    @DateTime.Now
+                    <img align="right" src="~/Images/alissta_bn.png" width="150" height="50" />
+                </p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

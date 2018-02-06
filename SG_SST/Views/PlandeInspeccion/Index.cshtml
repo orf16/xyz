@@ -1,0 +1,756 @@
+﻿@model SG_SST.Models.Aplicacion.CrearInspeccionModel
+
+@{
+    ViewBag.Title = "Planeación de Inspección";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: blue;
+        }
+    </style>
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("a.fancyFrame").fancybox({
+                'frameWidth': 200,
+                'frameHeight': 200,
+                'overlayShow': true,
+                'hideOnContentClick': false,
+                'type': 'iframe'
+            });
+        });
+    </script>
+
+}
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            showConfirmButton: true,
+            confirmButtonText: 'Regresar',
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+
+}
+
+<style>
+    .container-main {
+        margin: 60px auto;
+        margin-bottom: 10%;
+        padding-bottom: 3em;
+        width: 100%;
+        min-width: 320px;
+        max-width: 95%;
+        -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+        background-color: white;
+    }
+
+        .container-main h4 {
+            font-size: 23px;
+            text-shadow: 4px 4px 5px #DDD;
+            padding-top: 1%;
+            padding-bottom: 2%;
+        }
+
+    input[type='file'] {
+        color: transparent;
+        border: inherit;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Inspecciones de Seguridad</a></li>
+    <li class="active">Planeación de Inspección</li>
+</ol>
+
+<body>
+    <form action="@Url.Action("CrearPlaneacionInspeccion")" id="formtipoI">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+            <div class="panel-heading" style="color:white">Planeación de Inspección</div>
+            <div align="right">
+                <div id="ayuda" style="text-align:right">
+                    <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                       title="Ayuda" class="btn btn-ayuda btn-md">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                    <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                    <h4 class="modal-title title">Ayuda / Planeación de Inspección</h4>
+                                </div>
+                                <div class="modal-body " style="color:black">
+                                    <ul>
+                                        <li><p style="text-align:justify">En conformidad con el Decreto 1072 2015, Artículo 2.2.4.6.12. Documentación #14 y Artículo 2.2.4.6.24. Medidas de prevención y control - Parágrafo 2. entre otros, las empresas deben establecer un programa de inspecciones enfocadas a la seguridad y salud en el trabajo </p></li>
+                                        <li><p style="text-align:justify"><b style="color:#FF7500">ALISSTA</b> presenta una funcionalidad para la planeación y registro de inspecciones del SGSST, donde escoge entre cuatro (4) tipos de inspecciones como son: Gerencial, Planeada, No Planeada e Inspección de Maquinaria, equipos y otras herramientas.</p></li>
+                                        <li><p style="text-align:justify">Es de anotar que el tipo de inspección de Maquinaria, Equipos y Otras herramientas se comunica con los datos de la opción</li>
+                                        <p style="text-align:justify">Equipos y Herramientas<img src="~/Images/iconos/submenus/aplicacion-administracion2.png" height="50" width="50" /></p>
+                                        <li><p style="text-align:justify">La opción <b style="color:#FF7500">Lista No ejecutados</b> Permite visualizar ó eliminar  aquellas inspecciones planeadas que aún no han sido ejecutadas en su totalidad y estén pendiente de crear actividades de plan de acción.</p></li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body form-horizontal">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Tipo de Inspección:</label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="DescripcionTipoInspeccion" id="DescripcionTipoInspeccion">
+                                    <option value="">-- Seleccionar Tipo Inspección --</option>
+                                    @foreach (var c in Model.tiposinspeccion)
+                                    {
+                                        <option value="@c.IdTipoInspeccion">@c.DescripcionInspeccion</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Responsable:</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="responsable" id="responsable" />
+                                <label for="responsable" class="error" style="display:none;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Fecha:</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="fechapi" id="fechapi" placeholder="dd/mm/aaaa" />
+                                <label for="fechapi" class="error" style="display:none;"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <input type="hidden" id="Consecutivo" />
+                <input type="hidden" id="IdPlan" />
+                <div class="panel-footer" style="background-color:transparent">
+                    <div class="row">
+                        <div class="col-md-12" align="center">
+                            <button type="button" class="boton botonactive" id="creanoejecutado" onclick="CamposGrabar()">Crear</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-5">
+                            <button type="button" class="boton botonactive" onclick="ContinuarEjecucionPlan()" id="continuar">Continuar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <button type="button" id="btnnoejecutados" class="boton botoninfo" data-toggle="modal" data-target="#@string.Format("modalnoejecutados")">Lista No Ejecutados</button>
+    </form>
+
+    <form id="generarcondicioni">
+        <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="">
+            <div class="panel-heading" style="color:white">Continuar Planeación de Inspección</div>
+            <div class="panel-body form-horizontal">
+                <div style="background-color:transparent">
+                    <div align="right">
+                        <div id="ayuda" style="text-align:right">
+                            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda1")"
+                               title="Ayuda" class="btn btn-ayuda btn-md">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </a>
+                            <div id="@string.Format("modalAyuda1")" class="modal fade" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                            <h4 class="modal-title title">Información de Ayuda/Planeación de Inspección</h4>
+                                        </div>
+                                        <div class="modal-body" style="color:black">
+                                            <ul>
+                                                <li><p style="text-align:justify">Por favor complete los datos de la caracterización de la inspección como: Descripción especifica de la inspección, proceso , área o lugar, sede y asistentes a la inspección entre otros. </p></li>
+                                                <li><p style="text-align:justify">La opción de <b style="color:#FF7500">CONFIGURAR PRIORIDADES</b>, le permitirá establecer los rangos en días que le dará a las diferentes condiciones inseguras que detecte en el proceso de inspección. Esta priorización se debe dar por cada condición insegura registrada.</p></li>
+                                                <li><p style="text-align:justify">Luego deberá registrar las diferentes condiciones inseguras evidenciadas usado la opción <b style="color:#FF7500">AGREGAR CONDICIÓN</b> y diligenciar la información requerida, recuerde que debe adjuntar evidencia de la condición insegura detectada, En los soportes de las evidencias inseguras identificadas, recuerde anexar la lista de verificación de la inspección y cargar archivos en formato pdf, jpg, ó png de máximo 6Mb.</p></li>
+                                                <li><p style="text-align:justify">Finalmente la opción <b style="color:#FF7500">PLAN DE ACCIÓN</b> le permitirá definir las actividades del plan de acción para las condiciones identificadas y organizadas de acuerdo a la priorización que le asigno, así como la definición del responsable y su seguimiento.</p></li>
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 col-sm-offset-8">
+                            <div class="form-group">
+                                <label class="col-md-8 col-lg-offset-0">Consecutivo Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="hidden" class="form-control" name="IdInspeccion" id="IdInspeccion" readonly style="color:black;background-color:#ddd" />
+                                    <input type="text" class="form-control" name="Consecutivoplan" id="Consecutivoplan" readonly style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Razón Social Empresa:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="nombreempresa" id="nombreempresa" readonly style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Nit:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="nit" id="nit" readonly style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Fecha Planeacion:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="FechaPI" id="FechaPI" readonly style="color:black;background-color:#ddd" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8 ">Tipo Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="DescripcionTipoInspecciona" id="DescripcionTipoInspecciona" readonly style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Responsable Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="Responsable" id="Responsable" readonly style="color:black;background-color:#ddd" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Fecha Realización Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" id="FechaR" name="FechaR" class="form-control" readonly style="color:black;background-color:#ddd" />
+                                    <label for="fechaR" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row" id="infoinspeccion">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Descripción Tipo Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="DescribeTipoInspeccion" id="DescribeTipoInspeccion" readonly style="color:black;background-color:#ddd" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-8 ">Sede Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="Sede" id="Sede" readonly style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="col-md-8">Hora:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="Hora" id="Hora" readonly style="color:black;background-color:#ddd" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="infoinspeccions">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Area ó Lugar Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="Arealugar" id="Arealugar" readonly style="color:black;background-color:#ddd" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-8 ">Responsable Lugar de Inspección:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="Reslugar" id="Reslugar" readonly style="color:black;background-color:#ddd" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="col-md-8">Proceso:</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control" name="Proceso" id="Proceso" readonly style="color:black;background-color:#ddd;" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="panelascf">
+                <div class="panel-heading" style="color:white">Asistentes - Configuración Prioridad</div>
+                <div class="panel-body form-horizontal">
+                    <div style="background-color:transparent">
+                        <div class="col-sm-6">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Asistentes Inspección:</h4>
+                            <table class="table table-bordered  table-hover" style="border-bottom:transparent" id="">
+                                <thead>
+                                    <tr class="titulos_tabla" style="text-align:center">
+                                        <th style="border:solid 1px #808080">
+                                            <p>Nombre Asistente</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="asistentes"></tbody>
+                            </table>
+                            <div class="pagination-page" id="paginador6"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Configuración Prioridad Inspección:</h4>
+                            <table class="table table-bordered table-hover" style="border-bottom:transparent" id="">
+                                <thead>
+                                    <tr class="titulos_tabla" style="text-align:center">
+                                        <th style="border:solid 1px #808080">
+                                            <p>Prioridad</p>
+                                        </th>
+                                        <th style="border:solid 1px #808080">
+                                            <p>Dias Desde</p>
+                                        </th>
+                                        <th style="border:solid 1px #808080">
+                                            <p>Dias Hasta</p>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="configuraciones"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="panelelementos">
+                <div class="panel-heading" style="color:white">Equipos, Elementos y Herramientas</div>
+                <div class="panel-body form-horizontal">
+                    <div style="background-color:transparent">
+                        <div class="col-sm-12">
+                            <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Equipos, Elementos y Herramientas:</h4>
+                            <table class="table table-bordered  table-hover" style="border-bottom:transparent" id="">
+                                <thead>
+                                    <tr class="titulos_tabla" style="text-align:center">
+                                        <th style="border:solid 1px #808080">
+                                            <p>Tipo Elemento</p>
+                                        </th>
+                                        <th style="border:solid 1px #808080">
+                                            <p>Elemento</p>
+                                        </th>
+                                        <th style="border:solid 1px #808080">
+                                            <p>Fabricante</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="elementos"></tbody>
+                            </table>
+                            <div class="pagination-page" id="paginador7"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="listadocondiciones">
+                <div class="table-responsive">
+                    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="panelcondiciones">
+                        <div class="panel-heading" style="color:white">Condiciones Inseguras Inspección Registradas</div>
+                        <div class="panel-body form-horizontal">
+                            <div style="background-color:transparent">
+                                <div class="col-sm-12">
+
+                                    <h4 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Condiciones Inseguras:</h4>
+                                    <table class="table table-bordered table-responsive" style="border:2px solid lightslategray" id="condicion">
+                                        <thead>
+                                            <tr class="titulos_tabla">
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Seleccionar</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Prioridad Condición Insegura</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Dias Desde</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Dias Hasta</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Descripción Condición</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Ubicación Específica</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Archivo Evidencia Cargado</p>
+                                                </th>
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                                    <p>Eliminar</p>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="condicionesins"></tbody>
+
+                                    </table>
+
+                                    <div class="pagination-page" id="paginador9" style="margin-left:40%">
+                                    </div>
+
+                                </div>
+                                <div class="panel-footer">
+                                    <button type="button" class="boton botoninfo" id="btnagregarcondicion" onclick="ObtenerConfigInspecc()" data-toggle="modal" data-target="#@string.Format("AgregaCondicion")">Agregar Condición</button>
+                                    <button type="button" class="boton botonactive" id="btnplanaccion" onclick="PlanAccion()">Plan de Acción</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+    <form id="planas">
+        <div id="planacciones" class="well">
+            <div id="planaccion" class="container-main">
+                <h4 class="titulo-crear-recursos titulos_tabla" style="vertical-align:middle; text-align:center">Generar Plan de Acción a Inspección</h4>
+                @*<hr style="border-top-color:#FD7500; padding-left:2em" />*@
+                <div class="row" id="entonces">
+
+                    <div class="col-lg-12">
+                        <div class="col-lg-4">
+                            <label>Actividad:</label>
+                            <input type="text" class="form-control" name="actividad" id="actividad" />
+                            <label for="actividad" class="error" style="display:none;"></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Responsable:</label>
+                            <input type="text" class="form-control" name="responsablepa" id="responsablepa" />
+                            <label for="responsable" class="error" style="display:none;"></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <label>Fecha Finalización:</label>
+                            <input type="text" class="form-control" name="fechafin" id="fechafin" readonly style="background-color:#DDD;color:black" />
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="" style="background-color:transparent">
+                    <div class="row">
+                        <div class="col-md-12 col-md-offset-7">
+                            <button type="button" class="boton botonactive" id="btnplanes" onclick="GrabaPlanes()">Guardar</button>
+                            <button type="button" class="boton botoninfo" id="btnlistadoplanes">Listar Planes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <div id="@string.Format("AgregaCondicion")" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Agregar Condición Insegura Inspección</h4>
+                </div>
+                <form enctype="multipart/form-data" id="formularioCondicion">
+
+
+                    <input type="hidden" name="idinspeccion" id="idinspeccion" />
+                    <div class="modal-body" style="color:black">
+                        <div class="col-lg-12" style="background-color:white;">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Condición Insegura Encontrada:</h5>
+
+                                    <textarea class="form-control" rows="5" id="DesCI" name="DesCI"></textarea>
+                                    <label for="DesCI" class="error" style="display:none;"></label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Ubicación Especifica:</h5>
+
+                                    <textarea class="form-control" rows="5" id="Uesp" name="Uesp"></textarea>
+                                    <label for="Uesp" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <hr style="border-top-color:lightslategray" />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Riesgo ó Peligro:</h5>
+
+                                </div>
+                                <div class="col-md-10">
+                                    <select class="form-control" name="tipopeligro" id="tipopeligro" onchange="ConsultarClasesPeligro(this.value);"></select>
+                                    <label for="tipopeligro" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="row" id="inputOtro" hidden="hidden">
+                                <div class="col-md-2">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Cual:?</h5>
+
+                                </div>
+                                <div class="col-md-10">
+                                    <input name="Otro" id="Otro" type="text" class="form-control" />
+                                </div>
+                                <label for="Otro" class="error" style="display:none;"></label>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row" id="inputClasificacion">
+                                <div class="col-md-2">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Clasificación:</h5>
+                                </div>
+                                <div class="col-md-10">
+                                    <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control"></select>
+                                </div>
+                                <label for="Otro" class="error" style="display:none;"></label>
+                            </div>
+                            <br />
+                            <br />
+                            <hr style="border-top-color:lightslategray" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Configuración Prioridad:</h5>
+                                    <select class="form-control" name="DescripcionConfig" id="DescripcionConfig"></select>
+                                    <label for="DescripcionConfig" class="error" style="display:none;"></label>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="titulos_tabla" style="background-color: rgba(196, 202,196, 0.1)">Adjuntar Evidencia:</h5>
+                                    <input type="file" class="form-control" id="Evidencia" name="Evidencia" />
+
+
+
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                            <div class="row col-lg-10 col-lg-offset-0">
+                                @*<a href="#" id="hl-start-upload" type="submit" class="boton botonactive">Guardar</a>*@
+                                @*<button type="button" class="boton botonactive" id="hl-start-upload">Guardar</button>*@
+                                <button type="button" class="boton botonactive" id="hl-start-upload" onclick="GrabarCondiciones()">Guardar</button>
+
+                                @*<button type="button" class="boton botoninfo" id="btnlistadocondiciones">Listado Condiciones</button> onclick="GrabarCondiciones()"*@
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Imagen -->
+    <div id="ModalPDF" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Archivo Cargado Condición Insegura</h4>
+                </div>
+                <div class="modal-body">
+                    <center><iframe width="600" height="650" id="imagen" @*typeof="application/pdf"*@></iframe></center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ModalImagen" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Archivo Cargado Condición Insegura</h4>
+                </div>
+                <div class="modal-body">
+                    <center><img id="img" height="600" width="650" /></center>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="ModalPlanes" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Lista Planes de Acción Generados</h4>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-responsive table-bordered" style="border:2px solid lightslategray" id="">
+                        <thead>
+                            <tr class="titulos_tabla">
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    <p>Descripción Condición</p>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    <p>Actividad</p>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    <p>Responsable</p>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    <p>Fecha Final</p>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    <p>Estado</p>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaPlanes"></tbody>
+                    </table>
+                </div>
+                <div class="pagination-page" id="paginador5" style="margin-left:40%;"></div>
+                <div class="modal-footer">
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @*fin del formulario continuar con informacion.*@
+
+
+
+
+    <div id="@string.Format("modalnoejecutados")" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                    <h4 class="modal-title title">Lista Planeaciones de Inspecciones Sin Ejecutar</h4>
+                </div>
+                <div class="modal-body " style="color:black">
+                    <table class="table table-responsive table-bordered" style="border:2px solid lightslategray" id="">
+                        <thead>
+                            <tr class="titulos_tabla">
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Consecutivo
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Tipo Inspección
+                                </th>
+
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Responsable
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Fecha Plan
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Estado
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Ejecutar
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                    Eliminar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="sinejecutar"></tbody>
+
+                    </table>
+                </div>
+                <div class="pagination-page" id="paginador4" style="margin-left:40%;"></div>
+                <div class="modal-footer">
+
+                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <button type="button" class="boton botoncancel" id="regresar" onclick="location.href='@Url.Action("Index", "PlandeInspeccion")'">Regresar</button>
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+
+</body>

@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "MenuAnalisis";
+}
+
+<p>Empresas / Consideraciones Internas y Externas</p>
+<hr />
+<!-- Panel principal para seleccionar el tipo de operacion, Crear ,consultar, dofa o pest -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">CONSIDERACIONES INTERNAS Y EXTERNAS</div>
+                <div class="panel-body">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="row ">
+                            @Html.ActionLink("Crear DOFA", "DOFA", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @Html.ActionLink("Crear PEST", "PEST", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @Html.ActionLink("Consultar DOFA", "MostrarDOFA", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                        <hr />
+                        <div class="row">
+                            @Html.ActionLink("Consultar PEST", "MostrarPEST", new { }, htmlAttributes: new { @type = "button", @class = "form-control btn btn-warning btn-md tbr" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

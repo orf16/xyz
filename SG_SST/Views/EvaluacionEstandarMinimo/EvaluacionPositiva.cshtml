@@ -1,0 +1,65 @@
+﻿@model SG_SST.Models.Planificacion.EvaluacionPositivaModel
+@{
+    ViewBag.Title = "Evaluación Positiva";
+}
+
+@*<h2>EvaluacionPositiva</h2>*@
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@section OpcionesEvaluacion
+{
+    <ul class="nav nav-tabs">
+        <li><a href="@Url.Action("Index","Evaluacion")" style="color:gray">Evaluación Inicial SGSST</a></li>
+        <li><a href="@Url.Action("Index","EvaluacionEstandarMinimo")" style="color:gray">Estándares Mínimos SGSST</a></li>
+        <li class="active"><a href="javascript:void(0);" style="color:#ff7500">Evaluación SST Positiva</a></li>
+    </ul>
+
+    @*<div class="form-inline">
+            <div class="form-group">
+                <a href="@Url.Action("Index","Evaluacion")" class="boton botonactive">Evaluación Inicial SGSST</a>
+            </div>
+            <div class="form-group">
+                <a href="@Url.Action("Index","EvaluacionEstandarMinimo")" class="boton botonactive">Estándares Mínimos SGSST</a>
+            </div>
+            <div class="form-group">
+                <a href="javascript:void(0);" class="btn btn-basic" disabled="disabled">Evaluación SST Positiva</a>
+            </div>
+        </div>*@
+}
+
+<br />
+@using (Html.BeginForm("EvaluacionPositiva", "EvaluacionEstandarMinimo", FormMethod.Post, new { @id = "formEvaluacionPositiva", @class = "form-horizontal" }))
+{
+    <div class="form-group">
+        <div class="form-group col-lg-12">
+            <div class="col-md-1">
+                @Html.Label("Año:", new { @class = "control-label" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(x => x.anioseleccionado, Model.Anios, "--Año--", new { @class = "form-control" })
+                <span class="msg-validacion">@Html.ValidationMessageFor(x => x.anioseleccionado)</span>
+            </div>
+            <div class="col-md-1">
+                @Html.Label("Empresa:", new { @class = "control-label" })
+            </div>
+            <div class="col-md-5">
+                @string.Format(Model.RazonSocial)
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="boton botonactive" id="consultarIndicador">Consultar</button>
+            </div>
+
+        </div>
+    </div>
+}
+<div>
+    <center>
+        <iframe src="@Model.url" style="width:100%; height:500px; border:none"></iframe>
+    </center>
+</div>
+

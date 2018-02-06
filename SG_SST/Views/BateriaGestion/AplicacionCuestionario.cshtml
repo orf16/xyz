@@ -1,0 +1,1510 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDBateriaGestion
+
+@{
+    ViewBag.Title = "Aplicación del Cuestionario";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Batería Riesgo Psicosocial</a></li>
+    <li><a href="@Url.Action("Index", "BateriaGestion")">Gestionar Bateria Psicosocial</a></li>
+    <li class="active">Aplicación de Cuestionario</li>
+</ol>
+
+<script>
+
+    //Copiar Link
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+
+        swal({
+            title: "Estimado Usuario",
+            text: "El link se ha copiado en el portapapeles",
+            type: "success",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false
+        });
+    }
+    // Buscar por Cédula
+    $(document).ready(function () {
+        $("#CedulaBuscar").on('keyup', function () {
+
+
+            $("#NombrePersona").val('');
+            $("#CargoPersona").val('');
+            $("#SedePersona").val('');
+            $("#CorreoPersona").val('');
+            if ($(this).val().length > 5) {
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/BateriaGestion/BuscarPersonaDocumentoCargo1",
+                    data: '{documento: "' + $("#CedulaBuscar").val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        OcultarPopupposition();
+                        var PersonaArray = new Array();
+                        var PersonaArray1 = new Array();
+                        var array = [];
+                        if (response.RelacionLaboral != null) {
+                            PersonaArray = response.RelacionLaboral;
+
+                            for (var i in PersonaArray) {
+                                if (PersonaArray.hasOwnProperty(i) && !isNaN(+i)) {
+                                    array[+i] = PersonaArray[i];
+                                }
+                            }
+                        }
+                        $.each(array, function (array1, group) {
+                            var NombreS = group.Nombre1;
+                            var Ocupacion = group.Ocupacion;
+                            var correo = group.Email;
+
+                            $("#NombrePersona").val(NombreS);
+                            $("#CargoPersona").val(Ocupacion);
+                            $("#CorreoPersona").val(correo);
+                        });
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        OcultarPopupposition();
+                        var value = "";
+                        $("#NombrePersona").val(value);
+                        $("#CargoPersona").val(value);
+                        $("#CorreoPersona").val(value);
+
+                    }
+                });
+
+
+            }
+
+
+        });
+    });
+    //Agregar Convocado Manual
+    $(function () {
+        $("#AgregarC_Manual").bind("click", function () {
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+    function postGuardar1() {
+        this.launchGuardar1 = function () {
+
+            $("#MS_NOV_Man").text('');
+            $("#DV_NOV_Man").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#DV_NOV_Man").empty();
+
+
+            var html_ul1 = "<ul>";
+            var html_ul2 = "</ul>";
+            var html = "";
+
+            var stringArray = new Array();
+            stringArray[0] = $("#NombreConvocado").val();
+            stringArray[1] = $("#CorreoManualConvocado").val();
+            stringArray[2] = $("#CedulaManualConvocado").val();
+            stringArray[3] = $("#IdGestion").val();
+
+            var EDBateriaUsuario = {
+                Nombre: stringArray[0],
+                NumeroIdentificacion: stringArray[2],
+                TipoDocumento: "N/A",
+                CorreoElectronico: stringArray[1],
+                TokenPrivado: "",
+                TipoConv: "3",
+                Fk_Id_BateriaGestion: stringArray[3]
+            };
+
+            var probarForm1 = false;
+            var probarForm2 = false;
+            var probarForm3 = false;
+            if (stringArray[0] != null && stringArray[1] != null && stringArray[2] != null) {
+                var string1 = stringArray[0].replace(" ", ""); var string2 = stringArray[1].replace(" ", ""); var string3 = stringArray[2].replace(" ", "");
+                if (string1 != "" && string2 != "" && string3 != "") {
+
+                    PopupPosition();
+                    $.ajax({
+                        type: "POST",
+                        url: '/BateriaGestion/CrearUsuario',
+                        traditional: true,
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(EDBateriaUsuario),
+                        success: function (data) {
+                            OcultarPopupposition();
+
+                            if (data.Probar == false) {
+                                swal("Estimado Usuario", data.Estado, "warning");
+                                $("#DV_NOV_Man").append("<span>" + data.Estado + "</span>");
+                                $("#DV_NOV_Man").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-danger");
+                            }
+                            else {
+                                $("#ul_manual").empty();
+                                $("#ul_manual").append('');
+                                $("#ul_todos").empty();
+                                $("#ul_todos").append('');
+                                $.each(data.ListaUsuariosCreados, function (key, value) {
+                                    if (value.TipoConv == 3 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                        var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                        $("#ul_manual").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                                    }
+                                });
+                                $.each(data.ListaUsuariosCreados, function (key, value) {
+                                    if (value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                        var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Eliminar Asignación\"><span class=\"glyphicon glyphicon-erase\">";
+                                        $("#ul_todos").append('<li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                                    }
+                                });
+
+                                $("#DV_NOV_Man").append("<span>Convocado Agregado</span>");
+                                $("#DV_NOV_Man").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+                            }
+                        },
+                        error: function (data) {
+                            OcultarPopupposition();
+                            console.log(data.Estado)
+                        }
+                    });
+                }
+                else {
+                    if (string1=="") {
+                        probarForm1 = true;
+                    }
+                    if (string2 == "") {
+                        probarForm2 = true;
+                    }
+                    if (string3 == "") {
+                        probarForm3 = true;
+                    }
+                }
+            }
+            else {
+                if (stringArray[0] == null) {
+                    probarForm1 = true;
+                }
+                if (stringArray[1] == null) {
+                    probarForm2 = true;
+                }
+                if (stringArray[2] == null) {
+                    probarForm3 = true;
+                }
+            }
+
+            if (probarForm1) {
+                html += "<li>Digite el Nombre del Covocado</li>";
+            }
+            if (probarForm2) {
+                html += "<li>Digite el Correo del Convocado</li>";
+            }
+            if (probarForm3) {
+                html += "<li>Digite la Cédula del Convocado</li>";
+            }
+            if (probarForm1 || probarForm2 || probarForm3) {
+
+                $("#DV_NOV_Man").append(html_ul1 + html + html_ul2);
+                $("#DV_NOV_Man").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+            }
+
+
+
+
+        }
+    }
+    //buscar Convocado Filtro
+    $(function () {
+        $("#FiltroCargo").bind("click", function () {
+            var onEventLaunchGuardar2 = new postGuardar2();
+            onEventLaunchGuardar2.launchGuardar2();
+        });
+    });
+    function postGuardar2() {
+        this.launchGuardar2 = function () {
+
+            $("#MS_NOV_Fil").text('');
+            $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#DV_NOV_Fil").empty();
+
+            var dropdowncargo = $("#Pk_Id_Cargo");
+            var TextoCargo = $("#Pk_Id_Cargo option:selected").text();
+            $("#titulotabla").css("display", "none");
+            $(".esconderseleccion").css("display", "none");
+            $("#titulotabla").text("");
+            $("#ul_filtro_result").html("<tr></tr>");
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/BateriaGestion/ListaPersonas",
+                data: '{cargo: "' + TextoCargo + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.probar == false) {
+                        if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                type: "warning",
+                                closeOnConfirm: true
+                            },
+                        function () {
+                            location.reload(true);
+                        });
+
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.resultado,
+                            confirmButtonColor: "#DD6B55",
+                            type: "warning",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+
+                        $("#ul_filtro_result").empty();
+                        $("#ul_filtro_result").append('');
+
+                        //todos
+                        var cont = 1;
+                        var txthtml = "<tr>";
+                        $.each(data.ListaPersonas, function (key, value) {
+                                var persona = value.Nombre1 + " " + value.Nombre2 + " " + value.Apellido1 + " " + value.Apellido2;
+                                var Cedula = value.NumeroDocumento;
+                                var Correo = value.Email;
+                                $(".esconderseleccion").css("display", "block");
+                                
+                                if (cont==5) {
+                                    cont = 1;
+                                    if (Correo == "" || Correo==null) {
+                                        txthtml += '</tr><tr style="border:none;"><td style="padding:4px;border:0.5px solid gray;background-color:#b7c6d7">' + persona + '</td>';
+                                    }
+                                    else {
+                                        txthtml += '</tr><tr style="border:none;"><td style="padding:4px;border:0.5px solid gray;"><input class="checkfiltro" type="checkbox" nombre="' + persona + '" cedula="' + Cedula + '" correo="' + Correo + '" value="1">' + persona + '</td>';
+                                    }
+                                    
+                                }
+                                else {
+                                    if (Correo == "" || Correo==null) {
+                                        txthtml += '<td style="padding:2px;border:0.5px solid gray;background-color:#b7c6d7">' + persona + '</td>';
+                                    }
+                                    else {
+                                        txthtml += '<td style="padding:2px;border:0.5px solid gray;"><input class="checkfiltro" type="checkbox" nombre="' + persona + '" cedula="' + Cedula + '" correo="' + Correo + '" value="1">' + persona + '</td>';
+                                    }
+                                    
+                                }
+                                cont++;
+                        });
+                        txthtml += "</tr>";
+                        $("#ul_filtro_result").append(txthtml);
+                        $("#titulotabla").css("display", "block");
+                        $("#titulotabla").text("RESULTADO BUSQUEDA CARGO:" + TextoCargo);
+                        
+
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+
+        }
+    }
+    //Agregar Convocado Filtro Cargo
+    $(function () {
+        $("#AgregarC_Filtro").bind("click", function () {
+            var onEventLaunchGuardar3 = new postGuardar3();
+            onEventLaunchGuardar3.launchGuardar3();
+        });
+    });
+    function postGuardar3() {
+        this.launchGuardar3 = function () {
+
+            $("#MS_NOV_Fil").text('');
+            $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#DV_NOV_Fil").empty();
+
+
+            var html_ul1 = "<ul>";
+            var html_ul2 = "</ul>";
+            var html = "";
+            var ListaUsuariosPush = new Array();
+
+            $('#Grid3 tbody').find('td').each(function () {
+                var cell = $(this);
+                var check = cell.find('input[type="checkbox"]');
+                if (check.is(':checked')) {
+                    var nombre = check.attr('nombre');
+                    var cedula = check.attr('cedula');
+                    var correo = check.attr('correo');
+                    var idgestion = $("#IdGestion").val();
+
+                    var EDBateriaUsuario = {
+                        Nombre: nombre,
+                        NumeroIdentificacion: cedula,
+                        TipoDocumento: "N/A",
+                        CorreoElectronico: correo,
+                        TokenPrivado: "",
+                        TipoConv: "1",
+                        Fk_Id_BateriaGestion: idgestion
+                    };
+                    ListaUsuariosPush.push(EDBateriaUsuario);
+                }
+            });
+
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/BateriaGestion/CrearUsuarioLista',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(ListaUsuariosPush),
+                success: function (data) {
+                    OcultarPopupposition();
+
+                    if (data.Probar == false) {
+                        swal("Estimado Usuario", data.Estado, "warning");
+                        $("#DV_NOV_Fil").append("<span>" + data.Estado + "</span>");
+                        $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-danger");
+                    }
+                    else {
+                        $("#ul_filtro").empty();
+                        $("#ul_filtro").append('');
+                        $("#ul_todos").empty();
+                        $("#ul_todos").append('');
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.TipoConv == 1 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                $("#ul_filtro").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Eliminar Asignación\"><span class=\"glyphicon glyphicon-erase\">";
+                                $("#ul_todos").append('<li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+                        var textoError1 = "";
+                        var textoError2 = "";
+                        $.each(data.ListaTipoError, function (key, value) {
+                            if (value=="1") {
+                                if (textoError1=="") {
+                                    textoError1 += "Las siguientes personas no se agregaron, ya estaban vinculados a la lista de convocados:";
+                                    textoError1 += data.ListaErrores[key];
+                                }
+                                else {
+                                    textoError1 += "-"+data.ListaErrores[key];
+                                }
+                            }
+
+                        });
+                        $.each(data.ListaTipoError, function (key, value) {
+                            if (value == "2") {
+                                if (textoError2 == "") {
+                                    textoError2 += "Las siguientes personas no se agregaron, porque el correo tiene un formato de correo electrónico válido:";
+                                    textoError2 += data.ListaErrores[key];
+                                }
+                                else {
+                                    textoError2 += "-" + data.ListaErrores[key];
+                                }
+                            }
+                        });
+
+                        textoagregados = "Se agregaron " + data.numeroAgregados + " persona(s) a la lista de convocados";
+                        var TextoTotal="";
+                        if (textoError1 != "" || textoError2 != "") {
+                            if (textoError1 != "" && textoError2 != "") {
+                                TextoTotal += textoError1 + " - " + textoError2;
+                            }
+                            else {
+                                TextoTotal += textoError1 + textoError2;
+                            }
+                            $("#DV_NOV_Fil").append(TextoTotal);
+                            $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        }
+                        else {
+                            $("#DV_NOV_Fil").append(textoagregados);
+                            $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+                        }
+                        
+
+                        
+
+
+                        
+                        if (data.numeroAgregados>0) {
+                            swal('Estimado Usuario', textoagregados, 'success');
+                        }
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                    console.log(data.Estado)
+                }
+            });
+
+
+        }
+    }
+    //Agregar Convocado Busqueda
+    $(function () {
+        $("#AgregarC_Busqueda").bind("click", function () {
+            var onEventLaunchGuardar4 = new postGuardar4();
+            onEventLaunchGuardar4.launchGuardar4();
+        });
+    });
+    function postGuardar4() {
+        this.launchGuardar4 = function () {
+
+            $("#MS_NOV_Bus").text('');
+            $("#DV_NOV_Bus").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#DV_NOV_Bus").empty();
+
+
+            var html_ul1 = "<ul>";
+            var html_ul2 = "</ul>";
+            var html = "";
+
+            var stringArray = new Array();
+            stringArray[0] = $("#NombrePersona").val();
+            stringArray[1] = $("#CorreoPersona").val();
+            stringArray[2] = $("#CedulaBuscar").val();
+            stringArray[3] = $("#IdGestion").val();
+
+            var EDBateriaUsuario = {
+                Nombre: stringArray[0],
+                NumeroIdentificacion: stringArray[2],
+                TipoDocumento: "N/A",
+                CorreoElectronico: stringArray[1],
+                TokenPrivado: "",
+                TipoConv: "2",
+                Fk_Id_BateriaGestion: stringArray[3]
+            };
+
+            var probarForm1 = false;
+            var probarForm2 = false;
+            var probarForm3 = false;
+            if (stringArray[0] != null && stringArray[1] != null && stringArray[2] != null) {
+                var string1 = stringArray[0].replace(" ", ""); var string2 = stringArray[1].replace(" ", ""); var string3 = stringArray[2].replace(" ", "");
+                if (string1 != "" && string2 != "" && string3 != "") {
+
+                    PopupPosition();
+                    $.ajax({
+                        type: "POST",
+                        url: '/BateriaGestion/CrearUsuario',
+                        traditional: true,
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(EDBateriaUsuario),
+                        success: function (data) {
+                            OcultarPopupposition();
+
+                            if (data.Probar == false) {
+                                swal("Estimado Usuario", data.Estado, "warning");
+                                $("#DV_NOV_Bus").append("<span>" + data.Estado + "</span>");
+                                $("#DV_NOV_Bus").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-danger");
+                            }
+                            else {
+                                $("#ul_busqueda").empty();
+                                $("#ul_busqueda").append('');
+                                $("#ul_todos").empty();
+                                $("#ul_todos").append('');
+                                $.each(data.ListaUsuariosCreados, function (key, value) {
+                                    if (value.TipoConv == 2 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                        var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                        $("#ul_busqueda").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                                    }
+                                });
+                                $.each(data.ListaUsuariosCreados, function (key, value) {
+                                    if (value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                        var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Eliminar Asignación\"><span class=\"glyphicon glyphicon-erase\">";
+                                        $("#ul_todos").append('<li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                                    }
+                                });
+
+                                $("#DV_NOV_Bus").append("<span>Convocado Agregado</span>");
+                                $("#DV_NOV_Bus").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+
+                                $("#NombrePersona").val('');
+                                $("#CorreoPersona").val('');
+                                $("#CedulaBuscar").val('');
+                                $("#CargoPersona").val('');
+                                
+                            }
+                        },
+                        error: function (data) {
+                            OcultarPopupposition();
+                            console.log(data.Estado)
+                        }
+                    });
+                }
+                else {
+                    if (string1 == "") {
+                        probarForm1 = true;
+                    }
+                    if (string2 == "") {
+                        probarForm2 = true;
+                    }
+                    if (string3 == "") {
+                        probarForm3 = true;
+                    }
+                }
+            }
+            else {
+                if (stringArray[0] == null) {
+                    probarForm1 = true;
+                }
+                if (stringArray[1] == null) {
+                    probarForm2 = true;
+                }
+                if (stringArray[2] == null) {
+                    probarForm3 = true;
+                }
+            }
+
+            if (probarForm1) {
+                html += "<li>El nombre del convocado no aparece en la busqueda</li>";
+            }
+            if (probarForm2) {
+                html += "<li>El correo del convocado no aparece en la busqueda</li>";
+            }
+            if (probarForm3) {
+                html += "<li>La cédula o documento de identidad no aparece en la bsuqueda</li>";
+            }
+            if (probarForm1 || probarForm2 || probarForm3) {
+
+                $("#DV_NOV_Bus").append(html_ul1 + html + html_ul2);
+                $("#DV_NOV_Bus").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+            }
+
+
+
+
+        }
+    }
+    //Carge masivo
+    $(function () {
+        $('#AgregarC_Masivo').click(function () {
+            $("#MS_NOV_mas").text('');
+            $("#DV_NOV_mas").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#DV_NOV_mas").empty();
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-file-xls").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $("#IdGestion").val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/BateriaGestion/UploadFiles',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+
+                        //$("#msj_novedad_archivo").text('');
+                        //$("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                        if (result.probar == false) {
+                            $("#DV_NOV_mas").append('<span>' + result.resultado + '</span>');
+                            $("#DV_NOV_mas").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-danger");
+                        }
+                        else {
+                            $("#DV_NOV_mas").append('<span>' + result.resultado + '</span>');
+                            $("#DV_NOV_mas").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+
+                            $("#ul_masivo").empty();
+                            $("#ul_masivo").append('');
+                            $("#ul_todos").empty();
+                            $("#ul_todos").append('');
+                            $.each(result.ListaCargueG, function (key, value) {
+                                if (value.TipoConv == 4 && value.EstadoEnvio==0  && value.NumeroIntentos==0) {
+                                    var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                    $("#ul_masivo").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                                }
+                            });
+                            $.each(result.ListaCargueG, function (key, value) {
+                                if (value.EstadoEnvio == 0  && value.NumeroIntentos==0) {
+                                    var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Eliminar Asignación\"><span class=\"glyphicon glyphicon-erase\">";
+                                    $("#ul_todos").append('<li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                                }
+                            });
+                            swal("Estimado Usuario", result.resultado, "success");
+                        }
+
+                        OcultarPopupposition();
+                    }
+                    ,
+                    error: function (err) {
+                        //$("#msj_novedad_archivo").text("Error al cargar el archivo");
+                        //$("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        OcultarPopupposition();
+                    }
+                });
+
+            }
+            else {
+
+            }
+        });
+    });
+    //Mensaje Email (cuerpo)
+    $(document).ready(function () {
+
+        var nombre = $('#DesEncuesta').text();
+        var Empresa = $('#Empresa').val();
+        var link = $('#LinkPublico').val();
+
+        $('#msg_encuesta').text("Ha recibido una invitación para participar en la encuesta " + nombre + ".");
+        var html = '';
+        html = html + '<p>Saludos, </p><p id="msg_encuesta">Ha recibido una invitación por parte de la empresa '+ Empresa +' para participar en la encuesta ' + nombre + '.</p>';
+        $('#title').html("dfgdg");
+        tinymce.init({
+            selector: 'textarea',
+            language: "es",
+            height: 500,
+            theme: 'modern',
+            plugins: 'autolink directionality textcolor colorpicker textpattern lists paste',
+            menubar: "",
+            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+            //paste_data_images: true,
+            templates: [
+              { title: 'Test template 1', content: 'Test 1' },
+              { title: 'Test template 2', content: 'Test 2' }
+            ]
+        });
+        $('#title').html(html);
+
+    });
+    //Eliminar Convocado
+    $(document).on("click", ".btnEliminarConvocado", function () {
+        $("#MS_NOV_mas").text('');
+        $("#DV_NOV_mas").removeClass("alert alert-info alert-warning alert-danger alert-success");
+        $("#DV_NOV_mas").empty();
+
+        $("#MS_NOV_Man").text('');
+        $("#DV_NOV_Man").removeClass("alert alert-info alert-warning alert-danger alert-success");
+        $("#DV_NOV_Man").empty();
+
+        $("#MS_NOV_Fil").text('');
+        $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success");
+        $("#DV_NOV_Fil").empty();
+
+        $("#MS_NOV_Bus").text('');
+        $("#DV_NOV_Bus").removeClass("alert alert-info alert-warning alert-danger alert-success");
+        $("#DV_NOV_Bus").empty();
+
+        
+
+        var Id_Elm = $(this).attr('name');
+
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar este registro de convocado?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+
+            $.ajax({
+                type: "POST",
+                url: "/BateriaGestion/EliminarConvocado",
+                data: '{IdConvocado: "' + Id_Elm + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.probar == false) {
+                        if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                type: "warning",
+                                closeOnConfirm: true
+                            },
+                        function () {
+                            location.reload(true);
+                        });
+
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.resultado,
+                            confirmButtonColor: "#DD6B55",
+                            type: "warning",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        swal(
+  'Estimado Usuario',
+  data.resultado,
+  'success'
+);
+                        $("#ul_filtro").empty();
+                        $("#ul_filtro").append('');
+                        $("#ul_busqueda").empty();
+                        $("#ul_busqueda").append('');
+                        $("#ul_manual").empty();
+                        $("#ul_manual").append('');
+                        $("#ul_masivo").empty();
+                        $("#ul_masivo").append('');
+                        $("#ul_todos").empty();
+                        $("#ul_todos").append('');
+
+                        //todos
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Eliminar Asignación\"><span class=\"glyphicon glyphicon-erase\">";
+                                $("#ul_todos").append('<li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+                        //manual
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.TipoConv == 3 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                $("#ul_manual").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+                        //masivo
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.TipoConv == 4 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                $("#ul_masivo").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+                        //busqueda
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.TipoConv == 2 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                $("#ul_busqueda").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+                        //busqueda
+                        $.each(data.ListaUsuariosCreados, function (key, value) {
+                            if (value.TipoConv == 1 && value.EstadoEnvio == 0 && value.NumeroIntentos==0) {
+                                var txthtml = " " + value.Nombre + " &lt;" + value.CorreoElectronico + "&gt; <a name=\"" + value.Pk_Id_BateriaUsuario + "\"  style=\"border:none;\" class=\"btn btn-search btn-md btnEliminarConvocado\" title=\"Cancelar Envío\"><span class=\"glyphicon glyphicon-erase\"></span></a>";
+                                $("#ul_filtro").append('<li class="list-inline-item" title="' + value.Nombre + ' - ' + value.NumeroIdentificacion + '" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;"><span class="glyphicon glyphicon-user"></span>' + txthtml + '</li>');
+                            }
+                        });
+
+                        
+                        
+
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    
+                }
+            });
+
+        });
+    });
+    //Seleccionar Todos/Ninguno Checkbox
+    $(document).ready(function () {
+        $('#selecciontodos').click(function () {
+            $('.checkfiltro').attr('checked', true);
+            $('input[type=checkbox]').each(function() 
+            { 
+                this.checked = true; 
+            });
+        });
+        $('#seleccionnull').click(function () {
+            $('.checkfiltro').attr('checked', false);
+            $('input[type=checkbox]').each(function() 
+            { 
+                this.checked = false; 
+            });
+        });
+    });
+    //Enviar Correo
+    $(function () {
+        $("#EnviarCorreo").bind("click", function () {
+            var onEventLaunchGuardar5 = new postGuardar5();
+            onEventLaunchGuardar5.launchGuardar5();
+        });
+    });
+    function postGuardar5() {
+        this.launchGuardar5 = function () {
+            var IdGestion=$("#IdGestion").val();
+            var Body1=tinyMCE.activeEditor.getContent();
+            var Body=Body1.toString();
+            Body=encodeURI(Body);
+            var blobs= new Array();
+            var EDBateriaUsuario = {
+                Pk_Id_BateriaUsuario: IdGestion,
+                NumeroIdentificacion: Body1
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/BateriaGestion/EnviarCorreo1',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDBateriaUsuario),
+                success: function (data) {
+                    if (data.probar == false) {
+                        if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            location.reload(true);
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.resultado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.resultado,
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                        function () {
+                            window.location.href = '/BateriaGestion/Index';
+                        });
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+        }
+    }
+    //buscar Convocado Filtro rol
+    $(function () {
+        $("#FiltroRol").bind("click", function () {
+            var onEventLaunchGuardar6 = new postGuardar6();
+            onEventLaunchGuardar6.launchGuardar6();
+        });
+    });
+    function postGuardar6() {
+        this.launchGuardar6 = function () {
+
+            $("#MS_NOV_Fil").text('');
+            $("#DV_NOV_Fil").removeClass("alert alert-info alert-warning alert-danger alert-success");
+            $("#DV_NOV_Fil").empty();
+
+            var dropdowncargo = $("#Pk_Id_Rol");
+            var TextoCargo = $("#Pk_Id_Rol option:selected").text();
+            var ValCargo = $("#Pk_Id_Rol option:selected").val();
+
+            $("#titulotabla").css("display", "none");
+            $(".esconderseleccion").css("display", "none");
+            $("#titulotabla").text("");
+            $("#ul_filtro_result").html("<tr></tr>");
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/BateriaGestion/ListaPersonas1",
+                data: '{rol: "' + ValCargo + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.probar == false) {
+                        if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                type: "warning",
+                                closeOnConfirm: true
+                            },
+                        function () {
+                            location.reload(true);
+                        });
+
+                        }
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.resultado,
+                            confirmButtonColor: "#DD6B55",
+                            type: "warning",
+                            closeOnConfirm: true
+                        });
+                    }
+                    else {
+
+                        $("#ul_filtro_result").empty();
+                        $("#ul_filtro_result").append('');
+
+                        //todos
+                        var cont = 1;
+                        var txthtml = "<tr>";
+                        $.each(data.ListaPersonas, function (key, value) {
+                            var persona = value.Nombre1 + " " + value.Apellido1 + " ";
+                            var Cedula = value.NumeroDocumento;
+                            var Correo = value.Email;
+                            $(".esconderseleccion").css("display", "block");
+                                
+                            if (cont==5) {
+                                cont = 1;
+                                if (Correo == "" || Correo==null) {
+                                    txthtml += '</tr><tr style="border:none;"><td style="padding:4px;border:0.5px solid gray;background-color:#b7c6d7">' + persona + '</td>';
+                                }
+                                else {
+                                    txthtml += '</tr><tr style="border:none;"><td style="padding:4px;border:0.5px solid gray;"><input class="checkfiltro" type="checkbox" nombre="' + persona + '" cedula="' + Cedula + '" correo="' + Correo + '" value="1">' + persona + '</td>';
+                                }
+                                    
+                            }
+                            else {
+                                if (Correo == "" || Correo==null) {
+                                    txthtml += '<td style="padding:2px;border:0.5px solid gray;background-color:#b7c6d7">' + persona + '</td>';
+                                }
+                                else {
+                                    txthtml += '<td style="padding:2px;border:0.5px solid gray;"><input class="checkfiltro" type="checkbox" nombre="' + persona + '" cedula="' + Cedula + '" correo="' + Correo + '" value="1">' + persona + '</td>';
+                                }
+                                    
+                            }
+                            cont++;
+                        });
+                        txthtml += "</tr>";
+                        $("#ul_filtro_result").append(txthtml);
+                        $("#titulotabla").css("display", "block");
+                        $("#titulotabla").text("RESULTADO BUSQUEDA ROL:" + TextoCargo);
+                        
+
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+
+        }
+    }
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">CONVOCATORIA DE USUARIOS</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / CONVOCATORIA DE USUARIOS</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="text-align:justify"><strong>EN ESTA SECCIÓN DE MÓDULO DE BATERIAS PSICOSOCIALES EL USUARIO PUEDE INVITAR A PERSONAS A REALIZAR EL CUESTIOANRIO ENVIANDO UN CORREO CON UN LINK QUE LO DIRIGIRAN A LA PÁGINA DE DILIGENCIAMIENTO</strong></p>
+                                
+                                <p style="text-align:justify"><strong>NOTA: Señor empleador recuerde que la aplicación de las baterías de riesgos psicosocial requiere el diligenciamiento del consentimiento informado de sus trabajadores debidamente firmado. La aceptación en el aplicativo ALISSTA no lo exime.</strong></p>
+
+                                <strong></strong>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Agregar convocados</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Agregar convocados por filtros:</strong> El usuario puede agregar convocados mediante el filtro de <strong>Cargo</strong> y <strong>Rol</strong>, elija de la lista de cargos o de roles y haga click en <button type="button" class="boton botonactive" style="cursor:default;">CONSULTAR</button> el sistema mostrará las personas que cumplen con las condiciones del filtro, el siguiente paso es seleccionar las personas que desee incluir en la convocatoria luego presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR CONVOCADOS</button> para agregarlos a la lista de convocados</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Agregar convocados por busqueda del la cédula:</strong> digite la cédula o documento de identidad, el sistema buscará la persona que tenga ese documento y a continuación presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR CONVOCADO</button> para agregarlo a la lista de convocados </p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Agregar convocados manualmente:</strong> digite los campos <strong>nombre del convocado</strong>, <strong>correo del convocado</strong> y <strong>cédula del convocado</strong>, a continuación presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR CONVOCADO</button> para agregarlo a la lista de convocados</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>Agregar convocados por cargue masivo:</strong> mediante una plantilla que puede descargar presionando <button type="button" class="boton botonactive" style="cursor:default;">DESCARGAR PLANTILLA</button> el usuario puede agregar convocados listando los campos <strong>nombre del convocado</strong>, <strong>correo del convocado</strong> y <strong>cédula del convocado</strong> en una hoja de cálculo y cargando a la lista de convocados elijiendo el archivo que desee cargar y luego presionando <button type="button" class="boton botonactive" style="cursor:default;">CARGAR</button></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Lista de convocados</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Existen 5 listas de convocados, 4 de ellas corresponden a las personas agregadas según el metodo utilizado <strong>por filtros</strong>, <strong>por busqueda del la cédula</strong>, <strong>manualmente</strong> y <strong>por cargue masivo</strong> y la última lista se encuentra en la pestaña <strong>VER CONVOCADOS</strong> que muestra todos los convocados que están pendientes por el envío del correo de invitación</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Si desea eliminar un convocado de la lista de personas agregadas presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 6px 6px; width: auto"></i></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg13.png" /></p>
+
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Enviar correo</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Cuando termine de elegir a los convocados usuario puede terminar el proceso de envío de correos en la pestaña <strong>Enviar Correo(s)</strong>, el sistema generá por defecto un mensaje pero el usuario puede modificar el mensaje que se enviará a su conveniencia, además del mensaje se adjuntará un link para que el usuario del instrumento de la batería se registre y diligencie el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"> Presione <button type="button" class="boton botonactive" style="cursor:default;">ENVIAR CORREO(S)</button> para completar la operación y enviar los correos de invitación</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Link público</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify"><strong>un LINK/ENLACE PÚBLICO funciona para una persona que no tenga acceso a un correo electrónico o se le dificulte el acceso. funciona copiando el enlace en el navegador</strong></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Instrucciones uso link/enlace público</strong></u></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong>1. Copiar el link/enlace al portapapeles:</strong> presione <button type="button" class="boton botonactive" style="cursor:default;">COPIAR LINK</button> para copiar el enlace, el sistema le mostrará un mensaje cuando lo copie en el portapapeles</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg7.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg8.png" /></p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong>2. Pegar el link/enlance en el navegador:</strong> después de copiar el link el usuario debe pegarlo en el navegador, a continuación el sistema le mostrará una página de acceso público en la cual para autenticarse correctamente el usuario del cuestionario deberá digitar <strong>nombre</strong>, <strong>NIT de la empresa</strong> y <strong>número de identificación</strong> para registrarse y diligenciar el cuestionario</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:center;"><img style="max-width:100%;" src="~/Content/Bateria/Imagenes/batg9.png" /></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"><strong>El número de NIT VALIDO lo encontrará en la información de la aplicación ubicada en esta sección, este número es sin digito de verificación</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*informacion guardada*@
+        <div class="internal-panel add-bottom-margin-05em mostrar">
+            
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+
+                    <div class="col-sm-12 col-md-12">
+                        <label>Fecha de Registro:</label>
+                        <span id="FechaRegistro">@Model.FechaRegistro.ToShortDateString()</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nombre del Cuestionario:</label>
+                        <span id="DesEncuesta">@ViewBag.Nombre.Replace("Estres", "Estrés")</span>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <label>Nit de la empresa:</label>
+                        <span id="DesEncuesta">@ViewBag.nit</span>
+                    </div>
+                </div>
+
+
+            </div>
+            <br />
+
+        </div>
+        @*link*@
+        <div class="internal-panel add-bottom-margin-05em mostrar">
+            <div class="internal-panel-header panel-heading">
+                <h4>Link Público (Utilice este link con personas que posean problemas de acceso)</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <div class="col-sm-12 col-md-8 mostrar">
+                        <label></label>
+                        @Html.TextBox("LinkPublico", (string)ViewBag.link, new { @class = "form-control form-width-100", @disabled = "disabled" })
+                    </div>
+                    <div class="col-sm-12 col-md-4 add-top-margin-10em mostrar" style="display:block">
+                        <label> </label>
+                        <button id="CopiarLink" class="boton botonactive col-margin" onclick="copyToClipboard('#p1')" title="Copiar Link">COPIAR LINK</button>
+                    </div>
+                </div>
+                <p id="p1" style="display:none">@ViewBag.link</p>
+            </div>
+            <br />
+
+        </div>
+        @*convocatoria*@
+        @Html.Hidden("IdGestion", Model.Pk_Id_BateriaGestion)
+        @Html.Hidden("Empresa", (string)ViewBag.Empresa)
+        <div class="internal-panel add-bottom-margin-05em mostrar">
+            <div class="internal-panel-header panel-heading">
+                <h4>Convocatoria</h4>
+            </div>
+            <div class="internal-panel-body">
+                <br />
+                <div class="form-group row internal-panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" class="navigation-formulario" href="#home">Agregar por Filtros</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu1">Agregar por Cédula</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu2">Agregar Manualmente</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu3">Agregar por Cargue Masivo</a></li>
+                        <li><a data-toggle="tab" class="navigation-formulario" href="#menu4">Ver Convocados</a></li>
+                        <li><a id="tab-correo" data-toggle="tab" class="navigation-formulario" href="#menu5">Enviar Correo(s)</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        @*FILTROS*@
+                        <div id="home" class="tab-pane fade in active " style="min-height:500px;padding-top:10px;">
+                            <h4>Agregar por filtro de busqueda (Cargo o Rol)</h4>
+                            <p>Consulte y agrege convocados mediante filtros de busqueda, elija una de las dos opciones cargo o rol y haga click en CONSULTAR, luego elija a los convocados</p>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    @Html.DropDownList("Pk_Id_Cargo", (SelectList)ViewBag.Pk_Id_Cargo, "-- Seleccione un Cargo --", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <button id="FiltroCargo" class="boton botonactive col-margin">CONSULTAR</button>
+                                </div>
+                                <div class="col-sm-12 col-md-5">
+                                    @Html.DropDownList("Pk_Id_Rol", (SelectList)ViewBag.Pk_Id_Rol, "-- Seleccione un Rol --", htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <button id="FiltroRol" class="boton botonactive col-margin">CONSULTAR</button>
+                                </div>
+                            </div>
+                            @*<div class="row">
+                                <div class="col-sm-12">
+                                    <div style="width:15px;height:15px;background-color:#b7c6d7;float:left"></div>
+                                    <span style="float:left;margin-left:5px;">No tiene correo registrado</span>
+                                </div>
+                            </div>*@
+
+                                <div class="row">
+                                    <div class="col-sm-12 esconderseleccion">
+                                        <div style="width:15px;height:15px;background-color:#b7c6d7;float:left"></div>
+                                        <span style="float:left;margin-left:5px;">No tiene correo registrado</span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 add-bottom-margin-10em" style="border:none">
+                                        <span id="titulotabla" style="display:none;font-weight:900"></span>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 esconderseleccion" style="display:none">
+                                        <center><button id="selecciontodos" class="boton botonactive col-margin">SELECCIONAR TODOS</button></center>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 esconderseleccion" style="display:none">
+                                        <center><button id="seleccionnull" class="boton botonactive col-margin">QUITAR SELECCIÓN TODOS</button></center>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 add-top-margin-10em" style="max-height:500px;overflow-y:scroll;border:none">
+
+                                        <table id="Grid3" class="table table-bordered" style="border: none">
+
+                                            <tbody id="ul_filtro_result" style="border: none"></tbody>
+
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 add-top-margin-10em esconderseleccion" style="display:none">
+                                    <center><button id="AgregarC_Filtro" class="boton botonactive col-margin">AGREGAR CONVOCADOS</button></center>
+                                </div>
+                                <div class="col-sm-12 form-group row">
+                                    <div id="DV_NOV_Fil">
+                                        <span id="MS_NOV_Fil"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12" style="max-height:300px;overflow-y:scroll;">
+                                        <ul class="list-group" id="ul_filtro1">
+                                            <li class="list-group-item EncabezadoUL" style="background-color:#7e8a97; color:white; text-align:center;">LISTA DE CONVOCADOS AGREGADOS POR FILTRO DE BUSQUEDA</li>
+                                        </ul>
+                                        <ul class="list-inline" id="ul_filtro" style="padding-left:5px;">
+                                            @{
+                                                foreach (var item in Model.ListaUsuarios)
+                                                {
+
+                                                    string nombre = item.Nombre;
+                                                    string correo = item.CorreoElectronico;
+                                                    string Pkid = item.Pk_Id_BateriaUsuario.ToString();
+                                                    int ConvTipo = item.TipoConv;
+                                                    if (item.EstadoEnvio == 0 && ConvTipo == 1 && item.NumeroIntentos == 0)
+                                                    {
+                                                        <li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;">
+                                                            <span class="glyphicon glyphicon-user"></span>@nombre &lt;@correo&gt; <a name="@Pkid" style="border:none;" class="btn btn-search btn-md btnEliminarConvocado" title="Eliminar Asignación"><span class="glyphicon glyphicon-erase"></span></a>
+                                                        </li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        @*BUSQUEDA*@
+                        <div id="menu1" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>Agregar por consulta de cédula</h4>
+                            <p>Digite la cédula de la persona a consultar, si el sistema encuentra a esta persona haga click en AGREGAR para añadirla a la lista de convocados</p>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    @Html.TextBox("CedulaBuscar", null, new { @class = "form-control form-width-100", @placeholder = "Esciba el número del documento a buscar..." , @autocomplete = "off" })
+                                </div>
+                                <div class="col-sm-12 col-md-4"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <span>Nombre</span>
+                                    @Html.TextBox("NombrePersona", null, new { @class = "form-control form-width-100", disabled = "true" })
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <span>Cargo</span>
+                                    @Html.TextBox("CargoPersona", null, new { @class = "form-control form-width-100", disabled = "true" })
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6">
+                                    <span>Correo</span>
+                                    @Html.TextBox("CorreoPersona", null, new { @class = "form-control form-width-100", disabled = "true" })
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-sm-12 col-md-12 add-top-margin-10em">
+                                <center><button id="AgregarC_Busqueda" class="boton botonactive col-margin">AGREGAR CONVOCADO</button></center>
+                            </div>
+
+
+                            <div class="col-sm-12 form-group row">
+                                <div id="DV_NOV_Bus">
+                                    <span id="MS_NOV_Bus"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12" style="max-height:300px;overflow-y:scroll;">
+                                    <ul class="list-group" id="ul_busqueda1">
+                                        <li class="list-group-item EncabezadoUL" style="background-color:#7e8a97; color:white; text-align:center;">LISTA DE CONVOCADOS AGREGADOS MEDIANTE BUSQUEDA DEL DOCUMENTO</li>
+                                    </ul>
+                                    <ul class="list-inline" id="ul_busqueda" style="padding-left:5px;">
+                                        @{
+                                            foreach (var item in Model.ListaUsuarios)
+                                            {
+
+                                                string nombre = item.Nombre;
+                                                string correo = item.CorreoElectronico;
+                                                string Pkid = item.Pk_Id_BateriaUsuario.ToString();
+                                                int ConvTipo = item.TipoConv;
+                                                if (item.EstadoEnvio == 0 && ConvTipo == 2 && item.NumeroIntentos == 0)
+                                                {
+                                                    <li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;">
+                                                        <span class="glyphicon glyphicon-user"></span>@nombre &lt;@correo&gt; <a name="@Pkid" style="border:none;" class="btn btn-search btn-md btnEliminarConvocado" title="Eliminar Asignación"><span class="glyphicon glyphicon-erase"></span></a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*MANUAL*@
+                        <div id="menu2" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>Agregar manualmente uno o varios correos</h4>
+                            <p>Escriba el nombre del convocado y el correo, luego haga click en AGREGAR</p>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    @Html.TextBox("NombreConvocado", null, new { @class = "form-control form-width-100", @placeholder = "Escriba el nombre del convocado", @autocomplete = "off" })
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    @Html.TextBox("CorreoManualConvocado", null, new { @class = "form-control form-width-100", @placeholder = "Escriba el correo del convocado", @autocomplete = "off" })
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    @Html.TextBox("CedulaManualConvocado", null, new { @class = "form-control form-width-100", @placeholder = "Escriba la cédula del convocado", @autocomplete = "off" })
+                                </div>
+                                <div class="col-sm-12 col-md-12 add-top-margin-10em">
+                                    <center><button id="AgregarC_Manual" class="boton botonactive col-margin">AGREGAR CONVOCADO</button></center>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 form-group row">
+                                <div id="DV_NOV_Man">
+                                    <span id="MS_NOV_Man"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12" style="max-height:300px;overflow-y:scroll;">
+                                    <ul class="list-group" id="ul_manual1">
+                                        <li class="list-group-item EncabezadoUL" style="background-color:#7e8a97; color:white; text-align:center;">LISTA DE CONVOCADOS AGREGADOS MANUALMENTE</li>
+                                    </ul>
+                                    <ul class="list-inline" id="ul_manual" style="padding-left:5px;">
+                                        @{
+                                            foreach (var item in Model.ListaUsuarios)
+                                            {
+
+                                                string nombre = item.Nombre;
+                                                string correo = item.CorreoElectronico;
+                                                string Pkid = item.Pk_Id_BateriaUsuario.ToString();
+                                                int ConvTipo = item.TipoConv;
+                                                if (item.EstadoEnvio == 0 && ConvTipo == 3 && item.NumeroIntentos == 0)
+                                                {
+                                                    <li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;">
+                                                        <span class="glyphicon glyphicon-user"></span>@nombre &lt;@correo&gt; <a name="@Pkid" style="border:none;" class="btn btn-search btn-md btnEliminarConvocado" title="Eliminar Asignación"><span class="glyphicon glyphicon-erase"></span></a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        @*MASIVO*@
+                        <div id="menu3" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>Agregar por cargue masivo en hoja de cálculo</h4>
+                            <p>Descargue la plantilla, registre en la hoja de cálculo el nombre del convocado en la primera columna, el número del documento de identidad en la segunda columna y por último el correo eléctronico en la tercera columna. Elija el archivo y haga click en CARGAR</p>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4" style="margin-bottom:5px;">
+                                    <button id="DescargarPlantilla" onclick="location.href='@Url.Action("Download", "BateriaGestion")';return false;" class="boton botonactive col-margin">DESCARGAR PLANTILLA</button>
+                                </div>
+                            </div>
+                                
+
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-12"><label for="File1">Cargar Archivo (Únicamente Formato xlsx)</label></div>
+                                            <div class="col-sm-6"><input type="file" name="UploadedFile" class="btn btn-default btn-sm form-control form-width-100 input-moz-fix" id="input-file-xls" /></div>
+                                            <div class="col-sm-6"><button class="boton botonactive" id="AgregarC_Masivo" type="submit">CARGAR</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row add-top-margin-05em add-side-padding">
+                                    <div class="col-sm-12 form-group row">
+                                        <div id="DV_NOV_mas">
+                                            <span id="MS_NOV_mas"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12" style="max-height:300px;overflow-y:scroll;">
+                                        <ul class="list-group" id="ul_masivo1">
+                                            <li class="list-group-item EncabezadoUL" style="background-color:#7e8a97; color:white; text-align:center;">LISTA DE CONVOCADOS AGREGADOS POR CARGUE MASIVO</li>
+                                        </ul>
+                                        <ul class="list-inline" id="ul_masivo" style="padding-left:5px;">
+                                            @{
+                                                foreach (var item in Model.ListaUsuarios)
+                                                {
+
+                                                    string nombre = item.Nombre;
+                                                    string correo = item.CorreoElectronico;
+                                                    string Pkid = item.Pk_Id_BateriaUsuario.ToString();
+                                                    int ConvTipo = item.TipoConv;
+                                                    if (item.EstadoEnvio == 0 && ConvTipo == 4 && item.NumeroIntentos==0)
+                                                    {
+                                                        <li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;">
+                                                            <span class="glyphicon glyphicon-user"></span>@nombre &lt;@correo&gt; <a name="@Pkid" style="border:none;" class="btn btn-search btn-md btnEliminarConvocado" title="Eliminar Asignación"><span class="glyphicon glyphicon-erase"></span></a>
+                                                        </li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        @*VER TODOS*@
+                        <div id="menu4" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>Ver la lista de convocados</h4>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12" style="max-height:500px;overflow-y:scroll;">
+                                    <ul class="list-group" id="ul_todos1">
+                                        <li class="list-group-item EncabezadoUL" style="background-color:#7e8a97; color:white; text-align:center;">LISTA DE CONVOCADOS</li>
+                                    </ul>
+                                    <ul class="list-inline" id="ul_todos" style="padding-left:5px;">
+                                        @{
+                                            foreach (var item in Model.ListaUsuarios)
+                                            {
+
+                                                string nombre = item.Nombre;
+                                                string correo = item.CorreoElectronico;
+                                                string Pkid = item.Pk_Id_BateriaUsuario.ToString();
+                                                int ConvTipo = item.TipoConv;
+                                                if (item.EstadoEnvio == 0 && item.NumeroIntentos == 0)
+                                                {
+                                                    <li class="list-inline-item" style="text-align:left;background-color:white;height:auto;color:gray;border-radius:3px;margin-right:3px;margin-top:3px;border:solid 0.5px #ddd;vertical-align:middle;">
+                                                        <span class="glyphicon glyphicon-user"></span>@nombre &lt;@correo&gt; <a name="@Pkid" style="border:none;" class="btn btn-search btn-md btnEliminarConvocado" title="Eliminar Asignación"><span class="glyphicon glyphicon-erase"></span></a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*CORREO*@
+                        <div id="menu5" class="tab-pane fade" style="min-height:500px;padding-top:10px;">
+                            <h4>Mensaje del comunicado</h4>
+
+
+                            <div class="row">
+
+                                <div class="col-sm-12 col-md-12">
+                                    @Html.TextArea("title", Model.MailBody, new { @name = "Title", @class = "form-control", @rows = "10" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <center>
+                                        <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                                            <button id="EnviarCorreo" class="boton botonactive col-margin" type="submit">ENVIAR CORREO(S)</button>
+                                        </div>
+                                    </center>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <br />
+
+        </div>
+
+        <div class="form-group row internal-panel-body mostrar">
+
+
+        </div>
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:5px;">
+                    <button id="regresar" onclick="location.href='@Url.Action("index", "BateriaGestion")';return false;" class="boton botonactive col-margin">REGRESAR</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+
+
+
+
+

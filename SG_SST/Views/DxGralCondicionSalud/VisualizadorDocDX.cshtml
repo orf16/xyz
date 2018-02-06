@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Visualizador Doc DX";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .pdf-dx-de-salud {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-dx-de-salud iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Planificacion</a></li>
+    <li><a href="javascript:void(0)">Dx. Gral. condiciones de salud</a></li>
+    <li><a href="javascript:void(0)">Cargar Dx General de Condiciones de salud</a></li>
+    <li class="active">Visualizar Documento de Diagnostico</li>
+</ol>
+
+@*<div class="row">
+    <iframe width="640" height="360" src="@Url.Action("VisualizadorDocDX", new { idDocDx = ViewBag.idDocDx })" frameborder="0" allowfullscreen></iframe>
+    <object data="@Url.Action("VisualizadorDocDX", new { idDocDx = ViewBag.idDocDx })" type="application/pdf" width="1000" height="500"></object>
+</div>*@
+
+<div class="pdf-dx-de-salud">
+    @* <object data="@Url.Action("VisualizadorDocDX", new { idDocDx = ViewBag.idDocDx })" type="application/pdf" width="1000" height="500"></object>*@
+    <iframe width="640" height="360" src="@Url.Action("VisualizadorDocDX", new { idDocDx = ViewBag.idDocDx })" frameborder="0" allowfullscreen></iframe>
+</div>

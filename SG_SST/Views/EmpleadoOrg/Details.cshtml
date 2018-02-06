@@ -1,0 +1,51 @@
+﻿@model SG_SST.Models.EmpleadoOrg
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EmpleadoOrg</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Organigrama.Nombre_Organigrama)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Organigrama.Nombre_Organigrama)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrgChart.Jefe_Inmediato)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrgChart.Jefe_Inmediato)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Jefe_Inmediato)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Jefe_Inmediato)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cargo_Empleado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cargo_Empleado)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id_EmpleadoOrg }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

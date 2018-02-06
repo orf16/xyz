@@ -1,0 +1,42 @@
+﻿@model SG_SST.Models.Aplicacion.MaestroConfiguracionPrioridades
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MaestroConfiguracionPrioridades</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DescripcionPrioridad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescripcionPrioridad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiasDesde)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiasDesde)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiasHasta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiasHasta)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Pk_Id_MaestroConfiguracion }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

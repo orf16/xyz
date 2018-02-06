@@ -1,0 +1,298 @@
+﻿@{@model SG_SST.Models.Aplicacion.VerificarInspeccionVModel
+    ViewBag.Title = "Verificar Inspección";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    <style>
+        .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+            font-size: 12px;
+            color: #7E8A97;
+        }
+    </style>
+    <style>
+        .container-main {
+            margin: 60px auto;
+            margin-bottom: 2%;
+            padding-bottom: 3em;
+            width: 98%;
+            min-width: 320px;
+            max-width: 100%;
+            -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+            box-shadow: 8px 8px 5px 0px rgba(0,0,0,0.75);
+            background-color: whitesmoke;
+            height: auto;
+        }
+
+            .container-main h4 {
+                font-size: 23px;
+                text-shadow: 4px 4px 5px #DDD;
+                padding-top: 1%;
+                padding-bottom: 2%;
+            }
+    </style>
+
+}
+
+<!DOCTYPE html>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Inspecciones de Seguridad</a></li>
+    <li class="active">Verificar Inspecciones</li>
+</ol>
+@*<hr />*@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Verificar Inspección</div>
+
+        @*Botón Ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class=" modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Información de Ayuda/Verificar Inspección</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <ul>
+                                    <li><p style="text-align:justify">Esta función le permite hacer seguimiento a las actividades del plan de acción de cada inspeccion ejecutada. </p></li>
+                                    <li><p style="text-align:justify">Recuerde que los filtros de Sede, Fecha Inicial y Fecha Final son indispensables diligenciar para realizar la búsqueda.</p></li>
+                                    <li><p style="text-align:justify">Las actividades del <b style="color:#FF7500"> PLAN DE ACCIÓN </b> se cierran desde el módulo de planes de acción del sistema. <img src="~/Images/iconos/submenus/medicionsst-planes.png" height="50" width="65" /></p></li>
+                                    <li>
+                                        <p style="text-align:justify">
+                                            Las convenciones de los estados de las actividad del plan de accion es:
+
+                                            <b style="color:#229954">
+                                                Color Verde
+                                            </b> Corresponde a las actividades vigentes o cerradas dentro del plazo definido en la priorización, 
+                                            <b style="color:#F3333F">Color Rojo:</b> Corresponde a las actividades vencidas o cerradas por fuera del plazo definido en la priorización.
+                                        </p>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body form-horizontal">
+            <form id="verificarInspeccion" style="background-color:transparent">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-12">Razón Social:</label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-12">Nit Empresa:</label>
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.idempresa, new { @class = "form-control", @readonly = "readonly", @style = "color:black; background-color: #DDD" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-12">Sede</label>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.idSede, Model.sedes, "--Seleccione Sede--", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-12">Fecha Inicial</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="FechaInicial" id="FechaInicial" />
+                                @*@Html.TextBoxFor(model => model.FechaInicial, new { @class = "form-control", @id = "FechaIniVer" })*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-12">Fecha Final</label>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="FechaFinal" id="FechaFinal" />
+                                <label for="FechaFinal" class="error" style="display:none;"></label>
+                                @*@Html.TextBoxFor(model => model.FechaFinal, new { @class = "form-control", @id = "FechaFinVer" })*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer" style="background-color:transparent">
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-5">
+                            <button type="button" class="boton botoninfo" id="btnbuscaplan" onclick="BuscarPlan()">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                @*<div id="" class="container-main titulo-actividades-agr">*@
+
+                <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)" id="resultadoverificar">
+                    <div class="panel-heading" style="color:white">Resumen Actividad Plan Accion Inspección</div>
+                    <div class="panel-body form-horizontal">
+                        <div style="background-color:transparent">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered  table-hover" style="border-bottom:transparent">
+                                    <thead>
+                                        <tr class="titulos_tabla" style="text-align:center">
+                                            <th style="border:solid 1px #808080">
+                                                <p>Seleccionar</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Consecutivo</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Actividad</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Responsable</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Fecha Límite Plan Acción</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Fecha Cierre Plan Acción</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Estado Plan Acción</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tablaPlanes"></tbody>
+                                </table>
+                                <div class="pagination-page" id="paginador3"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row container-main">
+                        <h4 class="titulo-crear-recursos titulos_tabla" style="vertical-align:middle;color:rgba(0,0,0,0.75); text-align:center">Generar  Acción Correctiva</h4>
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-md-7">Adjuntar Seguimiento</label>
+                                        <div class="col-md-12">
+                                            <input type="file" value="" class="form-control" id="seguimiento" name="seguimiento" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-md-7">Verificación Realizada por:</label>
+                                    <div class="col-md-10">
+                                        <input type="text" value="" class="form-control" id="verificador" name="verificador" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-md-7">Requiere Accion Correctiva?</label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="accioncorrectiva" id="accioncorrectiva">
+                                            <option value="">-- Seleccionar Respuesta --</option>
+                                            <option value="SI">SÍ</option>
+                                            <option value="NO">NÓ</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-7"></label>
+                                <div class="col-lg-offset-5">
+                                    <button type="button" class="boton botonactive" id="btncorrectivas">Guardar</button>
+                                    <button type="button" class="boton botoninfo" id="listaactividades" data-toggle="modal" data-target="#modalTodasCorrectivas">lista Correctivas</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div id="@string.Format("modalTodasCorrectivas")" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Lista Total Actividades de Acciones Correctivas</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <table class="table table-bordered  table-hover" style="border-bottom:transparent">
+
+                                    <thead>
+                                        <tr class="titulos_tabla" style="text-align:center">
+                                            <th style="border:solid 1px #808080">
+                                                <p>Condicion Insegura Hallada</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Nombre del Verificador</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Actividad Plan de Acción</p>
+                                            </th>
+                                            <th style="border:solid 1px #808080">
+                                                <p>Requiere Acción Correctiva?</p>
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="todasCorrectivas"></tbody>
+                                </table>
+
+                            </div>
+                            <div class="pagination" id="paginador1"></div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

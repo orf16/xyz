@@ -1,0 +1,49 @@
+﻿@model SG_SST.Models.Organizacion.TipoRecurso
+
+@{
+    ViewBag.Title = "Editar Tipo de Recurso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Configuración Maestros</a></li>
+    <li><a href="javascript:void(0)">Tipo de Recurso</a></li>
+    <li class="active">Editar Tipo de Recurso</li>
+</ol>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion")
+}
+
+<form method="post" id="frtrecurso">
+    <div class="form-horizontal">
+    
+        <h4>Tipo de Recurso</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Pk_Id_TipoRecurso)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descripcion_Tipo_Recurso, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.Descripcion_Tipo_Recurso, new { htmlAttributes = new { @class = "form-control" } })
+               
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-12">
+                <button type="submit" class="boton botonactive" onclick="ValidarCrearTipoRecurso()">Guardar</button>
+                |
+                <a href="@Url.Action("Index")" class="boton botoninfo">
+                    Volver a la Lista
+                </a>
+            </div>
+        </div>
+    </div>
+</form>

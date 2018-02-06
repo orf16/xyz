@@ -1,0 +1,305 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDBateriaCuestionario>
+
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Factores de Estres</title>
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico" />
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+    <!-- Referencia a botones -->
+    @Styles.Render("~/bundles/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/Utilidades")
+
+</head>
+<body style="background-color:none; color:black; font-family:Arial; padding: 0px 20px 3px 20px">
+    <script>
+        //Muestra los divs que se utilizan para mostrar
+        //el efecto de espera en una petición ajax.
+        function PopupPosition() {
+            var topLoading = $(window).scrollTop() + ($(window).height() / 2);
+            var leftLoading = $(window).scrollLeft() + ($(window).width() / 2);
+            //$("#capa_loading").css({ "top": $(window).scrollTop() }).show();
+            $("#capa_loading").show();
+            $("#_loading").css({ "top": topLoading, "left": leftLoading }).show();
+        }
+
+        //Oculta los divs que se utilizan para mostrar
+        //el efecto de espera en una petición ajax.
+        function OcultarPopupposition() {
+            $("#capa_loading").hide();
+            $("#_loading").hide();
+        }
+        //Guardado Continuar
+        $(function () {
+            $("#GuardarForm").bind("click", function () {
+                var botonGuardar = $(this);
+                var pagina = botonGuardar.attr('NumPag');
+                //$("#msj_glyphicon").removeClass("glyphicon glyphicon-ok glyphicon glyphicon-exclamation-sign");
+                //$("#msj_novedad_validar").text('');
+                //$("#div_novedad_validar").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                var onEventLaunchGuardar1 = new postGuardar1(pagina);
+                onEventLaunchGuardar1.launchGuardar1();
+            });
+        });
+        function postGuardar1(pilar) {
+
+            this.launchGuardar1 = function () {
+                var EDBateriaResultado = {
+                    Orden: $("#NumPag").val(),
+                    ValorS: $("#form").val(),
+                    key: $("#key").val()
+                };
+                var EDBateriaResultado1 = {
+                    ValorS: $('input:radio[name="checkpag9"]:checked').val(),
+                };
+                var ListaEvals = new Array();
+                var stringArray = new Array();
+                $("input:radio").each(function (i, obj) {
+                    var id = obj.id;
+                    var name = $(obj).attr('name');
+                    var Numero = id;
+                    Numero = name.replace("R", "");
+                    stringArray.push(Numero);
+                });
+                //Lista de Variables
+                stringArray = jQuery.unique(stringArray);
+                $.each(stringArray, function (key, value) {
+                    var order = value;
+                    var radapli2 = order + "R";
+                    var selectApli1 = $('input:radio[name="' + radapli2 + '"]:checked').val();
+                    var key = $("#key").val();
+                    
+
+                    var ArrayEval = new Array();
+                    ArrayEval[0] = order;
+                    ArrayEval[1] = selectApli1;
+                    ArrayEval[2] = key;
+
+                    var EDSegVialResultadoPush = {
+                        Orden: ArrayEval[0],
+                        ValorS: ArrayEval[1],
+                        key: ArrayEval[2]
+                    };
+                    ListaEvals.push(EDSegVialResultadoPush);
+                });
+
+
+                PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: '/Bateria/GuardarControlFormulario',
+                    traditional: true,
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({ Control1: EDBateriaResultado1, Control: EDBateriaResultado, ListaEvaluacion: ListaEvals }),
+                    success: function (data) {
+                        OcultarPopupposition();
+                        if (data.Probar == false) {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: data.Estado,
+                                type: "error",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                        }
+                        else {
+                            if (data.NumErrores > 0) {
+                                swal({
+                                    title: "Estimado Usuario",
+                                    text: data.Estado,
+                                    type: "error",
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "OK",
+                                    closeOnConfirm: false
+                                });
+                                var ListaErrores = new Array();
+                                $.each(data.ListaErrores, function (key, value) {
+                                    ListaErrores.push(value);
+                                });
+                                ListaErrores = jQuery.unique(ListaErrores);
+
+                                $('table > tbody').find('td.validacion_color').each(function () {
+                                    var fila = $(this);
+                                    fila.css("background-color", "rgba(255, 0, 0, 0.0)");
+                                    fila.attr("title", "");
+                                    var name = fila.attr('name');
+                                    $.each(ListaErrores, function (key, value) {
+                                        if (value == name) {
+                                            fila.css("background-color", "#e03e3e");
+                                            fila.attr("title", "Pregunta sin contestar");
+                                        }
+                                    });
+                                });
+                            }
+                            //else {
+                            
+                            //    
+                            else {
+                                var form = $("#form").val();
+                                var key = $("#key").val();
+                                var NextPage = 0;
+                                NextPage = parseInt($("#NumPag").val());
+                                NextPage = NextPage + 1;
+                                if (NextPage!=11) {
+                                    window.location.href = "/Bateria/Estres?formdata=" + key + "&pagina=" + NextPage + "&form=" + form + "";
+                                }
+                                else {
+                                    //Pagina Exito
+                                        swal({
+                                            title: "Estimado Usuario",
+                                            text: "La encuesta se diligenció completamente, muchas gracias por participar",
+                                            type: "success",
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "OK",
+                                            closeOnConfirm: false
+                                        },
+                                            function ()
+                                            {
+                                                var titulo = "Cuestionario de Factores de Estres";
+                                                var url = "/Bateria/EncuestaTerminada?formT=" + titulo + "";
+                                                window.location.href = url;
+                                            }
+                                        );
+                                }
+                            }
+
+                        }
+                    },
+                    error: function (data) {
+                        OcultarPopupposition();
+                    }
+                });
+            }
+        }
+
+    </script>
+
+    <div id="capa_loading" class="capa_loading" style="display:none;">Procesando...</div>
+    <div id="_loading" class="_loading" style="display:none;"><img class="img_loading" src='@Url.Content("~/Images/fancyBox/fancybox_loading@2x.gif")' /><br></div>
+    <div id="popupMsg" style="display:none;">
+        <h4></h4>
+        <button id="btn_aceptMsg" type="submit" data-href="" class="btn btn-default" onclick="javascript:MostrarPopupMsg(e);">Aceptar</button>
+    </div>
+
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+
+            <div class="col-md-2 logo-empresa col-xs-6">
+                <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block">
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta">
+            </div>
+        </div>
+    </div>
+
+    <center style="margin-top:100px"><div class="col-sm-12 container add-top-margin-25em"><h3>CUESTIONARIO DE FACTORES DE ESTRES</h3></div></center>   
+    <center><div class="col-sm-12 container"><h3>@ViewBag.NombrePersona - @ViewBag.Cedula</h3></div></center>  
+
+    @*numpag*@
+    <div>
+        <div id="TabsBateria">
+            @{
+                @Html.Hidden("check9a", (string)ViewBag.check9a)
+                @Html.Hidden("check9b", (string)ViewBag.check9b)
+            }
+            @{
+                string disp1 = "";
+
+                var Lista1 = Model.Where(s => s.Orden >= 1 && s.Orden <= 31);
+                <div class="col-sm-12 add-top-margin-10em" style="@disp1">
+                    <p style="text-align:justify;font-size:20px">
+                        Señale la frecuencia con que se le han presentado los siguientes malestares en los últimos tres meses.
+                    </p>
+                </div>
+                <table class="table-responsive table table-bordered" style="border: 2px solid lightslategray;@disp1">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th class="bateriatbl-50" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;" colspan="2">
+                                <span>Malestares</span>
+                            </th>
+                            <th class="bateriatbl-10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>Siempre</span>
+                            </th>
+                            <th class="bateriatbl-10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>Casi Siempre</span>
+                            </th>
+                            <th class="bateriatbl-10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>A Veces</span>
+                            </th>
+                            <th class="bateriatbl-10" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;vertical-align:middle;">
+                                <span>Nunca</span>
+                            </th>
+                        </tr>
+
+                    </thead>
+                    @{
+                        foreach (var item in Lista1)
+                        {
+                            int Valor = item.Valor;
+                            string number = item.Orden.ToString() + "N";
+                            string Radio = item.Orden.ToString() + "R";
+                            string[] vals = new string[4] { "", "", "", "" };
+                            string[] vals1 = new string[4] { "A", "B", "C", "D" };
+                            int cont = 1;
+                            for (int i = 0; i < 4; i++)
+                            {
+                                if (Valor == cont)
+                                {
+                                    vals[i] = "checked=\"checked\"";
+                                }
+                                cont++;
+                            }
+                            <tbody>
+                                <tr style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    <td name="@number" class="validacion_color" style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <span>@item.Orden.ToString()</span>
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:left">
+                                        <span>@item.Pregunta</span>
+                                    </td>
+                                    @{
+                                        for (int i = 0; i < 4; i++)
+                                        {
+                                            string check = vals[i];
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <input @check name="@Radio" type="radio" value="@vals1[i]">
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+                            </tbody>
+                                        }
+                    }
+                </table>
+
+            }
+        </div>
+    </div>
+
+</body>
+</html>
+

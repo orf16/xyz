@@ -1,0 +1,637 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDSegVialParametro>
+
+@{
+    ViewBag.Title = "Nuevo Parametro";
+}
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="@Url.Action("PlanSeguridadVial", "PromocionPrevencion")">Plan de Seguridad Vial</a></li>
+    <li><a href="@Url.Action("ValoresAgregados", "PromocionPrevencion")">Valor Agregado</a></li>
+    <li class="active">Nuevo Parámetro</li>
+</ol>
+
+<script>
+
+    $(document).ready(function () {
+        $("#ValorParametro").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl/cmd+A
+                (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: Ctrl/cmd+C
+                (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: Ctrl/cmd+X
+                (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    //Paginador
+    jQuery(function ($) {
+        var items = $("table tbody tr");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    //Guardar parametro
+    $(function () {
+
+        $("#AgregarParametro").bind("click", function () {
+
+
+
+
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea agregar este parámetro?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type:"warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $("#msj_novedad").text('');
+                $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                $("#div_novedad").empty();
+
+                $("#val-def").css("display", "none");
+                $("#val-def").text('');
+                $("#val-valor").css("display", "none");
+                $("#val-valor").text('');
+
+                var probarDesc=false;
+                var probarVal=false;
+
+                var stringArray = new Array();
+                stringArray[0] = $("#Definicion").val();
+                stringArray[1] = $("#ValorParametro").val();
+
+                if (stringArray[0]!=null) {
+                    if (stringArray[0]!="") {
+                        if (stringArray[0].length<=500) {
+                            probarDesc=true;
+                        }
+                    }
+                    else {
+        
+                    }
+                }
+                if (stringArray[1]!=null) {
+                    if (stringArray[1]!="") {
+                        probarVal=true;
+                    }
+                    else {
+        
+                    }
+                }
+                if (!probarDesc) {
+                    if (stringArray[0].length>500) {
+                        $("#val-def").css("display", "block");
+                        $("#val-def").text('La definición del parámetro debe tener menos de 500 caracteres');
+                    }
+                    else {
+                        $("#val-def").css("display", "block");
+                        $("#val-def").text('Digite la definición del parámetro');
+                    }
+                }
+                if (!probarVal) {
+                    $("#val-valor").css("display", "block");
+                    $("#val-valor").text('Digite el valor del parámetro');
+                }
+
+                
+                    var onEventLaunchGuardar = new postGuardar();
+                    onEventLaunchGuardar.launchGuardar();
+                
+            });
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var ListaDetalles = new Array();
+
+            $('#Grid3 tbody').find('tr').each(function () {
+                var row = $(this);
+
+                var variabledesc=row.attr('name');
+                var criteriodesc=row.attr('name1');
+
+                var EDSegVialDetalle = {
+                    VariableDesc: variabledesc,
+                    CriterioAval: criteriodesc
+                }
+                ListaDetalles.push(EDSegVialDetalle);
+            });
+
+            var stringArray = new Array();
+            stringArray[0] = $("#Definicion").val();
+            stringArray[1] = $("#ValorParametro").val();
+
+            
+
+            var EDSegVialParametro = {
+                ParametroDef: stringArray[0],
+                Numeral: stringArray[1]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/PromocionPrevencion/AgregarParametro',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDSegVialParametro),
+                data: JSON.stringify({ EDSegVialParametro: EDSegVialParametro, Lista: ListaDetalles }),
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: data.Estado,
+                            type: "warning",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: true
+                        },
+                    function () {
+                        
+                    });
+                        location.reload(true);
+                    }
+                    if (data.Probar == false) {
+                        swal("Advertencia", data.Estado,"warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "El parámetro ha sido agregado",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location = data.url;
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                    console.log(data.Estado)
+                }
+            });
+            
+
+        }
+    }
+
+    //Guardar variable
+    $(function () {
+
+        $("#AgregarVariable").bind("click", function () {
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea agregar esta variable?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type:"warning",
+                closeOnConfirm: true
+            },
+            function () {
+                $("#msj_novedad").text('');
+                $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                $("#div_novedad").empty();
+
+                
+
+                var onEventLaunchGuardar2 = new postGuardar2();
+                onEventLaunchGuardar2.launchGuardar2();
+
+            });
+        });
+    });
+    function postGuardar2() {
+        this.launchGuardar2 = function () {
+            
+            var stringArray = new Array();
+            stringArray[0] = $("#Variable").val();
+            stringArray[1] = $("#CriterioAval").val();
+            var probarDesc=false;
+            var probarCriterio=false;
+            if (stringArray[0]!=null) {
+                if (stringArray[0]!="") {
+                    if (stringArray[0].length<=500) {
+                        probarDesc=true;
+                    }
+                }
+                else {
+        
+                }
+            }
+            else {
+        
+            }
+            if (stringArray[1]!=null) {
+                if (stringArray[1]!="") {
+                    if (stringArray[1].length<=1000) {
+                        probarCriterio=true;
+                    }
+                }
+                else {
+        
+                }
+            }
+            else {
+        
+            }
+
+            var htmlError="";
+            var htmlSuccess="<span>Se agregó la actividad correctamente</span>";
+            var html="";
+            if (probarDesc && probarCriterio) {
+                var tableBody = $('#Grid3 > tbody');
+                $(".esconder").css("display","");
+                html+='<tr name="'+ stringArray[0] +'" name1="'+ stringArray[1] +'"><td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify"><span>'+ stringArray[0] +'</span></td>';
+                html+='<td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify"><span>'+ stringArray[1] +'</span></td>';
+                html+='<td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:center"><a name="' + stringArray[0] + '"  class="btn btn-search btn-md btnEliminarlista" title="Eliminar Variable"><span class="glyphicon glyphicon-erase"></span></a></td> </tr>';
+                $("#Grid3 tbody").append(html);
+                $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+                $("#div_novedad").append(htmlSuccess);
+                $("#Variable").val('');
+                $("#CriterioAval").val('');
+                $("#Variable").text('');
+                $("#CriterioAval").text('');
+            }
+            else {
+                if (!probarDesc) {
+                    if (stringArray[0].length>500) {
+                        htmlError+="<li><span>La descripción de la variable debe tener menos de 500 caracteres</span></li>";
+                    }
+                    else {
+                        htmlError+="<li><span>Digite la descripción de la variable</span></li>";
+                    }
+                    
+                }
+                if (!probarCriterio) {
+                    if (stringArray[1].length>1000) {
+                        htmlError+="<li><span>El criterio de aval debe tener menos de 1000 caracteres</span></li>";
+                    }
+                    else {
+                        htmlError+="<li><span>Digite el criterio de aval</span></li>";
+                    }
+                    
+                }
+
+                $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-danger");
+                $("#div_novedad").append(htmlError);
+            }
+
+
+        }
+    }
+
+    //Redirigir a formulario
+    $(function () {
+
+        $("#ContinuarEval").bind("click", function () {
+            var onEventLaunchGuardar1 = new postGuardar1();
+            onEventLaunchGuardar1.launchGuardar1();
+        });
+    });
+
+    //Eliminar Peligro de lista a guardar
+    $(document).on("click", ".btnEliminarlista", function () {
+
+        $("#msj_novedad").text('');
+        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success");
+        $("#div_novedad").empty();
+
+        var Id_Elm = $(this).attr('name');
+        var tableBody = $("#Grid3 tbody");
+        swal({
+            title: "Estimado Usuario",
+            text: "Esta seguro(a) que desea eliminar este elemento de la lista?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            type: "warning",
+            closeOnConfirm: false
+        },
+        function () {
+            var ElementoEliminar;
+            var cont = 0;
+            tableBody.find('tr').each(function () {
+                var row = $(this);
+                if (row.attr('name') == Id_Elm) {
+                    row.remove();
+                    cont = cont + 1;
+                }
+            });
+            if (cont > 0) {
+                swal("Estimado Usuario", "La variable se ha eliminado de la lista", "success");
+
+                $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+                $("#div_novedad").append('<span>la variable se ha eliminado de la lista</span>');
+            }
+            else {
+                swal("Estimado Usuario", "La variable no se ha eliminado, por favor vuelva a intentar", "warning");
+
+                $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-danger");
+                $("#div_novedad").append('<span>la variable no se ha eliminado, por favor vuelva a intentar</span>');
+            }
+
+        });
+    });
+
+    function postGuardar1() {
+        this.launchGuardar1 = function () {
+
+            var IdPlanSeg = 0;
+
+            var IdString = $('input:radio[name="SeleccionarRadio"]:checked').val();
+            if (IdString!=null) {
+                if (IdString != "0") {
+                    IdPlanSeg = $('input:radio[name="SeleccionarRadio"]:checked').val();
+                }
+            }
+
+            if (IdPlanSeg != 0) {
+
+                var url = "/PromocionPrevencion/SeguridadVialFormulario?IdSegVial=" + IdPlanSeg;
+                window.location.href = url;
+            }
+        }
+    }
+
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".paginver");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".paginationver").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+@Html.AntiForgeryToken()
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">VALORES AGREGADOS</div>
+    <div class="panel-body">
+        @*Boton de ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Agregar Parámetro</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Primer Paso (Información general del parámetro)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para guardar exitosamente un parámetro el usuario deberá en primer lugar diligenciar la información de <strong>Definición del Parámetro</strong> y <strong>Valor del Parámetro</strong>, este último debe ser un número mayor a cero (0) y la suma de este con los valores de los parámetros ya guardados no puede ser mayor a 100, si desea verificar esa sumatoria en la sección que se encuentra en la parte inferior puede verificar los parámetros ya guardados</p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Segundo Paso (Información de las variables)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> El usuario además de la información del parámetro deberá consignar las variables que se utilizarán en la evaluación, para ello debe diligenciar la información de <strong>Descripción de la Variable</strong> y <strong>Criterio de Aval</strong> luego presione <button type="button" class="boton botonactive" style="cursor:default;">AGREGAR VARIABLE</button> .Esta información es de carácter obligatorio, el usuario debe tener presente que si no se guarda una variable el sistema no permitirá que se guarde el parámetro</p>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Tercer Paso (Guardar el parámetro)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Cuando el usuario suministre la información general del parámetro y sus correspondientes variables puede presionar <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR PARAMETRO</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Cancelar la operación</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify;"> Para cancelar la operación presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button></p>
+                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        
+
+        @*Contenido del Panel*@
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información general del Parámetro</h4>
+            </div>
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-12 add-top-margin-10em">
+                        <label>Definición del Parámetro</label>
+                        @Html.TextArea("Definicion", null, new { @class = "form-control form-width-100" })
+                        <span id="val-def" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12 col-md-3 add-top-margin-10em">
+                        <label>Valor del Parámetro</label>
+                        <input class="form-control form-width-100" id="ValorParametro" name="ValorParametro" type="number" min="1" max="100">
+                        <span id="val-valor" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>LISTA DE VARIABLES</h4>
+            </div>
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-12 add-top-margin-10em">
+                        <label>Descripción de la Variable</label>
+                        @Html.TextArea("Variable", null, new { @class = "form-control form-width-100" })
+                    </div>
+                    <div class="col-sm-12 add-top-margin-10em">
+                        <label>Criterio de Aval</label>
+                        @Html.TextArea("CriterioAval", null, new { @class = "form-control form-width-100" })
+                    </div>
+
+
+                    <center>
+                        <div class="col-md-12 add-bottom-margin-10em add-top-margin-10em" style="margin-bottom:5px;">
+                            <button id="AgregarVariable" class="boton botonactive col-margin">AGREGAR VARIABLE</button>
+                        </div>
+                    </center>
+                </div>
+                <div class="col-sm-12 form-group">
+                    <div id="div_novedad">
+                        <span id="msj_novedad"></span>
+                    </div>
+                </div>
+                <div class="form-group row remove-bottom-margin add-side-padding" style="max-height:500px;overflow-y:scroll;">
+                    <table class="table table-responsive table-bordered esconder" style="border: 2px solid lightslategray;display:none" id="Grid3">
+                        <thead>
+                            <tr class="titulos_tabla">
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <p>Variable</p>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                    <p>Criterio de Aval</p>
+                                </th>
+                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="TbodyVariable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+ 
+        
+
+
+        <div class="internal-panel add-bottom-margin-05em add-top-margin-10em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Parámetros guardados</h4>
+            </div>
+            <div class="internal-panel-body add-top-margin-05em">
+                <div class="form-group row remove-bottom-margin">
+                    
+                    <div class="Tabla-Programa table-responsive add-side-padding" >
+
+                        @{
+                            if (Model.Count() > 0)
+                            {
+                                <table id="Grid1" class="table table-bordered" style="border: 2px solid lightslategray">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:80%;">
+                                                <span>Definición</span>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center;width:10%;">
+                                                <span>Valor</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in Model)
+                                            {
+                                                <tr class="paginver">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify">
+                                                        <span>@item.ParametroDef</span>
+                                                    </td>
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                        <span>@string.Format("{0:F1}", item.Valor_Parametro)</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                    <tfoot style="border: 2px solid lightslategray;">
+                                        <tr>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle;text-align:justify">
+                                                <span>Total</span>
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <span>@ViewBag.Total</span>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <center><div class="pagination paginationver" id="paginador1"></div></center>
+                                            }
+
+
+                        }
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-6" style="margin-bottom:5px;">
+                <button id="AgregarParametro" class="boton botonactive col-margin">GUARDAR PARÁMETRO</button>
+            </div>
+            <div class="col-md-6">
+                <button class="boton botoncancel" onclick="location.href='@Url.Action("ValoresAgregados", "PromocionPrevencion")';return false;">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

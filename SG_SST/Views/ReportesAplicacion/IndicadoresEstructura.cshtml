@@ -1,0 +1,261 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Participacion.EDIndicadores>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = null;
+}
+
+<script type="text/javascript">
+    window.onload = function () {
+        window.frames['ReportFrame<%= ReportViewer1.ClientID %>'].
+        window.frames['report'].
+        document.getElementById('oReportCell').
+        style.width = '100%';
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Reportes")
+
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Estimado usuario',
+                text: '@ViewBag.mensaje',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+
+}
+
+<script>
+
+    $(document).ready(function () {
+        $("a[title='PDF']").parent().hide();  // Remove from export dropdown.
+        $("a[title='MHTML (web archive)']").parent().hide();
+        $("a[title='TIFF file']").parent().hide();
+
+
+    });
+</script>
+
+<style>
+    td {
+        border: 0px;
+    }
+</style>
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Medición y Evaluación SG-SST</a></li>
+    <li><a href="javascript:void(0)">Indicadores</a></li>
+    <li class="active">Indicadores de Estructura</li>
+</ol>
+
+
+<div class="row">
+
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda </h4>
+                        </div>
+
+                        <div class="modal-body" style="color:black">
+                            @* ayuda*@
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Indicadores de Estructura</div>
+  
+
+
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <br />
+                    <br />
+                    <label>Tipo de Indicador:</label>
+                    <br />
+                    <select class="form-control" name="RepresentaInd" id="TipoReporteInd" oninput="SeleccionarReporteIndicador()">
+                        <option value="">
+                            --Seleccionar--
+                        </option>
+
+                        <option value="ComiteCoppast">Indicador de comité Copasst</option>
+                        <option value="DxSalud">Indicador Diagnóstico de condiciones de salud</option>
+                        <option value="PerfilSocioD">Indicador de Perfil Sociodemográfico</option>
+                       
+
+
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-md-7"> Parámetros:</label>
+
+        </div>
+    </div>
+</div>
+
+
+<br />
+<div class="row" >
+
+
+    <div class="col-sm-4" id="divAnio">
+        <div class="form-group">
+            <label class="col-md-7">Año:</label>
+            <div class="col-md-10">
+
+                @{
+                    var anioStr = DateTime.Today.Year.ToString();
+                    var anioStr1 = DateTime.Today.AddYears(-1).Year.ToString();
+                    var anioStr2 = DateTime.Today.AddYears(-2).Year.ToString();
+                    var anioStr3 = DateTime.Today.AddYears(-3).Year.ToString();
+                    var anioStr4 = DateTime.Today.AddYears(-4).Year.ToString();
+                    var anioStr5 = DateTime.Today.AddYears(-5).Year.ToString();
+                    var anioStr6 = DateTime.Today.AddYears(-6).Year.ToString();
+                    var anioStr7 = DateTime.Today.AddYears(-7).Year.ToString();
+                    var anioStr8 = DateTime.Today.AddYears(-8).Year.ToString();
+                    var anioStr9 = DateTime.Today.AddYears(-9).Year.ToString();
+
+                    <select class="form-control" id="anio" name="anio">
+                        <option value="">--Seleccionar--</option>
+                        <option value=@anioStr>@anioStr</option>
+                        <option value=@anioStr1>@anioStr1</option>
+                        <option value=@anioStr2>@anioStr2</option>
+                        <option value=@anioStr3>@anioStr3</option>
+                        <option value=@anioStr4>@anioStr4</option>
+                        <option value=@anioStr5>@anioStr5</option>
+                        <option value=@anioStr6>@anioStr6</option>
+                        <option value=@anioStr7>@anioStr7</option>
+                        <option value=@anioStr8>@anioStr8</option>
+                        <option value=@anioStr9>@anioStr9</option>
+                    </select>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-6" id="procesoInd" hidden="hidden">
+        <div class="form-group">
+            <label class="col-md-8">Proceso</label>
+            <div class="col-md-12">
+                @Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control", @onchange = "consultarSubProcesos()" }, optionLabel: "-- Seleccionar --")
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4" id="SedeInd" hidden="hidden">
+        <div class="form-group">
+            <label class="col-md-7">Sede:</label>
+            <div class="col-md-10">
+                @Html.DropDownList("FKSede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-4" id="divConstanteK" name="divConstanteK" hidden="hidden">
+        <div class=" form-group">
+            <label class="col-md-7">K:</label>
+            <div class="col-md-10">
+
+                <select class="form-control" name="ConstanteK" id="ConstanteK">
+                    <option value="">
+                        --Seleccionar--
+                    </option>
+
+                    <option value="200000">200.000</option>
+                    <option value="220000">220.000</option>
+                    <option value="240000">240.000</option>
+                    <option value="1000000">1.000.000</option>
+
+
+
+
+                </select>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-4" id="divContigencia" name="divContigencia" hidden="hidden">
+        <div class=" form-group">
+            <label class="col-md-7">Contigencia:</label>
+            <div class="col-md-10">
+
+                <select class="form-control" name="Contigencia" id="Contigencia">
+                    <option value="">
+                        --Seleccionar--
+                    </option>
+
+                    <option value="1">Enfermedad General</option>
+                    <option value="2">Enfermedad Laboral</option>
+                    <option value="3">Accidente de Trabajo</option>
+
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+
+
+<div class="col-md-5">
+    <button type="button" id="graficar" onclick="SeleccionarReporteInd()" class="boton botonactive">Mostrar Indicadores</button>
+</div>
+<hr />
+
+<form id="formReportesIndicadores">
+    <div id="IDReportes" class="panel-body">
+        @Html.Partial("VisorDeReportesInd")
+    </div>
+</form>
+
+
+@Scripts.Render("~/Scripts/Reportes/Reportes.js")
+
+

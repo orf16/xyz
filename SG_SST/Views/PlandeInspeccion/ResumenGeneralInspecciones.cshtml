@@ -1,0 +1,219 @@
+﻿@model SG_SST.Models.Aplicacion.CrearInspeccionModel
+@{
+    Layout = null;
+    ViewBag.Title = "Resumen General Inspecciones";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Resumen Inspección</title>
+    <style>
+        .table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+  
+    <div class="panel panel-default" style="background-color:white" id="InformacionGeneralInspeccion">
+        <div class="panel-heading" style="color:white">Resumen General Inspección</div>
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent">
+              
+                <h4>Datos Generales Inspección</h4>
+                        <center>     
+                            <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                                <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Consecutivo</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Sede</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Fecha Planeacion</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Fecha Realización</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Hora Inspección</p>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_filas">
+                                    <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                        @Html.DisplayFor(model => Model.Consecutivo)
+                                    </td>
+                                    <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                        @Html.DisplayFor(model => Model.Sede)
+                                    </td>
+                                    <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                        @Html.DisplayFor(model => Model.fechaplaninspeccion)
+                                    </td>
+                                    <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                        @Html.DisplayFor(model => Model.fecharealizacioninspeccion)
+                                    </td>
+                                    
+                                    <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                        @Html.DisplayFor(model => Model.hora)
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </center>
+               
+                
+                <center>
+                    <hr />
+                    <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                        <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Responsable Inspeccion</p>
+                            </th>
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Tipo Inspeccion</p>
+                            </th>
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Area ó Lugar de Inspección</p>
+                            </th>
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Responsable Lugar</p>
+                            </th>
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Proceso</p>
+                            </th>
+                        </tr>
+                        <tr class="titulos_filas">
+                            <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                @Html.DisplayFor(model => Model.responsableplaninspeccion)
+                            </td>
+                            <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                @Html.DisplayFor(model => Model.DescripcionTipoInspeccion)
+                            </td>
+                            <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                @Html.DisplayFor(model => Model.area)
+                            </td>
+                            <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                @Html.DisplayFor(model => Model.responsable)
+                            </td>
+
+                            <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:center">
+                                @Html.DisplayFor(model => Model.Proceso)
+                            </td>
+                        </tr>
+
+                    </table>
+                   
+                </center>
+                <hr />
+                <h4>Condiciones Inseguras Encontradas</h4>
+                       
+                        <center>
+                            <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                                <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Prioridad</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Dias Desde</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Dias Hasta</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Descripción Condición Insegura Encontrada</p>
+                                    </th>
+                                    <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                        <p>Ubicación Especifica Condición</p>
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model.Condiciones)
+                                {
+                                    <tr class="titulos_filas">
+                                        <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                            @Html.DisplayFor(modelItem =>item.Prioridad)
+                                        </td>
+                                        <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                            @Html.DisplayFor(modelItem => item.Diadesde)
+                                        </td>
+                                        <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                            @Html.DisplayFor(modelItem => item.Diahasta)
+                                        </td>
+                                        <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                            @Html.DisplayFor(modelItem => item.DescribeCondicionvm)
+                                        </td>
+                                        <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                            @Html.DisplayFor(modelItem => item.Ubicacionespecificavm)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </center>
+                <hr />
+                <h4>Asistentes a Inspección</h4>
+                <center>
+                    <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                        <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Nombre Asistente</p>
+                            </th>
+                            
+                        </tr>
+                        @foreach (var item in Model.Asistentes)
+                        {
+                            <tr class="titulos_filas">
+                                <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                    @Html.DisplayFor(modelItem => item.nombreasistente)
+                                </td>
+                              
+                            </tr>
+                        }
+                    </table>
+                </center>
+               
+               @if (Model.Elementos != null)
+               {
+                <hr />
+                <h4>Equipos, Elementos y Herramientas</h4>
+                <center>
+                    <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                        <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Tipo Elemento</p>
+                            </th>
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Descripción Elemento</p>
+                            </th>
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center">
+                                <p>Marca Elemento</p>
+                            </th>
+                        </tr>
+                        @foreach (var item in Model.Elementos)
+                        {
+                            <tr class="titulos_filas">
+                                <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                    @Html.DisplayFor(modelItem => item.TipoElemento)
+                                </td>
+                                <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                    @Html.DisplayFor(modelItem => item.NombreElemento)
+                                </td>
+                                <td style="border-right: 1px solid lightslategray; vertical-align:middle;text-align:left">
+                                    @Html.DisplayFor(modelItem => item.Marca)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </center>
+                <hr />
+
+
+               }
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

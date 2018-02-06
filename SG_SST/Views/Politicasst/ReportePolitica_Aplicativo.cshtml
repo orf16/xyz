@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Politica_Aplicativo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>Consulta de Política de Seguridad y Salud en el Trabajo</h2>*@
+
+<style>
+    .pdf-politica {
+      position: relative;
+      padding-bottom: 56.25%;
+      overflow: hidden;
+    }
+ 
+    .pdf-politica iframe {
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@*<ul class="nav nav-pills" role="tablist">
+    <li class=""><a id="tab3" href="#step3" role="tab" data-toggle="tab" class="titulo-crear-recursos">Consulta de Política de Seguridad y Salud en el Trabajo</a></li>
+</ul>
+<hr />*@
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Política</a></li>
+    <li><a href="javascript:void(0)">Política del SG-SST</a></li>
+    <li class="active">Consulta Política</li>
+</ol>
+
+<div class="pdf-politica">
+    <iframe width="640" height="360" href="/Politicasst/MostrarPoliticaPDF" frameborder="0" allowfullscreen></iframe>
+
+
+</div>
+@*<div class="row">
+    <div class="col-md-3">
+        <a href="@Url.Action("MenuPolitica", "Politicasst")" class="btn btn-default btn-md"> <span class="glyphicon glyphicon-arrow-left"></span></a>
+    </div>
+</div>*@

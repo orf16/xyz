@@ -1,0 +1,488 @@
+﻿@model List<SG_SST.Models.AdminUsuarios.AdministrarUsuariosModel>
+@using SG_SST.Models.AdminUsuarios
+
+@{
+    ViewBag.Title = "Aprobación de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    BuscardorModel buscador = null;
+    if (ViewBag.RolesSistema != null)
+    {
+        buscador = new BuscardorModel()
+        {
+            RolesSistema = ViewBag.RolesSistema
+        };
+    }
+}
+<script src="~/Scripts/EvaluacionEstandarMinimo/paginador.js"></script>
+<div class="panel panel-default" id="contenido">
+    <div class="panel-heading" style="color:black">
+        Aprobación de Usuarios
+    </div>
+    @if (buscador != null)
+    {
+        <div class="panel-body form-horizontal">
+            <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                <div class="panel-heading" style="color:black">
+                    Buscar Usuarios para Aprobar
+                </div>
+                <div class="panel-body form-horizontal">
+                    <div class="form-group col-md-12">
+                        <div class="col-md-2">
+                            @Html.Label("Número documento de la Empresa", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => buscador.NumeroDocumentoEmpresa, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Número documento del Usuario", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => buscador.NumeroDocumentoUsuario, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.Label("Rol asignado al Usuario", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-2">
+                            @Html.DropDownListFor(x => buscador.RolSeleccionadoUsuario, buscador.RolesSistema, "Seleccione una opción...", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row" align="center">
+                        <div class="col-md-12">
+                            <button type="submit" id="btn_buscarUsuarios" class="boton botoninfo">Buscar</button>
+                            <button type="submit" id="btn_borrarFiltros" class="boton botoninfo">Borrar filtros</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="panel-body form-horizontal">
+        <div class="row form-group">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped aprob-usuario" style="border: 2px solid lightslategray; overflow-x:scroll">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("#", new { @class = "" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Tipo documento empleador", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Número documento empleador", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Razón social empleador", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Municipio empleador", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Tipo Documento Usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Número Documento Usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Nombres Usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Apellidos Usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Rol del Usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Correo Electronico Usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Periodo Inactividad", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Aprobar usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Rechazar usuario", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                            <th style="font-size:0.6em; border-right: 2px solid lightslategray; text-align:center">
+                                @Html.Label("Causales de rechazo", new { @class = "", @style = "font - size: 3.1em;" })
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="body_usu_aprob">
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var usuario in Model)
+                            {
+                                var idNombAfi = string.Format("{0}_nomAfi", usuario.IdUsuarioSistema);
+                                var idApeAfi = string.Format("{0}_apeAfi", usuario.IdUsuarioSistema);
+                                var idRolAfi = string.Format("{0}_rolAfi", usuario.IdUsuarioSistema);
+                                var idCorreoAfi = string.Format("{0}_correoAfi", usuario.IdUsuarioSistema);
+                                <tr id="@usuario.IdUsuarioSistema">
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.IdUsuarioSistema.ToString()
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.TipoDocumentoEmpresa
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.DocumentoEmpresa
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @string.Format("{0}",usuario.RazonSocialEmpresa)
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @string.Format("{0}", usuario.MunicipioSedePpalEmpresa)
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.TipoDocumento
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.Documento
+                                    </td>
+                                    <td id="@idNombAfi" style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.Nombres
+                                    </td>
+                                    <td id="@idApeAfi" style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.Apellidos
+                                    </td>
+                                    <td id="@idRolAfi" style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.NombreRolSeleccionado
+                                    </td>
+                                    <td id="@idCorreoAfi" style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @usuario.EmailPersona
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.TextBoxFor(x => usuario.PeriodoInactividad, new { @Id = string.Format("{0}_{1}", usuario.IdUsuarioSistema, "PeriodoInactividad"), @Value = string.Empty, @placeholder = "DD/MM/AAAA" })
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @Html.RadioButtonFor(x => usuario.Aprobado, "Aprobar", new { @Id = string.Format("{0}_rbAprobar", usuario.IdUsuarioSistema), @Name = string.Format("{0}_Aprobar", usuario.IdUsuarioSistema), @class = "" })
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @Html.RadioButtonFor(x => usuario.Aprobado, "Rechazar", new { @Id = string.Format("{0}_rbRechazar", usuario.IdUsuarioSistema), @Name = string.Format("{0}_Aprobar", usuario.IdUsuarioSistema), @class = "" })
+                                    </td>
+                                    <td style="font-size:0.6em; border-right: 2px solid lightslategray; vertical-align:middle">
+                                        @Html.DropDownListFor(x => usuario.CausalRechazoSeleccionada, usuario.CausalesRechazoUsuarioSistema, "Seleccione una opción", new { @Id = string.Format("{0}_CausalRechazo", usuario.IdUsuarioSistema), @Disabled = "disabled", @class = "disabled bloqueado" })
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="paginado">
+                <div class="inner_paginado">
+                </div>
+            </div>
+            <div id="container_btnAprobar" class="row" align="center" style="display:none;">
+                <div class="col-md-3 col-md-offset-5">
+                    <button type="submit" id="guardar_usu_aprob" class="boton botonactive">Aceptar</button>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+@{
+    if (ViewBag.Mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                title: 'Atención',
+                text: '@ViewBag.Mensaje',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function () {
+                window.location.href = '../Home/Index';
+            });
+        </script>
+    }
+}
+<script type="text/javascript">
+    var totalRegistrosPag = 1;
+    var paginaActual = 1;
+    var registrosPorPagina = 1;
+    var totalPagPaginador = 1;
+    var xhr;
+    var active = false;
+    $(document).ready(function () {
+        $('#btn_buscarUsuarios').on('click', function (evt) {
+            evt.preventDefault();
+            BuscarUsuariosPaginador(1);
+        });
+        $('#btn_borrarFiltros').on('click', function (evt) {
+            window.location.href = '../AdminUsuarios/AprobarUsuariosSistema';
+        });
+        //setear datepicker para cada registro
+        $('#body_usu_aprob').find('tr').each(function () {
+            var idRegistro = $(this).attr('id');
+            $(this).find('td').each(function (i) {
+                var idFecha = $(this).find('input[type="text"]').attr('id');
+                ConstruirDatePickerPorElemento(idFecha);
+            });
+        });
+        //se controla la habilitacion del campo select para que se muestre
+        //solo cuando se escoge la opcion de rechazo
+        $('#body_usu_aprob').find('tr').each(function () {
+            var idRegistro = $(this).attr('id');
+            $(this).find('td').each(function (i) {
+                $(this).find('input[type="radio"]').on('change', function (e) {
+                    if ($(this).val() == 'Rechazar') {
+                        $(this).parent().siblings('td').find('input[type="text"]').prop('disabled', true).attr('class', '');
+                        $(this).parent().siblings('td').find('select').prop('disabled', false).attr('class', '').val('');
+                    } else {
+                        $(this).parent().siblings('td').find('input[type="text"]').prop('disabled', false).attr('class', '');
+                        $(this).parent().siblings('td').find('select').prop('disabled', true).attr('class', 'bloqueado').val('');
+                    }
+                });
+            });
+        });
+        //enviar a guardar los usuarios aprobados y rechazados
+        $('#guardar_usu_aprob').on('click', function (e) {
+            if (!ValidarDiligenciamientoFechas())
+                e.stopPropagation();
+            else if (!ValidarDiligenciamientoOpcionesAprobacion())
+                e.preventDefault();
+            else {
+                //generar la lista de usuarios para aprobar/rechazar
+                var usuarios = new Array();
+                $('#body_usu_aprob').find('tr').each(function () {
+                    var usuario = new Object();
+                    usuario.IdUsuarioSistema = $(this).attr('id');
+                    var usuarioAprobar = $(this).find('input[id="' + usuario.IdUsuarioSistema + '_rbAprobar"]');
+                    var usuarioRechazar = $(this).find('input[id="' + usuario.IdUsuarioSistema + '_rbRechazar"]');
+                    if (usuarioAprobar.is(':checked') || usuarioRechazar.is(':checked')) {
+                        $(this).find('td').each(function (i) {
+                            if ($(this).attr('id') == usuario.IdUsuarioSistema + '_nomAfi')
+                                usuario.Nombres = $(this).text();
+                            if ($(this).attr('id') == usuario.IdUsuarioSistema + '_apeAfi')
+                                usuario.Apellidos = $(this).text();
+                            if ($(this).attr('id') == usuario.IdUsuarioSistema + '_rolAfi')
+                                usuario.NombreRolSeleccionado = $(this).text();
+                            if ($(this).attr('id') == usuario.IdUsuarioSistema + '_correoAfi')
+                                usuario.EmailPersona = $(this).text();
+                            var valorFecha = $(this).find('input[id="' + usuario.IdUsuarioSistema + '_PeriodoInactividad"]');
+                            if (valorFecha.length > 0)
+                                usuario.PeriodoInactividad = valorFecha.val();
+                            var opcionAprobacion = $(this).find('input[name="' + usuario.IdUsuarioSistema + '_Aprobar"]');
+                            if (opcionAprobacion.length > 0 && opcionAprobacion.is(':checked'))
+                                usuario.Aprobado = opcionAprobacion.is(':checked');
+                            var causalRechazo = $(this).find('select[id="' + usuario.IdUsuarioSistema + '_CausalRechazo"] option:selected');
+                            if (causalRechazo.length > 0) {
+                                usuario.IdCausalRechazoSeleccionada = $(this).find('select[id="' + usuario.IdUsuarioSistema + '_CausalRechazo"] option:selected').val();
+                                usuario.CausalRechazoSeleccionada = $(this).find('select[id="' + usuario.IdUsuarioSistema + '_CausalRechazo"] option:selected').text();
+                            }
+                        });
+                        usuarios.push(usuario);
+                    }
+                });
+                PopupPosition();
+                $.ajax({
+                    url: 'AprobarUsuariosSistema',
+                    type: 'post',
+                    data: { usuariosAprobar: usuarios }
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.Mensaje == 'OK') {
+                        //$('#body_usu_aprob').empty();
+                        //$('#body_usu_aprob').html(response.Datos);
+                        OcultarPopupposition();
+                        swal({
+                            title: "Atención",
+                            text: "El proceso se completo con éxito.",
+                            type: "success",
+                            closeOnConfirm: false
+                        },function (isConfirm) {
+                                if (isConfirm) {                                   
+                                    window.location.href = '../AdminUsuarios/AprobarUsuariosSistema';
+                                }
+                            });
+                        return false;
+                    } else if (response != undefined && response != '' && response.Mensaje == 'NOTFOUND') {
+                        OcultarPopupposition();
+                        swal({
+                            title: "Atención",
+                            text: "No se pudo completar el proceso, intente nuevamente.",
+                            type: "warning",
+                            //showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            //confirmButtonText: "Aceptar",
+                            closeOnConfirm: false
+                        },function (isConfirm) {
+                                if (isConfirm) {                                    
+                                    window.location.href = '../AdminUsuarios/AprobarUsuariosSistema';
+                                }
+                            });
+                        return false;
+                    }
+                }).fail(function (response) {
+                    console.log('Error en la petición: ' + response);
+                    OcultarPopupposition();
+                });
+            }
+        });
+    });
+    //valida que todas la fechas estén diligenciadas
+    function ValidarDiligenciamientoFechas() {
+        var mensajeError = '';
+        var result = true;
+        $('#body_usu_aprob').find('tr').each(function () {
+            var idRegistro = $(this).attr('id');
+            $(this).find('td').each(function (i) {
+                var rbAprob = $(this).find('input[name="' + idRegistro + '_Aprobar"]');
+                if (rbAprob.length > 0) {
+                    if (rbAprob.is(':checked')) {
+                        var elm = rbAprob.attr('id');
+                        if (elm == idRegistro + '_rbAprobar') {
+                            var valorFecha = $(this).parent().find('input[type="text"]').val();
+                            if (valorFecha == '') {
+                                result = false;
+                                mensajeError = 'Debe diligenciar el periodo de inactividad para cada usuario que desea aprobar.';
+                            } else if (valorFecha != '') {
+                                var today = new Date();
+                                today = Date.parse(today.getMonth() + 1 + '/' + today.getDate() + '/' + today.getFullYear());
+                                //Get the selected date (also at midnight)
+                                var fechaSeleccionada = new Date(valorFecha.split('/')[2], (valorFecha.split('/')[1] - 1), valorFecha.split('/')[0]);
+                                var selDate = Date.parse(fechaSeleccionada.getMonth() + 1 + '/' + fechaSeleccionada.getDate() + '/' + fechaSeleccionada.getFullYear());
+                                if (selDate <= today) {
+                                    //If the selected date was before today, continue to show the datepicker
+                                    result = false;
+                                    mensajeError = 'No puede seleccionar una fecha menor o igual a la actual.';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        if (!result)
+            swal({
+                title: 'Atención',
+                text: mensajeError,
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            });
+        return result;
+    }
+    //valida que todas las opciones de aprobación estén diligenciados
+    function ValidarDiligenciamientoOpcionesAprobacion() {
+        var result = true;
+        var mensajeError = '';
+        var cantOpcionesSelect = 0;
+        var cantOpcionesRechazo = 0;
+        var cantCausalesRechazo = 0;
+        var cantidadInconsistenciasRechazo = 0;
+        var cantidRegistros = $('#body_usu_aprob').find('tr').length;
+        $('#body_usu_aprob').find('tr').each(function () {
+            //var usuarioRechazado = false;
+            var idRegistro = $(this).attr('id');
+            $(this).find('td').each(function () {
+                var rbAprob = $(this).find('input[name="' + idRegistro + '_Aprobar"]');
+                var causalRechzo = $(this).find('select[id="' + idRegistro + '_CausalRechazo"]');
+                if (rbAprob.length > 0) {
+                    if (rbAprob.is(':checked')) {
+                        cantOpcionesSelect = cantOpcionesSelect + 1;
+                        if (rbAprob.val() == 'Rechazar') {
+                            cantOpcionesRechazo = cantOpcionesRechazo + 1;
+                            usuarioRechazado = true;
+                        }
+                    }
+                }
+                if (causalRechzo.length > 0) {
+                    if (causalRechzo.find(':selected').val() != '')
+                        cantCausalesRechazo = cantCausalesRechazo + 1;
+                }
+            });
+        });
+        //valida que todas las opciones para aprobar/rechazar
+        //usuarios esten diligenciadas
+        if (cantOpcionesSelect <= 0) {
+            result = false;
+            mensajeError = 'Debe diligenciar las opciones de aprobación/rechazo para cada usuario.';
+        }
+            //Valida que la cantidad de usuarios rechazados tengan
+            //seleccionada una causal
+        else if (cantCausalesRechazo != cantOpcionesRechazo) {
+            result = false;
+            mensajeError = 'Los usuarios que desea rechazar deben tener relacionada una causal de rechazo.';
+        }
+        else if (cantidadInconsistenciasRechazo > 1) {
+            result = false;
+            mensajeError = 'Las causales de rechazo seleccionadas deben estar asociadas a los usuarios rechazados.';
+        }
+        if (!result)
+            swal({
+                title: 'Atención',
+                text: mensajeError,
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            });
+        return result;
+    }
+
+    function BuscarUsuariosPaginador(pagina) {
+        if (active) { console.log("killing active"); xhr.abort(); }
+        active = true;
+        var numDocEmp = $('#buscador_NumeroDocumentoEmpresa').val();
+        var numDocUsu = $('#buscador_NumeroDocumentoUsuario').val();
+        var rolUsuario = $('#buscador_RolSeleccionadoUsuario').val();
+        if (numDocEmp != '' || numDocUsu != '' || rolUsuario != '') {
+            PopupPosition();
+            xhr = $.ajax({
+                url: 'BuscarUsuariosAprobarBuscador',
+                type: 'post',
+                data: { numDocEmp: numDocEmp, numDocUsu: numDocUsu, rolSeleccionado: rolUsuario, paginaActual: pagina }
+            }).done(function (response) {
+                if (response != undefined && response != '' && response.Mensaje == 'OK') {
+                    $('#body_usu_aprob').empty();
+                    $('#body_usu_aprob').html(response.Datos);
+                    $('#container_btnAprobar').show();
+                    totalRegistrosPag = response.TotalUsuarios;
+                    paginaActual = response.PaginaActual;
+                    registrosPorPagina = response.RegistrosPorPag;
+                    var residuo = totalRegistrosPag % registrosPorPagina;
+                    if (residuo == 0)
+                        totalPagPaginador = totalRegistrosPag / registrosPorPagina;
+                    else
+                        totalPagPaginador = (totalRegistrosPag / registrosPorPagina) + 1;
+                    OcultarPopupposition();
+                } else if (response != undefined && response != '' && response.Mensaje == 'NOTFOUND') {
+                    swal({
+                        title: "Atención",
+                        text: "No se encontró información para el criterio de búsqueda especificado.",
+                        type: "warning",
+                        //showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        //confirmButtonText: "Aceptar",
+                        closeOnConfirm: false
+                    });
+                    OcultarPopupposition();
+                    return false;
+                }
+                OcultarPopupposition();
+                active = false;
+            });
+        } else {
+            swal({
+                title: "Atención",
+                text: "No se ha especificado ningún criterio de búsqueda.",
+                type: "warning",
+                //showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                //confirmButtonText: "Aceptar",
+                closeOnConfirm: false
+            });
+            OcultarPopupposition();
+            return false;
+        }
+    }
+</script>

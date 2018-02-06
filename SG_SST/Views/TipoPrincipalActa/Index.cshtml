@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SG_SST.Models.Participacion.TipoPrincipalActa>
+
+@{
+    ViewBag.Title = "Listado Tipos de Principales Miembros Comites";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Configuración Maestros</a></li>
+    <li><a href="javascript:void(0)">Tipos de Principales Miembros Comites</a></li>
+    <li class="active">Listado Tipos de Principales Miembros Comites</li>
+</ol>
+
+<p align="center" style="margin-bottom:20px">
+    @Html.ActionLink(@SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+    htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered" style="border: 2px solid lightslategray">
+        <tr class="titulos_tabla">
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Tipo Principal
+            </th>
+            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                Acciones
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                    @Html.DisplayFor(modelItem => item.DescripcionTipoPrincipal)
+                </td>
+                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                    <a href="@Url.Action("Edit", new { id = item.PK_Id_TipoPrincipal })" class="btn btn-search btn-md" title="Editar">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    |
+                    <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.PK_Id_TipoPrincipal)" class="btn btn-search btn-md" title="Eliminar">
+                        <span class="glyphicon glyphicon-erase"></span>
+                    </a>
+                    <div id="@string.Format("modalEliminar{0}", item.PK_Id_TipoPrincipal)" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h4 class="modal-title title">Eliminar Tipo Principal</h4>
+                                </div>
+                                <div class="modal-body" style="color:black">
+                                    <center><p>¿Esta seguro desea eliminar el Tipo Principal?</p></center>
+                                </div>
+                                <div class="modal-footer">
+                                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.PK_Id_TipoPrincipal },
+                                        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                    @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>*@
+                                    <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

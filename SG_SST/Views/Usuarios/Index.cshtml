@@ -1,0 +1,188 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.Usuario>
+
+@{
+    ViewBag.Title = "Usuarios Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.mensaje != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+
+    )
+
+    </script>
+}
+
+@if (ViewBag.mensaje1 != null)
+{
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.mensaje1',
+            timer: 4000,
+            confirmButtonColor: '#7E8A97'
+        }).then(
+    function () { },
+    function (dismiss) {
+        if (dismiss === 'timer') {
+            console.log('Cerrado')
+        }
+    }
+    )
+
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+@section OpcionesEmpresa
+{
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Create", "Empresas")" style="color:gray" title="Datos Generales Empresa">Datos Generales Empresa</a></li>
+        <li><a href="@Url.Action("SedesPorMunicipios", "Sede")" style="color:gray" title="Sedes Empresa">Sedes</a></li>
+        <li class="active"><a href="@Url.Action("Index", "Usuarios")" style="color:#ff7500" title="Usuarios Roles SG-SST">Roles SGSST</a></li>
+    </ol>
+}
+
+<p align="center" style="margin-bottom:20px">
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null, htmlAttributes: new { @type = "button", @class = "boton botonactive", style = "text-decoration:none" })
+</p>
+
+<div class="panel panel-default" style="border: transparent">
+    <div class="panel-heading" style="color:white">
+        Listado Usuarios Empresa
+    </div>
+
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+            <tr class="titulos_tabla">
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @*@Html.DisplayNameFor(model => model.FirstOrDefault().UsuarioRoles.FirstOrDefault().Rol.Descripcion)*@
+                    Descripción
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Tipo de Documento
+                    @*@Html.DisplayNameFor(model => model.TipoDocumentos)*@
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @*@Html.DisplayNameFor(model => model.Numero_Documento)*@
+                    Número de Documento
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @*@Html.DisplayNameFor(model => model.Nombre_Usuario)*@
+                    Nombre de Usuario
+                </th>
+                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    @Html.DisplayNameFor(model => model.Imagen_Firma)
+                </th>
+                <th width="100" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                    Acciones
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @foreach (var rd in item.UsuarioRoles)
+                        {
+                            @Html.Label(rd.Rol.Descripcion)
+                        }
+                        @*@Html.DisplayFor(modelItem => item.UsuarioRoles)*@
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.TipoDocumentos.Descripcion)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @Html.DisplayFor(modelItem => item.Numero_Documento)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(modelItem => item.Nombre_Usuario)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <button type="button" class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal{0}", item.Pk_Id_Usuario)" title="Consultar Firma">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+
+                        <div id="@string.Format("modal{0}", item.Pk_Id_Usuario)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title title">Firma Digital Cargada</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <center><img src="@Url.Action("GetImage", new { item.Pk_Id_Usuario })" class="img-responsive img-rounded" /></center>
+                                    </div>
+                                    <div class="modal-footer alert-dismissable">
+                                        @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Aceptar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @*@Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.Pk_Id_Usuario },
+                        htmlAttributes: new { @type = "button", @class = "btn-search" })*@
+                        <a href="@Url.Action("Edit", new { id = item.Pk_Id_Usuario })" class="btn btn-search btn-md" title="Editar Usuario">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        |
+                        @*<button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Usuario)">
+                            @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                        </button>*@
+                        <a data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Pk_Id_Usuario)" class="btn btn-search btn-md" title="Eliminar Usuario">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </a>
+
+                        <div id="@string.Format("modalEliminar{0}", item.Pk_Id_Usuario)" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            @*<span aria-hidden="true">&times;</span>*@
+                                        </button>
+                                        <h4 class="modal-title title">Eliminar Usuario</h4>
+                                    </div>
+                                    <div class="modal-body " style="text-align:center; color:black">
+                                        <p>¿Está seguro que desea eliminar el Usuario seleccionado?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Pk_Id_Usuario },
+                                        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                                        <button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

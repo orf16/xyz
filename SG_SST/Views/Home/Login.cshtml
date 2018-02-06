@@ -1,0 +1,138 @@
+﻿@model SG_SST.Models.Login.UsuarioSessionModel
+
+@{
+    Layout = null;
+}
+
+@*@section metatags {
+    <meta name='keywords' content='@ViewBag.MetaKeywords' />
+    <meta name='description' content='@ViewBag.MetaDescription' />
+}*@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    @*<meta name='description' content='@ViewBag.MetaDescription' />*@
+    <meta name="description" content="Herramienta web de apoyo para la gestión realizada por las empresas afiliadas a POSITIVA frente a una auditoría del SG-SST, basado en el Decreto 1072/2015 y Resolución 1111/2017">
+    @*<meta name='keywords' content='@ViewBag.MetaKeywords' />*@
+    <meta name="keywords" content="Herramienta, Web, Apoyo, Gestión, Positiva">
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Alissta - SGSST</title>
+
+    <!-- Icono Alissta para las pestañas del navegador -->
+    <link rel="shortcut icon" href="~/Images/IcoAlissta.ico">
+
+    <!-- Custom additional styles -->
+    <link rel="stylesheet" href="~/Content/css/styleslogin.css">
+    <link rel="stylesheet" href="~/Content/css/animate.min.css">
+    <link rel="stylesheet" href="~/Content/css/sweetalert.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="~/js/sweetalert.min.js"></script>
+    <style>
+        .btn-home, .btn-home:hover {
+            color: #333;
+            text-decoration: none;
+            font-size: 12px !important;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    </style>
+</head>
+
+<body class="loginscreen">
+    <div class="container-login">
+            <div class="col-md-4 col-md-offset-4 text-center login-form animated fadeIn delay025">
+                <img src="~/Images/alissta-logo-login.png" alt="logo alissta login" class="center-block app-logo-login">
+                <div class="form-fields">
+                    @using (@Html.BeginForm("Login", "Home", FormMethod.Post))
+                    {
+
+                        @Html.TextBoxFor(x => x.NitEmpresa, new { @class = "form-login-control", @placeholder = "Digite documento empleador" })
+                        @Html.TextBoxFor(x => x.Login, new { @class = "form-login-control", @placeholder = "Digite documento usuario" })
+                        @Html.ValidationMessageFor(x => x.Login, string.Empty, new { @class = "error" })
+
+                        @Html.PasswordFor(x => x.ClaveAcceso, new { @class = "form-login-control", @placeholder = "Digite clave de acceso" })
+                        @Html.ValidationMessageFor(x => x.ClaveAcceso, string.Empty, new { @class = "error" })
+                        <button type="submit" class="btn btn-primary login-submit">Ingresar</button>
+                    }
+                    @*<form action="" method="post">
+                        <input type="text" class="form-login-control" placeholder="Pedro Julio Pacheco" style="font-size:larger">
+                        <input type="password" style="font-size:larger">
+                        @Html.ActionLink("Ingresar", "Index", new { }, htmlAttributes: new { @type = "button", @class = "btn btn-primary login-submit"})
+                    </form>*@
+            </div>
+
+            <div class="form-fields" style="margin-top:5%;">
+                <div style="float:left;background-color:#D9DEE5">
+                    <a href="@Url.Action("Index","AdminUsuarios")" class="btn-home">Solicite su usuario aquí</a>
+                </div>
+                <div style="float:right;background-color:#D9DEE5;width:45%;">
+                    <a href="@Url.Action("RecuperarClave","AdminUsuarios")" class="btn-home">¿Olvidó su clave?</a>
+                </div>
+            </div>
+            <br />
+
+            <img class="logo-positiva" src="~/Images/positiva-logo.png" alt="logo-positiva-compañía de seguros">
+        </div>
+    </div>
+
+    <div class="footer-login">
+        <p>
+            Línea nacional: 01 8000 413 535 | Sitio seguro <img src="~/Images/candado-login.png" width="12" height="12" alt="candado"> | Navegadores recomendados  <img src="~/Images/chrome-icon.png" width="18" height="18" alt="logo-chrome"> <img src="~/Images/mozilla-icon.png" width="18" height="18" alt="logo-mozilla">
+        </p>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="~/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+@{
+    if (TempData["mensajeAutenticacion"] != null)
+    {
+        var mensaje = TempData["mensajeAutenticacion"] as String;
+        <script type="text/javascript">
+            swal({
+                title: 'Atención',
+                text: '@mensaje.ToString()',
+                type: 'warning',
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Aceptar",
+                closeOnConfirm: false,
+                closeOnCancel: false,
+                html: true
+            },function (isConfirm) {
+                if (isConfirm) {
+                    window.location.href = '../Home/Login';
+                }
+            });
+        </script>
+    }
+    <script type="text/javascript">
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE");
+        var msid = ua.indexOf("Edge");
+        if (msie > 0 || msid > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))  // If Internet Explorer, return Alert
+        {
+            alert('No todas las funcionalidades están disponibles en este navegador, recomendamos utilizar google chrome.');
+        }
+
+    </script>
+}

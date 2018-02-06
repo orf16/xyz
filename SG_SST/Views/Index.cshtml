@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SG_SST.Models.Planificacion.EstimacionDeRiesgo>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Estimación de Riesgos</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Consecuencia.Descripcion_Consecuencia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Probabilidad.Descripcion_Probabilidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Detalle_Estimacion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Consecuencia.Descripcion_Consecuencia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Probabilidad.Descripcion_Probabilidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Detalle_Estimacion)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PK_Estimacion_De_Riesgo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PK_Estimacion_De_Riesgo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PK_Estimacion_De_Riesgo })
+        </td>
+    </tr>
+}
+
+</table>

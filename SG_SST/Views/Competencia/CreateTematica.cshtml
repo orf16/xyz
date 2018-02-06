@@ -1,0 +1,600 @@
+﻿
+@{
+    ViewBag.Title = "Asignar Competencias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.Messages',
+        'success'
+        )
+    </script>
+}
+@if(ViewBag.cargosEmpresa == true)
+{
+    <script type="text/javascript">
+                swal(
+                'Estimado Usuario',
+                'En este momento No se puede crear competencias SST',
+                'error'
+                )
+    </script>
+}
+@if (ViewBag.Mensaje != null && ViewBag.Mensaje != "")
+{
+    <script type="text/javascript">
+        swal(
+        'Estimado Usuario',
+        '@ViewBag.Mensaje',
+        'warning'
+        )
+    </script>
+    
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Organizacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    <script>
+        $(document).ready(function () {
+            paginador("#select_tematica", "tr[name = tem]", "#paginador1");
+
+            paginador("#select_tematicaEmp", "tr[name = temEmp]", "#paginador2");
+
+            paginador("#seleccionadas_tematicas", "tr[name = tem]", "#paginador3");
+
+            paginador("#seleccionadas_tematicasEmp", "tr[name = temEmp]", "#paginador4");
+        });
+    </script>
+}
+
+<style>
+    .navigation-competencia {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(202,209,218);
+    }
+
+    .navigation-competencia:hover {
+        text-transform: capitalize;
+        color: gray;
+        background-color: rgb(175,184,196);
+    }
+
+    .pdf-cargar-tematica {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-cargar-tematica iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal-dialog{
+        width: 50%;
+        height: 60%;
+        margin: 30px auto;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+<!-- Referencia a sweetalert -->
+<link href="~/Content/css/sweetalert.css" rel="stylesheet">
+
+<script src="~/js/sweetalert.min.js"></script>
+<script src="~/Scripts/Organizacion/Competencia.js"></script>
+
+<script>
+    var addedTematicas = [];
+    var addedTematicasEmp = [];
+    var addedTrabajador = [];
+</script>
+
+
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Competencias SST</a></li>
+    <li class="active">Asignar Competencias</li>
+</ol>
+
+<form method="post" action="@Url.Action("AsignarCompetencia", "Competencia")" id="competencia">
+    <input value=@ViewBag.Editar name="editar" id="editar" type="hidden">
+    <input name="idEmpleados" id="idEmpleados" type="hidden" value="@ViewBag.idEmpleados">
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+
+                            <p>Presione <button type="button" class="boton botoninfo" style="cursor:default;">SIGUIENTE</button> para pasar a la siguiente pestaña.</p>
+                            <p>Presione <button type="button" class="boton botoninfo" style="cursor:default;">ATRAS</button> para consultar las competencias asignadas de acuerdo a los parámetros ingresados.</p>
+                            <p>Presione <i class="glyphicon glyphicon-plus" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para seleccionar una temática</p>
+                            <p>Presione <i class="glyphicon glyphicon-minus" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para deseleccionar una temática.</p>
+                            <p>Presione <i class="glyphicon  glyphicon-search" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para visualizar el archivo pdf que tiene la tématica.</p>
+                            <p>Presione <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR</button> para guardar las competencias asignadas.</p>
+                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a id="tab1" href="#step1" data-toggle="tab" class="navigation-competencia">@*@Html.Label("Datos Generales")*@Datos Generales</a></li>
+        <li><a id="tab2" class="navigation-competencia">@*@Html.Label("Formación Positiva")*@Formación Positiva</a></li>
+        <li><a id="tab3" class="navigation-competencia">@*@Html.Label("Formación Empresa")*@Formación Empresa</a></li>
+    </ul>
+    <hr />
+
+    <div class="tab-content">
+        @*Panel para mostrar Rol, Cargos y Empleados*@
+        <div class="tab-pane active" id="step1">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="row">
+                        <div class="col-lg-4 col-lg-offset-4">
+                            <h5><b>Seleccione el rol o roles por favor</b></h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @*<div class="col-lg-6 col-lg-offset-3 checkbox">
+                                <label><input type="checkbox" value="" id="checkRol" onclick="SeleccionarTodosRol('#', '#')">Seleccionar todo</label>
+                        </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            <select id="Fk_Id_Rol" name="Fk_Id_Rol" class="form-control selectpicker" multiple="multiple">
+                                @foreach (SelectListItem option in ViewBag.RolSel)
+                                {
+                                    <option value="@option.Value" @(option.Value == ViewBag.Editar.ToString() ? "selected='selected'" : "")>@option.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <hr />  
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <h5><b>Seleccione cargo al cual desea asignarles el rol o roles previamente seleccionados</b></h5>
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="col-lg-12 checkbox">
+                            <label><input type="checkbox" value="" id="checkCargo" onclick="SeleccionarTodosCargo()">Seleccionar todo</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                           @* @Html.DropDownList("Fk_Id_Cargo", new SelectList(ViewBag.Fk_Id_Cargo, "Value", "Text"), htmlAttributes: new { @class = "form-control selectpicker", @multiple = "multiple", title = "Seleccione ...", onclick = "ObtenerSiarpAfiliados()" })*@
+                            <select id="Fk_Id_Cargo" name="Fk_Id_Cargo" class="form-control selectpicker" multiple="multiple" onclick="ObtenerSiarpAfiliados()">
+
+
+                                @foreach (SelectListItem option in ViewBag.Fk_Id_Cargo)
+                                {
+                                    if (ViewBag.CargoSel.Count > 0)
+                                    {
+                                        <option value="@option.Value" @( ViewBag.CargoSel.Contains(option.Value.AsInt()) ? "selected='selected'" : "")>@option.Text</option>
+                                    }
+
+                                    if (ViewBag.CargoSel.Count == 0)
+                                    {
+                                        <option value="@option.Value">@option.Text</option>
+                                    }
+
+                                }
+                            </select>
+                            @if (ViewBag.CargoSel.Count > 0)
+                            {
+                                <script type="text/javascript">
+                                    ObtenerSiarpAfiliados();
+                                </script>
+
+                            }
+                        </div>
+                    </div>
+                    <hr />
+                    @*<div class="col-md-12 col-md-offset-0">*@
+                    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+                        <div class="panel-heading" style="color:black">
+                            Seleccione el o las personas a las cuales desea asignarles el rol o roles previamente seleccionados
+                        </div>
+                        <div class="panel-body form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-12 checkbox">
+                                    <label><input type="checkbox" value="" id="checkEmpleado" onclick="SeleccionarTodosEmpleados()">Seleccionar todo</label>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="tablaAfiliados" name="tablaAfiliados" style="border-color: transparent"></table>
+                            </div>
+                        </div>
+                    </div>
+                    @*</div>*@
+
+                    @*<div class="col-md-2">
+                        <a href="@Url.Action("LeerExcel", "Competencia")"
+                            class="btn btn-link-1-google-plus btn-circle btn-md">
+                            <i class="glyphicon glyphicon-download-alt" name="iconoRend"></i>
+                        </a>
+                    </div>*@
+                    <span id="errorToShow"></span>
+                    <div class="row">
+                        <div class="col-md-1 col-md-offset-11">
+                            @*<a onclick="validarCamposRolCargos(2)" value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente" class=" btn btn-siguiente btn-md pull-right">
+                                <span class="glyphicon glyphicon-chevron-right"> Siguiente</span>
+                            </a>*@
+                            <a onclick="validarCamposRolCargos(2)" @*value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente"*@ class="boton botoninfo pull-right" style="text-decoration:none">
+                                Siguiente
+                            </a>
+                            @*<button type="button" class="boton botoninfo pull-right" onclick="validarCamposRolCargos(2)">
+                                @SG_SST.Recursos.GeneralApp.General.btn_siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                            </button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*panel para mostrar Formacion Positiva*@
+        <div class="tab-pane" id="step2">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <h3><b>Formación Positiva</b></h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            @*<div class="col-lg-6 col-lg-offset-5">*@
+                                <div class="input-group">
+                                    <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+                                    <input type="text" class="form-control" placeholder="Buscar" onkeyup="BusquedaTematica(this)">
+                                </div>
+                            @*</div>*@
+                        </div>
+                    </div>
+                    <br />
+                    <label><input type="checkbox" value="" id="checkTem" onclick="SeleccionarTodosTematica()">Seleccionar todo</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table id="select_tematica" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle">
+                                        Temática
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle">
+            
+                                    </th>
+                                </tr>
+                                    @foreach (var tematica in ViewBag.Tematicas)
+                                    {
+                                        <tr class="titulos_filas" name="tem" id="@tematica.Id_Tematica">
+                                            <td name="tdtema" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                                @tematica.Tematicas
+                                                <input value="@tematica.Id_Tematica" name="idtePos" type="hidden">
+                                                <input value="@tematica.Tematicas" name="temaPos" type="hidden">
+                                                <input value="@tematica.TipoTematica" name="tipoTem" type="hidden">
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                                <a onclick='AgregarASeleccionadas(this, @tematica.Id_Tematica)' name="seleccionarTematica">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                            </table>
+                            <div class="pagination-page" id="paginador1" style="margin-left:50px"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <table id="seleccionadas_tematicas" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle">
+                                        Temáticas Seleccionadas
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom:2px solid lightslategray; text-align:center; vertical-align:middle">
+                                    </th>
+                                </tr>
+                                @foreach (var tematica in ViewBag.TematicaSel)
+                                {
+                                    <tr class="titulos_filas" name="tem">
+                                        <td name="tdtema" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @tematica.Tematicas
+                                            <input value="@tematica.Id_Tematica" name="idtePos" type="hidden">
+                                            <input value="@tematica.Tematicas" name="temaPos" type="hidden">
+                                            <input value="@tematica.TipoTematica" name="tipoTem" type="hidden">
+                                            <script>
+                                                addedTematicas.push(@tematica.Id_Tematica);
+                                            </script>
+
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <a onclick='DesmarcarTematica(this, @tematica.Id_Tematica)' name="seleccionarTematica">
+                                                <span class="glyphicon glyphicon-minus"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                            <div class="pagination-page" id="paginador3" style="margin-left:50px"></div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-2">
+                            @*<button class="boton botoninfo pull-left" onclick="AnteriorPanel(1)">
+                                <span class="glyphicon glyphicon-chevron-left"></span> Atras
+                            </button>*@
+                            @*<a onclick="AnteriorPanel(1)" class=" btn btn-siguiente btn-md tbr pull-left">
+                                <span class="glyphicon glyphicon-chevron-left"> Atras</span>
+                            </a>*@
+                            <a onclick="AnteriorPanel(1)" class="boton botoninfo tbr pull-left" style="text-decoration:none">
+                                Atras
+                            </a>
+                        </div>
+                        <div class="col-md-8">
+                        </div>
+                        <div class="col-md-2">
+                            @*<button class="boton botoninfo pull-right" onclick="validarCamposRolCargos(3)">
+                                @SG_SST.Recursos.GeneralApp.General.btn_siguiente <span class="glyphicon glyphicon-chevron-right"></span>
+                            </button>*@
+                            @*<a onclick="validarCamposRolCargos(3)" value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente" class=" btn btn-siguiente btn-md tbr pull-right">
+                                <span class="glyphicon glyphicon-chevron-right"> Siguiente</span>
+                            </a>*@
+                            <a onclick="validarCamposRolCargos(3)" @*value="@SG_SST.Recursos.GeneralApp.General.btn_siguiente"*@ class="boton botoninfo pull-right" style="text-decoration:none">
+                                Siguiente
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Fin panel para mostrar Formacion Positiva*@
+
+        @*panel para mostrar Formacion Empresa *@
+        <div class="tab-pane" id="step3">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <h3><b>Formación Empresa</b></h3>
+                        </div>
+                    </div>
+                    @*<div class="panel panel-yellow" name="panel" id="panel" style="background-color: rgba(196, 202,196, 0.1); border: 1px solid lightslategray; width:1000px">*@
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5><b>Nombre de la nueva Formación:</b></h5>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" name="nuevaFormacion" id="nuevaFormacion" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5><b>Documento Asociado a la nueva Formación:</b></h5>
+                        </div>
+                        <div class="col-md-5">
+                            <input id="archivoSubir" name="archivoSubir" type="file" class="form-control" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            @*<input id="botonSubidor" type="button" value="Guardar" onclick="uploadAjaxValidate()" />*@
+                            <button id="botonSubidor" type="button" onclick="uploadAjaxValidate()" class="boton botonactive">Guardar</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            @*<div class="col-lg-6 col-lg-offset-5">*@
+                                <div class="input-group">
+                                    <span class="input-group-addon alert-warning"><span class="glyphicon glyphicon-search"></span></span>
+                                    <input type="text" class="form-control" placeholder="Buscar" onkeyup="BusquedaTematicaEmp(this)">
+                                </div>
+                            @*</div>*@
+                        </div>
+                    </div>
+                    <br />
+                    <label><input type="checkbox" value="" id="checkTemEmp" onclick="SeleccionarTodosTematicaEmp()">Seleccionar todo</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table id="select_tematicaEmp" class="table table-responsive table-condensed table-bordered" style="border: 2px solid lightslategray">
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                        Temática Empresa
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                        Documento asociado
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+
+                                    </th>
+                                </tr>
+
+
+                                @foreach (var tematic in ViewBag.TematicaEmpresa)
+                                {
+                                    <tr class="titulos_filas" name="temEmp" id="@tematic.Id_Tematica">
+                                        <td name="tdtemaEmp" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @tematic.Tematicas
+                                            <input value="@tematic.Id_Tematica" name="idtePosEmp" type="hidden">
+                                            <input value="@tematic.Tematicas" name="temaPosEmp" type="hidden">
+                                            <input value="@tematic.TipoTematica" name="tipoTemEmp" type="hidden">
+                                            <input value="@tematic.NombreDocumento" name="tipoTemEmp" type="hidden">
+                                        <td style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                            @if (@tematic.NombreDocumento != "")
+                                            {
+                                                <a @*type="button"*@ class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal{0}", @tematic.Id_Tematica)" title="Ver documento asociado">
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </a>
+                                                <!-- Modal para visualizar el pdf-->
+                                                <div id="@string.Format("modal{0}", @tematic.Id_Tematica)" class="modal fade" role="dialog" width="575" height="500">
+                                                    <div class="modal-dialog">
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header encabezado" width="575" height="500" style="background-color:transparent; border-bottom:none">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                                                <h4 class="modal-title title">Documento asociado</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="pdf-cargar-tematica">
+                                                                    @*<object data="@Url.Action("MostrarTematicaPDF", new { @tematic.Id_Tematica })" type="application/pdf" width="575" height="500"></object>*@
+                                                                    <iframe src="@Url.Action("MostrarTematicaPDF", new { @tematic.Id_Tematica })" type="application/pdf" width="575" height="500"></iframe>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer alert-dismissable">
+                                                                @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <a onclick='AgregarASeleccionadasEmp(this, @tematic.Id_Tematica)' name="seleccionarTematicaEmp">
+                                                <span name="adicionar" class="glyphicon glyphicon-plus"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                            <div class="pagination-page" id="paginador2" style="margin-left:50px"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <table id="seleccionadas_tematicasEmp" class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                                <tr class="titulos_tabla">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                        Temáticas Seleccionadas
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                        Documento asociado
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                    </th>
+                                </tr>
+                                @foreach (var tematic in ViewBag.TematicaEmpresaSel)
+                                {
+                                    
+                                    <tr class="titulos_filas" name="temEmp">
+                                        <td name="tdtemaEmp" style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            @tematic.Tematicas
+                                            <input value="@tematic.Id_Tematica" name="idtePosEmp" type="hidden">
+                                            <input value="@tematic.Tematicas" name="temaPosEmp" type="hidden">
+                                            <input value="@tematic.TipoTematica" name="tipoTemEmp" type="hidden">
+                                            <input value="@tematic.NombreDocumento" name="tipoTemEmp" type="hidden">
+                                            <script>
+                                                addedTematicasEmp.push(@tematic.Id_Tematica);
+                                            </script>
+                                        <td style="border-right: 2px solid lightslategray; text-align:center; vertical-align:middle">
+                                            @if (@tematic.NombreDocumento != "")
+                                            {                                               
+                                                <a @*type="button"*@ class="btn btn-search btn-md" data-toggle="modal" data-target="#@string.Format("modal{0}", @tematic.Id_Tematica)" title="Ver documento asociado">
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </a>
+                                                <!-- Modal para visualizar el pdf-->
+                                                <div id="@string.Format("modal{0}", @tematic.Id_Tematica)" class="modal fade" role="dialog" width="575" height="500">
+                                                    <div class="modal-dialog">
+                                                        <!-- Modal content-->
+                                                        <div class="modal-content">
+                                                            <div class="modal-header encabezado" width="575" height="500" style="background-color:transparent; border-bottom:none">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                                                <h4 class="modal-title title">Documento asociado</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="pdf-cargar-tematica">
+                                                                    @*<object data="@Url.Action("MostrarTematicaPDF", new { @tematic.Id_Tematica })" type="application/pdf" width="575" height="500"></object>*@
+                                                                    <iframe src="@Url.Action("MostrarTematicaPDF", new { @tematic.Id_Tematica })" type="application/pdf" width="575" height="500"></iframe>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer alert-dismissable">
+                                                                @*<button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">Aceptar <i class="glyphicon glyphicon-log-out"></i></button>*@
+                                                                <button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <a onclick='DesmarcarTematicaEmp(this, @tematic.Id_Tematica)' name="seleccionarTematicaEmp">
+                                                <span name="adicionar" class="glyphicon glyphicon-minus"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    
+                                }   
+                            </table>
+                            <div class="pagination-page" id="paginador4" style="margin-left:50px"></div>
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <div class="col-lg-6 col-lg-offset-3">
+                            @Html.DropDownList("Fk_id_Tematica2", null, htmlAttributes: new { @class = "form-control selectpicker", @multiple = "multiple", title = "Seleccione ..." }, optionLabel: "--Seleccionar--")
+                        </div>
+                    </div>*@
+                    <br />
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a onclick="AnteriorPanel(2)" class="boton botoninfo pull-left" style="text-decoration:none">
+                                Atras
+                            </a>
+                            @*<button class="boton botoninfo pull-left" onclick="AnteriorPanel(2)">
+                                <span class="glyphicon glyphicon-chevron-left"></span> Atras
+                            </button>*@
+                        </div>
+                        <div class="col-md-7">
+                        </div>
+                        <div class="col-md-3">
+                            @*<button type="button" class="boton botonactive" onclick="validarCamposRol()">Guardar</button>*@
+                            <button type="button"  onclick="pregunta()" class="boton botonactive">Guardar</button>
+                        </div>
+                    </div>
+                    @*</div>*@
+                    @*<div id="datosCampos" hidden="hidden">*@
+                </div>
+            </div>
+        </div>
+    </div>
+@*</div>
+</div>*@
+</form>

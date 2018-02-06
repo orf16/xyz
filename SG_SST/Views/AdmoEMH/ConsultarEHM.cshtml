@@ -1,0 +1,485 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDAdmoEMH>
+
+@{
+    ViewBag.Title = "Consulta de Equipo, Herramienta o Maquinas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración equipo, maquinaria y herramientas</a></li>
+    <li class="active">Consultar equipo, maquinaria y herramientas</li>
+</ol>
+
+<script>
+    //Eliminar EHM
+    $(document).ready(function () {
+        $('.btnEliminarEHM').click(function () {
+            var Id_Elm = $(this).attr('id');
+            var Id_Elm1 = $(this).attr('name');
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea eliminar el elemento " + Id_Elm1 + "?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/AdmoEMH/EliminarEHM",
+                    data: '{IdEHM: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.probar == false) {
+                            if (data.resultado == "El usuario no ha iniciado sesión en el sistema") {
+
+                                location.reload(true);
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                type: "warning",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            },
+                            function () {
+
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                text: response.resultado,
+                                type: "success",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                location.reload(true);
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#msj_novedad").text('No se ha podido eliminar el elemento');
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                    }
+                });
+
+            });
+        });
+    });
+    //Subir EHM
+    $(document).ready(function () {
+        $('.btnsubir').click(function () {
+            var Id_Elm = $(this).attr('id');
+            var Id_Elm1 = $(this).attr('name');
+            swal({
+                title: "Estimado Usuario",
+                text: "Esta seguro(a) que desea deshacer la baja del equipo, máquina o herramienta: " + Id_Elm1 + "?",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                type: "warning",
+                closeOnConfirm: false
+            },
+            function () {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/AdmoEMH/SubirElemento",
+                    data: '{IdEHM: "' + Id_Elm + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.probar == false) {
+                            if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+
+                                location.reload(true);
+                            }
+                            swal({
+                                title: "Estimado Usuario",
+                                type: "warning",
+                                text: response.resultado,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "Estimado Usuario",
+                                type: "success",
+                                text: "El estado de este elemento ha cambiado, ahora es un elemento activo",
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "OK",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                location.reload(true);
+                            });
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#msj_novedad").text('No se ha podido cambiar el estado de este elemento');
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                    }
+                });
+
+            });
+        });
+    });
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".paginver");
+        var numItems = items.length;
+        var perPage = 5;
+        items.slice(perPage).hide();
+        $(".paginationver").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page-1";
+            hash = hash.match(/^#page-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+    jQuery(function ($) {
+        var items = $(".pagincom");
+        var numItems = items.length;
+        var perPage = 5;
+        items.slice(perPage).hide();
+        $(".paginationcom").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+
+
+    <div class="panel panel-default std-panel-body max-width-700-responsive">
+        <div class="panel-heading panel-heading-custom">CONSULTAR EQUIPOS, MÁQUINAS Y HERRAMIENTAS</div>
+
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Consulta de Equipo, Herramienta o Maquinas</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botoninfo" style="cursor:default;">CONSULTAR</button> Para consultar los equipos, máquinas o herramientas que cumplan con las condiciones del filtro de busqueda</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="btn" style="cursor:default;background-color:white;"><img src="~/Content/Images/simbolopdf.png" style="width:40px;" /></button> para descargar el contenido de una hoja de vida de equipos, máquinas o herramientas en PDF</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para editar la hoja de vida de equipos, máquinas o herramientas</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-eye-open" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el registro de la hoja de vida de equipos, máquinas o herramientas</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-search" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para ver el registro de inspecciones del equipo, máquina o herramienta</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-erase" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para eliminar la hoja de vida de equipos, máquinas o herramientas, si el usuario selecciona esta opción el elemento se eliminará de los registros</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-arrow-down" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para dar de baja los equipos, máquinas o herramientas, si el usuario selecciona esta opción el sistema le preguntará la fecha y el motivo de la baja</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-arrow-up" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para deshacer el cambio de estado de equipos, máquinas o herramientas, si el usuario selecciona esta opción el elemento cambiará de estado a 'ACTIVO'</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        <div class="internal-panel add-bottom-margin-05em ">
+            @using (Html.BeginForm())
+            {
+
+                    <div class="col-sm-12 form-group">
+                        <label class="control-label col-sm-12 col-md-2">Nombre del Elemento</label>
+                        <div class="col-sm-7">
+                            @Html.TextBox("NombreElemento", null, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 form-group add-bottom-margin-05em">
+                        <label class="control-label col-sm-12 col-md-2">Tipo de Elemento</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownList("TipoElemento", null, htmlAttributes: new { @class = "form-control col-md-10" })
+                        </div>
+                    </div>
+
+                    <div class="row text-center" style="margin-bottom:0.5em;">
+                        <button class="boton botoninfo" href="@Url.Action("ConsultarEHM", "AdmoEMH")">Consultar</button>
+                    </div>
+
+
+                    <div class="table-responsive" style="margin:0.5%;">
+                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th colspan="8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>ACTIVOS</span>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Nombre</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Marca</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Modelo</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Fabricante</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Horas de Vida Útil</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Ubicación</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Nombre del Responsable</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            @{
+
+
+
+                                foreach (var item in Model)
+                                {
+                                    if (item.Estado == 0)
+                                    {
+                                        <tr class="paginver">
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.NombreElemento)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Marca)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Modelo)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Fabricante)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @*@Html.DisplayFor(model => item.HorasVida)*@
+                                                @{
+                                                    int HorasVida = item.HorasVida;
+                                                    String s = String.Format("{0:n0}",
+                                                 HorasVida);
+                                                    s = s.Replace(",", ".");
+                                                    <span>@s</span>
+                                                }
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Ubicacion)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.NombreResponsable)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("VerEHM", "AdmoEMH", new { IdEHM = item.Pk_Id_AdmoEMH })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Ver" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("EditarEHM", "AdmoEMH", new { IdEHM = item.Pk_Id_AdmoEMH })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Editar" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("UrlAsPDF", "AdmoEMH", new { id = item.Pk_Id_AdmoEMH })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Exportar a PDF" style="height:35px;margin-bottom:5px;">
+                                                    <img src="~/Content/Images/simbolopdf.png" style="max-height:100%" />
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("DardebajaEHM", "AdmoEMH", new { IdEHM = item.Pk_Id_AdmoEMH })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Dar de Baja" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-arrow-down"></span>
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("Inspecciones", "AdmoEMH", new { idEHM = item.Pk_Id_AdmoEMH,FechaA="",FechaD=""  })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Ver Inspecciones" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            }
+
+                        </table>
+                        <center><div class="pagination paginationver" id="paginador1"></div></center>
+                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th colspan="8" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>INACTIVOS</span>
+                                    </th>
+                                </tr>
+                                <tr class="titulos_tabla">
+
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Nombre</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Marca</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Modelo</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Fabricante</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Horas de Vida Útil</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Ubicación</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        <span>Nombre del Responsable</span>
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            @{
+
+
+
+                                foreach (var item in Model)
+                                {
+                                    if (item.Estado == 1)
+                                    {
+                                        <tr class="pagincom">
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.NombreElemento)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Marca)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Modelo)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Fabricante)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @*@Html.DisplayFor(model => item.HorasVida)*@
+                                                @{
+                                                    int HorasVida = item.HorasVida;
+                                                    String s = String.Format("{0:n0}",
+                                                 HorasVida);
+                                                    s = s.Replace(",", ".");
+                                                    <span>@s</span>
+                                                }
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.Ubicacion)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                @Html.DisplayFor(model => item.NombreResponsable)
+                                            </td>
+                                            <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+
+
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("VerEHM", "AdmoEMH", new { IdEHM = item.Pk_Id_AdmoEMH })" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Ver" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="@Url.Action("UrlAsPDF", "AdmoEMH", new { id = item.Pk_Id_AdmoEMH })" class="btn btn-sm btn-positiva btnEliminarArchivo " title="Descargar" style="height:35px;margin-bottom:5px">
+                                                    <img src="~/Content/Images/simbolopdf.png" style="max-height:100%" />
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="#" name="@item.NombreElemento.ToString()" class="btn btn-sm btn-positiva btnEliminarEHM" title="Eliminar" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                <a id="@item.Pk_Id_AdmoEMH.ToString()" href="#" name="@item.NombreElemento.ToString()" class="btn btn-sm btn-positiva btnsubir" title="Deshacer Baja de Equipo, Máquina o Herramienta" style="height:35px;margin-bottom:5px">
+                                                    <span class="glyphicon glyphicon-arrow-up"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            }
+
+                        </table>
+                        <center><div class="pagination paginationcom" id="paginador1"></div></center>
+                    </div>
+
+                
+                                }
+        </div>
+    </div>
+
+
+

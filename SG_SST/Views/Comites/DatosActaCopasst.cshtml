@@ -1,0 +1,632 @@
+﻿@{@model SG_SST.Models.Participacion.CrearActaCopasstVM
+
+    ViewBag.Title = "Acta Copasst";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+    @Scripts.Render("~/bundles/simplePagination")
+    @if (ViewBag.mensaje != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'warning',
+                title: 'Estimado usuario',
+                text: '@ViewBag.mensaje',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+    }
+    
+    @if (ViewBag.mensaje1 != null)
+    {
+        <script type="text/javascript">
+            swal({
+                type: 'success',
+                title: 'Estimado usuario',
+                text: '@ViewBag.mensaje1',
+                confirmButtonColor: '#7E8A97'
+            })
+        </script>
+
+    }
+    
+}
+
+
+<script>
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".trParticipante");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination1").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    jQuery(function ($) {
+        var items = $(".trOrdenDia");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination2").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    jQuery(function ($) {
+        var items = $(".trObservacion");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination3").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+    jQuery(function ($) {
+        var items = $(".trAcciones");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".pagination4").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+
+</script>
+
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+
+
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Participación Trabajadores</a></li>
+    <li><a href="javascript:void(0)">Comites en SST</a></li>
+    <li><a href="javascript:void(0)">Copasst</a></li>
+    <li class="active">Crear Acta Copasst</li>
+</ol>
+<hr />
+
+
+<form method="post" action="@Url.Action("CargarActaCopasst")" enctype="multipart/form-data" id="CrearActa">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1); overflow:hidden">
+        <div class="panel-heading" style="color:white">CREACIÓN ACTA COPASST REUNIÓN</div>
+        <!-- Botón Ayuda -->
+        <!-- Botón Ayuda -->
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+
+                                <h4 class="modal-title title">Información de Ayuda/Acta Comité Convivencia Laboral</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p >En este formulario el usuario diligencia los datos del acta como:</p>
+                                <p > >	Tema de la reunión.</p>
+                                <p > >	Participantes.</p>
+                                <p > >	Agenda de la Reunión – Orden del Día.</p>
+                                <p > >	Desarrollo de la Reunión.</p>
+                                <p > >	Conclusiones Generales.</p>
+                                <p > >	Plan de Acción – Actividades.</p>
+                                <p > > Cargar soportes en formato PDF. </p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoninfo">ADJUNTAR</button> Permite cargar el archivo en formato PDF con un tamaño máximo de 10 Mb.</p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoninfo">EXPORTAR</button> Permite exporta el documento en formato PDF.</p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoninfo">GUARDAR</button> Permite guarda los datos diligenciados.</p>
+                                <p > <button type="button" id="AdicionarMiembro" class="boton botoncancel">CANCELAR</button> Permite cancelar la acción de  creación de Acta Comité y vuelve al inicio.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <center>
+            <label>ACTA NÚMERO: @Model.Consecutivo_Acta.ToString().PadLeft(3, '0')</label>
+            <input type="hidden" value=@Model.Fk_Id_Sede name="Fk_Id_Sede" id="Fk_Id_Sede" />
+            <input type="hidden" value=@Model.Consecutivo_Acta name="Consecutivo_Acta" id="Consecutivo_Acta" />
+            <input type="hidden" value=@Model.PK_Id_Acta name="PK_Id_Acta" id="PK_Id_Acta" />
+        </center>
+
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label>1. FECHA:</label>
+                            @Html.TextBoxFor(model => Model.Fecha, new { @class = "form-control", Value = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @placeHolder = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @id = "Fecha", @name = "Fecha" })
+                            @*<input type="text" class="form-control" name="Fecha" id="Fecha" placeholder="dd/mm/aaaa" />*@
+                            <label for="Fecha" class="error" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>2. TEMA DE LA REUNIÓN:</label>
+                            @Html.TextAreaFor(model => Model.TemaReunion, new { @class = "form-control", @rows="2", @id = "TemaReunion", @name = "TemaReunion", @maxlength = "300" })
+                            <label for="TemaReunion" class="error4" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>3. EMPRESA:</label>
+                            @Html.TextBoxFor(model => Model.NombreEmpresa, new { @class = "form-control", @readonly = "readonly", @style = "color:black;background-color:#DDD", @id = "NombreEmpresa", @name = "NombreEmpresa" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-10">4. DOCUMENTO PARTICIPANTE:</label>
+                        <div class="col-md-8">
+                            <div>@Html.TextBoxFor(model => Model.Numero_Documento, new { @class = "form-control", @style = "color:black;font-size:15px", @id = "Numero_Documento", @name = "Numero_Documento" })</div>
+                            <label for="Numero_Documento" class="error" style="display:none"></label>
+                        </div>
+                        <div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <button type="button" class="btn-search" data-toggle="modal" onclick="DatosTrabajador()" title="Buscar">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-12">NOMBRE PARTICIPANTE:</label>
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => Model.Nombre, new { @class = "form-control", @id = "Nombre", @name = "Nombre", @maxlength = "60" })
+                            <label for="Nombre" class="error" style="display:none"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-6">&nbsp;</label>
+                        <div class="col-md-8">
+                            <button type="button" id="AdicionarParticipante" class="boton botoninfo" onclick="AdicionarPaticipante()">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" id="TParticipantes" style="margin:auto;">
+                <table class="table table-responsive table-bordered" id="tParticipantes" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla" id="trMiembros">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Documento Participante
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Nombre Participante
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.ParticipantesActaCopasst != null)
+                        {
+                            foreach (var item in Model.ParticipantesActaCopasst)
+                            {
+                                <tr class="trParticipante" id="trParticipante">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.Numero_Documento)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle ">
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn-search" data-toggle="modal" onclick="EliminarParticipanteCopasst(@string.Format("{0}", item.Fk_Id_Acta), @string.Format("{0}", item.Numero_Documento))" title="Eliminar">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    <tbody id="tbParticipantes"></tbody>
+                </table>
+                <center><div class="pagination pagination1" id="paginadorParticipantes"></div></center>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="form-group">
+                        <label class="col-md-12">5. AGENDA DE LA REUNIÓN - ORDEN DEL DÍA:</label>
+                        <div class="col-md-12">
+                            <div>@Html.TextAreaFor(model => Model.TemaOrdenDia, new { @class = "form-control", @style = "color:black;font-size:15px", @rows = "4", @id = "TemaOrdenDia", @name = "TemaOrdenDia", @maxlength = "300" })</div>
+                            <label for="TemaOrdenDia" class="error1" style="display:none"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-6">&nbsp</label>
+                        <div class="col-md-8">
+                            <button type="button" id="AdicionarOrdenDia" class="boton botoninfo" onclick="AdicionarTemas()">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" style="margin:auto;">
+                <table class="table table-responsive table-bordered" id="tTemas" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            No.
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Orden del día
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.TemasActaCopasst != null)
+                        {
+                            int fila = 1;
+                            foreach (var item in Model.TemasActaCopasst)
+                            {
+
+
+                                <tr class="trOrdenDia">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @fila
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;">
+                                        @Html.DisplayFor(modelItem => item.Tema)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn-search" data-toggle="modal" onclick="EliminarTemaCopasst(@string.Format("{0}", item.Fk_Id_Acta), @string.Format("{0}", item.PK_Id_TemaActa))" title="Eliminar">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                fila = fila + 1;
+                            }
+                        }
+                    }
+                    <tbody id="tbTemas"></tbody>
+                </table>
+                <center><div class="pagination pagination2" id="paginadorTemas"></div></center>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-md-12">6. DESARROLLO DE LA REUNIÓN:</label>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => Model.Observaciones, new { @class = "form-control", @rows="4", @cols="", @id = "Observaciones", @name = "Observaciones", @maxlength = "1000" })
+                            <label for="Observaciones" class="error2" style="display:none"></label>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" style="margin:auto;">
+                <table class="table table-responsive table-bordered" id="tObservaciones" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            No.
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Tema
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Observación
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.TemasActaCopasst != null)
+                        {
+                            int fila = 1;
+                            foreach (var item in Model.TemasActaCopasst)
+                            {
+                                <tr class="trObservacion">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @fila
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;">
+                                        @Html.DisplayFor(modelItem => item.Tema)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Observaciones, new { @class = "form-control", @id = "Observaciones", @name = "Observaciones"})
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn-search" data-toggle="modal" id="btnActualizarTema" onclick="ActualizarObservacionTemaCopasst(@string.Format("{0}", item.Fk_Id_Acta), @string.Format("{0}", item.PK_Id_TemaActa))" title="Actualizar">
+                                            <span class="glyphicon glyphicon-refresh"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                fila++;
+                            }
+                        }
+                    }
+                    <tbody id="tbObservacion"></tbody>
+                </table>
+                <center><div class="pagination pagination3" id="paginadorObservacion"></div></center>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label>7. CONCLUSIONES GENERALES:</label>
+                            @Html.TextAreaFor(model => Model.Conclusiones, new { @class = "form-control", @rows = "6", @id = "Conclusiones", @name = "Conclusiones", @maxlength = "1000" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-12">8. PLAN DE ACCIÓN - ACTIVIDAD:</label>
+                        <div class="col-md-12">
+                            <div>@Html.TextAreaFor(model => Model.AccionARealizar, new { @class = "form-control", @rows = "4", style = "color:black;font-size:15px", @id = "AccionARealizar", @type = "search", @name = "AccionARealizar", @maxlength = "1000" })</div>
+                            <label for="AccionARealizar" class="error3" style="display:none"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-12">RESPONSABLE:</label>
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => Model.Responsable, new { @class = "form-control", @id = "Responsable", @name = "Responsable", @maxlength = "60" })
+                            <label for="Responsable" class="error3" style="display:none"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-7">FECHA:</label>
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => Model.FechaProbable, new { @class = "form-control", Value = "", @placeHolder = string.Format("{0} ", DateTime.Now.ToString("dd/MM/yyyy")), @id = "FechaProbable", @name = "FechaProbable" })
+                            <label for="FechaProbable" class="error" style="display:none"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-md-6">&nbsp</label>
+                        <div class="col-md-12">
+                            <button type="button" id="AdicionarAccion" class="boton botoninfo" onclick="AdicionarAcciones()">ADICIONAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" style="margin:auto;">
+                <table class="table table-responsive table-bordered" id="tAcciones" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            No.
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Actividad
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Responsable
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Fecha
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                            Acción
+                        </th>
+                    </tr>
+                    @{
+                        if (Model.AccionesActaCopasst != null)
+                        {
+                            int fila = 1;
+                            foreach (var item in Model.AccionesActaCopasst)
+                            {
+
+                                <tr class="trAcciones" id="trAcciones">
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @fila
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;">
+                                        @Html.DisplayFor(modelItem => item.AccionARealizar)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; ">
+                                        @Html.DisplayFor(modelItem => item.Responsable)
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        @Html.DisplayFor(modelItem => item.FechaProbable, new { @value = item.FechaProbable.ToString("yyyy-MM-dd") })
+                                    </td>
+                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                        <button type="button" class="btn-search" data-toggle="modal" onclick="EliminarAccionCopasst(@string.Format("{0}", item.Fk_Id_Acta), @string.Format("{0}", item.Pk_Id_AccionActaCopasst))" title="Eliminar">
+                                            <span class="glyphicon glyphicon-erase"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                fila++;
+                            }
+                        }
+                    }
+                    <tbody id="tbAccion"></tbody>
+                </table>
+                <center><div class="pagination pagination4" id="paginadorAccion"></div></center>
+            </div>
+            <hr style="border-top-color:lightslategray" />
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="file" value="Cargar Documento" name="NombreArchivo" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <button id="ContinuarMiembro" type="submit" class=" boton botoninfo">ADJUNTAR</button>
+                            <label for="NombreArchivo" class="error" style="display:none"></label>
+                       </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <a id="AtrasActa" href="@Url.Action("MiembroActaCopasstGuardados", new { PK_Id_Acta = Model.PK_Id_Acta, IdSede = @Model.Fk_Id_Sede, consecutivo_acta = Model.Consecutivo_Acta })" class="boton botonactive">ATRAS</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <button type="button" id="GrabarActa" onclick="ActualizarActaCopasst()" class="boton botoninfo">GUARDAR</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <a id="CancelarActa" href="@Url.Action("Index", "Comites")" class="boton botoncancel">CANCELAR</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <a id="Exportar" href="@Url.Action("ActaCopasst_PDF", new { PK_Id_Acta = @Model.PK_Id_Acta })" class=" boton botoninfo">EXPORTAR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

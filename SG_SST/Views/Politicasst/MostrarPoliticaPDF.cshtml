@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Mostrar Política PDF";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .pdf-cargar-politica {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-cargar-politica iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Política</a></li>
+    <li><a href="javascript:void(0)">Política del SG-SST</a></li>
+    <li class="active">Política de Seguridad y Salud en el Trabajo</li>
+</ol>
+
+<div class="pdf-cargar-politica">
+    @*<object data="@Url.Action("PoliticaPDF", new { FK_Empresa = ViewBag.FK_Empresa })" type="application/pdf" width="1000" height="500"></object>*@
+    @*<iframe width="640" height="360" src="@Url.Action("PoliticaPDF", new { FK_Empresa = ViewBag.FK_Empresa })" frameborder="0" allowfullscreen></iframe>*@
+</div>
+
+<div class="container">
+    @*<div class="row">*@
+
+    @*</div>*@
+
+    <div class="panel-body form-horizontal">
+        <div class="row">
+
+        </div>
+        <div class="row">
+
+            @*<div class="col-md-1">
+                <a href="@Url.Action("CargarPolitica", "Politicasst")" class="btn btn-search">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </a>
+            </div> *@
+
+            <button class="boton botonactive" data-toggle="modal" data-target="#@string.Format("myModal1","")">
+                Eliminar Archivo
+            </button>
+
+            <div id="@string.Format("myModal1","")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title">Eliminar archivo</h4>
+                        </div>
+                        <div class="modal-body " style="color:black">
+                            <center><p>¿Está Seguro de eliminar la Política de Seguridad y Salud en el Trabajo?</p></center>
+                        </div>
+                        <div class="modal-footer">
+                            @Html.ActionLink("Eliminar Archivo", "EliminarPolitica", new { IntELiminar = 0 },
+                            htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+
+                            @*<button type="button" class="boton botoncancel" data-dismiss="modal">Cancelar</button>*@
+                            @Html.ActionLink("Cancelar", "MostrarPoliticaPDF", null, htmlAttributes: new { @type = "button", @class = "boton botoncancel" })
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

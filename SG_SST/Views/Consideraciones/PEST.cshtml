@@ -1,0 +1,271 @@
+﻿@model IEnumerable<SG_SST.Models.Empresas.ElementoMatriz>
+
+@{
+    ViewBag.Title = "Análisis PEST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Consideraciones internas y externas</a></li>
+    <li class="active">Análisis PEST</li>
+</ol>
+
+<div class="tab-pane active" id="step1" name="step1">
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">ANÁLISIS PEST</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Análisis PEST</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-7">
+                                            <p>Click en Agregar para crear un nuevo elemento de la matriz PEST</p>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            @*@Html.ActionLink("Crear", "", "", null, new { @class = "boton botoninfo" })*@
+                                            <button type="button" class="boton botonactive" disabled>Agregar</button>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xs-7">
+                                            <p>Click en Modificar para editar el elemento de la matriz PEST</p>
+                                        </div>
+                                        <div class="col-xs-4">
+
+                                            <button type="button" onclick="" class="boton botoninfo" disabled>Modificar</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal" id="grabarp">
+
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-1">
+                    <p><b>TIPO ELEMENTO</b></p>
+                    @Html.DropDownList("elementosMatriz", null, htmlAttributes: new { @class = "form-control", @id = "idelementomatriz" }, optionLabel: "-- Seleccionar --")
+                </div>
+                <div class="col-sm-6 col-sm-offset-0">
+                    <p><b>DESCRIPCIÓN DEL ELEMENTO</b></p>
+                    <textarea rows="4" cols="100" id="descripcion" class="form-control" placeholder="Describe Elemento PEST" style="resize:none"></textarea>
+                </div>
+
+            </div>
+            <br />
+            <hr />
+            <div class="row" align="center">           
+                <button type="button" class="boton botonactive" onclick="validacion_AgregarMatrizPEST()" style="margin-right:30px">Agregar</button>
+
+
+                <div id="ModaleditarDOFA" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Modificar Elemento</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <textarea class="form-control" rows="5" cols="9" required id="idDofa" style="resize:none"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botonactive" data-dismiss="modal" onclick="GrabarEdicionMatriz()">GRABAR</button>
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">CANCELAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-red" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #e08e79; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Político</p>
+                        </div>
+                        <div class="panel-body" id="politico">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 5)// el 5 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                                <input type="checkbox" class="checkBox" id="checklista_Politico" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">                                               
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-green" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #cfeccf; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Económicos</p>
+                        </div>
+                        <div class="panel-body" id="economico">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 6)// el 6 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                                <input type="checkbox" class="checkBox" id="checklista_Economicos" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>
+                                                <a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-danger" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #c1b3d7; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Social</p>
+                        </div>
+                        <div class="panel-body" id="social">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 7)// el 7 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                                <input type="checkbox" class="checkBox" id="checklista_Social" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>
+                                                <a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="panel panel-primary" style="border-radius:0px; border:1px solid black">
+                        <div style="border-radius:0px; background-color: #b3e2dd; border: 1px solid black">
+                            <p class="text-center" style="font-size:large; color: black; line-height:2">Tecnológico</p>
+                        </div>
+                        <div class="panel-body" id="tecnologico">
+                            @foreach (var item in Model)
+                            {
+                                if (item.FK_TipoElementoAnalisis == 8)// el 8 es el id o pk del tipo de elemento en la base de datos
+                                {
+                                    <div class="row">
+                                        <div class="img-thumbnail col-md-12" id="nuevoElemento" name="nuevoElemento" style="border: transparent">
+
+                                            <div class="col-sm-1" style="margin-left:-10px">
+                                                <input type="checkbox" class="checkBox" id="checklista_Tecnologico" value="@item.PK_Elemento_Matriz" />
+                                            </div>
+                                            <div class="col-sm-10" style="margin-left:-10px; text-align:justify">
+                                                <b> @item.Descripcion_Elemento</b>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)"><span class="glyphicon glyphicon-erase btn-md"></span></a>*@
+                                                <a id="removeImage" name="removeImage" onclick="EliminarElemento(this,@item.PK_Elemento_Matriz)" class="pull-right btn-search" style="margin-right:-30px; margin-top:-5px" title="Eliminar">
+                                                    <span class="glyphicon glyphicon-erase"></span>
+                                                </a>
+                                                @*<a class="pull-right" id="removeImage" name="removeImage" onclick="removeNewImage(this)"><span class="glyphicon glyphicon-check btn-md"></span></a>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <hr />
+            <div class="row" align="center">
+                <button type="button" onclick="validarcheckbox_seleccionadoDOFA()" class="boton botoninfo" style="margin-right:30px">Modificar</button>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Empresas")
+}

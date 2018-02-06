@@ -1,0 +1,296 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Participacion.EDReporte>
+
+@{
+    ViewBag.Title = "Consultar Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.MensajeError != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: 'No se encontraron registros que cumplan con la busqueda',
+            
+            confirmButtonColor: '#7E8A97'
+        });
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="">Reporte de Actos y Condiciones Inseguras</a></li>
+    <li class="active">Consultar Reporte</li>
+</ol>
+
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Consultar reporte</div>
+    
+    @*Boton ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <i class="glyphicon glyphicon-question-sign"></i>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                @*<span aria-hidden="true">&times;</span>*@
+                            </button>
+                            <h4 class="modal-title title">Ayuda / Consultar Reporte</h4>
+
+
+                        </div>
+
+
+                        <div class="modal-body" style="color:black; text-align:justify">
+                            Si desea hacer una búsqueda más detallada de un reporte de acto o condición insegura registrada, puede usar esta funcionalidad de consultar reporte. Aquí a través de varios filtros podrá encontrar con mayor certeza el reporte o los reportes que busca.
+                            <br /><br />
+                            Podrá escoger uno o varios de los filtros establecidos como fecha de ocurrencia indicando la fecha inicio y fecha fin como rango. También seleccionar el tipo (Acto o Condición), por cedula de quien reporta o incluso la sede. Finalice dando Clic en el botón “Consultar”.
+                            <br /><br />
+                            El aplicativo traerá a en una estructura de matriz la  información principal de cada reporte como tipo (Acto o Condición), fecha, sede, proceso, lugar, documento (Cédula de quien reporta), descripción del evento, causa, sugerencia, origen (si este reporte fue creado  vía web o vía app “Aplicación móvil”), y en acción estará el botón “Editar” para que pueda hacer actualizaciones a los campos que están permitidos.
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel-body form-horizontal">
+        @using (Html.BeginForm("VerReporte", "Reporte", FormMethod.Post, new { @id = "VerReporte", @class = "form-horizontal", @enctype = "multipart/form-data" }))
+        {
+
+            <!-- well para la primera parte de la creación del reporte -->
+            <div class="well" style="background-color:transparent">
+
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-8">FECHA DE OCURRENCIA</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+
+                    <div class="col-sm-4">
+                        <div class="form-group  has-feedback">
+                            <label class="col-md-8">Fecha de Inicio</label>
+                            <div class="col-md-8">
+                                <i class="glyphicon glyphicon-calendar form-control-feedback"></i>
+                                <input type="text" class="form-control" id="fechaInicio" name="fechaInicio" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group  has-feedback">
+                            <label class="col-md-8">Fecha Fin</label>
+                            <div class="col-md-8">
+                                <i class="glyphicon glyphicon-calendar form-control-feedback"></i>
+                                <input type="text" class="form-control" id="fechaFin" name="fechaFin" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Tipo</label>
+                            <div class="col-md-12">
+                                @Html.DropDownList("FKTipoReporte", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">Cédula de quién reporta</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="CedulaQuienReporta" name="CedulaQuienReporta" maxlength="15" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <label class="col-md-8">Sede</label>
+                            <div class="col-md-12">
+                                @Html.DropDownList("sedes", null, htmlAttributes: new { @class = "form-control", @multiple = "multiple" }, optionLabel: "-- Seleccionar --")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row text-center">
+                    <button class="boton botonactive" id="consultarReporte">Consultar</button>
+                </div>
+
+
+            </div>
+
+
+            <div id="busqueda" class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Tipo</th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Sede</th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Proceso</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Lugar</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Documento</th>
+
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Descripción</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Causa</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Sugerencia</th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Origen</th>
+                            <th width="10%" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acción</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            string origen = "";
+
+                          
+                        }
+
+                        @foreach (var item in Model)
+                        {
+
+                            if (item.medioAcceso == false)
+                            {
+
+                                origen = "Alissta WEB";
+                            }
+                            else
+                            {
+
+                                origen = "Alissta APP";
+                            }
+                            var nombreProceso = item.nombreProceso;
+                            if (item.nombreProceso == null)
+                            {
+                                nombreProceso = "NA";
+                            }
+
+                            string FecOcurrencia = item.FechaOcurrencia.ToString("dd/MM/yyyy");
+                            <tr>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(model => item.tipo)
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                    @FecOcurrencia
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(model => item.sede)
+                                </td>
+
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @nombreProceso
+
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(model => item.AreaLugar)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(model => item.CedulaQuienReporta)
+                                </td>
+
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(model => item.DescripcionReporte)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                                    @Html.DisplayFor(model => item.CausaReporte)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                                    @Html.DisplayFor(model => item.SugerenciasReporte)
+                                </td>
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                                    @origen
+                                </td>
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                                    <a name="Editar Perfil" href="@Url.Action("Edit", null, new { id = item.IdReportes })" title="Editar Reporte" class="btn btn-search btn-md">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    
+                                    @*<a id="descargarRepExcel" href="@Url.Action("DescargarReporteExcelCondiciones", null, new {})">
+                                        <img src="~/Images/iconExcelp.png" title="Descargar a Excel" />
+                                    </a>*@
+                                </td>
+
+
+                            </tr>
+
+
+                        }
+
+
+
+                    </tbody>
+
+                </table>
+
+        
+
+                <div class="col-md-5" id="reporteExcel" align="left">
+
+                    <a id="descargarRepExcel" href="@Url.Action("DescargarReporteExcelCondiciones", null, new {})" class="boton botonactive">
+
+                    Descargar consulta
+
+                    </a>
+
+                </div>
+
+
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}

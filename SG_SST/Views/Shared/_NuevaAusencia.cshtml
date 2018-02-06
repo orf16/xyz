@@ -1,0 +1,94 @@
+﻿@model SG_SST.Models.Ausentismo.AusenciaModel
+
+@*<form id="frmNuevaAusencia">*@
+<div class="row form-group">
+    <div class="col-md-2">
+        @Html.Label("Contingencia", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownListFor(x => x.IdContingencia, Model.Contingecias, "Seleccione un tipo de contingencia.", new { @class = "form-control" })
+        @*<input type="text" class="form-control" id="Contingencia" />
+            <input type="hidden" class="form-control" id="IdContingencia" />*@
+    </div>
+    <div class="col-md-2">
+        <label class="control-label" id="labelDiag" style="display:none">Diagnóstico</label>
+    </div>
+    <div class="col-md-3">
+        <input type="text" class="form-control" id="Diagnostico" style="display:none" />
+        <input type="hidden" class="form-control" id="IdDiagnostico" name="IdDiagnostico"/>
+        <span class="error" id="errordiagnostico" style="display:none;">Debe seleccionar un diagnostico valido </span>
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-md-2">
+        @Html.Label("Fecha Inicio", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.TextBoxFor(x => x.FechaInicio, new { @class = "form-control" })
+    </div>
+    <div class="col-md-2">
+        @Html.Label("Fecha Finalización", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.TextBoxFor(x => x.FechaFin, new { @class = "form-control" })
+    </div>
+</div>
+<div id="conf_horas" class="row form-group" style="display:none;">
+    <div class="col-md-2">
+        @Html.Label("Hora Inicio", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownListFor(x => x.HoraInicio, Model.HorasConfigurables, "Seleccione la hora de inicio...", new { @class = "form-control" })
+    </div>
+    <div class="col-md-2">
+        @Html.Label("Hora Finalización", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownListFor(x => x.HoraFinalizacion, Model.HorasConfigurables, "Seleccione la hora de inicio...", new { @class = "form-control" })
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-md-2">
+        @Html.Label("Dias Ausencia", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.TextBoxFor(x => x.DiasAusencia, new { @class = "form-control bloqueado", disabled = "disabled" })
+    </div>
+    <div class="col-md-2">
+        @Html.Label("Proceso", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.DropDownListFor(x => x.idProceso, Model.Procesos, "Area/Dependencia...", new { @class = "form-control" })        
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-md-2">
+        @Html.Label("Valor Ausentismo", new { @class = "control-label" })
+    </div>
+    <div class="col-md-3">
+        @Html.TextBoxFor(x => x.Costo, new { @class = "form-control bloqueado", @readonly = "readOnly", disabled = "disabled" })
+    </div>
+    <div class="col-md-3">
+        @Html.Label("Factor Prestacional", new { @class = "control-label" })
+    </div>
+    <div class="col-md-2">
+        @Html.TextBoxFor(x => x.FactorPrestacional, new { @class = "form-control", @placeholder = "1.00" })
+    </div>
+</div>
+<div class="row form-group">
+    <div class="col-md-2">
+        @Html.Label("Observaciones", new { @class = "control-label" })
+    </div>
+    <div class="col-md-8">
+        @Html.TextAreaFor(x => x.Observaciones, new { @class = "form-control" })
+    </div>
+</div>
+<br />
+<div class="row form-group">
+    <div class="col-md-6">
+        <button type="button" formmethod="post" id="NuevaAusencia" class="boton botonactive">GUARDAR</button>
+        <button type="reset" id="Cancelar" class="boton botoncancel">Cancelar</button>
+    </div>
+</div>
+@Scripts.Render("~/Scripts/jquery.validate.min.js")
+@Scripts.Render("~/Scripts/Ausencias/NuevaAusencia.js")

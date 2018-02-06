@@ -1,0 +1,161 @@
+﻿@model SG_SST.Models.PlanCapacitacion.Calenario
+
+@{
+    ViewBag.Title = "Calendario Plan de Capacitación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    /*.bordertable, tr, td {
+        border: none;
+    }*/
+
+    .noborder {
+        border: none;
+        padding: 4px 4px 4px 4px;
+    }
+
+    input {
+        height: 27px;
+        font: 14px;
+        line-height: 1.42857143;
+        color: #aaaaaa;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    select, option {
+        height: 27px;
+        font: 14px;
+        line-height: 1.42857143;
+        color: #aaaaaa;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+
+    .on {
+        background-color: #ffdec2;
+    }
+
+    .CellWithComment {
+        position: relative;
+    }
+
+    .CellComment {
+        display: none;
+        position: absolute;
+        z-index: 100;
+        border: 1px;
+        background-color: white;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #568abe;
+        padding: 3px;
+        color: #568abe;
+        top: 20px;
+        left: 20px;
+        width: 250px;
+    }
+
+    .CellWithComment:hover span.CellComment {
+        display: block;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Organización</a></li>
+    <li><a href="javascript:void(0)">Plan de Capacitación</a></li>
+    <li class="active">Calendario</li>
+</ol>
+
+<div class="panel panel-default std-panel-body" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">
+        CALENDARIO PLAN DE CAPACITACIÓN
+    </div>
+
+    @*Boton Ayuda*@
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")" 
+                title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <h4 class="modal-title title">Ayuda / Calendario Plan de Capacitación</h4>
+                        </div>
+                        <div class="modal-body" style="color:black">
+                            @*<div style="text-align:justify">
+                                Funcionalidad que permite definir y administrar las capacitaciones necesarias para que las personas sean competentes en SST.
+                            </div>*@
+                            <div style="text-align:justify">
+                                Para consultar su Plan de Capacitación y gestionarlo, por favor digite rangos de fechas en los campos de Fecha Inicial y Fecha Final. Finalice con clic en <button class="boton botonactive" disabled>Consultar</button>
+                            </div>
+                            <br />
+                            <div style="text-align:justify">
+                                La visualización del calendario le permitirá visualizar las actividades programadas.
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*//////*@
+
+    <div class="panel-body form-horizontal">
+        <form id="frmplanempresa">
+            <center>
+                <table width="100%" border="0" class="noborder">
+                    <tr>
+                        <td class="noborder"><b>Fecha Inicial</b></td>
+                        <td class="noborder">@Html.TextBoxFor(x => x.FechaInicio, new { @class = "form-control" })</td>
+                        <td class="noborder"><b>Fecha Final</b></td>
+                        <td class="noborder">@Html.TextBoxFor(x => x.FechaFin, new { @class = "form-control" })</td>
+                        <td class="noborder">&nbsp;<button type="button" class="boton botonactive" onclick="ObtenerCalendarioXFecha();">Consultar</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="noborder"></td>
+                    </tr>
+                </table>
+                <br />
+                <table width="80%" class="noborder" align="center">
+                    <tr class="noborder">
+                        <td class="noborder" align="center">
+                            <div id='calendar_plantrabajo'></div>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </form>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/PlanCapacitacion/Calendario.js")

@@ -1,0 +1,91 @@
+﻿@model SG_SST.Models.Empleado.tblEmpleado
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-0">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><p class="text-center">CONSULTA DE TRABAJADORES - ELIMINAR</p></div>
+            <div>
+             
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Estado_Empleado.EstEmplead)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Estado_Empleado.EstEmplead)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoCotizante.Descripcion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoCotizante.Descripcion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoDocumento.Descripcion)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoDocumento.Descripcion)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.PK_Numero_Documento_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.PK_Numero_Documento_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Primer_Nombre_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Primer_Nombre_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Segundo_Nombre_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Segundo_Nombre_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Primer_Apellido_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Primer_Apellido_Empl)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Segundo_Apellido_Empl)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.Segundo_Apellido_Empl)
+                    </dd>
+
+                </dl>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Delete" class="btn btn-default" /> |
+                        @Html.ActionLink("Back to List", "Index")
+                    </div>
+                }
+            </div>

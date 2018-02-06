@@ -1,0 +1,259 @@
+﻿@model SG_SST.Models.Planificacion.RequisitosLegalesOtros
+@{
+    ViewBag.Title = "Agregar Nuevo Requisito Legal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .ui-datepicker .ui-icon ui-icon-circle-triangle-e {
+        font-size: 12px;
+        color: blue;
+    }
+</style>
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Requisitos Legales y Otros</a></li>
+    <li class="active">Agregar Nuevo Requisito Legal</li>
+</ol>
+
+@if (ViewBag.Messages != null && ViewBag.Messages != "")
+{
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Estimado Usuario</strong> @ViewBag.Messages
+    </div>
+}
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Messages2
+    </div>
+}
+
+<body>
+
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Agregar Nuevo Requisito Legal
+        </div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" @*class="btn btn-link-1-google-plus btn-circle btn-md"*@
+                   class="btn btn-ayuda btn-md"
+                   @*style="border: 1px solid lightslategray; border-radius:0px"*@>
+                    <i class="glyphicon glyphicon-question-sign" @*style="color:black"*@></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Agregar Nuevo Requisito Legal</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+
+                                <div class="row" style="text-align:justify">
+                                    Para agregar un nuevo requisito legal puede:
+                                </div>
+                                <br />
+                                <div class="row" style="text-align:justify">
+                                    1. Usar la opción de consulta registrando la información de los campo de búsqueda como Tipo de Norma, Fecha, Ente o palabras claves en Descripción. Si la consulta es exitosa en pantalla se visualiza los  requisitos legales coincidentes los cuales puede seleccionar y con la opción <button class="boton botonactive" disabled>Agregar a Matriz</button> se adiciona el requisito a la matriz.
+                                </div>
+                                <br />
+                                <div class="row" style="text-align:justify">
+                                    2. También seleccionar directamente a la opción <button class="boton botonactive" disabled>Agregar Registro</button> para que el sistema le muestre el formulario para diligenciar manualmente el requisito legal de su interés. Recuerde que todos los campos deben ser diligenciados.
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <i class="glyphicon glyphicon-arrow-left" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> Devuelve a la pantalla inicial de listado de matrices.
+                                </div>
+
+                                @*<div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p align="justify">
+                                                PARA AGREGAR UN NUEVO REQUISITO LEGAL PUEDE:
+                                            </p>
+                                            <p align="justify">
+                                                1. USAR LA OPCIÓN DE CONSULTA REGISTRANDO LA INFORMACIÓN DE LOS CAMPO DE BUSQUEDA COMO TIPO DE NORMA, FECHA, ENTE O PALABRAS CLAVES EN DESCRIPCIÓN. SI LA CONSULTA ES EXITOSA APARECERAN REQUISITOS LEGALES COINCIDENTES LOS CUALES PODRA SELECCIONAR Y CON LA OPCIÓN AGREGAR A MATRIZ, SE AGREGARAN.
+                                            </p>
+                                            </p>
+                                            <p align="justify">
+                                                2. TAMBIEN PUEDE DAR CLICK DIRECTAMENTE A LA OPCIÓN AGREGAR REGISTRO, Y REGISTRAR COMPLETAMENTE DE MANERA MANUAL EL REQUISITO LEGAL DE SU INTERES SI TIENE LA INFORMACIÓN DE LOS CAMPOS.
+                                            </p>
+                                         
+                                    </div>                                        
+                                </div>*@
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <label>Tipo De Norma</label>
+                    <input type="text" id="idTipoNorma" class="form-control">
+
+                </div>
+
+                <div class="col-md-2">
+
+                    @*<input type="text" id="idFechaPublicación" class="form-control" placeholder="Fecha Publicación" style="width:200px">*@
+                    <label>Fecha Publicación</label>
+                    <input type="text" id="idFechaPublicación" name="FechaPublicacion" class="form-control" style="background-color:whitesmoke" />
+                    @*@Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control", @id = "idFechaPublicacion" } })*@
+
+                    @*@Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control", @id = "dateFechaPublicación" } })*@
+
+                    @*@Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control", @id = "idfechapublicacion", @name = "idfechapublicacion" } })*@
+                    @*@Html.EditorFor(model => model.FechaPublicacion, new { htmlAttributes = new { @class = "form-control", @id = "idFechaPublicacion" } })*@
+
+                </div>
+
+                <div class="col-md-3">
+                    <label>Ente</label>
+                    <input type="text" id="idEnte" class="form-control">
+
+                </div>
+                <div class="col-md-4">
+                    <label>Descripción</label>
+                    <input type="text" id="idDescripción" class="form-control">
+
+                </div>
+
+
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-md-3" style="margin-left:40%">
+                    <button type="button" class="boton botoninfo" onclick="buscadorRequisitoslegales(@ViewBag.FKActividadEconomica,@ViewBag.FKActividadEconomica)">Consultar</button>
+                </div>
+            </div>
+
+            <hr />
+
+            @*
+                    <div class="table-responsive" style="overflow-X:scroll" id="IDscBusqueda">
+                        <table class="table table-bordered" id="idTblReqLegales" style="border: 2px solid lightslategray">
+
+
+                            <tr class="titulos_tabla">
+                                <th rowspan="2" style="text-align:center; vertical-align:middle; border: 2px solid lightslategray"><b></b></th>
+                                <th rowspan="2" style="text-align:center; vertical-align:middle; border: 2px solid lightslategray"><b>Tipo Norma</b></th>
+                                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray; vertical-align:middle"><b>Numero Norma</b></th>
+
+                                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle"><b>Fecha de Publicación</b></th>
+                                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle"><b></b>Ente</BR></th>
+                                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle"><b></b>Artículo</th>
+                                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle"><b></b>Descripción</th>
+                                <th rowspan="2" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle"><b>Sugerencias</b></th>
+                                <th colspan="4" style="text-align:center; border: 2px solid lightslategray ;vertical-align:middle" align="center"><b>Peligros Aspectos e Impactos</b></th>
+                            </tr>
+                            <tr class="titulos_tabla">
+                                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle"><b>Clase de Peligro</b></th>
+                                @*
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle"><b>Peligro</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle"><b>Aspectos</b></th>
+                <th style="text-align:center; border: 2px solid lightslategray; vertical-align:middle"><b>Impactos</b></th>
+
+                        </table>
+            *@
+
+            <div class="table-responsive" id="IDscBusqueda">
+                <table class="table table-bordered" id="idtblOtrasInteracciones" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+                        <th rowspan="2" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;text-align:center; vertical-align:middle">
+                            <p>SELECCIONAR</p> <p>TODO</p><input type="checkbox" class="checkAll" id="checkAll" name="checkAll" onclick="Seleccionarcheckbox()" />
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Tipo Norma</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>N° Norma</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Fecha Publicación</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Ente</th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Artículos</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Descripción</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Sugerencias</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Clase de Peligro</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Peligro</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Aspectos</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"><b>Impactos</b></th>
+                    </tr>
+                </table>
+            </div>
+
+            <br />
+
+           
+
+                <div class="col-sm-3 col-md-offset-3">
+
+                    <button type="button" class="boton botonactive" onclick="Agregar_NuevoRequisitoMatriz(@ViewBag.FK_MatrizRequisitosLegales,@ViewBag.FKActividadEconomica)">
+                        Agregar a Matriz
+                    </button>
+                </div>
+
+                <div class="col-sm-3">
+                    @*<button type="button" class="boton botonactive" onclick="ValorRadioButton()">Generar Matriz</button>*@
+                    <a style="text-decoration:none">
+                        @Html.ActionLink("Agregar Registro", "AgregarRegistroMatrizCreada", new { @ViewBag.FKActividadEconomica },
+                        htmlAttributes: new { @type = "button", @class = "boton botonactive" })
+                    </a>
+                    @*<button type="button" class="boton botonactive" onclick="AgregarRequisitoLegalMatriz(idactividadeconomica = FK_Actividad_Economica)">Generar Matriz</button>*@
+                </div>
+
+        
+
+        </div>
+
+        <div id="@string.Format("myModal1","")" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                        <h4 class="modal-title title">Requisitos Legales y Otros</h4>
+                    </div>
+                    <div class="modal-body " style="color:black">
+                        <center><p>Ingrese el nombre de la matriz</p></center>
+                        <textarea class="form-control" rows="1" cols="1" required id="idNombreMatriz" style="resize:none"></textarea>
+                    </div>
+                    @* <button type="button" class="boton botonactive">Agregar Registro</button>*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <a href="@Url.Action("ListadoMastrices", "RequisitosLegalesOtros") " class="btn btn-search btn-md" title="Formulario Principal">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </a>
+</body>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/planificacion")
+   
+}

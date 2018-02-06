@@ -1,0 +1,98 @@
+﻿@model SG_SST.Dtos.LiderazgoGerencial.ActaRoles
+
+@{
+    Layout = null;
+    int responsabilidades = 1;
+    int rendiciones = 1;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ActaResponsable</title>
+</head>
+<body>
+
+
+    <p> 
+        Por la presente, comunicamos que la Empresa @Model.RolesResponsabilidadRepresentante.Empresa.Razon_Social con NIT @Model.RolesResponsabilidadRepresentante.Empresa.Nit_Empresa 
+        ha decidido asignar como Responsable de Seguridad y Salud en el Trabajo – SGSST  a @Model.RolesResponsabilidadResponsable.UsuarioRoles.FirstOrDefault().Usuario.Nombre_Usuario, 
+        identificado con @Model.RolesResponsabilidadResponsable.UsuarioRoles.FirstOrDefault().Usuario.Numero_Documento, quien tendrá las siguientes responsabilidades:
+    </p>
+
+    <h4>a.	Cuadro de Responsabilidades </h4>
+    @foreach (var item in Model.RolesResponsabilidadResponsable.ResponsabilidadesPorRoles)
+    {
+        @Html.Label(responsabilidades.ToString() + "- " + "  ")
+        @Html.DisplayFor(modelItem => item.Responsabilidades.Descripcion)
+        <br />
+        responsabilidades = responsabilidades + 1;
+    }
+
+    <br />
+
+    <h4>b. Rendición de Cuentas </h4>
+    @foreach (var item in Model.RolesResponsabilidadResponsable.RendicionDeCuentasPorRoles)
+    {
+        @Html.Label(rendiciones.ToString() + "- " + "  ")
+        @Html.DisplayFor(modelItem => item.RendicionDeCuentas.Descripcion)
+        <br />
+        rendiciones = rendiciones + 1;
+    }
+    <p>
+        Como aceptación del nombramiento y acuse de recibo, se firma la presente comunicación.
+    </p>
+
+    <table class="table" align="center">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+        </tr>
+        <tr>
+            <td></td>
+            <td align="center">
+                <br />
+                <br />
+                <center><img src="@Request.Url.Scheme://@Request.Url.Host@Url.Action("GetFirma", "Rol", new { Pk_Id_Usuario = Model.RolesResponsabilidadRepresentante.UsuarioRoles.FirstOrDefault().Usuario.Pk_Id_Usuario })" class="img-responsive img-rounded" /></center>
+                <br />
+                @Html.Label("---------------------------")
+                <br />
+                @Model.RolesResponsabilidadRepresentante.UsuarioRoles.FirstOrDefault().Usuario.Nombre_Usuario
+                <br />
+                @Model.RolesResponsabilidadRepresentante.UsuarioRoles.FirstOrDefault().Rol.Descripcion
+            </td>
+            <td></td>
+            <td align="center">
+                <br />
+                <br />
+                <center><img src="@Request.Url.Scheme://@Request.Url.Host@Url.Action("GetFirma", "Rol", new { Pk_Id_Usuario = Model.RolesResponsabilidadResponsable.UsuarioRoles.FirstOrDefault().Usuario.Pk_Id_Usuario })" class="img-responsive img-rounded" /></center>
+                <br />
+                @Html.Label("---------------------------")
+                <br />
+                @Model.RolesResponsabilidadResponsable.UsuarioRoles.FirstOrDefault().Usuario.Nombre_Usuario
+                <br />
+                @Model.RolesResponsabilidadResponsable.UsuarioRoles.FirstOrDefault().Rol.Descripcion    
+            </td>
+            <td></td>
+        </tr>
+    </table>
+
+    <br />
+    <hr />
+</body>
+</html>

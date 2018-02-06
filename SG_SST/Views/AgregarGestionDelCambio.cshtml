@@ -1,0 +1,148 @@
+﻿
+@model SG_SST.Models.Aplicacion.GestionDelCambio
+
+
+@{
+    ViewBag.Title = "AgregarGestionDelCambio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+ @using (Html.BeginForm("GrabarGestionDelCambio", "GestionDelCambio", FormMethod.Post, new {id = "" }))
+    {
+
+   
+
+    @Html.AntiForgeryToken()
+    <div class="container">
+       
+            <div class="panel panel-yellow">
+                <div class="panel-heading"><center><i class="glyphicon glyphicon-user"></i>Agregar gestión del cambio</center></div>
+                <div class="panel-body">
+                   
+                     
+                            @*   @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Fecha:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="Fecha">
+                                    </div>
+                                  
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Descripcion del cambio:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="DescripcionDeCambio">
+                                    </div>
+
+                              
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Análisis de riesgo:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="AnalisisRiesgo">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Requisito Legal:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="RequisitoLegal">
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>Recomendaciones/Acciones:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="Recomendaciones">
+
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Fecha ejecución:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="FechaEjecucion">
+
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label>Fecha de seguimiento:</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="left" id="FechaPublicacion" name="FechaSeguimiento">
+
+                                    </div>
+
+
+
+                                </div>
+                                <br />       
+                                 
+
+                                        <div class="row">
+
+                                            <div class="col-md-2">
+                                                <label>Comunicar cambio a:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input class="left" id="FechaPublicacion" name="Comunicado">
+
+                                            </div>                                     
+
+                                            </div>                                       
+                                       
+
+                               
+                                    </div>
+                          
+
+                               
+
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2">
+                            <input type="submit" value="Guardar Registro" onclick="Validaciones_Formulario_requisitosLegales()" class="form-control btn btn-warning" />
+                            @*  <button type="submit" class="btn btn-warning">Guardar</button> *@
+                        </div>
+               
+                </div>
+            </div>
+   
+    </div>
+
+    <hr />
+
+    <a href="@Url.Action("index","RequisitosLegalesOtros") " class="btn btn-success btn-md" title="Formulario Principal"> <span class="glyphicon glyphicon-list"></span>Formulario Principal</a>
+ 
+}
+<hr />
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+
+}
+
+
+
+
+
+
+
+
+
+

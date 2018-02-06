@@ -1,0 +1,10 @@
+﻿@{
+            var bllSuscriptor = new SG_SST.Controllers.Base.BaseController();
+            var informacionSession = bllSuscriptor.ObtenerUusuarioLogueado(System.Web.HttpContext.Current);
+            if (informacionSession != null)
+            {
+        <div class="active" >
+            <h4 style="font-size:x-small; font-weight:600;">@informacionSession.NombreUsuario</h4>           
+        </div>
+    }
+}

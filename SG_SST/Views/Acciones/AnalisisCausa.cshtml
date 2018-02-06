@@ -1,0 +1,243 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis
+
+@{
+    ViewBag.Title = "Analisis Causa - Efecto";
+}
+
+@{
+
+    string TempDataId = ViewBag.TempData;
+    //Serializar TempData Origen
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var userInfoJson = jss.Serialize(ViewBag.SessionKey);
+
+    //Serializar TempData Analisis
+    var jss1 = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var userInfoJson1 = jss.Serialize(ViewBag.TempData);
+
+    //Retener TempData
+    TempData.Keep(TempDataId);
+
+    List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis> ListaAnalisis = new List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis>();
+    if (TempData[TempDataId] != null)
+    {
+        ListaAnalisis = (List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis>)TempData[TempDataId];
+    }
+}
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/AnalisisCausa.js"></script>
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+    @{
+        string Ruta = ViewBag.SessionKey;
+        if (Ruta == null)
+        {
+            <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+        }
+        else
+        {
+            if (Ruta != "NuevaAccion")
+            {
+                string numeroRuta = Ruta.Replace("EditarAccion", "");
+                string valorRuta = Ruta.Replace(numeroRuta, "");
+                <li><a href="@Url.Action(valorRuta, "Acciones",new { id = numeroRuta })">Editar Acción</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+            }
+
+        }
+    }
+    <li class="active">Análisis Causa y Efecto</li>
+</ol>
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">ESTRUCTURA DE CAUSA/EFECTO</div>
+    <div class="panel-body ">
+        
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Estructura causa-efecto</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Explicación general del Analisis:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Támbien conocido como diagrama de espina de pescado, la idea es agrupar causas en 6 conceptos (maquinaria, mano de obra, medio ambiente, materiales, método o mantenimiento)  </p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Restricción del Analisis:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;">Este análisis permite únicamente agregar causas en los 6 elementos principales(6M)</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Primer Paso: Establecer el Problema o Entrada Principal</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para establecer el PROBLEMA el usuario debe digitar en el cuadro de texto y a continuación hacer click en <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Actualizar Problema o Hallazgo</i></p>
+                                <center><img style="max-width:200px;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/1A.png" /></center>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Segundo Paso: Establecer los causas/efecto probables al PROBLEMA del anterior paso</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para agregar una causa o efecto a nuestro análisis el usuario debe SELECCIONAR un elemento del primer nivel <strong>6M (maquinaria, mano de obra, medio ambiente, materiales, método o mantenimiento)</strong></p>
+                                <center><img style="max-width:300px;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/2B.png" /></center>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Luego debe diligenciar en el cuadro de texto la causa o efecto y a continuación hacer click en <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Agregar Causa/Efecto</i></p>
+                                <center><img style="max-width:200px;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/2C.png" /></center>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Tercer Paso: Guardar el análisis</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para GUARDAR el análisis este debe tener por lo menos el PROBLEMA A SOLUCIONAR, si eso se cumple haga click en <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR ANÁLISIS</button>, el sistema le preguntará si desea sobreescribir el análisis en caso que exista otra metodología de análisis guardada</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Opcional: Eliminar Causa/Efecto</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para eliminar una causa o efecto de nuestro análisis el usuario debe SELECCIONAR una CAUSA/EFECTO</p>
+                                <center><img style="max-width:300px;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/2E.png" /></center>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Luego el sistema le mostrará el siguiente icono <span><i class="glyphicon glyphicon-trash" style="color: blue;width: auto"></i></span>, haga click en el icono para eliminar el elemento</p>
+                                <center><img style="max-width:300px;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/2D.png" /></center>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Opcional: Ver Diagrama Generado</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para revisar el diagrama generado haga click en <button type="button" class="boton botonactive" style="cursor:default;">IMAGEN ANÁLISIS</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Opcional: Resultado del Diagrama Esperado </strong></u></p>
+                                <center><img style="max-width:500px;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/2F.png" /></center>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Importante:</strong></u> El diagrama causa-efecto se visualizará en forma de estructura central para la mejor visualización en el reporte de acciones</p>
+                                <hr />
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para cancelar el registro del análisis del hallazgo y regresar al registro de la acción</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+
+        @Html.Hidden("userInfoJson", (object)userInfoJson.ToString().Replace("\"", ""))
+        @Html.Hidden("userInfoJson1", (object)userInfoJson1.ToString().Replace("\"", ""))
+        @Html.Hidden("EdicionKey", (object)ViewBag.EdicionKey)
+
+        <div class="col-sm-12">
+            <div id="div_novedad_ult">
+                <span id="msj_novedad_ult"></span>
+            </div>
+        </div>
+
+        <div class="add-side-padding col-sm-12">
+
+            <h4 class="col-sm-12">1. Escriba el problema a solucionar o el hallazgo</h4>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @{
+                        string ProblemaTexto = ViewBag.TextoProblema;
+                        if (ProblemaTexto != null)
+                        {
+                            if (ProblemaTexto != "")
+                            {
+                                @Html.TextArea("ProblemaTxt", ProblemaTexto, htmlAttributes: new { @class = "form-control form-width-100", rows = "3" })
+                            }
+                            else
+                            {
+                                @Html.TextArea("ProblemaTxt", "", htmlAttributes: new { @class = "form-control form-width-100", rows = "3" })
+                            }
+                        }
+                        else
+                        {
+                            @Html.TextArea("ProblemaTxt", "", htmlAttributes: new { @class = "form-control form-width-100", rows = "3" })
+                        }
+
+
+                    }
+
+                    <div class="row add-top-margin-05em">
+                        <div class="col-sm-12">
+                            <span>Caracteres Disponibles:</span><strong><span name="CharContadorProb" id="CharContadorProb"></span></strong>
+                        </div>
+                        <div class="col-sm-12"></div>
+                        <div class="col-sm-12 ">
+                            <a id="AgregarProblema" href="#" class="btn btn-sm btn-positiva" style="border-radius:0px">
+                                Actualizar Problema o Hallazgo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span id="val-agregar-problema" class="text-danger field-validation-error val-message col-sm-12" style="display:none;"></span>
+        
+        </div>
+        <div class="col-sm-12">
+            <br />
+        </div>
+        <div class="form-horizontal  col-sm-12" style="overflow:scroll;border:solid 1px #cdd0ce;">
+            <h4>ESTRUCTURA CAUSA EFECTO 6M</h4>
+            <div id="treeview" class="TreeviewCont" style="height:350px; width:400%;">
+                @if (ListaAnalisis != null && ListaAnalisis.Count() > 0)
+                {
+                    <ul style="overflow:hidden;">
+                        @Treeview.GetTreeView(ListaAnalisis, ListaAnalisis.FirstOrDefault().Parent_Id)
+                    </ul>
+                }
+            </div>
+        </div>
+
+        <div class="add-side-padding col-sm-12">
+            <h4 class="col-sm-12">2. Seleccione un elemento de las 6M del diagrama y escriba la nueva causa/efecto</h4>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.TextArea("ValorTxt", "", htmlAttributes: new { @class = "form-control form-width-100", rows = "3" })
+                    <div class="row add-top-margin-05em">
+                        <div class="col-sm-12">
+                            <span>Caracteres Disponibles:</span><strong><span name="CharContadorOpc" id="CharContadorOpc"></span></strong>
+                        </div>
+                        <div class="col-sm-12 ">
+                            <a id="AgregarOpcion" href="#" class="btn btn-sm btn-positiva" style="border-radius:0px">
+                                Agregar Causa o Efecto
+                            </a>
+                        </div>
+                        <div class="col-sm-12"></div>
+
+                    </div>
+                </div>
+            </div>
+            <span id="val-agregar-opcion" class="text-danger field-validation-error val-message col-sm-12" style="display:none;"></span>
+        </div>
+        <div class="add-side-padding col-sm-12" style="display:none;">
+            <img id="myImg" alt="" src="@ViewBag.SrcImg" class="gen_img_style" />
+        </div>
+        @Html.Hidden("PadreTxt", "")
+        <div class="panel-footer col-sm-12 add-top-margin-05em">
+            <div class="row">
+                <div class="col-md-4">
+                    <button id="Guardar" class="boton botonactive col-margin">Guardar Análisis</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="ImagenAnalisis" class="boton botonactive col-margin">Imagen Análisis</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="Cancelar" class="boton botoncancel">Cancelar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<div id="myModal" class="modalAnalisis">
+    <span id="close">&times;</span>
+    <img class="modal-content-analisis" id="img01">
+    <div id="captionAnalisis"></div>
+</div>

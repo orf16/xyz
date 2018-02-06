@@ -1,0 +1,104 @@
+﻿@{@model SG_SST.Models.Participacion.SeguimientoActaConvivenciaVM
+
+    ViewBag.Title = "Seguimiento Acta Compromiso";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SEGUIMIENTO ACTA</title>
+    <style>
+        .table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel panel-default" style="background-color:white" id="InformacionGeneralInspeccion">
+        <div class="panel-body form-horizontal">
+            <div style="background-color:transparent">
+                <div class="panel-heading" style="color:white">SEGUIMIENTO ACTA DE COMPROMISO</div>
+                <h4>1. FECHA:</h4>
+                @Html.TextBoxFor(model => Model.Fecha, new { @class = "form-control", Value = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @placeHolder = string.Format("{0}", Model.Fecha.ToString("dd/MM/yyyy")), @id = "Fecha", @name = "Fecha" })
+                <h4>No./Cod. Evento: @Model.Consecutivo_Evento.ToString().PadLeft(3, '0')</h4>
+                <h4>2. NOMBRE DE QUIEN REFIERE LA SITUACION:</h4>
+                @Html.TextAreaFor(model => Model.NombreParteInvolucrada, new { @class = "form-control", @id = "NombreParteInvolucrada", @name = "NombreParteInvolucrada", @cols = "200", @rows = "1" })
+                <hr />
+                <h4>3. COMPROMISOS ADQUIRIDOS:</h4>
+                @Html.TextAreaFor(model => Model.CompromisosAdquiridos, new { @class = "form-control", @rows = "7", @cols = "200", @id = "CompromisosAdquiridos", @name = "CompromisosAdquiridos", @maxlength = "300" })
+                <hr />
+                <h4>4. COMPROMISOS PENDIENTES DE SEGUIMIENTO:</h4>
+                <center>
+                    <table class="table  table-responsive table-bordered" style="border: 1px solid lightslategray; border-collapse:collapse">
+                        <tr class="titulos_tabla" style="color: black; background-color: RGB(202,209,218); border-collapse: collapse; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-style: normal;">
+                            <th style="border-right: 1px solid lightslategray; border-bottom: 1px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                No.
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Seguimiento Compromisos
+                            </th>
+                        </tr>
+                        @{
+                            if (Model.CompromisosPendientes != null)
+                            {
+                                int fila = 1;
+                                foreach (var item in Model.CompromisosPendientes)
+                                {
+
+                                    <tr class="trCompromisos" id="trCompromisos">
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @fila
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray;">
+                                            @Html.DisplayFor(modelItem => item.CompromisoPendiente)
+                                        </td>
+                                    </tr>
+                                    fila++;
+                                }
+                            }
+                        }
+                        <tbody id="tbCompromiso"></tbody>
+                    </table>
+                </center>
+                <hr />
+            </div>
+            <hr />
+            <h4>5. OBSERVACIONES:</h4>
+            @Html.TextAreaFor(model => Model.Observaciones, new { @class = "form-control", @rows = "7", @cols = "200", @id = "Observaciones", @name = "Observaciones", @maxlength = "400" })
+            <hr />
+            <div class="row">
+                <label class="col-md-12">&nbsp</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-12">&nbsp</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-12">FIRMA DE LAS PARTES INVOLUCRADAS:</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-12">&nbsp</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-12">&nbsp</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-12">&nbsp</label>
+            </div>
+
+            <div class="row">
+                <label class="col-md-12">_____________________________________</label>
+            </div>
+            <div class="row">
+                <label class="col-md-12">NOMBRE Y CC:</label>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

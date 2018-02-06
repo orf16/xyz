@@ -1,0 +1,203 @@
+﻿@model List<SG_SST.Models.Ausentismo.ConfiguracionModel>
+<div class="panel panel-default col-xs-12" id="pnlconfiguraciones">
+    <div class="panel-heading" style="font-size:12.5px; color:white">Configuraciones HHT </div>
+    <div class="panel-body">
+        <div class="row form-group">
+            @if (!string.IsNullOrEmpty(Model[0].Mes))
+            {
+                <table class="table table-bordered" id="tblausentismos" style="font-size:x-small;  border: 2px solid lightslategray; text-align:center;">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="text-align:center;">Año</th>
+                            <th style="text-align:center;">Mes</th>
+                            <th style="text-align:center;">Nro. Trabajadores</th>
+                            <th style="text-align:center;">Dias trabajados x mes</th>
+                            <th style="text-align:center;">Horas trabajadas x dia</th>
+                            <th style="text-align:center;">Horas extras x mes</th>
+                            <th style="text-align:center;">Horas ausentismo x mes</th>
+                            <th style="text-align:center;">Total HHT</th>
+                            <th style="text-align:center;">Fecha modificación</th>
+                            <th></th>
+                            <th style="display:none" id="accion">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var a in Model)
+                        {
+                            <tr id="content_@a.idConfiguracion">
+
+                                @Html.HiddenFor(x => a.idConfiguracion)
+                                <td hidden>@Html.DisplayName(a.idConfiguracion.ToString())</td>
+                                <td id="freno_@a.idConfiguracion">@string.Format("{0}", a.Anio)</td>
+                                <td id="fregistro_@a.idConfiguracion">@string.Format("{0}", a.Mes)</td>
+                                <td id="depto_@a.idConfiguracion">@string.Format("{0}", a.XT)</td>
+                                <td id="munici_@a.idConfiguracion">@string.Format("{0}", a.DTM)</td>
+                                <td id="sede_@a.idConfiguracion">@string.Format("{0}", a.HTD)</td>
+                                <td id="conting_@a.idConfiguracion">@string.Format("{0}", a.NHE)</td>
+                                <td id="fechaIni_@a.idConfiguracion">@string.Format("{0}", a.NHA)</td>
+                                <td id="fechaF_@a.idConfiguracion">@string.Format("{0}", a.Total)</td>
+                                <td id="diasAusent_@a.idConfiguracion">@string.Format("{0}", a.FechaModificacion)</td>
+                                <td id="@a.idConfiguracion">
+                                    <a href="javascript:void(0)" class="btn-search elimnarBtn" style="font-size: inherit" data-toggle="modal" data-target="#ProrrogaModal">
+                                        <i class="glyphicon glyphicon-erase"></i>
+                                    </a>
+                                    @*<input type="button" class="btn btn-info elimnarBtn" style="font-size: inherit" value="Eliminar" />*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            @Html.HiddenFor(x => x[0].Anio, new { @id = "Anio" })
+            @Html.HiddenFor(x => x[0].Mes, new { @id = "Mes" })
+        </div>
+        <div style="background-color:rgba(253, 245, 154, 0.78); margin:10px;">
+            <div style="text-align:center; font-size:smaller;">
+                LOS CÁLCULOS DE HORAS HOMBRE TRABAJADAS (HHT) PARA CADA UNO DE LOS MESES EN ESTA CONFIGURACIÓN ESTÁN BASADOS EN LAS AUSENCIAS REGISTRADAS DE CADA TRABAJADOR A LA FECHA. SÍ ADICIONA REGISTROS NUEVOS DE AUSENTISMO PARA CUALQUIER MES A CONFIGURAR DEBERÁ ELIMINARLO Y ADICIONARLO NUEVAMENTE PARA ACTUALIZAR LOS CÁLCULOS DE HHT
+            </div>
+        </div>
+        <p></p>        
+        <div class="col-xs-5" id="tablaConfiguraciones">
+            <button type="button" id="AgergarConfiguracion" data-toggle="modal" data-target="#ConfiguracionModal" class="boton botonactive"> Adicionar configuración</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ConfiguracionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header cabecera">
+                <h4 class="modal-title cabeceratitle" id="exampleModalLabel">
+                    Configuracion HHT <p>
+                    <div style="color:firebrick; text-align:initial">"ALERTA"</div>
+                        <div style="font-size:x-small;">Los cálculos realizados para este mes están basados en las ausencias registradas a la fecha, si adiciona registros nuevos de ausentismo deberá eliminar los datos y crearlos nuevamente para actualizar los cálculos de horas hombre trabajadas</div>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12" id="ConfiguracionesModal" style="margin-top:20px"> </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="boton botoncancel" data-dismiss="modal">Cerrar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@{
+    <script>
+        var idTipoConting = 0;
+        var urlBase = utils.getBaseUrl();
+        $(document).ready(function () {
+            $('#AgergarConfiguracion').click(function () {
+                console.log('fff')
+
+                var ano = $('#Anio').val();
+                var mes = $('#Mes').val();
+
+                $.ajax({
+                    type: "post",
+                    data: { Ano: ano, Mes: mes },
+                    url: urlBase + '/Configuracion_HHT//GenerarNuevaConfiguracion'
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.Mensaje == 'Success') {
+                        $("#ConfiguracionesModal").empty();
+                        $('#ConfiguracionesModal').html(response.Data);
+                    }
+                }).fail(function (response) {
+                    console.log("Error en la peticion: " + response.Data);
+                });
+            });
+
+
+            $(".elimnarBtn").click(function (event) {
+                event.stopPropagation();
+                var id = $(this).parent().attr('id');
+                console.log(id)
+                PopupPosition();
+                $.ajax({
+                    type: "post",
+                    url: urlBase + '/Configuracion_HHT/EliminarConfiguracion',
+                    data: { idConfiguracion: id }
+                }).done(function (response) {
+                    if (response != undefined && response != '' && response.Mensaje == 'Success') {
+                        swal({
+                            title: 'Atención',
+                            text: response.Data,
+                            type: 'success',
+                            html: true
+                        }, function () {
+                            window.location.href = urlBase + '/Configuracion_HHT/ConfiguracionHHT';
+                        });
+                    } else if (response != undefined && response != '' && response.Mensaje == 'FAIL') {
+                        swal({
+                            title: 'Atención',
+                            text: response.Data,
+                            type: 'warning',
+                            html: true
+                        });
+                    }
+                    OcultarPopupposition();
+                }).fail(function (response) {
+                    OcultarPopupposition();
+                    swal("El proceso ha fallado por favor intente mas tarde.");
+                });
+            });
+
+
+            //$("#guardarConfiguracion").click(function () {
+            //    if (conf.valid() != false) {
+            //        GuardarConfiguracion();
+            //    }
+            //});
+
+            //function GuardarConfiguracion() {
+            //    if (!$("#XT").valid()) {
+            //        validacion = false;
+            //        return false;
+            //    }
+
+            //    var objConfiguracion = {
+            //        IdEmpresaSeleccionada: $("#IdEmpresaSeleccionada").val(),
+            //        "Anio": $("#Anio").val(),
+            //        "MesSeleccionado": $("#MesSeleccionado").val(),
+            //        "XT": $("#XT").val(),
+            //        "DTM": $("#DTM").val(),
+            //        "HTD": $("#HTD").val(),
+            //        "NHE": $("#NHE").val(),
+            //        "NHA": $("#NHA").val(),
+            //        "Total": $("#Total").val()
+            //    };
+            //    PopupPosition();
+            //    $.ajax({
+            //        type: "post",
+            //        url: urlBase + '/Configuracion_HHT/ConfiguracionHHT',
+            //        data: objConfiguracion
+            //    }).done(function (response) {
+            //        if (response != undefined && response != '' && response.Mensaje == 'OK') {
+            //            swal("Registro configuración HHT", "Se ha registrado la configuración HHT");
+            //        } else if (response != undefined && response != '' && response.Mensaje == 'FAILD') {
+            //            swal("Registro configuración HHT", "No se pudo registrar la congiguración. Intente más tarde.");
+            //        }
+            //        OcultarPopupposition();
+            //    }).fail(function (response) {
+            //        OcultarPopupposition();
+            //        swal("Registro configuración HHT", "No se pudo registrar la congiguración. Intente más tarde.");
+            //    });
+            //}
+
+
+
+
+
+        });
+
+    </script>
+}
+

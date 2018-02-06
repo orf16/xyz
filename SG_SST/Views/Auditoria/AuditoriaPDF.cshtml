@@ -1,0 +1,656 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaInforme
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            /*page-break-inside: avoid !important;*/
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        .AccionLeft48 {
+            float: left;
+            width: 48%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label>
+                <b>Sede</b>
+            </label>
+            @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.SedeAuditoria)
+        </div>
+
+        <div class="IDCss">
+            <div>
+                <b>Fecha de Programa</b>
+                @{
+                    string Fecha_str = "";
+                    try
+                    {
+                        Fecha_str = Model.Informe_EDAuditoriaPrograma.Fecha_Programacion.ToString("dd/MM/yyyy");
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    @Html.Label(Fecha_str, Fecha_str)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>1. Programa de Auditoría</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Objetivo</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Objetivo)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Alcance</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Alcance)
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft49" style="margin:2px;">
+                <b>Periodicidad</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Periodicidad)
+                </div>
+            </div>
+            <div class="AccionLeft98">
+                <b>Metodología</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Metodologia)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft48" style="margin-right:1%;">
+                <b>Competencia a Auditar</b>
+                <div style="text-align:justify">
+                    @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Competencia)
+                </div>
+            </div>
+            <div class="AccionLeft48" style="margin-right:1%;">
+                <b>Recursos</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoriaPrograma.Recursos)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>2. Plan de Auditoría</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Objetivo</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Objetivo)
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Alcance</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Alcance)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Criterios de la Auditoría</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Criterios)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft49">
+                <b>Proceso</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.NombreProceso1)
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Fecha de Realización</b>
+                <div>
+                    @{
+                        string Fecha_str1 = "";
+                        try
+                        {
+                            Fecha_str1 = Model.Informe_EDAuditoria.FechaRealizacion.ToString("dd/MM/yyyy");
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+
+                        @Html.Label(Fecha_str1, Fecha_str1)
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="AccionInline">
+
+            <div class="AccionLeft49">
+                <b>Responsable del Proceso</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditado)
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Auditor</b>
+                <div>
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditador)
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+
+            <div class="AccionLeft49">
+                <b>Requisito</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Requisito)
+                    </div>
+                </div>
+            </div>
+            <div class="AccionLeft49">
+                <b>Duración</b>
+                <div>
+                    <div>
+                        @Html.DisplayFor(m => m.Informe_EDAuditoria.Duracion)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>3. Lista de Verificación</b>
+        </div>
+        <div>
+            @{
+                if (Model.ListaVerficiacionInforme.Count > 0)
+                {
+                    <div class="datagrid">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:30%;">
+                                        <p>
+                                            Pregunta
+                                        </p>
+                                    </th>
+                                    <th style="width:30%;">
+                                        <p>Requisito</p>
+                                    </th>
+                                    <th style="width:10%;">
+                                        <p>Tipo de Hallazgo</p>
+                                    </th>
+                                    <th style="width:30%;">
+                                        <p>Descripción del Hallazgo</p>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.ListaVerficiacionInforme)
+                                    {
+                                        <tr>
+                                            <td class="TdJustificar" style="width:30%;">
+                                                @Html.DisplayFor(modelItem => item.Pregunta)
+                                            </td>
+                                            <td class="TdJustificar" style="width:30%;">
+                                                @Html.DisplayFor(modelItem => item.Requisito)
+                                            </td>
+                                            <td class="TdCentrar" style="width:10%;">
+                                                @Html.DisplayFor(modelItem => item.Tipo_Hallazgo)
+                                            </td>
+                                            <td class="TdJustificar" style="width:30%;">
+                                                @Html.DisplayFor(modelItem => item.Hallazgo)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                                    }
+            }
+
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>4. Conclusiones del Informe</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Conclusiones</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Conclusiones)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>5. Plan de Acción</b>
+        </div>
+        <div>
+            @{
+                if (Model.ListaActividadesInforme.Count > 0)
+                {
+                    <div class="datagrid">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:70%;">
+                                        <p>Actividad</p>
+                                    </th>
+                                    <th style="width:15%;">
+                                        <p>Responsable</p>
+                                    </th>
+                                    <th style="width:15%;">
+                                        <p>Fecha de Finalización</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model.ListaActividadesInforme)
+                                    {
+                                        <tr>
+                                            <td class="TdJustificar" style="width:70%;">
+                                                @Html.DisplayFor(modelItem => item.Actividad)
+                                            </td>
+                                            <td class="TdCentrar" style="width:15%;">
+                                                @Html.DisplayFor(modelItem => item.Responsable)
+                                            </td>
+                                            <td class="TdCentrar" style="width:15%;">
+                                                @{
+                                                    string Fecha_str_Plan = "";
+                                                    try
+                                                    {
+                                                        Fecha_str_Plan = item.FechaFinalizacion.ToString("dd/MM/yyyy");
+                                                    }
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                    <span>@Fecha_str_Plan</span>
+                                                }
+                                            </td>
+                                        </tr>
+
+                                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                                                    }
+
+            }
+
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>6. Firma del responsable del proceso y del auditor</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft50">
+
+                <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em" style="min-height:100px">
+                    @{
+                        string Ruta1 = Model.RutaRes;
+                        <img id="ImagenFirmaAudId" src="@ViewBag.SrcRes" alt="" class="ImagenFirmaAud" style="max-height:100px;max-width:100%;" />
+                    }
+                </div>
+                <div class="form-group">
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditado)
+                </div>
+                <div class="form-group">
+                    <b>Responsable del Proceso</b>
+                </div>
+            </div>
+            <div class="AccionLeft50">
+                <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em" style="min-height:100px">
+                    <div style="height:10px;"></div>
+                    @{
+                        string Ruta2 = Model.RutaPres;
+                        <img id="ImagenFirmaResId" src="@ViewBag.SrcAud" alt="" class="ImagenFirmaRes" style="max-height:100px;max-width:100%;" />
+                    }
+                </div>
+                <div class="form-group">
+                    @Html.DisplayFor(m => m.Informe_EDAuditoria.Auditador)
+                </div>
+                <div class="form-group">
+                    <b>Auditor</b>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @{
+        bool ComprmisoBool = (bool)ViewBag.Compromiso;
+        if (ComprmisoBool)
+        {
+            <p class="breakhere"></p>
+            <div class="Doslinea">
+                <div class="SubTitulo">
+                    <b>Cuadro de Compromisos</b>
+                </div>
+                <div>
+                    @{
+                        if (Model.ListaCuadroCompromiso.Count > 0)
+                        {
+                            <div class="datagrid">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <p>Hallazgo</p>
+                                            </th>
+                                            <th>
+                                                <p>Compromiso</p>
+                                            </th>
+                                            <th>
+                                                <p>Responsable</p>
+                                            </th>
+                                            <th>
+                                                <p>Fecha de Cierre</p>
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in Model.ListaCuadroCompromiso)
+                                            {
+                                                <tr>
+                                                    <td class="TdJustificar">
+                                                        @Html.DisplayFor(modelItem => item.Hallazgo)
+                                                    </td>
+                                                    <td class="TdJustificar">
+                                                        @Html.DisplayFor(modelItem => item.Compromiso)
+                                                    </td>
+                                                    <td class="TdCentrar">
+                                                        @Html.DisplayFor(modelItem => item.Responsable)
+                                                    </td>
+                                                    <td class="TdCentrar">
+                                                        @{
+                                                            string Fecha_str_compromiso = "";
+                                                            try
+                                                            {
+                                                                Fecha_str_compromiso = item.FechaCierre.ToString("dd/MM/yyyy");
+                                                            }
+                                                            catch (Exception)
+                                                            {
+
+                                                            }
+                                                            <span>@Fecha_str_compromiso</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+
+                                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+                                                            }
+
+                    }
+
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+                                                            }
+    }
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Organigrama Empresa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script src="~/Scripts/go.js"></script>
+    <script src="~/Scripts/Empresas/Diagrama.js"></script>
+
+@if (ViewBag.Message1a != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.Message1a',
+
+            showConfirmButton: true,
+            confirmButtonText: 'Registrar',
+            confirmButtonColor: '#7E8A97'
+
+
+        });
+
+        $('.confirm').on('click', function () {
+            window.location.href = "../EmpleadoOrg/Create";
+        });
+
+
+
+    </script>
+}
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Empresa</a></li>
+    <li><a href="javascript:void(0)">Gobierno Organizacional</a></li>
+    <li><a href="@Url.Action("Index","EmpleadoOrg")">Listado Cargos Organigrama</a></li>
+    <li class="active">Organigrama Empresa</li>
+</ol>
+
+
+   
+    <div id="DiagramaPositiva" style="border:solid 1px lightslategray; height:75%" class="panel panel-default">
+
+    </div>
+
+    <br />
+
+    <div class="row" align="center">
+        @*<div class="col-sm-3">*@
+        <a href="@Url.Action("Index","Organigrama") " class="boton botoninfo" style="text-decoration:none">
+            Regresar
+        </a>
+        @*</div>*@
+        @*<div class="col-sm-3">*@
+        <a href="@Url.Action("Create","EmpleadoOrg") " class="boton botonactive" style="margin-left:8.5%">
+            Agregar Cargo
+        </a>
+        @*</div>*@
+        @*<div class="col-sm-3">*@
+        <a href="@Url.Action("Index","EmpleadoOrg") " class="boton botoninfo" style="margin-left:8.5%">
+            Listado Cargos
+        </a>
+        @*</div>*@
+    </div>

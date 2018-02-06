@@ -1,0 +1,267 @@
+﻿@model SG_SST.Models.Revision.RevisionVM
+
+@{
+    ViewBag.Title = "Nombre";
+    Layout = null;
+}
+
+<div class="modal fade" id="modActaRevision" role="dialog">
+    <div class="modal content" role="document">
+        <div class="row">
+            <div class="modal body">
+                <table class="table table-bordered" width="100%">
+                    <tr></tr>
+                    <tr>
+                        <td>
+                            <img src="@Model.LogoFullPath" class="img-responsive img-rounded" />
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="right">
+                            <b>
+                                @Html.Raw(Model.NombreActa)
+                            </b>
+                        </td>
+                        <td align="right">
+                            Acta N°&nbsp;
+                            @Html.Raw(Model.NumActa)
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Fecha Creación:&nbsp;
+                            @Html.Raw(Model.FechaCreacionActa.ToString("dd/MM/yyyy"))
+                        </td>
+                        <td></td>
+                        <td align="right" style="font-size: 12px;">
+
+                            Elaborada Por:&nbsp;
+                            @Html.Raw(Model.ElaboradaPor)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table width="100%" style="border: 2px solid lightslategray">
+                                <tr>
+                                    <td colspan="3">
+                                        <table width="100%">
+                                            <tr>
+                                                <td>
+                                                    Nit:&nbsp;
+                                                    @Html.Raw(Model.NitEmpresa)<br />
+                                                    Sede:&nbsp;
+                                                    @Html.Raw(Model.NombreSede)<br />
+                                                </td>
+                                                <td align="right">
+                                                    Razón Social: &nbsp;
+                                                    @Html.Raw(Model.NombreEmpresa)<br />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" align="center">
+                                        Periodo de la Revisión <br />
+                                        <hr width="80%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left">
+                                        Fecha Inicial:&nbsp;
+                                        @Html.Raw(Model.FechaInicialRevision.ToString("dd/MM/yyyy"))
+                                    </td>
+                                    <td></td>
+                                    <td align="right">
+                                        Fecha Final:&nbsp;
+                                        @Html.Raw(Model.FechaFinalRevision.ToString("dd/MM/yyyy"))
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <hr width="100%">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <b>
+                                PARTICIPANTES
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-responsive table-bordered" id="tParticipantes1" style="border: 2px solid lightslategray" width="100%" align="center">
+                                <tr class="titulos_tabla" id="trActas">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        Documento
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        Nombre
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        Cargo
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model.ParticipantesActa)
+                                {
+                                    <tr>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(modelItem => item.DocumentoParticipante)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(modelItem => item.NombreParticipante)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(modelItem => item.CargoParticipante)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                            <br />
+                        </td>
+                    </tr>
+                    @foreach (var item in Model.AgendaActa)
+                    {
+                        <tr>
+                            <td colspan="3">
+                                <h3>
+                                    @Html.DisplayFor(modelItem => item.TituloAgenda)
+                                </h3>
+                                @Html.Raw(item.DesarrolloAgenda)
+                                <br />
+                                <br />
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="3">
+                            <b>
+                                PLAN DE ACCIÓN
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table class="table table-responsive table-bordered" id="tParticipantes1" style="border: 2px solid lightslategray" width="100%" align="center">
+                                <tr class="titulos_tabla" id="trActas">
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        Actividad
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        Responsable
+                                    </th>
+                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                        Fecha
+                                    </th>
+                                </tr>
+                                @foreach (var item in Model.PlanesAccionActa)
+                                {
+                                    <tr>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(modelItem => item.ActividadPlan)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(modelItem => item.ResponsablePlan)
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                            @Html.DisplayFor(modelItem => item.FechaPlan)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                            <br />
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <b>
+                                FIRMAS
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            @if (Model.ExisteFirmaGerenteGeneral == true)
+                            {
+                                <img src="@Model.FirmaGerenteGeneral" class="img-responsive img-rounded" /> <br />
+                            }
+                        </td>
+                        <td align="center">
+                            @if (Model.FirmaRepresentanteSGSST == true)
+                            {
+                                <img src="@Model.FirmaRepresentanteSGSSTFullPath" class="img-responsive img-rounded" /><br />
+                            }
+                        </td>
+
+                        <td align="center">
+                            @if (Model.FirmaResponsableSGSST == true)
+                            {
+                                <img src="@Model.FirmaResponsableSGSSTFullPath" class="img-responsive img-rounded" /><br />
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            Representante Legal
+                        </td>
+                        <td align="center">
+                            Representante SGSST
+                        </td>
+
+                        <td align="center">
+                            Responsable SGSST
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

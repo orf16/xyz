@@ -1,0 +1,294 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDGestiondelcambioVista>
+@*@model IEnumerable<SG_SST.Models.Aplicacion.GestionDelCambio>*@
+
+@{
+    ViewBag.Title = "Listado Gestión del Cambio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Messages1 != null && ViewBag.Messages1 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages1',
+        'warning'
+        )
+    </script>
+}
+
+@if (ViewBag.Messages2 != null && ViewBag.Messages2 != "")
+{
+    <script type="text/javascript">
+        //SCRIPT DE EJEMPLO
+        swal(
+        'Estimado Usuario',
+        ' @ViewBag.Messages2',
+        'success'
+        )
+    </script>
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<style>
+    .pdf-modales {
+        position: relative;
+        padding-bottom: 56.25%;
+        overflow: hidden;
+    }
+
+    .pdf-modales iframe {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index","Home")">Aplicación</a></li>
+    <li class="active">Gestión del Cambio</li>
+</ol>
+
+<script src="~/Scripts/jquery.alerts-1.1/jquery.alerts.js"></script>
+<script src="~/Scripts/jquery-1.11.1.min.js"></script>
+<link href="~/Scripts/jquery.alerts-1.1/jquery.alerts.css" rel="stylesheet" />
+
+@using (Html.BeginForm("ExportarExcelRequisitosLegales", "RequisitosLegalesOtros", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">
+            Listado gestión del cambio
+        </div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                    title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Gestión del Cambio</h4>
+                            </div>
+                            <div class="modal-body" style="color:black">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+
+                                            <p align="justify">
+                                                La funcionalidad de Gestión del Cambio le permitirá registrar los diferentes eventos en la organización que pudieran afectar positivamente o negativamente la Gestión de la Seguridad y Salud en el Trabajo / Empresa. Esta función le permite caracterizar uno a uno los diferentes cambios en SG-SST en su contexto interno y externo, y permitirle darle un seguimiento a su comportamiento.
+                                            </p>
+                                            <br />
+                                            <p align="justify">
+                                                Para iniciar de clic en <button class="boton botonactive" disabled>Agregar Gestión del Cambio</button> y diligencie los campos del respectivo cambio.
+                                            </p>
+                                            <br />
+                                            <p align="justify">
+                                                Cuando haya completado el proceso, en la última columna de la tabla, puede dar clic al icono <i class="glyphicon glyphicon-pencil" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> donde podrá editar y actualizar la información del cambio registrado, las veces que sea necesario.
+                                            </p>
+                                            <br />
+                                            <p align="justify">
+                                                En esta pantalla podrá igualmente eliminar los registros, escogiéndolos y dando clic en <button class="boton botoncancel" disabled>Eliminar</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*/////////////*@
+
+        <div class="panel-body form-horizontal">
+            <div id="divMensaje">
+            </div>
+            <div class="table-responsive" id="IDscBusqueda">
+                <table class="table table-bordered" id="idtblOtrasInteracciones" style="border: 2px solid lightslategray">
+                    <tr class="titulos_tabla">
+
+                        <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-transform:uppercase; vertical-align:middle; text-align:center">
+                            <b>Seleccionar</b>
+                        </td>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle">
+                            <b>Fecha</b>
+                        </th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Descripción de cambio</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Clasificación del peligro</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Descripción</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Requisito Legal</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Recomendaciones/Acciones </b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Fecha de ejecución</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Fecha de seguimiento</b></th>
+                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Comunicado a</b></th>
+                        <th width="100" style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; text-transform:uppercase; vertical-align:middle"><b>Acciones </b></th>
+
+                        @foreach (var item in Model)
+                        {
+                        <tr name="pcs" class="pcs1">
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input type="checkbox" class="checkBox" id="checklista" value="@item.PK_GestionDelCambio" />
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @item.Fecha.ToShortDateString()
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.DescripcionDeCambio)
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.Descripcion_Del_Peligro)
+                            </td>
+
+                            @if (item.fkClasificacionPeligro != 46)
+                            {
+
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.Descripcion_Clase_De_Peligro)
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                    @Html.DisplayFor(modelItem => item.Otro)
+                                </td>
+
+
+                            }
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.RequisitoLegal)
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.Recomendaciones)
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @*@Html.DisplayFor(modelItem => item.FechaEjecucion)*@
+                                @item.FechaEjecucion.ToShortDateString()
+                            </td>
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                @*@Html.DisplayFor(modelItem => item.FechaSeguimiento)*@
+                                @item.FechaSeguimiento.ToShortDateString()
+                            </td>
+                            @*<td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </td>*@
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </td>
+
+                            <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+
+                                <a href="@Url.Action("ModificarGestioDelCambio",  new { PKGestionDelCambio = item.PK_GestionDelCambio })" class="btn btn-md btn-search" title="Editar">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </a>
+
+
+                                @*<a href="@Url.Action("ModifcarGestioDelCambio" , new { PKGestionDelCambio = item.PK_GestionDelCambio }),onclick = BuscarClasificacionPeligro(PKGestionDelCambio = item.PK_GestionDelCambio)">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>*@
+
+
+                                @*<button type="button" class="glyphicon glyphicon-pencil" onclick="BuscarClasificacionPeligro(PKGestionDelCambio = item.PK_GestionDelCambio)" data-dismiss="modal">
+                                        @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                                    </button>*@
+
+
+                                @*<button type="button" class="boton botoninfo pull-right" onclick="BuscarClasificacionPeligro(PKGestionDelCambio = item.PK_GestionDelCambio)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                @*<button type="button" class="boton botoninfo pull-right" onclick="BuscarClasificacionPeligro(@item.PK_GestionDelCambio)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                            </td>
+                        </tr>
+                        }
+                </table>
+                <div class="pagination-page paginador1" id="paginador1" style="margin-left:45%"></div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-sm-6" align="right">
+                    <a>
+                        @Html.ActionLink("Agregar Gestion del Cambio", "AgregarGestionDelCambio", new { }, htmlAttributes: new { @type = "button", @class = "boton botonactive", style = "text-decoration:none" })
+                    </a>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row" style="margin-left: 10%">
+                        <button type="button" class="boton botoncancel" onclick="EliminarGestionDelCambio()">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/flaviusmatis-simplePagination.js-e32c66e/jquery.simplePagination.js"></script>
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script defer src="https://code.getmdl.io/1.1.1/material.min.js"></script>
+<script>
+    //$("document").ready(function () {
+    //    paginador1("#idRequisitosLegales", "tr[name = pcs]", "#paginador1");
+    //});
+    //Paginador
+    jQuery(function ($) {
+        var items = $(".pcs1");
+        var numItems = items.length;
+        var perPage = 10;
+        items.slice(perPage).hide();
+        $(".paginador1").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "compact-theme",
+            invertPageOrder: false,
+            currentPage: 1,
+            nextText: '<i class="fa fa-chevron-right"><i class="fa fa-chevron-right">',
+            prevText: '<i class="fa fa-chevron-left"><i class="fa fa-chevron-left">',
+            onPageClick: function (pageNumber) {
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                items.hide()
+                     .slice(showFrom, showTo).show();
+            }
+        });
+        function checkFragment() {
+            var hash = window.location.hash || "#page1-1";
+            hash = hash.match(/^#page1-(\d+)$/);
+            if (hash) {
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+        $(window).bind("popstate", checkFragment);
+        checkFragment();
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Aplicacion")
+    @Scripts.Render("~/bundles/simplePagination")
+}

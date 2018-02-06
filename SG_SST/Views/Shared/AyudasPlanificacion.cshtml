@@ -1,0 +1,729 @@
+﻿<div class="hidden" id="ayudas">
+    <div id="ayudasNivlesDeficiencia">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de deficiencia</th>
+                <th>Valor de ND</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Muy Alto (MA)</td>
+                <td>10</td>
+                <td>
+                    Se ha(n) detectado peligro(s) que determina(n) como posible la generación de incidentes o consecuencias muy significativas,
+                    o la eficacia del conjunto de medidas preventivas existentes respecto al riesgo es nula o no existe, o ambos.
+                </td>
+            </tr>
+            <tr>
+                <td>Alto (A)</td>
+                <td>6</td>
+                <td>
+                    Se ha(n) detectado algún(os) peligro(s) que pueden dar lugar a consecuencias significativa(s),
+                    o la eficacia del conjunto de medidas preventivas existentes es baja, o ambos.
+                </td>
+            </tr>
+            <tr>
+                <td>Medio (M)</td>
+                <td>2</td>
+                <td>
+                    Se han detectado peligros que pueden dar lugar a consecuencia poco significativa (s) o de menor importancia,
+                    o la eficacia del conjunto de medidas preventivas existentes es moderada, o ambos.
+                </td>
+            </tr>
+            <tr>
+                <td>Bajo (B)</td>
+                <td>0</td>
+                <td>
+                    No se ha detectado consecuencia alguna, o la eficacia del conjunto de medidas preventivas existentes es alta,
+                    o ambos. El riesgo está controlado.
+                    Estos peligros se clasifican directamente en el nivel de riesgo y de intervención cuatro (IV).
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <div id="ayudasNivlesDeExposicion">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de exposición</th>
+                <th>Valor de NE</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Continua (EC)</td>
+                <td>4</td>
+                <td>
+                    La situación de exposición se presenta sin interrupción o varias veces con tiempo prolongado durante la jornada laboral.
+                </td>
+            </tr>
+            <tr>
+                <td>Frecuente (EF)</td>
+                <td>3</td>
+                <td>
+                    La situación de exposición se presenta varias veces durante la jornada laboral por tiempos cortos.
+                </td>
+            </tr>
+            <tr>
+                <td>Ocasional (EO)</td>
+                <td>2</td>
+                <td>
+                    La situación de exposición se presenta alguna vez durante la jornada laboral y por un periodo de tiempo corto.
+                </td>
+            </tr>
+            <tr>
+                <td>Esporádica (EE)</td>
+                <td>1</td>
+                <td>
+                    La situación de exposición se presenta de manera eventual.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasInterpretacionNivelProbabilidad">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de probabilidad</th>
+                <th>Valor de NP</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Muy Alto (MA)</td>
+                <td>Entre 40 y 24</td>
+                <td>
+                    Situación deficiente con exposición continua, o muy deficiente con exposición frecuente.
+                    Normalmente la materialización del riesgo ocurre con frecuencia.
+                </td>
+            </tr>
+            <tr>
+                <td>Alto (A)</td>
+                <td>Entre 20 y 10</td>
+                <td>
+                    Situación deficiente con exposición frecuente u ocasional, o bien situación muy deficiente con exposición ocasional o esporádica.
+                    La materialización del Riesgo es posible que suceda varias veces en la vida
+                    Laboral
+                </td>
+            </tr>
+            <tr>
+                <td>Medio (M)</td>
+                <td>Entre 8 y 6</td>
+                <td>
+                    Situación deficiente con exposición esporádica, o bien situación mejorable con exposición continuada o frecuente.
+                    Es posible que suceda el daño alguna vez.
+                </td>
+            </tr>
+            <tr>
+                <td>Bajo (B)</td>
+                <td>Entre 4 y 2</td>
+                <td>
+                    Situación mejorable con exposición ocasional o esporádica, o situación sin anomalía destacable con cualquier nivel de exposición.
+                    No es esperable que se materialice el riesgo, aunque puede ser concebible.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasNivelConsecuencia">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de Consecuencias </th>
+                <th>Valor de NC</th>
+                <th>Significado (Daños Personales)</th>
+            </tr>
+            <tr>
+                <td>Mortal o Catastrófico (M)</td>
+                <td>100</td>
+                <td>
+                    Muerte (s)
+                </td>
+            </tr>
+            <tr>
+                <td>Muy grave (MG)</td>
+                <td>60</td>
+                <td>
+                    Lesiones o enfermedades graves irreparables (Incapacidad permanente parcial o invalidez)
+                </td>
+            </tr>
+            <tr>
+                <td>Grave (G)</td>
+                <td>25</td>
+                <td>
+                    Lesiones o enfermedades con incapacidad laboral temporal (ILT)
+                </td>
+            </tr>
+            <tr>
+                <td>Leve (L)</td>
+                <td>10</td>
+                <td>
+                    Lesiones o enfermedades que no requieren incapacidad
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasInterpretacionNivelRiesgo">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de Riesgo y de intervención</th>
+                <th>Valor de NR</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>I</td>
+                <td>4000-600</td>
+                <td>
+                    Situación crítica. Suspender actividades hasta que el riesgo esté bajo control. Intervención urgente.
+                </td>
+            </tr>
+            <tr>
+                <td>II</td>
+                <td>500 – 150</td>
+                <td>
+                    Corregir y adoptar medidas de control de inmediato.
+                </td>
+            </tr>
+            <tr>
+                <td>III</td>
+                <td>25</td>
+                <td>
+                    Mejorar si es posible. Sería conveniente justificar la intervención y su rentabilidad
+                </td>
+            </tr>
+            <tr>
+                <td>IV</td>
+                <td>10</td>
+                <td>
+                    Mantener las medidas de control existentes,
+                    pero se deberían considerar soluciones o mejoras y se deben hacer comprobaciones periódicas para asegurar que el riesgo aún es aceptable.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasAceptabilidadRiesgo">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de Riesgo</th>
+                <th>Valor</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>I</td>
+                <td>No Aceptable</td>
+                <td>
+                    Situación crítica, corrección urgente
+                </td>
+            </tr>
+            <tr>
+                <td>II</td>
+                <td>No Aceptable o Aceptable con control específico</td>
+                <td>
+                    Corregir o adoptar medidas de control
+                </td>
+            </tr>
+            <tr>
+                <td>III</td>
+                <td>Mejorable</td>
+                <td>
+                    Mejorar el control existente
+                </td>
+            </tr>
+            <tr>
+                <td>IV</td>
+                <td>Aceptable</td>
+                <td>
+                    No intervenir, salvo que un análisis más preciso lo justifique
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasNivelProbabilidadINSHT">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de probabilidad </th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Alta (A)</td>
+                <td>
+                    El daño ocurrirá siempre o casi siempre
+                </td>
+            </tr>
+            <tr>
+                <td>Media (M)</td>
+
+                <td>
+                    El daño ocurrirá en algunas ocasiones
+                </td>
+            </tr>
+            <tr>
+                <td>Baja (B)o</td>
+                <td>
+                    El daño ocurrirá raras veces.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasNivelConsecuenciaINSHT">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de Consecuencias </th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Ligeramente dañino</td>
+                <td>
+                    Daños superficiales: cortes y magulladuras pequeñas, irritación de los ojos por polvo. Molestias e irritación
+                </td>
+            </tr>
+            <tr>
+                <td>Dañino</td>
+
+                <td>
+                    Laceraciones, quemaduras, conmociones, torceduras importantes, fracturas menores.
+                    Sordera, dermatitis, asma, trastornos músculo-esqueléticos, enfermedad que conduce a una incapacidad menor.
+                </td>
+            </tr>
+            <tr>
+                <td>Extremadamente dañino</td>
+                <td>
+                    Amputaciones, fracturas mayores, intoxicaciones, lesiones múltiples, lesiones fatales.
+                    Cáncer y otras enfermedades crónicas que acorten severamente la vida.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id="ayudasEstimacionRiesgoINSHT">
+        <table class="table table-bordered">
+            <tr>
+                <th>Riesgo </th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>Trivial (T) </td>
+                <td>
+                    No se requiere acción específica
+                </td>
+            </tr>
+            <tr>
+                <td>Tolerable (TO)</td>
+                <td>
+                    No se necesita mejorar la acción preventiva. Sin embargo se deben considerar soluciones más rentables o mejoras que no supongan una carga económica importante.
+                    Se requieren comprobaciones periódicas para asegurar que se mantiene la eficacia de las medidas de control.
+                </td>
+            </tr>
+            <tr>
+                <td>Moderado (M)</td>
+                <td>
+                    Se deben hacer esfuerzos para reducir el riesgo, determinando las inversiones precisas.
+                    Las medidas para reducir el riesgo deben implantarse en un período determinado.
+                    Cuando el riesgo moderado está asociado con consecuencias extremadamente dañinas, se precisará una acción posterior para establecer, con más precisión,
+                    la probabilidad de daño como base para determinar la necesidad de mejora de las medidas de control.
+                </td>
+            </tr>
+            <tr>
+                <td>Importante (I)</td>
+                <td>
+                    No debe comenzarse el trabajo hasta que se haya reducido el riesgo.
+                    Puede que se precisen recursos considerables para controlar el riesgo.
+                    Cuando el riesgo corresponda a un trabajo que se está realizando,
+                    debe remediarse el problema en un tiempo inferior al de los riesgos moderados.
+                </td>
+            </tr>
+            <tr>
+                <td>Intolerable (IN) </td>
+                <td>
+                    No debe comenzar ni continuar el trabajo hasta que se reduzca el riesgo.
+                    Si no es posible reducir el riesgo, incluso con recursos ilimitados, debe prohibirse el trabajo.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasNivelProbabilidadRAM">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nivel de probabilidad</th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>A</td>
+                <td>
+                    No ha ocurrido en la industria
+                </td>
+            </tr>
+            <tr>
+                <td>B</td>
+
+                <td>
+                    Ha ocurrido en la industria.
+                </td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>
+                    Ha ocurrido en nuestra Empresa.
+                </td>
+            </tr>
+            <tr>
+                <td>D</td>
+                <td>
+                    Sucede varias veces por año en nuestra Empresa
+                </td>
+            </tr>
+            <tr>
+                <td>E</td>
+                <td>
+                    Sucede varias veces por año en la Unidad, Superintendencia o Departamento
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasConsecuenciaPersonas">
+        <div style="overflow-y:scroll;height:200px">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Valor</th>
+                    <th>Significado</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>
+                        Ninguna lesión
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+
+                    <td>
+                        Lesión leve primeros auxilios: Atención en lugar de trabajo y no afecta el rendimiento laboral ni causa incapacidad.
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        Lesión menor sin incapacidad (incluyendo casos de primeros auxilios y de tratamiento médico y enfermedades ocupacionales):No afectan el rendimiento laboral ni causan incapacidad.
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        Incapacidad temporal > 1 día (lesiones que producen tiempo perdido): Afectan el rendimiento laboral,
+                        como la limitación a ciertas actividades o requiere unos días para recuperarse completamente (casos con tiempo perdido):
+                        Efectos menores en la salud que son reversibles, por ejemplo: irritación en la piel, intoxicación por alimentos.
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        Incapacidad permanente (incluyendo incapacidad parcial y permanente y enfermedades ocupacionales):
+                        Afectan el desempeño laboral por largo tiempo, como una ausencia prolongada al trabajo.
+                        Daños irreversibles en la salud con inhabilitación seria sin pérdida de vida; por ejemplo:
+                        hipoacusia provocada por ruidos, lesiones lumbares crónicas, daño repetido por realizar esfuerzos,
+                        síndrome y sensibilización.
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>
+                        1 o más muertes: Por accidente o enfermedad profesional.
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="ayudasConsecuenciaEconomica">
+        <table class="table table-bordered">
+            <tr>
+                <th>Valor/th>
+                <th>Significado</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>
+                    Ninguna
+                </td>
+            </tr>
+            <tr>
+                <td>1</td>
+
+                <td>
+                    Marginal (menos de 10 mil dólares - daños leves): No hay interrupción de la actividad (producción, mantenimiento,
+                    puesta en marcha, etc.).
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>
+                    Importante (de 10 mil a 100 mil dólares - daños menores):
+                    Interrupción breve de la actividad (degradaciones, recirculación, reproceso).
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>
+                    Severo (de 100 mil a 1 millón de dólares - daños locales): Pérdidas económicas por parada temporal,
+                    lucro cesante o responsabilidad civil.
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>
+                    Grave (de 1 millón a 10 millones de dólares - daños mayores):
+                    Pérdida parcial en las operaciones o de la planta desde uno hasta 10 millones de dólares
+                </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>
+                    Catastrófica (más de 10 millones de dólares - daños generalizados):
+                    Pérdida total o sustancial en la producción, en la infraestructura, etc.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="ayudasConsecuenciaAmbiental">
+        <div style="overflow-y:scroll;height:200px">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Valor/th>
+                    <th>Significado</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>
+                        Sin efectos: Sin afectación ambiental. Sin modificaciones en el medio ambiente.
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+
+                    <td>
+                        Efectos Leves: Emisiones o descargas con afectación ambiental leve y temporal,
+                        y dentro de las instalaciones. Acciones de remediación en el inmediato plazo. No existe contaminación
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        Efectos menores: Emisiones o descargas menores, con afectación al medio ambiente dentro de las instalaciones,
+                        sin efectos duraderos, o que requieren medidas de recuperación en el corto plazo,
+                        o una única violación a los límites legales o actos administrativos o una única queja registrada
+                        (call center o escrita) ante organismos gubernamentales. No existe contaminación.
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        Contaminaciones localizadas: Emisiones o descargas limitadas con contaminación ambiental localizada en predio
+                        vecinos y/o el entorno, o que requiere medidas de recuperación en el mediano plazo,
+                        o repetidas violaciones de los límites legales o actos administrativos o varias quejas registradas
+                        (call center o escrita) ante organismos gubernamentales.
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        Contaminaciones mayores: Emisiones o descargas que causan contaminación ambiental dispersa o grave o que requiere medidas
+                        de recuperación en el largo plazo, o violaciones prolongadas a los límites legales o actos administrativos,
+                        o molestia generalizada de la comunidad, registrada (call center o escrita) ante organismos gubernamentales.
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>
+                        Contaminaciones irreparables: Emisiones o descargas que causan un daño ambiental irreparable en un área extensa
+                        o en áreas de uso recreativo o de preservación de la naturaleza; o constante violación de los límites legales o
+                        actos administrativos. Requiere medidas de compensación por daños irreparables.
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+
+    <div id="ayudasConsecuenciaCliente">
+        <div style="overflow-y:scroll;height:200px">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Valor/th>
+                    <th>Significado</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>
+                        Ningún impacto a los clientes
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+
+                    <td>
+                        Riesgo de incumplir cualquiera de las especificaciones acordadas con el cliente:
+                        Circunstancias planeadas o no planeadas, que afectan procesos o productos que pueden impactar
+                        los compromisos establecidos con los clientes, pero con posibilidades de solución antes de que el cliente perciba
+                        el potencial incumplimiento.
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        Implica quejas y/o reclamos: Cuando efectivamente situaciones planeadas o no planeadas impactan procesos o
+                        productos comprometidos con los clientes, que generan quejas y/o reclamos en cualquier cantidad,
+                        cuyo trámite de solución está definido dentro del compromiso y/o contrato con los clientes.
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        Pérdida de clientes y/o desabastecimiento: Decisiones y/o circunstancias que implican afectación
+                        a procesos y/o productos comprometidos con los clientes, que pueden afectar la relación comercial y/o el
+                        índice de lealtad, al punto de llevar al cliente a que tome la decisión de no volver a comprarle a ECOPETROL,
+                        o que efectivamente no se pueda asegurar el suministro confiable para algún mercado objetivo de la Sociedad.
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        Pérdida de participación en el mercado (para mercado internacional pérdida en la participación en el presupuesto
+                        del cliente destinado a la compra de productos ofertados por ECOPETROL): Decisiones y/o circunstancias de cualquier índole,
+                        de una magnitud tal, que implique pérdida efectiva de participación en el mercado para productos de comercialización
+                        nacional, y en el mercado internacional la pérdida de participación en el presupuesto de compra del cliente.
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>
+                        Veto a ECOPETROL como proveedor: Decisiones y/o circunstancias de impacto comercial a gran escala,
+                        que impliquen el bloqueo por parte de segmentos de clientes que a su vez conforman mercados objetivo,
+                        a los productos y servicios comercializados por ECOPETROL.
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+
+    <div id="ayudasConsecuenciaEmpresa">
+        <div style="overflow-y:scroll;height:200px">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Valor/th>
+                    <th>Significado</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>
+                        Ningún impacto: No es de interés
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>
+                        Interna: Puede ser de conocimiento interno de la empresa pero no de interés público.
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        Local - interés público local relativo: Atención de algunos medios de prensa,
+                        comunidades y ONGs locales que potencialmente pueden afectar a la empresa
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        Regional - interés público regional: Oposición de los medios locales de prensa.
+                        Relativa atención de los medios nacionales de prensa y/o partidos políticos locales/regionales.
+                        Oposición de ONGs regionales y del gobierno local
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        Nacional - interés público nacional: Oposición general de los medios de prensa nacionales.
+                        Políticas nacionales/regionales con medidas potencialmente restrictivas y/o impacto en el otorgamiento de licencias.
+                        Quejas de ONGs nacionales. Posible afectación del valor de las Acciones.
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>
+                        Internacional – interés público internacional: Oposición general de los medios de prensa internacionales.
+                        Políticas nacionales/internacionales con un impacto potencialmente grave en las relaciones internacionales de la Empresa,
+                        el otorgamiento de licencias y/o la legislación impositiva. Afectación del valor de las Acciones.
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+
+    <div id="ayudasValorRiesgo">
+        <div style="overflow-y:scroll;height:200px">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Riesgo</th>
+                    <th>TOMANDO DECISIONES</th>
+                    <th>PARA EJECUTAR TRABAJOS</th>
+                </tr>
+                <tr>
+                    <td>Muy Alto</td>
+                    <td>Intolerable</td>
+                    <td>
+                        Buscar alternativas. Si se decide hacer el trabajo, la alta dirección (Vicepresidente o Director) define el equipo para la elaboración del ATS y lo aprueba.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alto</td>
+                    <td>
+                        Deben buscarse alternativas que presenten menor riesgo. Si se decide realizar la actividad se requiere demostrar cómo se controla el riesgo y los cargos de niveles iguales o superiores a Gerente, Gerente General, Gerente de Negocio o Jefe de Unidad deben participar y aprobar la decisión.
+                    </td>
+                    <td>
+                        Buscar alternativas. Si se decide hacer el trabajo, el Gerente, Gerente General, Gerente de Negocio, Jefe de
+                        Unidad o Jefe de Departamento del área involucrada nombra el equipo para elaborar ATS y lo aprueba.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Medio</td>
+                    <td>No son suficientes los sistemas de control establecidos; se deben tomar medidas que controlen mejor el riesgo.</td>
+                    <td>
+                        No son suficientes los sistemas de control establecidos; se deben tomar medidas que controlen mejor el riesgo.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Bajo</td>
+                    <td>Se deben gestionar mejoras a los sistemas de control establecidos (procedimientos, listas de chequeo, responsabilidades, protocolos, etc.).</td>
+                    <td>
+                        Efectuar Tres Que:
+                        • ¿Qué puede salir mal o fallar?
+                        • ¿Qué puede causar que algo salga mal o falle?
+                        • ¿Qué podemos hacer para evitar que algo salga mal o falle?
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ninguno</td>
+                    <td>Riesgo muy bajo, usar los sistemas de control y calidad establecidos (procedimientos, listas de chequeo, responsabilidades, protocolos, etc.)</td>
+                    <td>
+                        Efectuar Tres Que:
+                        • ¿Qué puede salir mal o fallar?
+                        • ¿Qué puede causar que algo salga mal o falle?
+                        • ¿Qué podemos hacer para evitar que algo salga mal o falle?
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+
+
+
+
+
+</div>
+
+

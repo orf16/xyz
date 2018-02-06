@@ -1,0 +1,104 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Participacion.EDReporte>
+
+<div class="well" id="busqueda">
+    <div class="table-responsive">
+        <table class="table table-bordered" style="border: 2px solid lightslategray">
+            <thead>
+                <tr class="titulos_tabla">
+
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Tipo</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">ID</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de ocurrencia del evento</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Sede</th>
+
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Proceso</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Área / Lugar</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Documento</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Nombre de Quién Reporta</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Cargo</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Descripción</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Causa</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Sugerencia</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Origen</th>
+                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acción</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.tipo)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.IdReportes)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        @Html.DisplayFor(model => item.FechaOcurrencia)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.sede)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.nombreProceso)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.AreaLugar)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.CedulaQuienReporta)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        Nombre:
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        Cargo:
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        @Html.DisplayFor(model => item.DescripcionReporte)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        @Html.DisplayFor(model => item.CausaReporte)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+
+                        @Html.DisplayFor(model => item.SugerenciasReporte)
+                    </td>
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                        Origen:
+                    </td>
+
+                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                        <a name="Editar Perfil" href="@Url.Action("Edit", null, new { id = item.IdReportes })" title="Editar Reporte" class="btn btn-search btn-md">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </td>
+
+
+                </tr>
+
+
+                }
+
+
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="col-md-5" id="reporte" align="center">
+        <a href="@Url.Action("DescargarReporteExcelCondiciones", null, new {})">
+            <img src="~/Images/iconExcelp.png" title="Descargar Excel" />
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}

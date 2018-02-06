@@ -1,0 +1,400 @@
+﻿@{
+    ViewBag.Title = "Crear Dx. Gral de Salud";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Planificación</a></li>
+    <li><a href="javascript:void(0)">Dx. Gral. condiciones de salud</a></li>
+    <li class="active">Crear Dx. General de Condiciones de Salud</li>
+</ol>
+
+<form id="crearFormularioDX" method="post">
+
+    <div class="row">
+        <div class="col-md-5">
+            <h5><b>Fecha de Diligenciamiento del DX:</b></h5>
+        </div>
+        <div class="col-md-3" style="margin-left:-8%">
+            @{
+                DateTime fechaActual = DateTime.Now;
+            }
+            <input type="date" id="FechaCreacionDiagnostico" name="FechaCreacionDiagnostico" class="form-control" value="@fechaActual.ToString("yyyy-MM-dd")" readonly />
+        </div>
+    </div>
+
+    <br />
+
+    <div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+        <div class="panel-heading" style="color:white">Crear diagnóstico General de condiciones de salud</div>
+
+        @*Boton ayuda*@
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    @*<span aria-hidden="true">&times;</span>*@
+                                </button>
+                                <h4 class="modal-title title">Ayuda</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p align="justify">
+                                    Con la función de crear dx. General de condiciones de salud, el usuario puede registrar manualmente los datos de evaluación médica general de la población por sede y proceso, así como establecer los diferentes riesgos de exposición (clasificación del peligro y descripción), sintomatología, pruebas clínicas, paraclínicas, diagnósticos cie10. y cada una de ellas con la posibilidad de registrar el número de trabajadores con anormalidad, para así arrojar el porcentaje de anormalidad. Finalice con dar un Clic a la opción crear diagnóstico.
+
+                                    La flecha de abajo en el sentido hacia la izquierda, le permitirá ir a la pantalla de históricos y gestionar todos sus diagnósticos creados.
+
+                                    Nota: Podrá crear los diagnósticos que desee y recuerde que deben estar especificados por sede y proceso si así lo requiere.</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="panel-body form-horizontal">
+
+            <div class="panel panel-default">
+                <div class="panel-heading" style="color:white">Período de Evaluación Médica Ocupacional / Autoreporte CS / PVE</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-7">Fecha Inicial</label>
+                                <div class="col-md-10">
+                                    <input type="text" id="Fecha_Inicial_Dx" name="Fecha_Inicial_Dx" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-8">Fecha Final</label>
+                                <div class="col-md-10">
+                                    <input type="text" id="Fecha_Final_Dx" name="Fecha_Final_Dx" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-md-7">Vigencia</label>
+                                <div class="col-md-10">
+                                    @Html.DropDownList("vigencia", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-7">Sede</label>
+                        <div class="col-md-12">
+                            @Html.DropDownList("Pk_Id_Sede", null, htmlAttributes: new { @class = "form-control", @onchange = "BuscarSedeMunicipio()" }, optionLabel: "-- Seleccionar --")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-8">Municipio</label>
+                        <div class="col-md-12">
+                            <input type="text" id="IdMunicipio_Sede" name="Fk_Id_Municipio" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-7">Departamento</label>
+                        <div class="col-md-12">
+                            <input type="text" id="IdDepartamento_Sede" name="DepartamentoSede" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-7">Zona o Lugar</label>
+                        <div class="col-md-12">
+                            <input type="text" id="ZonaLugar" name="ZonaLugar" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-8">Proceso</label>
+                        <div class="col-md-12">
+                            @Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-12">Total de Trabajadores de la zona o lugar</label>
+                        <div class="col-md-12">
+                            <input id="NumeroTrabajadoresLugar" name="NumeroTrabajadoresLugar" class="form-control" onkeyup="calcularPorcentajes()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-12">Responsable de la información</label>
+                        <div class="col-md-12">
+                            <input type="text" id="Responsable_informacion" name="Responsable_informacion" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-12">Profesión del responsable de la información</label>
+                        <div class="col-md-12">
+                            <input type="text" id="Profesion_Responsable" name="Profesion_Responsable" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="col-md-7">Tarjeta Profesional</label>
+                        <div class="col-md-12">
+                            <input type="text" id="Tarjeta_Profesional" name="Tarjeta_Profesional" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border-top-color:lightslategray; width:100%" />
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaClasificacionPeligros">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:22%">
+                                Clasificación de peligro
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:71.8%">
+                                Descripción de peligro
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase; width:6.2%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="ClasPeligroDx" name="ClasPeligroDx">
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                @Html.DropDownList("FK_Tipo_De_Peligro", null, htmlAttributes: new { @class = "form-control", @onchange = "ConsultarClasesPeligrosDx(this)" }, optionLabel: "-- Seleccionar --")
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <div id="divSelectClas" name="divSelectClas">
+                                    <select id="FK_Clasificacion_De_Peligro" name="FK_Clasificacion_De_Peligro" class="form-control">
+                                        <option value="">-- Seleccionar --</option>
+                                    </select>
+                                </div>
+                                <input id="Otro" name="Otro" type="hidden" class="form-control" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a onclick="agregarFilaClasifiacion(this)" title="Agregar" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaSintomatologia">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                SINTOMATOLOGÍA
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                % Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input type="text" id="Sintomatologia" name="Sintomatologia" class="form-control" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input id="NumeroTrabajadoresSintomatologia" name="NumeroTrabajadoresSintomatologia" class="form-control" onkeyup="porcentajesSintomatologia(this)" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input type="text" id="porcentajeSintomatologia" name="porcentajeSintomatologia" class="form-control" readonly />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a onclick="agregarFilaSintomatologia(this)" title="Agregar" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaPruebas">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                PRUEBAS CLÍNICAS
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                % Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input type="text" id="PruebaClinica" name="PruebaClinica" class="form-control" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input id="NumeroTrabajadoresConPrueba" name="NumeroTrabajadoresConPrueba" class="form-control" onkeyup="porcentajesSintomatologiaPruebaClinica(this)" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input type="text" id="porcentajeSintomatologiaPruebaClinica" name="porcentajeSintomatologiaPruebaClinica" class="form-control" readonly />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a onclick="agregarFilaPruebasClinicas(this)" title="Agregar" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray" id="tablaPruebasP">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                PRUEBAS PARACLÍNICAS
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                % Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input type="text" id="PruebaPClinica" name="PruebaPClinica" class="form-control" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input id="NumeroTrabajadoresConPruebaP" name="NumeroTrabajadoresConPruebaP" class="form-control" onkeyup="porcentajesSintomatologiaPruebaPClinica(this)" />
+
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input type="text" id="porcentajeSintomatologiaPruebaPClinica" name="porcentajeSintomatologiaPruebaPClinica" class="form-control" readonly />
+
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a onclick="agregarFilaPruebasParaClinicas(this)" title="Agregar" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="border: 2px solid lightslategray">
+                    <thead>
+                        <tr class="titulos_tabla">
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                DIAGNÓSTICO CIE10
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                Nº de Trabajadores con Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">
+                                % Anormalidad
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabladiagnosticoCie">
+                        <tr id="trCie10">
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                <input class="form-control" type="text" name="Diagnostico" />
+                                <input type="hidden" class="form-control" name="IdDiagnostico" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input id="NumeroTrabajadoresConDiagnostico" name="NumeroTrabajadoresConDiagnostico" class="form-control" onkeyup="porcentajesTrabajadoresConDiagnostico(this)" />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <input type="text" id="porcentajeTrabajadoresConDiagnostico" name="porcentajeTrabajadoresConDiagnostico" class="form-control" readonly />
+                            </th>
+                            <th style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                <a onclick="agregarFilaDiagnosticoCIE10(this)" title="Agregar" class="btn btn-search btn-md">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel-footer" align="center">
+            <button type="button" id="dxgraldesalud" name="dxGralDeSalud" onclick="CrearDiagnostico()" class="boton botonactive">Crear Diagnostico </button>
+        </div>
+    </div>
+
+    @*<p align="center" style="margin-bottom:20px">
+        <button type="button" id="dxgraldesalud" name="dxGralDeSalud" onclick="CrearDiagnostico()" class="boton botonactive">Crear Diagnostico </button>
+    </p>*@
+
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/Planificacion")
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('Fecha_Inicial_Dx');
+        ConstruirDatePickerPorElemento('Fecha_Final_Dx');
+    });
+   
+  
+</script>
+}
+

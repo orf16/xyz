@@ -1,0 +1,41 @@
+﻿@model SG_SST.Models.Empleado.Inconsistecialaboral
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md col-md-10 col-md-offset-0">
+        <div class="panel panel-yellow">
+            <div class="panel-heading"><p class="text-center">NOTIFICAR - INCONSISTENCIA</p></div>
+
+            <div>
+                <h4>Inconsistecialaboral</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TipoInconsistencia.DescripcionTipInc)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TipoInconsistencia.DescripcionTipInc)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.DescripcionInconsistencia)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.DescripcionInconsistencia)
+                    </dd>
+
+                </dl>
+            </div>
+            <p>
+                @Html.ActionLink("Editar", "Edit", new { id = Model.PKInconsistencia }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
+    </div>
+</div>

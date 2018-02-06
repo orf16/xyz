@@ -1,0 +1,427 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis
+
+@{
+    ViewBag.Title = "Análisis Cinco Porque";
+}
+
+@{
+    string TempDataId = ViewBag.TempData;
+    //Serializar TempData Origen
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var userInfoJson = jss.Serialize(ViewBag.SessionKey);
+
+    //Serializar TempData Analisis
+    var jss1 = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var userInfoJson1 = jss.Serialize(ViewBag.TempData);
+
+    //Retener TempData
+    TempData.Keep(TempDataId);
+    List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis> ListaAnalisis = new List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis>();
+    if (TempData[TempDataId] != null)
+    {
+        ListaAnalisis = (List<SG_SST.EntidadesDominio.MedicionEvaluacion.EDAnalisis>)TempData[TempDataId];
+    }
+}
+
+<link href="~/Content/Acciones/Acciones.css" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<script src="~/Scripts/MedicionyEvaluacion/Analisis5Porque.js"></script>
+
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Medición y Evaluación G-SST</a></li>
+    <li><a href="javascript:void(0)">Acciones Preventivas y/o Correctivas</a></li>
+
+
+    @{
+        string Ruta = ViewBag.SessionKey;
+        if (Ruta == null)
+        {
+            <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+        }
+        else
+        {
+            if (Ruta!="NuevaAccion")
+            {
+                string numeroRuta = Ruta.Replace("EditarAccion", "");
+                string valorRuta = Ruta.Replace(numeroRuta, "");
+                <li><a href="@Url.Action(valorRuta, "Acciones",new { id = numeroRuta })">Editar Acción</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("NuevaAccion", "Acciones")">Nueva Acción</a></li>
+            }
+
+        }
+    }
+    
+
+
+
+    <li class="active">Análisis Cinco Porque</li>
+</ol>
+
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">ESTRUCTURA DE CINCO PORQUÉS</div>
+    <div class="panel-body">
+        @Html.Hidden("userInfoJson", (object)userInfoJson.ToString().Replace("\"", ""))
+        @Html.Hidden("userInfoJson1", (object)userInfoJson1.ToString().Replace("\"", ""))
+        @Html.Hidden("EdicionKey", (object)ViewBag.EdicionKey)
+
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Cinco porqués</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Explicación general del Analisis:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;">En este análisis se busca que el usuario identifique la causa probable a un problema, repitiendo la preguna 'porqué'. La idea es descubrir información de forma sistematica desde la ocurrencia de un problema caminando hacia atrás </p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Restricción del Analisis:</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;">La primera fila es decir el Por qué 1 debe esta diligenciado y la segunda columna el 'Porque', si esto no se cumple el sistema no permitirá el guardado del análisis</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Primer Paso: Establecer el Problema o Entrada Principal</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para establecer el PROBLEMA el usuario debe digitar en el cuadro de texto</p>
+                                <center><img style="max-width:100%;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/3A.png" /></center>
+
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Segundo Paso: Establecer el Primer Porque (Primera Fila)</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Diligencia cada una de las casillas de la primera fila</p>
+                                <center style="margin-bottom:20px;line-height: 200%;"><img style="max-width:100%;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/3B.png" /></center>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Luego haga click en<i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Revisar Estructura</i> para guardar el PROBLEMA, la primera fila del análisis y habilitar el diligenciamiento de la siguiente fila</p>
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Tercer Paso: Diligenciar las otras filas del análisis</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Diligencie la fila habilitada por el paso anterior, en estas filas la única columna obligatoria es 'PORQUÉ' es decir la segunda columna. También es importante aclarar que una vez habilitada una fila el valor de la columna QUÉ pasará a ser el PORQUÉ de la anterior fila</p>
+                                <center style="margin-bottom:20px;line-height: 200%;"><img style="max-width:100%;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/3D.png" /></center>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Luego debe diligenciar haga click <i class="" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto">Revisar Estructura</i> para habilitar el diligenciamiento de la siguiente fila. Haga este paso hasta completar los 5 PORQUÉ</p>
+                                <center><img style="max-width:100%;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/3E.png" /></center>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Cuarto Paso: Guardar el análisis</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para GUARDAR luego de diligenciar los 5 porqué el sistema genera un mensaje que le indica al usuario que todo esta correctamente diligenciado, si eso se cumple haga click en <button type="button" class="boton botonactive" style="cursor:default;">GUARDAR ANÁLISIS</button>, el sistema le preguntará si desea sobreescribir el análisis en caso que exista otra metodología de análisis guardada</p>
+                                <center><img style="max-width:100%;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/3F.png" /></center>
+
+
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Opcional: Ver Diagrama Generado</strong></u></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"> Para revisar el diagrama generado haga click en <button type="button" class="boton botonactive" style="cursor:default;">IMAGEN ANÁLISIS</button></p>
+                                <p style="margin-bottom:20px;line-height: 200%;"><u><strong>Opcional: Resultado del Diagrama Esperado</strong></u></p>
+                                <center><img style="max-width:100%;border:solid black 1px; border-radius:5px;" src="~/Content/Acciones/ImagenesAnalisis/3G.png" /></center>
+                                <hr />
+                                <p style="margin-bottom:20px;line-height: 200%;">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para cancelar el registro del análisis del hallazgo y regresar al registro de la acción</p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="col-sm-12">
+            <span>@ViewBag.Mensaje</span>
+            <br />
+        </div>
+        <div class="col-sm-12">
+            <div id="div_novedad_ult">
+                <span id="msj_novedad_ult"></span>
+            </div>
+        </div>
+        
+        <div class="add-side-padding col-sm-12">
+            <h4 class="col-sm-12">Problema a Solucionar o Hallazgo</h4>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @if (ListaAnalisis != null)
+                    {
+                        if (ListaAnalisis.Count == 36)
+                        {
+                            @Html.TextArea("ProblemaTxt", @ListaAnalisis[0].ValorTxt, htmlAttributes: new { @class = "form-control form-width-100" })
+                        }
+                        else
+                        {
+                            @Html.TextArea("ProblemaTxt", "", htmlAttributes: new { @class = "form-control form-width-100" })
+                        }
+                    }
+                    else
+                    {
+                        @Html.TextArea("ProblemaTxt", "", htmlAttributes: new { @class = "form-control form-width-100" })
+                    }
+                    <div class="row add-top-margin-05em">
+                        <div class="col-sm-12">
+                            <span>Caracteres Disponibles:</span><strong><span name="CharContadorProb" id="CharContadorProb"></span></strong>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-horizontal add-side-padding">
+            <div class="form-group">
+                <div class="col-sm-10">
+                </div>
+            </div>
+        </div>
+
+        @if (ListaAnalisis != null)
+            {
+                if (ListaAnalisis.Count == 36)
+                {
+                    string VerificacionPorque1 = @ListaAnalisis[0].ValorTxt;
+                    string VerificacionPorque2 = @ListaAnalisis[8].ValorTxt;
+                    string VerificacionPorque3 = @ListaAnalisis[15].ValorTxt;
+                    string VerificacionPorque4 = @ListaAnalisis[22].ValorTxt;
+                    string VerificacionPorque5 = @ListaAnalisis[29].ValorTxt;
+
+                    int ContAnalisis = 1;
+
+                <div class="form-group add-side-padding">
+                    <div class="table-responsive" id="Tabla5Porque">
+                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray; width:150%;max-width:none">
+                            <thead>
+                                <tr class="titulos_tabla">
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; "><span class="set-transparent-text">aa</span>QUÉ<span class="set-transparent-text">aa</span></th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">*PORQUE</th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">a</span>QUIÉN<span class="set-transparent-text">a</span></th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">a</span>DÓNDE<span class="set-transparent-text">a</span></th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">CUÁNDO</th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">a</span>CÓMO<span class="set-transparent-text">a</span></th>
+                                    <th style="border-right:2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">CUÁNTO</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tbody-positiva-style">
+                                @for (int i = 0; i < 5; i++)
+                                {
+
+                                    int numerofila = i + 1;
+                                    <tr>
+
+                                        @{
+                                            if (i == 0)
+                                            {
+                                                <td style="width:100px;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">*Por qué @numerofila.ToString()</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="width:100px;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">Por qué @numerofila.ToString()</td>
+                                            }
+                                        }
+
+
+
+                                        @for (int i1 = 0; i1 < 7; i1++)
+                                        {
+
+                                            int numerocol = i1 + 1;
+                                            if (i1 == 0)
+                                            {
+                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                    @Html.TextArea("TextoOpciones", @ListaAnalisis[ContAnalisis].ValorTxt, new { @class = "form-control wider textarea-dis", rows = "3", cols = "50", disabled = "disabled", id = @numerofila.ToString() + @numerocol.ToString(), @readonly = "readonly", maxlength = 100 })
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                bool disable = true;
+                                                if (i == 0 && VerificacionPorque1 != null)
+                                                {
+                                                    if (VerificacionPorque1 != "")
+                                                    {
+                                                        disable = false;
+                                                    }
+                                                }
+
+                                                if (i == 1 && VerificacionPorque2 != null)
+                                                {
+                                                    if (VerificacionPorque2 != "")
+                                                    {
+                                                        disable = false;
+                                                    }
+                                                }
+
+                                                if (i == 2 && VerificacionPorque3 != null)
+                                                {
+                                                    if (VerificacionPorque3 != "")
+                                                    {
+                                                        disable = false;
+                                                    }
+                                                }
+
+                                                if (i == 3 && VerificacionPorque4 != null)
+                                                {
+                                                    if (VerificacionPorque4 != "")
+                                                    {
+                                                        disable = false;
+                                                    }
+                                                }
+
+                                                if (i == 4 && VerificacionPorque5 != null)
+                                                {
+                                                    if (VerificacionPorque5 != "")
+                                                    {
+                                                        disable = false;
+                                                    }
+                                                }
+
+                                                if (!disable)
+                                                {
+                                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                        @Html.TextArea("TextoOpciones", @ListaAnalisis[ContAnalisis].ValorTxt, new { @class = "form-control wider", rows = "3", cols = "50", id = @numerofila.ToString() + @numerocol.ToString(), maxlength = 100 })
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                        @Html.TextArea("TextoOpciones", @ListaAnalisis[ContAnalisis].ValorTxt, new { @class = "form-control wider textarea-dis", rows = "3", cols = "50", disabled = "disabled", id = @numerofila.ToString() + @numerocol.ToString(), maxlength = 100 })
+                                                    </td>
+                                                }
+
+                                            }
+                                            ContAnalisis = ContAnalisis + 1;
+                                        }
+                                    </tr>
+
+                                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group add-side-padding">
+                                                    <div class="table-responsive" id="Tabla5Porque">
+                                                        <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray; width:150%;max-width:none">
+                                                            <thead>
+                                                                <tr class="titulos_tabla">
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"></th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">aa</span>QUÉ<span class="set-transparent-text">aa</span></th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">*PORQUE</th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">a</span>QUIÉN<span class="set-transparent-text">a</span></th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">a</span>DÓNDE<span class="set-transparent-text">a</span></th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">CUÁNDO</th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center"><span class="set-transparent-text">a</span>CÓMO<span class="set-transparent-text">a</span></th>
+                                                                    <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">CUÁNTO</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="tbody-positiva-style">
+                                                                @for (int i = 0; i < 5; i++)
+                                                                {
+                                                                    int numerofila = i + 1;
+                                                                    <tr>
+                                                                        @{
+                                                                            if (i == 0)
+                                                                            {
+                                                                                <td style="width:100px;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">*Por qué @numerofila.ToString()</td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td style="width:100px;border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">Por qué @numerofila.ToString()</td>
+                                                                            }
+                                                                        }
+                                                                        @for (int i1 = 0; i1 < 7; i1++)
+                                                                        {
+
+                                                                            int numerocol = i1 + 1;
+                                                                            if (i1 == 0)
+                                                                            {
+                                                                                <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                                                    @Html.TextArea("TextoOpciones", null, new { @class = "form-control wider textarea-dis", rows = "3", cols = "50", disabled = "disabled", id = @numerofila.ToString() + @numerocol.ToString(), @readonly = "readonly", maxlength = 100 })
+                                                                                </td>
+                                                                            }
+                                                                            else
+                                                                            {
+
+                                                                                if (i == 0)
+                                                                                {
+                                                                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                                                        @Html.TextArea("TextoOpciones", null, new { @class = "form-control wider", rows = "3", cols = "50", id = @numerofila.ToString() + @numerocol.ToString(), maxlength = 100 })
+                                                                                    </td>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <td style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:justify">
+                                                                                        @Html.TextArea("TextoOpciones", null, new { @class = "form-control wider textarea-dis", rows = "3", cols = "50", disabled = "disabled", id = @numerofila.ToString() + @numerocol.ToString(), maxlength = 100 })
+                                                                                    </td>
+                                                                                }
+
+                                                                            }
+
+                                                                        }
+                                                                    </tr>
+                                                                            }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                                                }
+
+                                                                            }
+
+
+
+
+        <div class="row add-side-padding text-center add-bottom-margin-05em">
+            <a id="Generar" href="#" class="btn btn-sm btn-positiva" style="border-radius:0px">
+                Revisar Estructura
+            </a>
+        </div>
+
+        <div class="divMensajes"><span id="msj_novedad"></span></div>
+
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-md-4">
+                    <button id="Guardar" class="boton botonactive col-margin">Guardar Análisis</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="ImagenAnalisis" class="boton botonactive col-margin">Imagen Análisis</button>
+                </div>
+                <div class="col-md-4">
+                    <button id="Cancelar" class="boton botoncancel">Cancelar</button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<br />
+<div class="add-side-padding col-sm-12" style="display:none;">
+    <img id="myImg" alt="" src="@ViewBag.SrcImg" class="gen_img_style" />
+</div>
+<div id="myModal" class="modalAnalisis">
+    <span id="close">&times;</span>
+    <img class="modal-content-analisis" id="img01">
+    <div id="captionAnalisis"></div>
+</div>
+
+
+
+
+
+

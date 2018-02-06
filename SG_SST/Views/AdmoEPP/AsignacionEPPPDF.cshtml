@@ -1,0 +1,443 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Aplicacion.EDEPP>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+        .titulo_epp {
+            font-size: 25px;
+        }
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+
+        .imagenEHM {
+            page-break-inside: avoid !important;
+        }
+
+        .aceptacionclass {
+            page-break-inside: avoid !important;
+        }
+
+        .fuentesmall {
+            font-size:12px;
+        }
+    </style>
+</head>
+
+<body style="margin:0px;">
+
+
+
+
+    @{
+
+        <div class="Doslinea" style="margin:0px;">
+            <div class="SubTitulo" style="font-size:16px">
+                <b>CERTIFICADO DE ENTREGA DE ELEMENTOS DE PROTECCIÓN PERSONAL</b>
+            </div>
+
+            <div class="AccionInline" style="margin:0px">
+                <div class="AccionLeft49" style="margin:0px;font-size:15px">
+                    <b>CÉDULA DEL TRABAJADOR</b>
+                    <div>
+                        @Html.Label("D1", (string)ViewBag.Cedula)
+                    </div>
+                </div>
+                <div class="AccionLeft49" style="margin:0px;font-size:15px">
+                    <b>NOMBRE DEL TRABAJADOR</b>
+                    <div>
+                        <div style="text-align:justify">
+                            @Html.Label("D2", (string)ViewBag.Nombre)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionInline" style="margin:0px">
+                <div class="AccionLeft49" style="margin:0px;font-size:15px">
+                    <b>PROCESO</b>
+                    <div>
+                        @Html.Label("D1", (string)ViewBag.Proceso)
+                    </div>
+                </div>
+                <div class="AccionLeft49" style="margin:0px;font-size:15px">
+                    <b>SEDE</b>
+                    <div>
+                        <div style="text-align:justify">
+                            @Html.Label("D2", (string)ViewBag.Sede)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="AccionInline" style="margin:0px">
+                <div class="AccionLeft49" style="margin:0px;font-size:15px">
+                    <b>CARGO</b>
+                    <div>
+                        @Html.Label("D1", (string)ViewBag.Cargo)
+                    </div>
+                </div>
+                <div class="AccionLeft49" style="margin:0px;font-size:15px">
+                    <b>FECHA DE REGISTRO</b>
+                    <div>
+                        <div style="text-align:justify">
+                            @{
+                                string Fecha_str1 = "";
+                                try
+                                {
+                                    Fecha_str1 = ViewBag.Fecha.ToString("dd/MM/yyyy");
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+
+                                @Html.Label("D2", Fecha_str1)
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin:0px">
+                @{
+                    <div class="datagrid">
+                        <table>
+                            <thead style="font-size:13px">
+                                <tr>
+                                    <th>
+                                        <p>Nombre Elemento</p>
+                                    </th>
+                                    <th style="min-width:100px;max-width:150px">
+                                        <p>Imagen</p>
+                                    </th>
+                                    <th>
+                                        <p>Parte del cuerpo</p>
+                                    </th>
+                                    <th>
+                                        <p>Riesgo Controlado</p>
+                                    </th>
+                                    <th>
+                                        <p>Especificación Técnica</p>
+                                    </th>
+                                    <th>
+                                        <p>Uso</p>
+                                    </th>
+                                    <th>
+                                        <p>Mantenimiento</p>
+                                    </th>
+                                    <th>
+                                        <p>Vida Útil</p>
+                                    </th>
+                                    <th>
+                                        <p>Reposición</p>
+                                    </th>
+                                    <th>
+                                        <p>Disposición Final</p>
+                                    </th>
+                                    <th>
+                                        <p>Cantidad</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td class="fuentesmall" style="text-align:center">
+                                                <span>@item.NombreEPP</span>
+                                            </td>
+                                            <td style="min-width:100px;max-width:150px;text-align:center">
+                                                <div>
+                                                    <img id="@item.Pk_Id_EPP" src="@item.RutaAbsolutaImagen" alt="" style="cursor:pointer; max-width: 100%;max-height: 100%;margin-bottom:5px;" />
+                                                </div>
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.ParteCuerpo)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.Clasificacion_De_Peligro)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.EspecificacionTecnica)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.Uso)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.Mantenimiento)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.VidaUtil)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.Reposicion)
+                                            </td>
+                                            <td class="TdJustificar fuentesmall">
+                                                @Html.DisplayFor(modelItem => item.DisposicionFinal)
+                                            </td>
+                                            <td class="fuentesmall" style="text-align:center">
+                                                @Html.DisplayFor(modelItem => item.Cantidad)
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            @*<tfoot>
+                                <tr>
+                                    <td colspan="11">
+                                        @{
+                                            string textoacep = (string)ViewBag.MensajeAceptacion1;
+                                            string textoacep1 = (string)ViewBag.MensajeAceptacion2;
+                                            if (textoacep != null && textoacep1 != null)
+                                            {
+                                                <p style="text-align:justify;width:98%;font-size:12px;">@ViewBag.MensajeAceptacion1</p>
+                                                <p style="text-align:justify;width:98%;font-size:12px;">@ViewBag.MensajeAceptacion2</p>
+                                            }
+                                            else
+                                            {
+                                                <p style="text-align:justify;width:98%;font-size:12px;">En calidad de trabajador de la empresa, me comprometo a utilizar los elementos de protección personal arriba listados y entregados en óptimas condiciones de calidad, dando el correcto uso, porte y mantenimiento en cada una de las operaciones donde corresponda mi trabajo. Al igual que regresarlos cuando sea necesario reponer,  reemplazar y/o finalice contrato. Su incumplimiento será enmarcado y sancionado como falta grave, en cumplimiento con el Reglamento Interno de Trabajo de la empresa y en lo respectivo al Decreto Ley 1295/1994 Cap. X Art. 91 Literal (b) y Código Sustantivo del Trabajo.</p>
+                                                <p style="text-align:justify;width:98%;font-size:12px;">Soy consciente de que el incumplimiento de lo establecido anteriormente acarreará sanciones establecidas por la empresa, las cuales acataré por lo que en constancia de lo antes mencionado firmo la presente a los _______________ días del mes ___________________________ del año _________________________ .</p>
+                                            }
+                                        }
+                                        <div class="AccionInline" style="margin-top:60px;">
+                                            <div class="AccionLeft49" style="margin:2px;font-size:13px;text-align:center">
+                                                <hr style="max-width:500px;color:black;border-top: 1px solid black;" />
+                                                <b style="min-width:300px;">Firma/Huella Quien Recibe</b>
+                                            </div>
+                                            <div class="AccionLeft49" style="margin:2px;font-size:13px;text-align:center">
+                                                <hr style="max-width:500px;color:black;border-top: 1px solid black;" />
+                                                <b style="min-width:300px;">Firma/Huella Quien Entrega</b>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>*@
+                        </table>
+                        <div class="aceptacionclass" style="padding-left:5px;">
+                            @{
+                                string textoacep = (string)ViewBag.MensajeAceptacion1;
+                                string textoacep1 = (string)ViewBag.MensajeAceptacion2;
+                                if (textoacep != null && textoacep1 != null)
+                                {
+                                    <p style="text-align:justify;width:98%;font-size:12px;">@ViewBag.MensajeAceptacion1</p>
+                                                <p style="text-align:justify;width:98%;font-size:12px;">@ViewBag.MensajeAceptacion2</p>
+                                }
+                                else
+                                {
+                                    <p style="text-align:justify;width:98%;font-size:12px;">En calidad de trabajador de la empresa, me comprometo a utilizar los elementos de protección personal arriba listados y entregados en óptimas condiciones de calidad, dando el correcto uso, porte y mantenimiento en cada una de las operaciones donde corresponda mi trabajo. Al igual que regresarlos cuando sea necesario reponer,  reemplazar y/o finalice contrato. Su incumplimiento será enmarcado y sancionado como falta grave, en cumplimiento con el Reglamento Interno de Trabajo de la empresa y en lo respectivo al Decreto Ley 1295/1994 Cap. X Art. 91 Literal (b) y Código Sustantivo del Trabajo.</p>
+                                                <p style="text-align:justify;width:98%;font-size:12px;">Soy consciente de que el incumplimiento de lo establecido anteriormente acarreará sanciones establecidas por la empresa, las cuales acataré por lo que en constancia de lo antes mencionado firmo la presente a los _______________ días del mes ___________________________ del año _________________________ .</p>
+                                }
+                            }
+                            <div class="AccionInline" style="margin-top:50px;">
+                                <div class="AccionLeft49" style="margin:2px;font-size:13px;text-align:center">
+                                    <hr style="max-width:500px;color:black;border-top: 1px solid black;" />
+                                    <b style="min-width:300px;">Firma/Huella Quien Recibe</b>
+                                </div>
+                                <div class="AccionLeft49" style="margin:2px;font-size:13px;text-align:center">
+                                    <hr style="max-width:500px;color:black;border-top: 1px solid black;" />
+                                    <b style="min-width:300px;">Firma/Huella Quien Entrega</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                }
+            </div>
+
+            @*<div class="AccionInline" style="margin-top:20px;border: 1px solid black;width:98%;margin-left:0.5%;margin-right:1%;padding-left:5px;padding-right:5px;">
+                <div class="AccionLeft90" style="font-size:13px;">
+                    <div style="text-align:justify">
+                        
+                        
+                    </div>
+                </div>
+
+            </div>*@
+
+            
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+    }
+
+</body>
+</html>
+
+
+
+
+
+
+
+

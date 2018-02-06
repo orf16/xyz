@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SG_SST.Models.Planificacion.NivelDeExposicion>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Niveles De Exposición</h2>
+
+<p>
+    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_crear_nuevo, "Create", null,
+            htmlAttributes: new { @type = "button", @class = "btn btn-success btn-xs" })
+</p>
+<table class="table table-condensed table-responsive table-hover table-bordered">
+    <tr class="titulos_tabla">
+        <th>
+          Valor de Exposición
+        </th>
+        <th>
+            Detalle de la Exposición
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor_Exposicion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion_Exposicion)
+            </td>
+            <td>
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.PK_Nivel_De_Exposicion }
+          , htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })
+                @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "Delete", new { id = item.PK_Nivel_De_Exposicion }
+         , htmlAttributes: new { @type = "button", @class = "btn btn-danger btn-xs jh" })
+            </td>
+        </tr>
+    }
+
+</table>

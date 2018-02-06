@@ -1,0 +1,1648 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDAdmoEMH
+@{
+    ViewBag.Title = "Ver Hoja de Vida";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/Aplicacion/EditarEHM.js")"></script>
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración equipo, maquinaria y herramientas</a></li>
+    <li><a href="@Url.Action("ConsultarEHM", "AdmoEMH")">Consultar equipo, maquinaria y herramientas</a></li>
+    <li class="active">Ver Hoja de Vida</li>
+</ol>
+@Html.AntiForgeryToken()
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('Fecha_Fab');
+        ConstruirDatePickerPorElemento('Fecha_prog');
+    });
+    //Cargar Imagenes
+    $(function () {
+        $('#btn-adj-img').click(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-img").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $("#Imagen1").val());
+                    fileData.append('extraParam2', $("#Imagen2").val());
+                    fileData.append('extraParam3', $("#Imagen3").val());
+                    fileData.append('extraParam4', $("#Imagen4").val());
+                    fileData.append('extraParam5', $("#Imagen5").val());
+
+                    fileData.append('extraParam6', $("#Imagen1_s").val());
+                    fileData.append('extraParam7', $("#Imagen2_s").val());
+                    fileData.append('extraParam8', $("#Imagen3_s").val());
+                    fileData.append('extraParam9', $("#Imagen4_s").val());
+                    fileData.append('extraParam10', $("#Imagen5_s").val());
+
+                    fileData.append('extraParam11', $("#Imagen1_c").val());
+                    fileData.append('extraParam12', $("#Imagen2_c").val());
+                    fileData.append('extraParam13', $("#Imagen3_c").val());
+                    fileData.append('extraParam14', $("#Imagen4_c").val());
+                    fileData.append('extraParam15', $("#Imagen5_c").val());
+
+                    fileData.append('extraParam16', $("#IdEHM").val());
+
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/AdmoEMH/UploadImg_ed',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    async: true,
+                    success: function (result) {
+                        $("#msj_novedad_archivo").text('');
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                        if (result.probar == false) {
+                            $("#msj_novedad_archivo").text(result.resultado);
+                            $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        }
+                        else {
+
+
+
+                            var cont1 = document.getElementById('ContImg1');
+                            var cont2 = document.getElementById('ContImg2');
+                            var cont3 = document.getElementById('ContImg3');
+                            var cont4 = document.getElementById('ContImg4');
+                            var cont5 = document.getElementById('ContImg5');
+
+                            if (result.display[0]==true) {
+                                cont1.style.display = "initial";
+                            }
+                            else {
+                                cont1.style.display = "none";
+                            }
+                            if (result.display[1] == true) {
+                                cont2.style.display = "initial";
+                            }
+                            else {
+                                cont2.style.display = "none";
+                            }
+                            if (result.display[2] == true) {
+                                cont3.style.display = "initial";
+                            }
+                            else {
+                                cont3.style.display = "none";
+                            }
+                            if (result.display[3] == true) {
+                                cont4.style.display = "initial";
+                            }
+                            else {
+                                cont4.style.display = "none";
+                            }
+                            if (result.display[4] == true) {
+                                cont5.style.display = "initial";
+                            }
+                            else {
+                                cont5.style.display = "none";
+                            }
+                            $("#img-act1").attr("src", result.Thumbnails[0]);
+                            $("#img-act2").attr("src", result.Thumbnails[1]);
+                            $("#img-act3").attr("src", result.Thumbnails[2]);
+                            $("#img-act4").attr("src", result.Thumbnails[3]);
+                            $("#img-act5").attr("src", result.Thumbnails[4]);
+
+
+                            $("#Imagen1").val(result.NuevoNombreArchivos[0]);
+                            $("#Imagen2").val(result.NuevoNombreArchivos[1]);
+                            $("#Imagen3").val(result.NuevoNombreArchivos[2]);
+                            $("#Imagen4").val(result.NuevoNombreArchivos[3]);
+                            $("#Imagen5").val(result.NuevoNombreArchivos[4]);
+
+                            $("#Imagen1_s").val(result.NuevoNombreArchivos_short[0]);
+                            $("#Imagen2_s").val(result.NuevoNombreArchivos_short[1]);
+                            $("#Imagen3_s").val(result.NuevoNombreArchivos_short[2]);
+                            $("#Imagen4_s").val(result.NuevoNombreArchivos_short[3]);
+                            $("#Imagen5_s").val(result.NuevoNombreArchivos_short[4]);
+
+                            $("#Imagen1_c").val(result.Carpeta[0]);
+                            $("#Imagen2_c").val(result.Carpeta[1]);
+                            $("#Imagen3_c").val(result.Carpeta[2]);
+                            $("#Imagen4_c").val(result.Carpeta[3]);
+                            $("#Imagen5_c").val(result.Carpeta[4]);
+
+                        }
+                        OcultarPopupposition();
+                    }
+                    ,
+                    error: function (err) {
+                        $("#msj_novedad_archivo").text("Error al cargar el archivo");
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        OcultarPopupposition();
+                    }
+                });
+
+            }
+            else {
+
+            }
+        });
+    });
+    //Eliminar Imagen
+    $(function () {
+        $("#Eliminar-img1").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/EliminarImg",
+                data: '{ruta: "' + $("#Imagen1").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+                        var cont1 = document.getElementById('ContImg1');
+                        cont1.style.display = "none";
+                        $("#Imagen1").val(null);
+                        $("#Imagen1_c").val(null);
+                        $("#Imagen1_s").val(null);
+                        $("#img-act1").attr("src", null);
+
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+        });
+        $("#Eliminar-img2").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/EliminarImg",
+                data: '{ruta: "' + $("#Imagen2").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+                        var cont1 = document.getElementById('ContImg2');
+                        cont1.style.display = "none";
+                        $("#Imagen2").val(null);
+                        $("#Imagen2_c").val(null);
+                        $("#Imagen2_s").val(null);
+                        $("#img-act2").attr("src", null);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+        });
+        $("#Eliminar-img3").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/EliminarImg",
+                data: '{ruta: "' + $("#Imagen3").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+                        var cont1 = document.getElementById('ContImg3');
+                        cont1.style.display = "none";
+                        $("#Imagen3").val(null);
+                        $("#Imagen3_c").val(null);
+                        $("#Imagen3_s").val(null);
+                        $("#img-act3").attr("src", null);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+        });
+        $("#Eliminar-img4").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/EliminarImg",
+                data: '{ruta: "' + $("#Imagen4").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+                        var cont1 = document.getElementById('ContImg4');
+                        cont1.style.display = "none";
+                        $("#Imagen4").val(null);
+                        $("#Imagen4_c").val(null);
+                        $("#Imagen4_s").val(null);
+                        $("#img-act4").attr("src", null);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+        });
+        $("#Eliminar-img5").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/EliminarImg",
+                data: '{ruta: "' + $("#Imagen5").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    if (response.probar == false) {
+                    }
+                    else {
+                        var cont1 = document.getElementById('ContImg5');
+                        cont1.style.display = "none";
+                        $("#Imagen5").val(null);
+                        $("#Imagen5_c").val(null);
+                        $("#Imagen5_s").val(null);
+                        $("#img-act5").attr("src", null);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                }
+            });
+        });
+    });
+    //Cargar Archivos
+    $(function () {
+        $('#btn-add-file').click(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#input-file").get(0);
+                var files = fileUpload.files;
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                    fileData.append('extraParam1', $("#Archivo1").val());
+                    fileData.append('extraParam2', $("#Archivo2").val());
+                    fileData.append('extraParam3', $("#Archivo3").val());
+                    fileData.append('extraParam4', $("#Archivo_s1").val());
+                    fileData.append('extraParam5', $("#Archivo_s2").val());
+                    fileData.append('extraParam6', $("#Archivo_s3").val());
+                    fileData.append('extraParam7', $("#Archivo1_c").val());
+                    fileData.append('extraParam8', $("#Archivo2_c").val());
+                    fileData.append('extraParam9', $("#Archivo3_c").val());
+                    fileData.append('extraParam10', $("#IdEHM").val());
+                }
+                PopupPosition();
+                $.ajax({
+                    url: '/AdmoEMH/UploadFiles_ed',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: fileData,
+                    success: function (result) {
+                        $("#msj_novedad_archivo").text('');
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success");
+                        if (result.probar == false) {
+                            $("#msj_novedad_archivo").text(result.resultado);
+                            $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        }
+                        else {
+                            $("#Grid2 > tbody").html("");
+                            var table_id = document.getElementById('Grid2');
+                            table_id.style.display = "none";
+
+
+
+
+                            if (result.display[0] == true) {
+                                $("#Archivo1").val(result.NuevoNombreArchivos[0]);
+                                $("#Archivo_s1").val(result.NuevoNombreArchivos_short[0]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfile1\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[0] + "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a style=\"height:35px;margin-bottom:5px;margin-left:2px\" onclick=\"jsFunction1();\" id=\"delete-file1\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "<a style=\"height:35px;margin-bottom:5px;margin-left:2px\" onclick=\"jsFunction11();\" id=\"donwload-file1\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Descargar Archivo\"><span class=\"glyphicon glyphicon-download-alt\"></span></a>" + "</td>";
+                                $("#Grid2 tbody").append(html);
+                            }
+                            else {
+                                $("#Archivo1").val(null);
+                                $("#Archivo_s1").val(null);
+                            }
+                            if (result.display[1] == true) {
+                                $("#Archivo2").val(result.NuevoNombreArchivos[1]);
+                                $("#Archivo_s2").val(result.NuevoNombreArchivos_short[1]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfile2\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[1] + "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a style=\"height:35px;margin-bottom:5px;margin-left:2px\" onclick=\"jsFunction2();\" id=\"delete-file2\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "<a style=\"height:35px;margin-bottom:5px;margin-left:2px\" onclick=\"jsFunction12();\" id=\"donwload-file2\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Descargar Archivo\"><span class=\"glyphicon glyphicon-download-alt\"></span></a>" + "</td>";
+                                $("#Grid2 tbody").append(html);
+                            }
+                            else {
+                                $("#Archivo2").val(null);
+                                $("#Archivo_s2").val(null);
+                            }
+                            if (result.display[2] == true) {
+                                $("#Archivo3").val(result.NuevoNombreArchivos[2]);
+                                $("#Archivo_s3").val(result.NuevoNombreArchivos_short[2]);
+                                table_id.style.display = "table";
+                                var html = "<tr id=\"csfile3\">";
+                                html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + result.NuevoNombreArchivos_short[2] + "</td>";
+                                html += "<td style=\"vertical-align:middle; text-align:center\">" + "<a style=\"height:35px;margin-bottom:5px;margin-left:2px\" onclick=\"jsFunction3();\" id=\"delete-file3\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Eliminar Archivo\"><span class=\"glyphicon glyphicon-erase\"></span></a>" + "<a style=\"height:35px;margin-bottom:5px;margin-left:2px\" onclick=\"jsFunction13();\" id=\"donwload-file3\" class=\"btn btn-sm btn-positiva btnEliminarArchivo\" title=\"Descargar Archivo\"><span class=\"glyphicon glyphicon-download-alt\"></span></a>" + "</td>";
+                                $("#Grid2 tbody").append(html);
+                            }
+                            else {
+                                $("#Archivo3").val(null);
+                                $("#Archivo_s3").val(null);
+                            }
+
+                        }
+                        OcultarPopupposition();
+                    }
+                    ,
+                    error: function (err) {
+                        $("#msj_novedad_archivo").text("Error al cargar el archivo");
+                        $("#div_novedad_archivo").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                        OcultarPopupposition();
+                    }
+                });
+
+            }
+            else {
+
+            }
+        });
+    });
+    //Eliminar Archivos
+    function jsFunction1() {
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/EliminarArchivo",
+            data: '{ruta: "' + $("#Archivo1").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#Archivo1").val(null);
+                    $("#Archivo_s1").val(null);
+                    $("#Archivo1_c").val("");
+                    $("#csfile1").remove();
+                    if ($("#Archivo1").val().length === 0) {
+                        if ($("#Archivo2").val().length === 0) {
+                            if ($("#Archivo3").val().length === 0) {
+                                var table_id = document.getElementById('Grid2');
+                                table_id.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunction2() {
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/EliminarArchivo",
+            data: '{ruta: "' + $("#Archivo2").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#Archivo2").val(null);
+                    $("#Archivo_s2").val(null);
+                    $("#Archivo2_c").val("");
+                    $("#csfile2").remove();
+                    if ($("#Archivo1").val().length === 0) {
+                        if ($("#Archivo2").val().length === 0) {
+                            if ($("#Archivo3").val().length === 0) {
+                                var table_id = document.getElementById('Grid2');
+                                table_id.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunction3() {
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/EliminarArchivo",
+            data: '{ruta: "' + $("#Archivo3").val() + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (response) {
+                OcultarPopupposition();
+                if (response.probar == false) {
+                }
+                else {
+                    $("#Archivo3").val(null);
+                    $("#Archivo_s3").val(null);
+                    $("#Archivo3_c").val("");
+                    $("#csfile3").remove();
+                    if ($("#Archivo1").val() == null) {
+                        if ($("#Archivo2").val().length == null) {
+                            if ($("#Archivo3").val().length == null) {
+                                var table_id = document.getElementById('Grid2');
+                                table_id.style.display = "none";
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    //Descargar Archivo
+    function jsFunction11() {
+        var stringArray = new Array();
+        stringArray[0] = $("#Archivo1").val();
+        stringArray[1] = $("#Archivo_s1").val();
+        stringArray[2] = $("#IdEHM").val();
+        stringArray[3] = "1";
+        stringArray[4] = $("#Archivo1_c").val();
+        var postData = { values: stringArray };
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/DescargarArchivo",
+            data: postData,
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                OcultarPopupposition();
+                if (data.probar == false) {
+
+                }
+                else {
+                    window.location.href = "/AdmoEMH/Download?Nombre=" + data.nombre + "&Proviene=" + data.proviene + "&Numero=1" + "&Nreal=" + data.nombre_download + "&IdEHM=" + stringArray[2];
+
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunction12() {
+        var stringArray = new Array();
+        stringArray[0] = $("#Archivo2").val();
+        stringArray[1] = $("#Archivo_s2").val();
+        stringArray[2] = $("#IdEHM").val();
+        stringArray[3] = "2";
+        stringArray[4] = $("#Archivo2_c").val();
+        var postData = { values: stringArray };
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/DescargarArchivo",
+            data: postData,
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                OcultarPopupposition();
+                if (data.probar == false) {
+
+                }
+                else {
+                    window.location.href = "/AdmoEMH/Download?Nombre=" + data.nombre + "&Proviene=" + data.proviene + "&Numero=2" + "&Nreal=" + data.nombre_download + "&IdEHM=" + stringArray[2];
+
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    function jsFunction13() {
+        var stringArray = new Array();
+        stringArray[0] = $("#Archivo3").val();
+        stringArray[1] = $("#Archivo_s3").val();
+        stringArray[2] = $("#IdEHM").val();
+        stringArray[3] = "3";
+        stringArray[4] = $("#Archivo3_c").val();
+        var postData = { values: stringArray };
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/DescargarArchivo",
+            data: postData,
+            dataType: "json",
+            traditional: true,
+            success: function (data) {
+                OcultarPopupposition();
+                if (data.probar == false) {
+
+                }
+                else {
+                    window.location.href = "/AdmoEMH/Download?Nombre=" + data.nombre + "&Proviene=" + data.proviene + "&Numero=3" + "&Nreal=" + data.nombre_download + "&IdEHM=" + stringArray[2];
+
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    //buscar nombre responsable
+    $(function () {
+        $("#buscar_id_res").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/BuscarPersonaDocumentoCargo",
+                data: '{documento: "' + $("#Cedula").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    $("#NombreResponsable").val(response.resultado[0]);
+                    $("#CargoResponsable").val(response.resultado[1]);
+                    if (response.probar == false) {
+
+                        $("#msj_novedad").text("Persona no encontrada");
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                    }
+                    else {
+                        $("#msj_novedad").text("Persona encontrada");
+                        $("#div_novedad").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                    var value = "";
+                    $("#NombreResponsable").val(value);
+                    $("#CargoResponsable").val(value);
+
+                }
+            });
+        });
+    });
+    //buscar nombre responsable Inspeccion
+    $(function () {
+        $("#buscar_id_res1").click(function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/BuscarPersonaDocumentoCargo",
+                data: '{documento: "' + $("#Cedula1").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                dataType: "json",
+                success: function (response) {
+                    OcultarPopupposition();
+                    $("#ResponsableInsp").val(response.resultado[0]);
+                    if (response.probar == false) {
+
+                        $("#msj_novedad_insp").text("Persona no encontrada");
+                        $("#div_novedad_insp").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-warning");
+                    }
+                    else {
+                        $("#msj_novedad_insp").text("Persona encontrada");
+                        $("#div_novedad_insp").removeClass("alert alert-info alert-warning alert-danger alert-success").addClass("alert alert-success");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    OcultarPopupposition();
+                    var value = "";
+                    $("#ResponsableInsp").val(value);
+
+
+                }
+            });
+        });
+    });
+    //Editar EHM
+    $(function () {
+        $("#EditarEHM").bind("click", function () {
+            var onEventLaunchGuardar = new postGuardar();
+            onEventLaunchGuardar.launchGuardar();
+        });
+    });
+    function postGuardar() {
+        this.launchGuardar = function () {
+            var stringArray = new Array();
+            stringArray[0] = $('input:radio[name="TipoElemento"]:checked').val();
+            stringArray[1] = $("#NombreElemento").val();
+            stringArray[2] = $("#CodigoElemento").val();
+            stringArray[3] = $("#Marca").val();
+            stringArray[4] = $("#Modelo").val();
+            stringArray[5] = $("#Fabricante").val();
+            stringArray[6] = $("#Fecha_Fab").val();
+            stringArray[7] = $("#HorasVida").val();
+            stringArray[8] = $("#Ubicacion").val();
+            stringArray[9] = $("#Caracteristicas").val();
+            stringArray[10] = $("#NombreResponsable").val();
+            stringArray[11] = $("#CargoResponsable").val();
+            stringArray[12] = $("#Actividad").val();
+            stringArray[13] = $("#Fecha_prog").val();
+            stringArray[14] = $("#ResponsableInsp").val();
+            stringArray[15] = $("#Pk_Id_Clas_Peligro").val();
+
+            stringArray[16] = $("#Imagen1").val();
+            stringArray[17] = $("#Imagen2").val();
+            stringArray[18] = $("#Imagen3").val();
+            stringArray[19] = $("#Imagen4").val();
+            stringArray[20] = $("#Imagen5").val();
+            stringArray[21] = $("#Archivo1").val();
+            stringArray[22] = $("#Archivo2").val();
+            stringArray[23] = $("#Archivo3").val();
+
+            stringArray[24] = $("#Imagen1_s").val();
+            stringArray[25] = $("#Imagen2_s").val();
+            stringArray[26] = $("#Imagen3_s").val();
+            stringArray[27] = $("#Imagen4_s").val();
+            stringArray[28] = $("#Imagen5_s").val();
+            stringArray[29] = $("#Archivo_s1").val();
+            stringArray[30] = $("#Archivo_s2").val();
+            stringArray[31] = $("#Archivo_s3").val();
+
+            stringArray[32] = $("#IdEHM").val();
+
+            stringArray[33] = $("#Imagen1_c").val();
+            stringArray[34] = $("#Imagen2_c").val();
+            stringArray[35] = $("#Imagen3_c").val();
+            stringArray[36] = $("#Imagen4_c").val();
+            stringArray[37] = $("#Imagen5_c").val();
+            stringArray[38] = $("#Archivo1_c").val();
+            stringArray[39] = $("#Archivo2_c").val();
+            stringArray[40] = $("#Archivo3_c").val();
+
+            // Construir objeto JSON
+            var AdmoEMH = {
+                TipoElemento: stringArray[0],
+                NombreElemento: stringArray[1],
+                CodigoElemento: stringArray[2],
+                Marca: stringArray[3],
+                Modelo: stringArray[4],
+                Fabricante: stringArray[5],
+                Fecha_Fab: stringArray[6],
+                HorasVida: stringArray[7],
+                Ubicacion: stringArray[8],
+                Caracteristicas: stringArray[9],
+                NombreResponsable: stringArray[10],
+                CargoResponsable: stringArray[11],
+                ActividadIns: stringArray[12],
+                FechaIns: stringArray[13],
+                ResponsableIns: stringArray[14],
+                FK_Clasificacion_De_Peligro: stringArray[15],
+                ArchivoImagen1: stringArray[16],
+                ArchivoImagen2: stringArray[17],
+                ArchivoImagen3: stringArray[18],
+                ArchivoImagen4: stringArray[19],
+                ArchivoImagen5: stringArray[20],
+                NombreArchivo1: stringArray[21],
+                NombreArchivo2: stringArray[22],
+                NombreArchivo3: stringArray[23],
+                ArchivoImagen1_download: stringArray[24],
+                ArchivoImagen2_download: stringArray[25],
+                ArchivoImagen3_download: stringArray[26],
+                ArchivoImagen4_download: stringArray[27],
+                ArchivoImagen5_download: stringArray[28],
+                NombreArchivo1_download: stringArray[29],
+                NombreArchivo2_download: stringArray[30],
+                NombreArchivo3_download: stringArray[31],
+                RutaImage1: stringArray[33],
+                RutaImage2: stringArray[34],
+                RutaImage3: stringArray[35],
+                RutaImage4: stringArray[36],
+                RutaImage5: stringArray[37],
+                Ruta1: stringArray[38],
+                Ruta2: stringArray[39],
+                Ruta3: stringArray[40],
+                Pk_Id_AdmoEMH: stringArray[32]
+            };
+
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/AdmoEMH/GuardarEditarEHM',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(AdmoEMH),
+                success: function (data) {
+                    OcultarPopupposition();
+                    $("#val-tipo").css("display", "none");
+                    $("#val-tipo").text('');
+                    $("#val-NombreElemento").css("display", "none");
+                    $("#val-NombreElemento").text('');
+                    $("#val-CodigoElemento").css("display", "none");
+                    $("#val-CodigoElemento").text('');
+                    $("#val-Marca").css("display", "none");
+                    $("#val-Marca").text('');
+                    $("#val-Modelo").css("display", "none");
+                    $("#val-Modelo").text('');
+                    $("#val-Fabricante").css("display", "none");
+                    $("#val-Fabricante").text('');
+                    $("#val-Fecha_Fab").css("display", "none");
+                    $("#val-Fecha_Fab").text('');
+                    $("#val-HorasVida").css("display", "none");
+                    $("#val-HorasVida").text('');
+                    $("#val-Ubicacion").css("display", "none");
+                    $("#val-Ubicacion").text('');
+                    $("#val-Caracteristicas").css("display", "none");
+                    $("#val-Caracteristicas").text('');
+
+                    $("#val-Actividad").css("display", "none");
+                    $("#val-Actividad").text('');
+                    $("#val-Fecha_prog").css("display", "none");
+                    $("#val-Fecha_prog").text('');
+                    $("#val-ResponsableInsp").css("display", "none");
+                    $("#val-ResponsableInsp").text('');
+
+
+                    $("#val-NombreResponsable").css("display", "none");
+                    $("#val-NombreResponsable").text('');
+                    $("#val-CargoResponsable").css("display", "none");
+                    $("#val-CargoResponsable").text('');
+                    if (data.Probar == false) {
+
+                        if (data.Validacion[0] == true) {
+                            $("#val-tipo").css("display", "block");
+                            $("#val-tipo").text(data.ValidacionStr[0]);
+                        }
+                        if (data.Validacion[1] == true) {
+                            $("#val-NombreElemento").css("display", "block");
+                            $("#val-NombreElemento").text(data.ValidacionStr[1]);
+                        }
+                        if (data.Validacion[2] == true) {
+                            $("#val-CodigoElemento").css("display", "block");
+                            $("#val-CodigoElemento").text(data.ValidacionStr[2]);
+                        }
+                        if (data.Validacion[3] == true) {
+                            $("#val-Marca").css("display", "block");
+                            $("#val-Marca").text(data.ValidacionStr[3]);
+                        }
+                        if (data.Validacion[4] == true) {
+                            $("#val-Modelo").css("display", "block");
+                            $("#val-Modelo").text(data.ValidacionStr[4]);
+                        }
+                        if (data.Validacion[5] == true) {
+                            $("#val-Fabricante").css("display", "block");
+                            $("#val-Fabricante").text(data.ValidacionStr[5]);
+                        }
+                        if (data.Validacion[6] == true) {
+                            $("#val-Fecha_Fab").css("display", "block");
+                            $("#val-Fecha_Fab").text(data.ValidacionStr[6]);
+                        }
+                        if (data.Validacion[7] == true) {
+                            $("#val-HorasVida").css("display", "block");
+                            $("#val-HorasVida").text(data.ValidacionStr[7]);
+                        }
+                        if (data.Validacion[8] == true) {
+                            $("#val-Ubicacion").css("display", "block");
+                            $("#val-Ubicacion").text(data.ValidacionStr[8]);
+                        }
+                        if (data.Validacion[9] == true) {
+                            $("#val-Caracteristicas").css("display", "block");
+                            $("#val-Caracteristicas").text(data.ValidacionStr[9]);
+                        }
+                        if (data.Validacion[10] == true) {
+                            $("#val-Actividad").css("display", "block");
+                            $("#val-Actividad").text(data.ValidacionStr[10]);
+                        }
+                        if (data.Validacion[11] == true) {
+                            $("#val-Fecha_prog").css("display", "block");
+                            $("#val-Fecha_prog").text(data.ValidacionStr[11]);
+                        }
+                        if (data.Validacion[12] == true) {
+                            $("#val-ResponsableInsp").css("display", "block");
+                            $("#val-ResponsableInsp").text(data.ValidacionStr[12]);
+                        }
+
+                        if (data.Validacion[13] == true) {
+                            $("#val-NombreResponsable").css("display", "block");
+                            $("#val-NombreResponsable").text(data.ValidacionStr[13]);
+                        }
+                        if (data.Validacion[14] == true) {
+                            $("#val-CargoResponsable").css("display", "block");
+                            $("#val-CargoResponsable").text(data.ValidacionStr[14]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "El equipo, herramienta o máquina se ha editado exitosamente",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location.href = "/AdmoEMH/ConsultarEHM"
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Cargar Peligros
+    $(function () {
+        $("#btnClasificacion").bind("click", function () {
+            var onEventLaunchCargar = new postCargar();
+            onEventLaunchCargar.launchCargar();
+
+        });
+    });
+    function postCargar() {
+        this.launchCargar = function () {
+            $("#Grid1 > tbody").html("");
+            var stringArray = new Array();
+            stringArray[0] = $('input:radio[name="Tipo"]:checked').val();
+            stringArray[1] = $("#NombreElemento").val();
+            stringArray[2] = $("#CodigoElemento").val();
+            stringArray[3] = $("#Marca").val();
+            stringArray[4] = $("#Modelo").val();
+            stringArray[5] = $("#Fabricante").val();
+            stringArray[6] = $("#Fecha_Fab").val();
+            stringArray[7] = $("#HorasVida").val();
+            stringArray[8] = $("#Ubicacion").val();
+            stringArray[9] = $("#Caracteristicas").val();
+            stringArray[10] = $("#NombreResponsable").val();
+            stringArray[11] = $("#CargoResponsable").val();
+            stringArray[12] = $("#Actividad").val();
+            stringArray[13] = $("#Fecha_prog").val();
+            stringArray[14] = $("#ResponsableInsp").val();
+            stringArray[15] = $("#Pk_Id_Clas_Peligro").val();
+            // Construir objeto JSON
+            var EDAdmoEMH = {
+                TipoElemento: stringArray[0],
+                NombreElemento: stringArray[1],
+                CodigoElemento: stringArray[2],
+                Marca: stringArray[3],
+                Modelo: stringArray[4],
+                Fabricante: stringArray[5],
+                Fecha_Fab: stringArray[6],
+                HorasVida: stringArray[7],
+                Ubicacion: stringArray[8],
+                Caracteristicas: stringArray[9],
+                NombreResponsable: stringArray[10],
+                CargoResponsable: stringArray[11],
+                Actividad: stringArray[12],
+                Fecha_prog: stringArray[13],
+                ResponsableInsp: stringArray[14],
+                FK_Clasificacion_De_Peligro: stringArray[15]
+            };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/AdmoEMH/GenerarPeligros',
+                traditional: true,
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(EDAdmoEMH),
+                success: function (data) {
+                    OcultarPopupposition();
+
+
+                    var tableBody = $('#Grid1 > tbody');
+                    tableBody.empty();
+                    $.each(data.Model, function (i, item) {
+                        var html = "<tr><td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + item.Eliminacion + "</td>";
+                        html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + item.Sustitucion + "</td>";
+                        html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + item.Controles_De_Ingenieria + "</td>";
+                        html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + item.Controles_Administrativos + "</td>";
+                        html += "<td style=\"border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify\">" + item.Elementos_De_Proteccion + "</td>";
+                        $("#Grid1 tbody").append(html);
+
+                    });
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+        }
+    }
+    //Buscar Caracteristica Peligro
+    function jsFunction() {
+        var myselect = document.getElementById("Pk_Id_Clas_Peligro");
+        var idselect = myselect.options[myselect.selectedIndex].value;
+        PopupPosition();
+                $.ajax({
+                    type: "POST",
+                    url: "/AdmoEMH/BuscarCaracteristicasPeligro",
+                    data: '{IdPeligro: "' + idselect + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        OcultarPopupposition();
+                        if (data.Probar == false) {
+                            $("textarea#Caracteristicas1").val('');
+                        }
+                        else {
+                            $("textarea#Caracteristicas1").val(data.Resultado);
+                        }
+                        var onEventLaunchCargar = new postCargar();
+                        onEventLaunchCargar.launchCargar();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        OcultarPopupposition();
+                    }
+                });
+    }
+    //Buscar Caracteristica Peligro//Al cargar
+    window.onload = jsload;
+    function jsload() {
+        var myselect = document.getElementById("Pk_Id_Clas_Peligro");
+        var idselect = myselect.options[myselect.selectedIndex].value;
+        PopupPosition();
+        $.ajax({
+            type: "POST",
+            url: "/AdmoEMH/BuscarCaracteristicasPeligro",
+            data: '{IdPeligro: "' + idselect + '" }',
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                OcultarPopupposition();
+                if (data.Probar == false) {
+                    $("textarea#Caracteristicas1").val('');
+                }
+                else {
+                    $("textarea#Caracteristicas1").val(data.Resultado);
+                }
+                var onEventLaunchCargar = new postCargar();
+                onEventLaunchCargar.launchCargar();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                OcultarPopupposition();
+            }
+        });
+    }
+    //Nombre Actividad Inspeccion
+    $(document).on('keyup', '#NombreElemento', function () {
+        var valorAct = "Inspección " + $("#NombreElemento").val();
+        $("#Actividad").val(valorAct);
+    });
+    //Mostrar Imagenes en Modal
+    $(function () {
+        $("#img-act1").click(function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Imagen1").val();
+            stringArray[1] = $("#Imagen1_c").val();
+            stringArray[2] = $("#IdEHM").val();
+            stringArray[3] = "1";
+
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/CargarImagenMostrar_ed",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Probar==true) {
+                        $("#myImg").attr("src", data.resultado);
+                        var modal = document.getElementById('myModal');
+                        var img = document.getElementById('myImg');
+                        var botonVer = document.getElementById('ImagenAnalisis');
+                        var modalImg = document.getElementById("img01");
+                        var captionText = document.getElementById("caption");
+                        modal.style.display = "block";
+                        modalImg.src = data.resultado;
+
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+        });
+        $("#img-act2").click(function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Imagen2").val();
+            stringArray[1] = $("#Imagen2_c").val();
+            stringArray[2] = $("#IdEHM").val();
+            stringArray[3] = "2";
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/CargarImagenMostrar_ed",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Probar == true) {
+                        $("#myImg").attr("src", data.resultado);
+                        var modal = document.getElementById('myModal');
+                        var img = document.getElementById('myImg');
+                        var botonVer = document.getElementById('ImagenAnalisis');
+                        var modalImg = document.getElementById("img01");
+                        var captionText = document.getElementById("caption");
+                        modal.style.display = "block";
+                        modalImg.src = data.resultado;
+
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+        });
+        $("#img-act3").click(function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Imagen3").val();
+            stringArray[1] = $("#Imagen3_c").val();
+            stringArray[2] = $("#IdEHM").val();
+            stringArray[3] = "3";
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/CargarImagenMostrar_ed",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Probar == true) {
+                        $("#myImg").attr("src", data.resultado);
+                        var modal = document.getElementById('myModal');
+                        var img = document.getElementById('myImg');
+                        var botonVer = document.getElementById('ImagenAnalisis');
+                        var modalImg = document.getElementById("img01");
+                        var captionText = document.getElementById("caption");
+                        modal.style.display = "block";
+                        modalImg.src = data.resultado;
+
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+        });
+        $("#img-act4").click(function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Imagen4").val();
+            stringArray[1] = $("#Imagen4_c").val();
+            stringArray[2] = $("#IdEHM").val();
+            stringArray[3] = "4";
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/CargarImagenMostrar_ed",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Probar == true) {
+                        $("#myImg").attr("src", data.resultado);
+                        var modal = document.getElementById('myModal');
+                        var img = document.getElementById('myImg');
+                        var botonVer = document.getElementById('ImagenAnalisis');
+                        var modalImg = document.getElementById("img01");
+                        var captionText = document.getElementById("caption");
+                        modal.style.display = "block";
+                        modalImg.src = data.resultado;
+
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+        });
+        $("#img-act5").click(function () {
+            var stringArray = new Array();
+            stringArray[0] = $("#Imagen5").val();
+            stringArray[1] = $("#Imagen5_c").val();
+            stringArray[2] = $("#IdEHM").val();
+            stringArray[3] = "5";
+            var postData = { values: stringArray };
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: "/AdmoEMH/CargarImagenMostrar_ed",
+                data: postData,
+                dataType: "json",
+                traditional: true,
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Probar == true) {
+                        $("#myImg").attr("src", data.resultado);
+                        var modal = document.getElementById('myModal');
+                        var img = document.getElementById('myImg');
+                        var botonVer = document.getElementById('ImagenAnalisis');
+                        var modalImg = document.getElementById("img01");
+                        var captionText = document.getElementById("caption");
+                        modal.style.display = "block";
+                        modalImg.src = data.resultado;
+
+
+                    }
+                    else {
+
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+
+
+        });
+    });
+    //Funciones del Modal
+    $(document).ready(function () {
+        var modal = document.getElementById('myModal');
+        var span = document.getElementById("close");
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        document.addEventListener('keyup', function (e) {
+            if (e.keyCode == 27) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    window.onload = function () {
+        var textbox = '#HorasVida_n';
+        var hidden = '#HorasVida';
+        var num = $(textbox).text();
+        var comma = /,/g;
+        num = num.replace(comma, '');
+        $(hidden).val(num);
+        var numCommas = addCommas(num);
+        numCommas = numCommas.replace(".", "");
+        $(textbox).text(numCommas);
+    };
+
+
+</script>
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">HOJA DE VIDA MÁQUINAS, EQUIPOS O HERRAMIENTAS</div>
+    <div class="panel-body">
+        @Html.Hidden("IdEHM", Model.Pk_Id_AdmoEMH)
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Ver Hoja de Vida</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botonactive" style="cursor:default;">DESCARGAR PDF</button> Para descargar la hoja de vida en formato PDF</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para regresar a la consulta de equipos, máquinas o herramienta</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <i class="glyphicon glyphicon-download-alt" style="color: #FF7500; border: 1px solid #ff7500; padding: 8px 8px; width: auto"></i> para descargar un archivo adjunto</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-12">
+                <label class="radio-inline remove-left-padding">
+                    <b>Tipo de Elemento</b>
+                </label>
+                <label class="radio-inline">
+
+                    @Html.RadioButtonFor(m => m.TipoElemento, "null", new { id = "Tipo", type = "hidden", @disabled = "disabled" })
+                    @Html.RadioButtonFor(m => m.TipoElemento, "Máquina", new { id = "Tipo", @disabled = "disabled" })
+                    Máquina
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.TipoElemento, "Equipo", new { id = "Tipo", @disabled = "disabled" })
+                    Equipo
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.TipoElemento, "Herramienta", new { id = "Tipo", @disabled = "disabled" })
+                    Herramienta
+                </label>
+                <span id="val-tipo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+            </div>
+
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información del Elemento</h4>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-12">
+                        <label>Nombre del Elemento: </label>
+                        @Html.DisplayFor(m => m.NombreElemento, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-NombreElemento" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Código del Elemento: </label>
+                        @Html.DisplayFor(m => m.CodigoElemento, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-CodigoElemento" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Marca: </label>
+                        @Html.DisplayFor(m => m.Marca, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-Marca" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Modelo: </label>
+                        @Html.DisplayFor(m => m.Modelo, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-Modelo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Fabricante: </label>
+                        @Html.DisplayFor(m => m.Fabricante, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-Fabricante" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Fecha de Fabricación: </label>
+                        @{
+                            string Fecha_str_fab = "";
+                            try
+                            {
+                                Fecha_str_fab = Model.Fecha_Fab.ToString("dd/MM/yyyy");
+                                <span class="form-width-100">@Fecha_str_fab</span>
+                            }
+                            catch (Exception)
+                            {
+                                @Html.Display("fechaComp", null, new { @class = "form-width-100" })
+                            }
+
+                        }
+
+                       
+                        <span id="val-Fecha_Fab" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Horas de Vida Util: </label>
+                        @Html.HiddenFor(m => m.HorasVida, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        @*@Html.Display("HorasVida_n", Model.HorasVida.ToString(), new { @class = "form-control form-width-100",@text="sdfdf" })*@
+                        @{
+                            int HorasVida = Model.HorasVida;
+                            String s = String.Format("{0:n0}",
+                         HorasVida);
+                            s = s.Replace(",", ".");
+                            <span>@s</span>
+                        }
+                        <span id="HorasVida_n" class="form-width-100" style="display:none">@Model.HorasVida.ToString()</span>
+
+                        <span id="val-HorasVida" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Ubicación: </label>
+                        @Html.DisplayFor(m => m.Ubicacion, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-Ubicacion" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Características: </label>
+                        @Html.DisplayFor(m => m.Caracteristicas, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-Caracteristicas" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Imagenes y Manuales</h4>
+            </div>
+            <div class="internal-panel-body">
+                @Html.Hidden("Imagen1", Model.ArchivoImagen1)
+                @Html.Hidden("Imagen2", Model.ArchivoImagen2)
+                @Html.Hidden("Imagen3", Model.ArchivoImagen3)
+                @Html.Hidden("Imagen4", Model.ArchivoImagen4)
+                @Html.Hidden("Imagen5", Model.ArchivoImagen5)
+
+                @Html.Hidden("Imagen1_s", Model.Imgdownload1)
+                @Html.Hidden("Imagen2_s", Model.Imgdownload2)
+                @Html.Hidden("Imagen3_s", Model.Imgdownload3)
+                @Html.Hidden("Imagen4_s", Model.Imgdownload4)
+                @Html.Hidden("Imagen5_s", Model.Imgdownload5)
+
+                @Html.Hidden("Archivo1", Model.NombreArchivo1)
+                @Html.Hidden("Archivo2", Model.NombreArchivo2)
+                @Html.Hidden("Archivo3", Model.NombreArchivo3)
+
+                @Html.Hidden("Archivo_s1", Model.Filedownload1)
+                @Html.Hidden("Archivo_s2", Model.Filedownload2)
+                @Html.Hidden("Archivo_s3", Model.Filedownload3)
+
+                @Html.Hidden("Imagen1_c", Model.ArchivoImagen1)
+                @Html.Hidden("Imagen2_c", Model.ArchivoImagen2)
+                @Html.Hidden("Imagen3_c", Model.ArchivoImagen3)
+                @Html.Hidden("Imagen4_c", Model.ArchivoImagen4)
+                @Html.Hidden("Imagen5_c", Model.ArchivoImagen5)
+
+                @Html.Hidden("Archivo1_c", Model.NombreArchivo1)
+                @Html.Hidden("Archivo2_c", Model.NombreArchivo2)
+                @Html.Hidden("Archivo3_c", Model.NombreArchivo3)
+
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="File1">IMAGENES (Para ver aun más detalles con el zoom haga click sobre la foto)</label>
+                        </div>
+                    </div>
+                    <div class="form-group col-xs-6 col-sm-4 col-md-2" id="ContImg1" style="@ViewBag.Imagen1E">
+                        <img id="img-act1" class="firma-EHM-estilo" src="@ViewBag.Imagen1R" alt="" style="cursor:pointer;border:0.5px solid black" />
+                    </div>
+                    <div class="form-group col-xs-6 col-sm-4 col-md-2" id="ContImg2" style="@ViewBag.Imagen2E">
+                        <img id="img-act2" class="firma-EHM-estilo" src="@ViewBag.Imagen2R" alt="" style="cursor:pointer;border:0.5px solid black" />
+                    </div>
+                    <div class="form-group col-xs-6 col-sm-4 col-md-2" id="ContImg3" style="@ViewBag.Imagen3E">
+                        <img id="img-act3" class="firma-EHM-estilo" src="@ViewBag.Imagen3R" alt="" style="cursor:pointer;border:0.5px solid black" />
+                    </div>
+                    <div class="form-group col-xs-6 col-sm-4 col-md-2" id="ContImg4" style="@ViewBag.Imagen4E">
+                        <img id="img-act4" class="firma-EHM-estilo" src="@ViewBag.Imagen4R" alt="" style="cursor:pointer;border:0.5px solid black" />
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-4 col-md-2" id="ContImg5" style="@ViewBag.Imagen5E">
+                        <img id="img-act5" class="firma-EHM-estilo" src="@ViewBag.Imagen5R" alt="" style="cursor:pointer;border:0.5px solid black" />
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label for="File1">MANUALES</label>
+                        </div>
+                    </div>
+                    <div class="form-group add-side-padding col-sm-12" style="overflow:auto">
+                        <div class="col-sm-12 table-responsive">
+                            @{
+                                var valor = ViewBag.ArchivosE;
+                                bool MostarArchivos = valor;
+
+                                if (MostarArchivos)
+                                {
+                                    bool MostrarArchivo1 = ViewBag.Archivo1E;
+                                    bool MostrarArchivo2 = ViewBag.Archivo2E;
+                                    bool MostrarArchivo3 = ViewBag.Archivo3E;
+                                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray;" id="Grid2">
+                                        <thead>
+                                            <tr class="titulos_tabla">
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; width:80%">
+                                                    <span>Nombre del Documento</span>
+                                                </th>
+                                                <th style="border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Acciones</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TbodyArchvivos">
+                                            @if (MostrarArchivo1)
+                                            {
+                                                <tr id="csfile1">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify"> @Model.Filedownload1 </td>
+                                                    <td style="vertical-align:middle; text-align:center">
+                                                        <a onclick="jsFunction11();" id="download-file1" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Descargar Archivo" style="height:35px;margin-bottom:5px"><span class="glyphicon glyphicon-download-alt"></span></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @if (MostrarArchivo2)
+                                            {
+                                                <tr id="csfile2">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify"> @Model.Filedownload2 </td>
+                                                    <td style="vertical-align:middle; text-align:center">
+                                                        <a onclick="jsFunction12();" id="download-file1" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Descargar Archivo" style="height:35px;margin-bottom:5px"><span class="glyphicon glyphicon-download-alt"></span></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @if (MostrarArchivo3)
+                                            {
+                                                <tr id="csfile3">
+                                                    <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify"> @Model.Filedownload3 </td>
+                                                    <td style="vertical-align:middle; text-align:center">
+                                                        <a onclick="jsFunction13();" id="download-file1" class="btn btn-sm btn-positiva btnEliminarArchivo" title="Descargar Archivo" style="height:35px;margin-bottom:5px"><span class="glyphicon glyphicon-download-alt"></span></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray; display:none;" id="Grid2">
+                                        <thead>
+                                            <tr class="titulos_tabla">
+                                                <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; width:80%">
+                                                    <span>Nombre del Documento</span>
+                                                </th>
+                                                <th style="border-bottom: 2px solid lightslategray; text-align:center">
+                                                    <span>Eliminar Archivo</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="TbodyArchvivos"></tbody>
+                                    </table>
+                                }
+                            }
+
+
+
+                        </div>
+
+                        <div class="col-sm-12 form-group">
+                            <div id="div_novedad_archivo">
+                                <span id="msj_novedad_archivo"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información del Responsable</h4>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin add-top-margin-05em">
+                    <div class="col-sm-12">
+                        <label>Nombre del Responsable</label>
+                        @Html.DisplayFor(m => m.NombreResponsable, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-NombreResponsable" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Cargo del Responsable</label>
+                        @Html.DisplayFor(m => m.CargoResponsable, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                        <span id="val-CargoResponsable" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row internal-panel-body">
+            <div class="col-md-12">
+                <div id="div_novedad">
+                    <span id="msj_novedad"></span>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Riesgos Asociados</h4>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    @{
+                        if (true)
+                        {
+                            <div class="col-md-12 add-top-margin-05em" style="overflow-x:scroll;height:auto">
+                                <table class="table table-responsive table-bordered" style="border: 2px solid lightslategray" id="Grid3">
+                                    <thead>
+                                        <tr class="titulos_tabla">
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Proceso</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Sede</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Zona ó lugar</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Actividad</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Tarea</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Clasificación</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Eliminación</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Sustitución</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Controles de ingeniería</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Controles administrativos</p>
+                                            </th>
+                                            <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center">
+                                                <p>Elementos de protección personal</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="TbodyPeligros">
+                                        @{
+                                            if (Model.ListaPeligros.Count > 0)
+                                            {
+                                                List<string> LSede = ViewBag.ListaSedeP;
+                                                List<string> LProceso = ViewBag.ListaProcesosP;
+                                                List<string> LClas = ViewBag.ListaClasificacionP;
+                                                int cont = 0;
+                                                foreach (var item in Model.ListaPeligros)
+                                                {
+                                                    <tr class="fila_grid3" name="@item.PK_Peligro">
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@LProceso[cont]</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@LSede[cont]</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Lugar</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Actividad</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Tarea</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@LClas[cont]</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Eliminacion</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Sustitucion</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Controles_De_Ingenieria</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Controles_Administrativos</td>
+                                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:justify">@item.Elementos_De_Proteccion</td>
+                                                    </tr>
+                                                    cont = cont + 1;
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                           }
+                    }
+                </div>
+            </div>
+        </div>        
+        <div class="add-side-padding col-sm-12" style="display:none;">
+            <img id="myImg" alt="" src="" class="gen_img_style" />
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-6" style="margin-bottom:5px;">
+                <button class="boton botonactive" id="pdf-btn" type="submit" value="GenerarPDF" onclick="location.href='@Url.Action("UrlAsPDF","AdmoEMH",new { id = Model.Pk_Id_AdmoEMH })';return false;">GENERAR PDF</button>
+            </div>
+            <div class="col-md-6">
+                <button class="boton botoncancel" onclick="location.href='@Url.Action("ConsultarEHM", "AdmoEMH")';return false;">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="myModal" class="modalAnalisis">
+    <span id="close">&times;</span>
+    <img class="modal-content-analisis" id="img01">
+    <div id="captionAnalisis"></div>
+</div>

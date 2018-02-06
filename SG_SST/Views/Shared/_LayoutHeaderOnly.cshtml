@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>@ViewBag.Title - SG-SST</title>
+
+    @Styles.Render("~/bundles/css")
+    @if (IsSectionDefined("HeadStyles"))
+    {
+        @RenderSection("HeadStyles", required: false);
+    }
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    @Scripts.Render("~/bundles/UtilidadesExternas")
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @Scripts.Render("~/bundles/Utilidades")
+    @if (IsSectionDefined("HeadScripts"))
+    {
+        @RenderSection("HeadScripts", required: false);
+    }
+
+</head>
+
+<body>
+    <div id="capa_loading" class="capa_loading" style="display:none;"></div>
+    <div id="_loading" class="_loading" style="display:none;"><img class="img_loading" src='@Url.Content("~/Images/fancyBox/fancybox_loading@2x.gif")' /><br></div>
+    <div id="popupMsg" style="display:none;">
+        <h4></h4>
+        <button id="btn_aceptMsg" type="submit" data-href="" class="btn btn-default" onclick="javascript:MostrarPopupMsg(e);">Aceptar</button>
+    </div>
+    <div id="header" class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <i class="icon-reorder"></i>
+            </button>
+        </div>
+        <div class="container container-index header-alissta">
+            <div class="col-xs-1 mobile">
+                <a href="#" class="botonmobile">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+            <div class="col-md-2 logo-empresa col-xs-6">
+                <img src="~/Images/water-mark-no-logo.png" alt="watermark-alissta" class="center-block">
+            </div>
+            <div class="col-md-3 col-md-offset-7 logo-alissta text-center col-xs-5">
+                <img src="~/Images/alissta-logo.png" alt="logo alissta">
+            </div>
+        </div>
+        <div class="collapse navbar-collapse">
+        </div>
+    </div>
+    <div id="wrapper">
+        <div id="main-wrapper">
+            <div id="main">
+                @RenderBody()
+            </div>
+            <div class="col-md-12 footer">
+                <p>Todos los derechos reservados - Positiva Compañía de Seguros S.A.</p>
+            </div>
+        </div>
+    </div>
+    @RenderSection("Scripts", required: false)
+</body>
+
+@if (IsSectionDefined("HTMLBottomScripts")) {
+    @RenderSection("HTMLBottomScripts", required: false);
+}
+
+</html>

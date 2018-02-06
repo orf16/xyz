@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SG_SST.Models.EmpleadoOrg>
+
+<div id="tablaoPV">
+
+    <table class="table table-condensed table-bordered">
+        <tr class="titulos_tabla">
+            @*
+                <th>
+                    @Html.DisplayNameFor(model => model.Organigrama.Nombre_Organigrama)
+                </th>*@
+            @*
+                <th>
+                    @Html.DisplayNameFor(model => model.OrgChart.Jefe_Inmediato)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Cargo_Empleado)
+            </th>
+            <th>
+                <label>Acciones</label>
+                @*@Html.DisplayNameFor(model => model.Cargo_Empleado)*@
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Organigrama.Nombre_Organigrama)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.OrgChart.Jefe_Inmediato)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.OrgChart.Jefe_Inmediato)
+
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cargo_Empleado)
+                </td>
+                <td>
+                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_editar, "Edit", new { id = item.Id_EmpleadoOrg },
+                htmlAttributes: new { @type = "button", @class = "btn btn-warning btn-xs jh" })
+
+
+                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#@string.Format("modalEliminar{0}", item.Id_EmpleadoOrg)">
+                        @SG_SST.Recursos.GeneralApp.General.btn_Eliminar
+                    </button>
+
+                    <div id="@string.Format("modalEliminar{0}", item.Id_EmpleadoOrg)" class=" modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header encabezado">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        @*<span aria-hidden="true">&times;</span>*@
+                                    </button>
+                                    <h3 class="modal-title title"><i class="glyphicon glyphicon glyphicon-trash"></i> Eliminar Cargo</h3>
+                                </div>
+                                <div class="modal-body ">
+                                    <p>Desea Eliminar el Cargo?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    @Html.ActionLink(SG_SST.Recursos.GeneralApp.General.btn_Eliminar, "DeleteConfirmed", new { id = item.Id_EmpleadoOrg },
+                                  htmlAttributes: new { @type = "button", @class = "btn btn-danger" })
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+
+
+
+
+    </table>
+</div>

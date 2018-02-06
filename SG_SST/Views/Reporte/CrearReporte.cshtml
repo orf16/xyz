@@ -1,0 +1,397 @@
+﻿@model IEnumerable<SG_SST.EntidadesDominio.Participacion.EDReporte>
+
+@{
+    ViewBag.Title = "Crear Reporte Condición o Acto Inseguro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.MensajeExitoso != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'success',
+            title: 'Estimado Usuario',
+            text: 'El Reporte de Incidentes fue almacenado satisfactoramiente',
+          
+            confirmButtonColor: '#7E8A97'
+        });
+
+    </script>
+}
+
+@if (ViewBag.MensajeError != null)
+{
+
+    <script type="text/javascript">
+        swal({
+            type: 'warning',
+            title: 'Estimado Usuario',
+            text: '@ViewBag.MensajeError',
+          
+            confirmButtonColor: '#7E8A97'
+        });
+
+    </script>
+}
+
+<!-- Site reference -->
+<link href="~/Content/Site.css" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link href="~/Content/css/specialbuttons.css" rel="stylesheet">
+
+<!-- Miga de pan que se utiliza para ubicar al usuario donde se encuentra en el sistema -->
+<ol class="breadcrumb">
+    <li><a href="@Url.Action("Index", "Home")">Participación Trabajadores</a></li>
+    <li><a href="@Url.Action("Index", "Reporte")">Reporte de Actos y Condiciones Inseguras</a></li>
+    <li class="active">Crear Reporte</li>
+</ol>
+
+<!-- Vista con el formulario de Reporte -->
+<div class="panel panel-default" style="background-color: rgba(196, 202,196, 0.1)">
+    <div class="panel-heading" style="color:white">Crear Reporte</div>
+
+    <!-- Botón Ayuda -->
+    <div align="right">
+        <div id="ayuda" style="text-align:right">
+            <a href="" data-toggle="modal" data-target="#@string.Format("modalAyuda")"
+               title="Ayuda" class="btn btn-ayuda btn-md">
+                <span class="glyphicon glyphicon-question-sign"></span>
+            </a>
+            <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                            @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>*@
+                            <h4 class="modal-title title">Ayuda / Crear Reporte</h4>
+                        </div>
+                        <div class="modal-body" style="color:black; text-align:justify">
+                            En esta pantalla de crear reporte, usted puede registrar la información respectiva o concerniente al acto o condición insegura detectada. El registro del reporte se divide en 4 partes así:
+                            <br /> <br />
+                            <b>1. Información general:</b> Aquí el aplicativo asigna automáticamente un id o consecutivo al reporte, para trazabilidad. Trae por el proceso de Login con su usuario los datos de nombre de empresa, NIT y fecha del registro del reporte. Estos anteriores también automáticos. Los campos siguientes como sede, tipo de reporte, proceso, área o lugar y fecha de ocurrencia del evento, si deberá el usuario registrarlos conforme a las condiciones de cada campo.
+                            <br /><br />
+                            <b> 2. Datos de quien reporta: </b> Ingrese el dato de la cedula de la persona que reporta el evento. Esta persona debe tener relación laboral con la empresa y estar afiliada a  positiva ARL para que el sistema traiga el nombre y ocupación de la persona de manera automática o de lo contrario no se podrá completar el registro.
+                            <br /><br />
+                            <b> 3. Descripción de condición o acto inseguro:</b> En esta parte complete la descripción del evento, luego registre las causas identificadas y finalice con agregar algunas sugerencias con respecto a las acciones posibles de carácter preventivo o correctivo con respecto al evento. Se da la posibilidad de adjuntar imágenes que soporten lo sucedido, dando click en seleccionar archivo y navegara en sus carpetas de su equipo para adjuntar el registro fotográfico que considere.
+                            <br /><br />
+                            <b>4. Plan de acción:</b> Aquí podrá crear un plan de acción específico para el evento ocurrido. Diligencie los campos de actividad,  responsable  y fecha de ejecución, luego finalice dando Clic en el botón “Agregar". De Clic en el botón de acciones para eliminar el registro de plan de acción.
+                            <br /><br />
+                            Dar Clic en el botón “Generar condición o acto inseguro”, y esta se guardará.
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-body form-horizontal">
+        @using (Html.BeginForm("GuardarReporteCondicionesInseguras", "Reporte", FormMethod.Post, new { @id = "ReporteCondicionesInseguras", @class = "form-horizontal", @enctype = "multipart/form-data" }))
+        {
+            <!-- well para la primera parte de la creación del reporte -->
+            <div class="well" style="background-color:transparent">
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label class="col-md-8">ID</label>
+                            <div class="col-md-12">
+                                <input type="text" id="ConsecutivoReporte" name="ConsecutivoReporte" class="form-control" value="@(ViewBag.Consecutivo)" readonly />
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">Nombre Empresa</label>
+                            <div class="col-md-12">
+                                <input type="text" id="RazonSocialEmpresa" name="RazonSocialEmpresa" class="form-control" value="@(ViewBag.RazonSocialEmpresa)"  maxlength="100" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">NIT</label>
+                            <div class="col-md-12">
+                                <input type="text" id="nitEmpresa" name="nitEmpresa" class="form-control" value="@(ViewBag.nitempresa)" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="col-md-8">Fecha</label>
+                            <div class="col-md-10">
+                                <input type="text" id="fechaSistena" name="fechaSistena" value="@(ViewBag.fechaSistena)" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-md-8">Sede</label>
+                            <div class="col-md-12">
+                                @Html.DropDownList("FKSede", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-md-8">Tipo</label>
+                            <div class="col-md-12">
+                                @Html.DropDownList("FKTipoReporte", null, htmlAttributes: new { @class = "form-control" }, optionLabel: "-- Seleccionar --")
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Proceso</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Procesos", null, htmlAttributes: new { @class = "form-control", @onchange = "consultarSubProcesos()" }, optionLabel: "-- Seleccionar --")
+                                
+                                 
+                                </div>
+                            </div>
+                        </div>
+
+
+                      
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="col-md-8">Área o Lugar</label>
+                                <div class="col-md-12">
+                                    <input id="AreaLugar" name="AreaLugar" class="form-control" maxlength="100" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group  has-feedback">
+                                <label class="col-md-8">Fecha de ocurrencia del evento</label>
+                                <div class="col-md-12">
+
+                                    <i class="glyphicon glyphicon-calendar form-control-feedback"></i>
+                                    <input type="text" class="form-control left" id="FechaOcurrencia" name="FechaOcurrencia" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <label class="col-md-7" style="font-size:larger">Datos de quién reporta</label> 
+                    <hr style="border-top-color:lightslategray; width:99%" />
+                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-md-8">Cédula</label>
+                                <div class="col-md-6">
+                                    <input type="text" id="CedulaQuienReporta" name="CedulaQuienReporta" class="form-control" maxlength="15" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" id="buscarSiarp" title="Buscar" class="btn btn-search btn-md" name="buscarSiarp"   onclick="ObtenerSiarp()"  >
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Nombre</label>
+                                <div class="col-md-12">
+                                    <input type="text" id="NombreQuienReporta" name="NombreQuienReporta" class="form-control" maxlength="100"  />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Ocupación del CIUO</label>
+                                <div class="col-md-12">
+                                    <input type="text" id="CargoQuienReporta" name="CargoQuienReporta" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <label class="col-md-7" style="font-size:larger">Descripción de Condición o Acto Inseguro</label>
+                    <hr style="border-top-color:lightslategray; width:99%" />
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Descripción</label>
+                                <div class="col-md-12">
+                                    <textarea id="DescripcionReporte" name="DescripcionReporte" class="form-control" rows="4" cols="3" style="resize:none" maxlength="996"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-md-8">Causa</label>
+                                <div class="col-md-12">
+                                    <textarea id="CausaReporte" name="CausaReporte" class="form-control" rows="4" cols="3" style="resize:none" maxlength="996"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="col-md-8">Sugerencias</label>
+                                <div class="col-md-12">
+                                    <textarea id="SugerenciasReporte" name="SugerenciasReporte" class="form-control" rows="6" cols="6" style="resize:none" maxlength="996"></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de la primera parte del reporte (agregar imagenes y generar) -->
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="col-md-8">Agregar Imágenes</label>
+                                <div class="col-md-12">
+                                    <input id="imagenesCargar" type="file" accept="image/*" name="files" multiple data-preview-file-type="any" class="form-control" onchange="validaciontamañodocumentoRepCIns()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<br />*@
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+                                <a data-toggle="modal" title="Plan de acción" class="btn btn-search btn-md" onclick="mostrarPlan()" style="margin-left:1.5%">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                </a>
+                                <b> Plan de Acción</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="well" id="planAccion" hidden="hidden">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" style="border: 2px solid lightslategray" id="TablaActividades">
+                                <thead>
+                                    <tr class="titulos_tabla">
+
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Actividad</th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Responsable</th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Fecha de ejecución</th>
+                                        <th style="border-right: 2px solid lightslategray; border-bottom: 2px solid lightslategray; text-align:center; vertical-align:middle; text-transform:uppercase">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="actividades">
+                                    <tr id="filaActividad" name="filaActividad">
+
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <input type="text" name="nombreActividad" id="nombreActividad" class="form-control" />
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle">
+                                            <input type="text" id="RespActividad" name="RespActividad" class="form-control" />
+                                        </td>
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            <i class="glyphicon glyphicon-calendar form-control-feedback"></i>
+                                            <input type="text" class="datepicker form-control  has-feedback" id="FecEjecucion" name="FecEjecucion" readonly>
+                                        </td>
+                                        @*<td id="td_eliminar" style="border-right: 2px solid lightslategray; vertical-align:middle ">
+                                          <a data-toggle="modal" name="btnEliminar" >
+                                              <span name="iconoRend"></span>
+                                          </a>
+
+                                        </td>*@
+
+                                        <td style="border-right: 2px solid lightslategray; vertical-align:middle; text-align:center">
+                                            @*<input type="button" id="eliminarFila" value="Eliminar" onclick="eliminarActividad(this)">*@
+                                            <a data-toggle="modal" title="Borrar Actividad" class="btn btn-search btn-md" onclick="eliminarActividad(this)">
+                                                <span class="glyphicon glyphicon-erase"></span>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @*<br />*@
+                        <div class="row">
+                            <div class="col-md-4" style="margin-left:45%">
+                                <button type="button" class="boton botonactive" id="agregarFila">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-5" id="reporte">
+                        <button type="submit" id="generarReporte" onclick="validarReporte()" class="boton botonactive">Generar Condición o acto inseguro</button>
+                    </div>
+                </div>
+        }
+     </div>
+     
+</div>
+
+        
+@section Scripts {
+    @Scripts.Render("~/bundles/Participacion")
+}
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+            firstDay: 1,
+            format: "dd/mm/yyyy",
+            language: 'es',
+            autoclose: true,
+            changeMonth: true,
+            changeYear: true
+        });
+
+    });
+</script>
+
+@*<script>
+    $("#imagenesCargar").fileinput({
+        showCaption: false,
+        browseClass: "btn btn-primary btn-lg",
+        fileType: "any"
+    });
+</script>*@

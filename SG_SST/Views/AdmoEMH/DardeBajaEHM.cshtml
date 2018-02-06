@@ -1,0 +1,252 @@
+﻿@model SG_SST.EntidadesDominio.Aplicacion.EDAdmoEMH
+@{
+    ViewBag.Title = "Dar de Baja EHM";
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/Aplicacion/EditarEHM.js")"></script>
+<link href="~/Content/Acciones/Acciones.css? <?php echo date('Y-m-d H:i:s'); ?>" rel="stylesheet" />
+<link href="~/Content/Site.css" rel="stylesheet" />
+<!-- Bootstrap core CSS -->
+<link href="~/Content/miga-de-pan.css" rel="stylesheet">
+<!-- Referencia a botones -->
+<link rel="stylesheet" href="~/Content/css/specialbuttons.css">
+<ol class="breadcrumb">
+    <li><a href="javascript:void(0)">Aplicación</a></li>
+    <li><a href="javascript:void(0)">Administración equipo, maquinaria y herramientas</a></li>
+    <li><a href="@Url.Action("ConsultarEHM", "AdmoEMH")">Consultar equipo, maquinaria y herramientas</a></li>
+    <li class="active">Dar de Baja</li>
+</ol>
+@Html.AntiForgeryToken()
+<script>
+    //DatePicker
+    $(document).ready(function () {
+        ConstruirDatePickerPorElemento('Fecha_baja');
+    });
+    //Dar de Baja EHM
+    function jsFunction() {
+        var stringArray = new Array();
+        stringArray[0] = $("#Fecha_baja").val();
+        stringArray[1] = $("#Motivo").val();
+        stringArray[2] = $("#IdEHM").val();
+        var postData = { values: stringArray };
+        swal({
+            title: "Estimado Usuario",
+            type: "warning",
+            text: "Esta seguro(a) que desea dar de baja a este elemento?",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, dar de baja",
+            cancelButtonText: "No",
+            closeOnConfirm: false
+        },
+        function () {
+            PopupPosition();
+            $.ajax({
+                type: "POST",
+                url: '/AdmoEMH/DardeBajaElemento',
+                traditional: true,
+                dataType: "json",
+                data: postData,
+                success: function (data) {
+                    OcultarPopupposition();
+                    if (data.Estado == "El usuario no ha iniciado sesión en el sistema") {
+
+                        location.reload(true);
+                    }
+                    $("#val-Fecha_baja").css("display", "none");
+                    $("#val-Fecha_baja").text('');
+                    $("#val-Motivo").css("display", "none");
+                    $("#val-Motivo").text('');
+
+                    if (data.Probar == false) {
+
+                        if (data.Validacion[0] == true) {
+                            $("#val-Fecha_baja").css("display", "block");
+                            $("#val-Fecha_baja").text(data.ValidacionStr[0]);
+                        }
+                        if (data.Validacion[1] == true) {
+                            $("#val-Motivo").css("display", "block");
+                            $("#val-Motivo").text(data.ValidacionStr[1]);
+                        }
+                        swal("Estimado Usuario", data.Estado, "warning");
+                    }
+                    else {
+                        swal({
+                            title: "Estimado Usuario",
+                            text: "El equipo, herramienta o máquina se ha dado de baja",
+                            type: "success",
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "OK",
+                            closeOnConfirm: false
+                        },
+                    function () {
+                        window.location.href = "/AdmoEMH/ConsultarEHM"
+                    });
+                    }
+                },
+                error: function (data) {
+                    OcultarPopupposition();
+                }
+            });
+
+        });
+
+        
+    }
+
+</script>
+<div class="panel panel-default std-panel-body">
+    <div class="panel-heading panel-heading-custom">DAR DE BAJA A MÁQUINAS, EQUIPOS O HERRAMIENTAS</div>
+    <div class="panel-body">
+        @Html.Hidden("IdEHM", Model.Pk_Id_AdmoEMH)
+
+        <div align="right">
+            <div id="ayuda" style="text-align:right">
+                <a href="" data-toggle="modal" id="elIDdelModal" data-target="#@string.Format("modalAyuda")"
+                   title="Ayuda" class="btn btn-ayuda btn-md">
+                    <i class="glyphicon glyphicon-question-sign"></i>
+                </a>
+                <div id="@string.Format("modalAyuda")" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header encabezado" style="background-color:transparent; border-bottom:none">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <h4 class="modal-title title">Ayuda / Dar de Baja EHM</h4>
+                            </div>
+                            <div class="modal-body " style="color:black">
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botonactive" style="cursor:default;">DAR DE BAJA</button> Para dar de baja el equipo, máquina o herramienta, para ello debe escribir la fecha y el motivo</p>
+                                <p style="margin-bottom:20px;line-height: 200%;text-align:justify">Presione <button type="button" class="boton botoncancel" style="cursor:default;">CANCELAR</button> Para regresar a la consulta de equipos, máquinas o herramienta</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="boton botoncancel" data-dismiss="modal">Salir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row internal-panel-body">
+            <div class="col-sm-12">
+                <label class="radio-inline remove-left-padding">
+                    <b>*Tipo de Elemento</b>
+                </label>
+                <label class="radio-inline">
+
+                    @Html.RadioButtonFor(m => m.TipoElemento, "null", new { id = "Tipo", type = "hidden" })
+                    @Html.RadioButtonFor(m => m.TipoElemento, "Máquina", new { id = "Tipo" })
+                    Máquina
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.TipoElemento, "Equipo", new { id = "Tipo" })
+                    Equipo
+                </label>
+                <label class="radio-inline">
+                    @Html.RadioButtonFor(m => m.TipoElemento, "Herramienta", new { id = "Tipo" })
+                    Herramienta
+                </label>
+            </div>
+
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Información del Elemento</h4>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-12">
+                        <label>Nombre del Elemento: </label>
+                        @Html.DisplayFor(m => m.NombreElemento, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Código del Elemento: </label>
+                        @Html.DisplayFor(m => m.CodigoElemento, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Marca: </label>
+                        @Html.DisplayFor(m => m.Marca, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Modelo: </label>
+                        @Html.DisplayFor(m => m.Modelo, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Fabricante: </label>
+                        @Html.DisplayFor(m => m.Fabricante, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Fecha de Fabricación: </label>
+                        @{
+                            string Fecha_str_fab = "";
+                            try
+                            {
+                                Fecha_str_fab = Model.Fecha_Fab.ToString("dd/MM/yyyy");
+                                <span class="form-width-100">@Fecha_str_fab</span>
+                            }
+                            catch (Exception)
+                            {
+                                @Html.Display("fechaComp", null, new { @class = "form-width-100" })
+                            }
+
+                        }
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Horas de Vida Útil: </label>
+                        @*@Html.DisplayFor(m => m.HorasVida, new { htmlAttributes = new { @class = "form-control form-width-100", @min = "1" } })*@
+                        @{
+                            int HorasVida = Model.HorasVida;
+                            String s = String.Format("{0:n0}",
+                         HorasVida);
+                            s = s.Replace(",", ".");
+                            <span>@s</span>
+                        }
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Ubicación: </label>
+                        @Html.DisplayFor(m => m.Ubicacion, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Características: </label>
+                        @Html.DisplayFor(m => m.Caracteristicas, new { htmlAttributes = new { @class = "form-control form-width-100" } })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="internal-panel add-bottom-margin-05em">
+            <div class="internal-panel-header panel-heading">
+                <h4>Dar de Baja</h4>
+            </div>
+            <div class="internal-panel-body">
+                <div class="form-group row remove-bottom-margin">
+                    <div class="col-sm-6">
+                        <label>Fecha</label>
+                        @Html.TextBox("Fecha_baja", "", new { @class = "form-control form-width-100" })
+                        <span id="val-Fecha_baja" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label>Motivo</label>
+                        @Html.TextBox("Motivo", null, new { @class = "form-control form-width-100" })
+                        <span id="val-Motivo" class="text-danger field-validation-error val-message" style="display:none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row internal-panel-body">
+            <div class="col-md-12">
+                <div id="div_novedad">
+                    <span id="msj_novedad"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-6" style="margin-bottom:5px;">
+                <button onclick="jsFunction();" id="BajaEHM" class="boton botonactive col-margin">DAR DE BAJA</button>
+            </div>
+            <div class="col-md-6">
+                <button class="boton botoncancel" onclick="location.href='@Url.Action("ConsultarEHM", "AdmoEMH")';return false;">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+

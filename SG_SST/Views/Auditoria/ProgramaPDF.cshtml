@@ -1,0 +1,384 @@
+﻿@model SG_SST.EntidadesDominio.MedicionEvaluacion.EDAuditoriaPrograma
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: black;
+        }
+
+
+        .Unalinea {
+            display: inline-block;
+            width: 100%;
+        }
+
+        .TipoCss {
+            font-size: 20px;
+            float: left;
+            width: 45%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .TipoCss > input {
+                font-size: 20px;
+            }
+
+        .IDCss {
+            font-size: 20px;
+            float: left;
+            width: 55%;
+            background-color: none;
+            padding: 0px;
+        }
+
+            .IDCss label {
+                font-size: 20px;
+            }
+
+            .IDCss input {
+                font-size: 20px;
+                color: black;
+                text-align: left;
+                max-width: 150px;
+            }
+
+            .IDCss div {
+                float: left;
+                margin-right: 30px;
+            }
+
+        .Doslinea {
+            width: 100%;
+            background-color: none;
+            border: solid #bfbbce 1px;
+            padding: 0px;
+            font-size: 17px;
+            page-break-inside: avoid !important;
+        }
+
+            .Doslinea .SubTitulo {
+                background-color: #8a8a8a;
+                margin: 0px;
+                padding-left: 5px;
+                margin: 0px 0px 2px 0px;
+            }
+
+            .Doslinea input {
+                width: 400px;
+            }
+
+        .AccionInline {
+            display: inline-block;
+            width: 100%;
+            margin: 0px;
+            padding-left: 5px;
+        }
+
+
+        .AccionLeft40 {
+            float: left;
+            width: 40%;
+        }
+
+        .AccionLeft49 {
+            float: left;
+            width: 49.5%;
+        }
+
+        .AccionLeft50 {
+            float: left;
+            width: 50%;
+        }
+
+        .AccionLeft60 {
+            float: left;
+            width: 60%;
+        }
+
+        .AccionLeft70 {
+            float: left;
+            width: 70%;
+        }
+
+        .AccionLeft80 {
+            float: left;
+            width: 80%;
+        }
+
+        .AccionLeft90 {
+            float: left;
+            width: 90%;
+        }
+
+        .AccionLeft98 {
+            float: left;
+            width: 98%;
+        }
+
+        .AccionLeft100 {
+            float: left;
+            width: 100%;
+        }
+
+        .table-responsive {
+        }
+
+            .table-responsive table {
+                width: 100%;
+            }
+
+            .table-responsive .TableTitle {
+                background-color: none;
+            }
+
+            .table-responsive .InfoTable {
+                background-color: #e3e3e3;
+            }
+
+        textarea {
+            width: 98%;
+            outline: none;
+            border: solid 1px gray;
+            text-align: justify;
+            overflow: hidden;
+        }
+
+        .add-padding {
+            margin-left: 5px;
+        }
+
+        .CambioDoc {
+            border-bottom: solid 1px black;
+        }
+
+        .breakhere {
+            page-break-after: always;
+        }
+
+        .datagrid table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+            .datagrid table td {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table th {
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .datagrid table tbody tr td {
+                padding: 5px;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+            }
+
+            .datagrid table thead tr th {
+                text-align: center;
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .datagrid table thead {
+                background-color: #a3a3a3;
+                color: black;
+            }
+
+            .datagrid table tbody tr .TdJustificar {
+                text-align: justify !important;
+                max-width: 500px;
+            }
+
+            .datagrid table tbody tr .TdCentrar {
+                text-align: center !important;
+            }
+
+        input[type=text] {
+            outline: none;
+            border: solid 1px gray;
+        }
+
+        tr, td {
+            page-break-inside: avoid !important;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label>
+                <b>Sede</b>
+            </label>
+            @Html.DisplayFor(m => m.SedeAuditoria)
+        </div>
+
+        <div class="IDCss">
+            <div>
+                <b>Fecha de Programa</b>
+                @{
+                    string Fecha_str = "";
+                    try
+                    {
+                        Fecha_str = Model.Fecha_Programacion.ToString("dd/MM/yyyy");
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    @Html.Label(Fecha_str, Fecha_str)
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="Unalinea">
+        <div class="TipoCss">
+            <label>
+                <b>Año</b>
+            </label>
+            @Html.DisplayFor(m => m.Año)
+        </div>
+
+    </div>
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>1. Programa de Auditoría</b>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Nombre del Programa</b>
+                    <div>
+                        @Html.DisplayFor(m => m.Titulo)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Objetivo</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Objetivo)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <div class="FechaOcurrencia">
+                    <b>Alcance</b>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Alcance)
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>Periodicidad</b>
+                <div style="text-align:justify">
+                    @Html.DisplayFor(m => m.Periodicidad)
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>Metodología</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Metodologia)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>Competencia a Auditar</b>
+                <div style="text-align:justify">
+                    @Html.DisplayFor(m => m.Competencia)
+                </div>
+            </div>
+        </div>
+        <div class="AccionInline">
+            <div class="AccionLeft98">
+                <b>Recursos</b>
+                <div>
+                    <div style="text-align:justify">
+                        @Html.DisplayFor(m => m.Recursos)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="Doslinea">
+        <div class="SubTitulo">
+            <b>Firma del presidente Copasst y del responsable SGSST</b>
+        </div>
+
+        <div class="AccionInline">
+            <div class="AccionLeft50">
+                <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em" style="min-height:100px;">
+                    @{
+                        string Ruta1 = (string)ViewBag.RutaPres;
+                        <img id="ImagenFirmaAudId" src="@Ruta1" alt="" class="ImagenFirmaAud" style="max-height:100px;max-width:100%;" />
+                    }
+                </div>
+                <div class="form-group">
+                    @Html.DisplayFor(m => m.Nombre_Copasst)
+                </div>
+                <div class="form-group">
+                    <b>Presidente Copasst</b>
+                </div>
+            </div>
+            <div class="AccionLeft50">
+                <div class="col-md-12 text-center add-bottom-margin-05em add-top-margin-05em" style="min-height:100px;">
+                    @{
+                        string Ruta2 = (string)ViewBag.RutaRes;
+                        <img id="ImagenFirmaResId" src="@Ruta2" alt="" class="ImagenFirmaRes" style="max-height:100px;max-width:100%;" />
+                    }
+                </div>
+                <div class="form-group">
+                    @Html.DisplayFor(m => m.Nombre_Responsable)
+                </div>
+                <div class="form-group">
+                    <b>Responsable de SGSST</b>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+</html>
